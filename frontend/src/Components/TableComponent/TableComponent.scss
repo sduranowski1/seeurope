@@ -1,0 +1,36 @@
+thead {
+    background: #1d6cc1;
+    tr {
+        th {
+            color: white !important;
+        }
+    }
+}
+
+.btn-container {
+    width: 80px;
+    box-sizing: border-box;
+}
+
+.like {
+    cursor: pointer;
+    transition: .2s all;
+    padding: 16px 20px;
+    vertical-align: text-top;
+
+    &:hover {
+        color: blue;
+    }
+}
+
+.buy-btn {
+    background: #1d6cc1;
+    color: white;
+    padding: 16px 20px;
+    vertical-align: text-top;
+    transition: .3s all ease-in;
+    
+    &:hover {
+        background: black;
+    }
+}

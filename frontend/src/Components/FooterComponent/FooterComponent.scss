@@ -1,0 +1,75 @@
+@import '../../styles/abstracts/variables';
+
+footer {
+  background: #aaaaaa;
+  padding: 50px 0;
+  color: white;
+  text-align: center;
+  position: relative;
+
+  .footer-container {
+    display: flex;
+    justify-content: space-between;
+    margin-inline: auto;
+    max-width: 1200px;
+    @media (max-width: $medium) {
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+
+  .subsection__container {
+    display: flex;
+    flex-direction: column;
+    max-width: 300px;
+    width: 100%;
+    position: relative;
+
+    &:not(:first-of-type) {
+      @media (max-width: $medium) {
+        margin-top: 60px;
+      }
+    }
+
+
+    h3 {
+      margin-top: 23px;
+    }
+  }
+
+  .subsection__content {
+    margin-top: 13px;
+
+    a {
+      display: block;
+      color: white;
+      transition: .2s all;
+
+      &:hover {
+        color: #1d6cc1;
+      }
+    }
+
+    a, p {
+      line-height: 1.6rem;
+    }
+  }
+
+  .footer-icon {
+    margin-inline: auto;
+    height: 72px;
+    width: 72px;
+  }
+
+  .bg-shape {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    height: 100%;
+
+    picture {
+      height: 100%;
+    }
+  }
+}

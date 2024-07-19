@@ -1,0 +1,75 @@
+{
+  "my_coupling": "Moje Złącze",
+  "my_machine": "Moja Maszyna",
+  "about_us": "O Nas",
+  "wheel_loader": "Ładowarka kołowa",
+  "excavator": "Koparka",
+  "tractor": "Traktor",
+  "telescopic_handler": "Ładowarka teleskopowa",
+  "forklift": "Wózek widłowy",
+  "without_coupling": "Bez złącz",
+  "contact": "Kontakt",
+  "this_is_se": "To jest SE",
+  "sustainability": "Zrównoważony rozwój",
+  "find_reseller": "Znajdź pośrednika",
+  "logging_in": "Logowanie",
+  "contact_us": "Wniosek",
+  "login": "Logowanie",
+  "hide_form": "Ukryj formularz",
+  "show_form": "Pokaż formularz",
+  "login_label": "Login*:",
+  "enter_login": "Wpisz login",
+  "password_label": "Hasło*:",
+  "enter_password": "Wpisz hasło",
+  "login_button": "Zaloguj",
+  "dashboard": "Moje konto",
+  "logout": "Wyloguj",
+
+
+  "contact_information": "Kontakt / Informacje",
+  "company_name": "SE Equipment Poland Sp. z o.o.",
+  "address": "ul. Uśmiechu 4, 05-250 Cegielnia",
+  "vat_number": "VAT UE: PL 5322043940",
+  "phone": "Telefon: +48 22 487 84 13",
+  "opening_hours": "Godziny otwarcia",
+  "office_hours": "Biuro:",
+  "office_days": "Poniedziałek-Piątek: 08.00-16.00",
+  "help": "POMOC",
+  "new_customer": "Nowy klient",
+  "how_to_shop": "Jak zamawiać",
+  "how_to_search": "Jak szukać",
+  "my_account": "Moje konto",
+  "delivery": "Dostawa",
+  "security_cookies": "Bezpieczeństwo & cookies",
+
+
+  "find_reseller": "Znajdź sprzedawcę",
+  "place_order_title": "Złóż zamówienie przez nasz e-commerce",
+  "place_order_subtitle": "Otrzymaj łopatę budowlaną o wartości 350 sek!",
+  "place_order_note": "UWAGA! Oferta nie dotyczy części zamiennych do uchwytów.",
+  "main_paragraph": "SE Equipment AB magazynuje i dostarcza sprzęt, aby szybko zaspokoić potrzeby Twoje i rynku. Zaopatrujemy sprzedawców detalicznych w całej Europie w szeroką gamę wysokiej jakości produktów z naszego dużego magazynu w Linköping. Cała sprzedaż odbywa się za pośrednictwem naszych sprzedawców.",
+  "design_quality_safety_price": "DESIGN - JAKOŚĆ - BEZPIECZEŃSTWO - CENA",
+  "skid_loader": "Ładowarka skrzynkowa",
+  "fork_lift": "Wózek widłowy",
+  "click": "Kliknij",
+
+
+  "tractor_equipment": "Zajmujemy się dostawą i magazynowaniem osprzętu do ciągników.",
+  "machine_weight": "Waga Maszyny",
+  "coupling": "Złącze",
+  "my_machine": "Moja maszyna",
+
+
+  "wheel_loader_equipment": "Oferujemy szeroką gamę sprzętu do ładowarek kołowych i miniładowarek.",
+  "click_product_info": "Kliknij na wybrany produkt poniżej, aby uzyskać więcej informacji.",
+
+
+  "excavator_description_1": "Koparka to rodzaj maszyny budowlanej, która nadaje się do wielu różnych zadań, ale jest głównie przeznaczona do prac rozbiórkowych i wykopywania.",
+  "excavator_description_2": "Możliwość montażu różnych urządzeń na mocowaniu osprzętu maszyny poszerza zakres zastosowania koparki. W SE Equipment oferujemy szeroką gamę sprzętu do koparek.",
+  "click_product_info": "Kliknij na wybrany produkt poniżej, aby uzyskać więcej informacji.",
+
+
+  "tractor_equipment_intro": "Tutaj znajdziesz pełną standardową gamę sprzętu SE Equipment do ciągników. Oferujemy szeroki wybór osprzętu, od łyżek po sprzęt do podnoszenia.",
+  "find_tool_prompt": "Kliknij na wybrany produkt poniżej, aby znaleźć odpowiednie narzędzie dla siebie."
+
+}

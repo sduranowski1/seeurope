@@ -1,0 +1,36 @@
+.sustainability-page {
+  .section-contrains {
+    .sustainability-container {
+      position: relative;
+      border-radius: 32px;
+      overflow: hidden;
+
+      .bg-shape {
+        position: absolute;
+        background: rgba(0, 0, 0, .5);
+        height: 100%;
+        width: 100%;
+        z-index: 1;
+      }
+
+      picture {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+      }
+
+      .heading-container {
+        position: relative;
+        color: white;
+        text-align: left;
+        padding: 32px 48px;
+        z-index: 1;
+
+        h1 {
+          color: white;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,43 @@
+h1,h2,h3,h4,h5,p,span,a,div,ul,ol,li {
+  font-family: 'Outfit', sans-serif;
+}
+
+.text-shadow {
+  text-shadow: 1px 1px 1px #00000054;
+}
+
+.page-title {
+  font-size: 32px;
+  line-height: 1.32;
+}
+
+.section-title {
+  font-size: 36px;
+  line-height: 1.32;
+}
+
+.section-subtitle {
+  font-size: 24px;
+  line-height: 1.32;
+}
+
+.paragraph {
+  font-size: 14px;
+  line-height: 1.32;
+
+  &--large {
+    font-size: 22px;
+  }
+
+  &--medium {
+    font-size: 17px;
+  }
+}
+
+.link-title {
+  font-size: 18px;
+
+  &--smaller {
+    font-size: 16px;
+  }
+}

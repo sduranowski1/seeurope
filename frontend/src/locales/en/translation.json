@@ -1,0 +1,75 @@
+{
+  "my_coupling": "My Coupling",
+  "my_machine": "My Machine",
+  "about_us": "About Us",
+  "wheel_loader": "Wheel Loader",
+  "excavator": "Excavator",
+  "tractor": "Tractor",
+  "telescopic_handler": "Telescopic Handler",
+  "forklift": "Forklift",
+  "without_coupling": "Without Coupling",
+  "contact": "Contact",
+  "this_is_se": "This Is SE",
+  "sustainability": "Sustainability",
+  "find_reseller": "Find Reseller",
+  "logging_in": "Logging in",
+  "contact_us": "Contact Us",
+  "login": "Login",
+  "hide_form": "Hide form",
+  "show_form": "Show form",
+  "login_label": "Login*:",
+  "enter_login": "Enter login",
+  "password_label": "Password*:",
+  "enter_password": "Enter password",
+  "login_button": "Login",
+  "dashboard": "Dashboard",
+    "logout": "Logout",
+
+
+
+
+  "contact_information": "Contact / Information",
+  "company_name": "SE Equipment Poland Sp. z o.o.",
+  "address": "ul. Uśmiechu 4, 05-250 Cegielnia",
+  "vat_number": "VAT UE: PL 5322043940",
+  "phone": "Phone: +48 22 487 84 13",
+  "opening_hours": "Opening Hours",
+  "office_hours": "Office:",
+  "office_days": "Monday-Friday: 08.00-16.00",
+  "help": "HELP",
+  "new_customer": "New customer",
+  "how_to_shop": "How to shop",
+  "how_to_search": "How to search",
+  "my_account": "My account",
+  "delivery": "Delivery",
+  "security_cookies": "Security & cookies",
+
+
+  "find_reseller": "Find reseller",
+  "place_order_title": "Place your order through our e-commerce",
+  "place_order_subtitle": "Receive a construction shovel to the value of 350 sek!",
+  "place_order_note": "Note: Offer does not apply to brackets spare parts.",
+  "main_paragraph": "SE Equipment AB stores and delivers equipment to quickly meet your needs and the market's. We supply retailers across Europe with a wide range of high-quality products from our large warehouse in Linköping. All sales are made through our resellers.",
+  "design_quality_safety_price": "DESIGN - QUALITY - SAFETY - PRICE",
+
+  "skid_loader": "Skid Loader",
+  "fork_lift": "Fork Lift",
+  "click": "Click",
+
+  "tractor_equipment": "We supply and store equipment for tractors.",
+  "machine_weight": "Machine Weight",
+  "coupling": "Coupling",
+  "my_machine": "My Machine",
+
+
+  "wheel_loader_equipment": "We offer a wide range of equipment for wheel loaders and mini loaders.",
+  "click_product_info": "Click on the selected product below for more information.",
+
+  "excavator_description_1": "An excavator is a type of construction machine suitable for various tasks, but primarily used for demolition and excavation work.",
+  "excavator_description_2": "The ability to attach various devices to the machine's mounting expands the range of applications for excavators. At SE Equipment, we offer a wide range of equipment for excavators.",
+  "click_product_info": "Click on the selected product below for more information.",
+
+
+  "tractor_equipment_intro": "Here you will find the full standard range of SE Equipment for tractors. We offer a wide selection of equipment, from buckets to lifting gear.",
+  "find_tool_prompt": "Click on the selected product below to find the right tool for you."
+}

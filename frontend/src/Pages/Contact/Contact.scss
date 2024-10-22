@@ -1,0 +1,32 @@
+.contact-page {
+
+  .person-cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 260px);
+    gap: 50px;
+    max-width: 880px;
+    margin: 50px auto 0;
+    text-align: center;
+  }
+
+  .person-card {
+    picture {
+      margin-inline: auto;
+      width: 200px;
+      height: 300px;
+    }
+
+    .link-title {
+      font-weight: 600;
+    }
+
+    &__text-container {
+      margin-top: 20px;
+
+      p, a {
+        margin-top: 7px;
+        display: block;
+      }
+    }
+  }
+}

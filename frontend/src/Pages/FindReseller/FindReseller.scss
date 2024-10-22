@@ -1,0 +1,51 @@
+@import '../../Styles/Abstracts/_variables';
+
+.form {
+  .field-container {
+    display: flex;
+    margin-top: 20px;
+
+    @media (max-width: $small) {
+      flex-direction: column;
+    }
+  }
+}
+
+label {
+  width: 270px;
+  padding-right: 25px;
+  display: inline-block;
+}
+
+//input, textarea {
+//  &:not([type='submit']) {
+//    width: 100%;
+//    padding: 5px;
+//  }
+//
+//  &[type='submit'] {
+//    display: flex;
+//    margin: 20px auto 0;
+//  }
+//}
+//
+//.message-input {
+//  height: 200px;
+//}
+
+.textBox {
+  &:not([type='submit']) {
+    width: 100%;
+    padding: 5px;
+  }
+
+  &[type='submit'] {
+    display: flex;
+    margin: 20px auto 0;
+  }
+}
+
+.message-input {
+  height: 200px;
+  width: 100%;
+}

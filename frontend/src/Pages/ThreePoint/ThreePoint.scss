@@ -1,0 +1,64 @@
+@import '../../Styles/Abstracts/_variables';
+
+.available-choices-container {
+  display: flex;
+  margin-top: 70px;
+  gap: 40px;
+
+  @media (max-width: $medium) {
+    flex-direction: column;
+  }
+
+  .choice-container {
+    width: 100%;
+
+    &__checkboxes {
+      display: flex;
+      flex-wrap: wrap;
+
+      label {
+        width: 50%;
+        margin-inline: 0;
+        @media (max-width: $medium) {
+          width: 100%;
+        }
+      }
+    }
+
+    h2 {
+      text-align: center;
+      padding: 10px 0;
+      border-top: 1px solid black;
+      border-bottom: 1px solid black;
+    }
+  }
+}
+
+//.MuiTabPanel-root {
+//  padding: 0 !important;
+//  border-radius: 0 !important;
+//}
+//
+//button.MuiButtonBase-root {
+//  background-color: #aaa !important;
+//  border-right: 1px solid white !important;
+//  color: white !important;
+//  border-radius: 10px 10px 0px 0px;
+//  height: 37px;
+//
+//  &:hover {
+//    background-color: #72a2d5 !important;
+//  }
+//}
+//
+//button.Mui-selected {
+//  background-color: #1d6cc1 !important;
+//  &:hover {
+//    background-color: #1d6cc1 !important;
+//  }
+//}
+
+thead tr th {
+  padding: 5px !important;
+  font-size: 400 !important;
+}

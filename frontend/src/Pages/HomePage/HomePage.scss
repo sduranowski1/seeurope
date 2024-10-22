@@ -1,0 +1,148 @@
+@import '../../Styles/Abstracts/_variables';
+
+.screenwide-photo-section {
+  position: relative;
+  height: 442px;
+  display: flex;
+
+  .button--reseller {
+    left: 0;
+    bottom: 0;
+    margin-bottom: 50px;
+  }
+
+  .section-contrains {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    width: 100%;
+    z-index: 1;
+  }
+}
+
+.screenwide {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.place-order {
+  .gradient-box-container {
+    display: flex;
+    height: 306px;
+    max-width: 1020px;
+    width: 100%;;
+    overflow: hidden;
+    border-radius: 18px;
+    background-image: linear-gradient(185deg, rgb(31, 175, 79), rgb(87, 138, 54));
+    margin: 91px auto 51px;
+
+    @media (max-width: $medium) {
+      height: auto;
+      display: grid;
+      grid-template-rows: 1fr 1fr;
+    }
+  }
+
+  .img-box, .gradient-box {
+    width: 50%;
+
+    @media (max-width: $medium) {
+      width: 100%;
+    }
+  }
+
+  .gradient-box {
+    box-sizing: border-box;
+    padding: 35px;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .img-box {
+    picture {
+      height: 306px;
+
+      @media (max-width: $small) {
+        height: 100%;
+      }
+    }
+  }
+
+  h2 {
+    color: rgb(10, 49, 102);
+  }
+
+  p {
+    color: white;
+  }
+
+  span {
+    color: rgb(17, 17, 17);
+  }
+}
+
+.vehicles {
+  text-align: center;
+
+  p + h2 {
+    margin-top: 100px;
+  }
+}
+
+.vehicles-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 202px);
+  justify-content: center;
+  gap: 10px;
+  margin: 150px 0;
+  padding: 38px 0;
+  background-color: #f1f1f1;
+
+  &:hover {
+    .vehicle-link {
+      img {
+        filter: blur(1px);
+        opacity: .8;
+      }
+    }
+  }
+
+  .vehicle-link {
+    &:hover {
+      picture {
+        img {
+          filter: none;
+          opacity: 1;
+        }
+      }
+    }
+  }
+
+  .vehicle-link {
+    height: 234px;
+    max-width: 202px;
+    width: 100%;
+    color: #2d2d2d;
+
+    p {
+      margin-top: 8px;
+    }
+  }
+
+  img {
+    transition: .2s all;
+    border-radius: 7px;
+  }
+}
+
+.end-of-page {
+  background: #2d2d2d;
+  height: 4px;
+  width: 65px;
+  margin: 50px auto 10px;
+}

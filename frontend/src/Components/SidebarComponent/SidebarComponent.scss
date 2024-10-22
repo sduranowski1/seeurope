@@ -1,0 +1,286 @@
+@import '../../Styles/Abstracts/_variables';
+
+aside {
+  display: flex;
+  position: fixed;
+  height: 100%;
+  z-index: 1000;
+  background: white;
+  top: 0;
+  right: 0;
+  transition: .3s all ease-in-out;
+  max-width: 350px;
+  width: 100%;
+  box-sizing: border-box;
+  // box-shadow: 0 0 20px 20px rgba(0,0,0,.3);
+  //padding: 30px 20px;
+  @media (max-width: $medium) {
+    max-width: 100%;
+  }
+
+  .aside__subcontainer {
+    width: 350px;
+    position: absolute;
+      background-color: white;
+  z-index: 10;
+    height: 100%;
+
+    &--hidden {
+      transform: translateX(100%);
+    }
+  }
+
+  &.aside-container--hidden {
+    transform: translateX(100%);
+    box-shadow: none;
+  }
+
+  .btn--close {
+    color: #1d6cc1;
+    transition: .2s all;
+    font-size: 24px;
+
+    &:hover {
+      color: black;
+    }
+  }
+
+  .aside {
+    &__line {
+      transition: .2s all;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-sizing: border-box;
+      padding: 7px 20px;
+
+      &:hover {
+        * {
+          background-color: unset !important;
+        }
+      }
+
+      a:hover {
+        color: #1d6cc1 !important;
+      }
+
+      &__line {
+        background-color: black !important;
+      }
+
+      &--no-bg {
+        justify-content: center;
+      }
+
+      &--narrow {
+        width: fit-content !important;
+        position: relative;
+        z-index: 2;
+
+        &:hover {
+          color: #1d6cc1 !important;
+        }
+      }
+
+      &:hover {
+        color: #1d6cc1;
+
+        // .aside__line--accordion {
+        //   background-color: black !important;
+        // }
+      }
+
+      &--accordion {
+        display: block;
+        box-shadow: none;
+        border-radius: unset !important;
+        margin: 0 !important;
+
+        .aside__line {
+          padding: unset;
+        }
+
+        .MuiAccordionSummary-root {
+          min-height: unset;
+        }
+
+        .MuiAccordionSummary-content {
+          margin: 0 !important;
+        }
+
+        .MuiButtonBase-root {
+          padding: 0;
+        }
+
+        .angle-up {
+          color: black;
+        }
+
+        &:hover {
+          .angle-up {
+            color: white;
+          }
+        }
+
+        .MuiAccordionDetails-root {
+          padding: 0;
+        }
+
+        &:hover {
+          a {
+            color: white;
+          }
+        }
+      }
+
+      &:not(.aside__line--no-bg):hover {
+        background-color: #aaaaaa;
+        //color: white;
+      }
+    }
+
+    &__line-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      //padding: 7px 0;
+
+      .nav__submenu-item {
+        box-sizing: border-box;
+        padding: 7px 20px;
+        a {
+          width: 100%;
+          display: block;
+        }
+
+        &:hover {
+          cursor: pointer;
+          //background-color: lightgray;
+        }
+      }
+
+      &:first-of-type {
+        justify-content: center;
+
+        .btn {
+          position: absolute;
+          right: 20px;
+        }
+      }
+
+      a {
+        color: black;
+
+        &:not(:first-of-type) {
+          //margin-top: 7px;
+        }
+      }
+
+      &--column {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      &:not(:first-of-type) {
+        border-top: 1px solid rgba(170,170,170,.35);
+      }
+    }
+  }
+
+  form {
+    .aside__line-container {
+      flex-direction: column;
+    }
+
+    .aside__line {
+      flex-direction: column;
+
+      input {
+        margin-top: 5px;
+      }
+
+      &:hover {
+        input {
+          background-color: white !important;
+        }
+      }
+    }
+
+    .button--login {
+      margin-top: 25px;
+    }
+  }
+
+  ul {
+    .nav__submenu-item {
+      padding-right: 0 !important;
+    }
+  }
+
+  .sidebar-icon {
+    height: 20px;
+    width: 20px;
+  }
+}
+
+/* src/Sidebar.css */
+
+.sidebar {
+  height: 100%;
+  width: 250px;
+  position: fixed;
+  top: 0;
+  right: 0;
+  background-color: #111;
+  padding-top: 20px;
+  transition: 0.3s;
+}
+
+.sidebar h2 {
+  color: white;
+  text-align: center;
+}
+
+.sidebar ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.sidebar ul li {
+  padding: 15px;
+  text-align: center;
+}
+
+.sidebar ul li a {
+  color: white;
+  text-decoration: none;
+  display: block;
+}
+
+.sidebar ul li a:hover {
+  background-color: #575757;
+}
+
+.aside-container {
+  /* your existing styles */
+}
+
+.aside-container--hidden {
+  display: none;
+}
+
+.login-pop-up {
+  background-color: white;
+  z-index: 10;
+}
+
+.button--toggle-login {
+  /* style for the toggle button */
+  margin: 10px 0;
+}
+
+.sidebar {
+    z-index: 10000;
+
+}

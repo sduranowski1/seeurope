@@ -1,0 +1,16 @@
+.product-page {
+    .item-page {
+        display: flex;
+    }
+
+    .item-quantity {
+        display: flex;
+        align-items: center;
+    }
+
+    .quantity-btn {
+        &:hover {
+            color: lightgray;
+        }
+    }
+}

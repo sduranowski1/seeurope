@@ -1,26 +1,26 @@
 # Frontend Dockerfile (frontend folder)
-# Use a lightweight Node.js image
-FROM node:20-slim AS builder
+FROM node:20-slim
 
 # Set working directory
 WORKDIR /app
 
-# Copy only the package.json and package-lock.json first to leverage Docker layer caching
+# Copy package.json and package-lock.json first to leverage Docker cache for dependencies
 COPY package*.json ./
 
-# Install only production dependencies first
-RUN npm install --production
+# Install dependencies
+RUN npm install
 
 # Install the Babel plugin
 RUN npm install @babel/plugin-transform-private-property-in-object --save-dev
 
-# Copy the rest of the application code
+# Copy frontend code after dependencies are installed
 COPY . .
 
-# Install dependencies and build the app
-RUN npm install && npm run build
+# Build the application
+RUN npm run build
 
 # Expose port 3000
 EXPOSE 3000
 
+# Start the application
 CMD ["npm", "start"]

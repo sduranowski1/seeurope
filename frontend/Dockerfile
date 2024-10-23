@@ -4,23 +4,20 @@ FROM node:20-slim
 # Set working directory
 WORKDIR /app
 
-# Copy package.json and package-lock.json first to leverage Docker cache for dependencies
+# Copy the build files
+COPY build ./build
+
+# Copy package.json and package-lock.json if you need them for the dependencies
 COPY package*.json ./
 
-# Install dependencies
-RUN npm install
+# Install only the production dependencies (if any)
+RUN npm install --production
 
-# Install the Babel plugin
-RUN npm install @babel/plugin-transform-private-property-in-object --save-dev
-
-# Copy frontend code after dependencies are installed
-COPY . .
-
-# Build the application
-RUN npm run build
-
-# Expose port 3000
+# Expose the port your app runs on (typically 3000 for a React app)
 EXPOSE 3000
 
-# Start the application
-CMD ["npm", "start"]
+# Start the application using a static server (optional)
+# You may use serve, http-server, or any other static file server
+RUN npm install -g serve  # Install serve globally
+CMD ["serve", "-s", "build", "-l", "3000"]
+#Serve the build folder

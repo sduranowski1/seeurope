@@ -11,6 +11,9 @@ COPY package*.json ./
 # Install only production dependencies first
 RUN npm install --production
 
+# Install the Babel plugin
+RUN npm install @babel/plugin-transform-private-property-in-object --save-dev
+
 # Copy the rest of the application code
 COPY . .
 

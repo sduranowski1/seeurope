@@ -1,10 +1,17 @@
 # Frontend Dockerfile (frontend folder)
-FROM node:20
+# Use a lightweight Node.js image
+FROM node:20-slim AS builder
 
 # Set working directory
 WORKDIR /app
 
-# Copy frontend code
+# Copy only the package.json and package-lock.json first to leverage Docker layer caching
+COPY package*.json ./
+
+# Install only production dependencies first
+RUN npm install --production
+
+# Copy the rest of the application code
 COPY . .
 
 # Install dependencies and build the app

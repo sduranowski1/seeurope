@@ -2,7 +2,7 @@
   "name": "my-react-admin",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:8000",
+  "proxy": "http://extranet.seequipment.pl:9010",
   "dependencies": {
     "@api-platform/admin": "^3.4.9",
     "@fortawesome/free-brands-svg-icons": "^6.5.2",

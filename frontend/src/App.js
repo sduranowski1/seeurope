@@ -58,6 +58,7 @@ import VariantList from "./Resources/Variant/VariantList";
 import VariantEdit from "./Resources/Variant/VariantEdit";
 import VariantCreate from "./Resources/Variant/VariantCreate";
 import BrandCreate from "./Resources/Brand/BrandCreate";
+import EnovaProductList from "./Resources/EnovaProduct/EnovaProductList";
 // import BrandEdit from "./Resources/Product/BrandEdit";
 // import {SidebarComponent} from "./Components/SidebarComponent/SidebarComponent";
 // import {FooterComponent} from "./Components/FooterComponent/FooterComponent";
@@ -167,6 +168,7 @@ const AdminLayout = () => {
   return (
     <Admin dataProvider={dataProvider} authProvider={authProvider} layout={MyLayout} locale="en" i18nProvider={i18nProvider} basename="/admin">
       <Resource name="products" list={ProductList} edit={ProductEdit} />
+      <Resource name="enova products" list={EnovaProductList} edit={ProductEdit} />
       {/*<Resource name="books" list={BookList} />*/}
       <Resource name="users" list={UserList} edit={UserEdit} />
       <Resource name="brands" list={BrandList} edit={BrandEdit} create={BrandCreate} />

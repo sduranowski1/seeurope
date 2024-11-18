@@ -59,6 +59,10 @@ import VariantEdit from "./Resources/Variant/VariantEdit";
 import VariantCreate from "./Resources/Variant/VariantCreate";
 import BrandCreate from "./Resources/Brand/BrandCreate";
 import EnovaProductList from "./Resources/EnovaProduct/EnovaProductList";
+import EnovaContractorList from "./Resources/EnovaContractors/EnovaContractorList";
+import EnovaProductEdit from "./Resources/EnovaProduct/EnovaProductEdit";
+import BlankPage from "./Pages/Admin/EnovaProducts/BlankPage";
+import CategoryList from "./Resources/Category/CategoryList";
 // import BrandEdit from "./Resources/Product/BrandEdit";
 // import {SidebarComponent} from "./Components/SidebarComponent/SidebarComponent";
 // import {FooterComponent} from "./Components/FooterComponent/FooterComponent";
@@ -112,8 +116,10 @@ const App = () => {
                       <Route path="dashboard" element={<PrivateRoute />}>
                           <Route path="" element={<Layout><Dashboard /></Layout>} />
             </Route>
-          <Route path="/admin/*" element={<AdminLayout />} />
-          {/* <Route path="*" element={<Navigate to="/" replace />} /> */}
+            <Route path="/admin/*" element={<AdminLayout />} >
+                <Route path="enova-product/:id" element={<EnovaProductEdit />} />
+            </Route>
+            {/* <Route path="*" element={<Navigate to="/" replace />} /> */}
           <Route path="/moje-zlacze/:brand" element={<Layout><Se /></Layout>}>
               {/*<Route index  element={<Layout><MyCoupling /></Layout>} />*/}
               {/*<Route path="100838" element={<Layout><Se/></Layout>} />*/}
@@ -168,8 +174,9 @@ const AdminLayout = () => {
   return (
     <Admin dataProvider={dataProvider} authProvider={authProvider} layout={MyLayout} locale="en" i18nProvider={i18nProvider} basename="/admin">
       <Resource name="products" list={ProductList} edit={ProductEdit} />
-      <Resource name="enova products" list={EnovaProductList} edit={ProductEdit} />
-      {/*<Resource name="books" list={BookList} />*/}
+      <Resource name="enova-products" list={EnovaProductList} edit={EnovaProductEdit} />
+      <Resource name="enova contractors" list={EnovaContractorList} edit={ProductEdit} />
+      <Resource name="categories" list={CategoryList} />
       <Resource name="users" list={UserList} edit={UserEdit} />
       <Resource name="brands" list={BrandList} edit={BrandEdit} create={BrandCreate} />
       <Resource name="variants" list={VariantList} edit={VariantEdit} create={VariantCreate} />

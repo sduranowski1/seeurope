@@ -35,7 +35,7 @@ class Token
     #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
-    #[ORM\Column(type: 'string')]
+    #[ORM\Column(type: 'string', length: 1000)]
     private ?string $token = null;
 
     public function getId(): ?int

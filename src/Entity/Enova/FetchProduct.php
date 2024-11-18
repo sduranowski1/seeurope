@@ -7,6 +7,8 @@ use ApiPlatform\Metadata\Post;
 use ApiPlatform\OpenApi\Model;
 use App\Controller\FetchProduct\FetchProductByIdController;
 use App\Controller\FetchProduct\FetchProductsController;
+use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Enova\ProductInfo; // Import the ProductInfo entity
 
 #[ApiResource(
     operations: [
@@ -77,7 +79,32 @@ use App\Controller\FetchProduct\FetchProductsController;
         ),
     ]
 )]
+#[ORM\Entity]
 class FetchProduct
 {
-    // You can leave this class empty if it's just for the controller's routing
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
+    #[ORM\Column(type: "integer")]
+    private ?int $id = null;
+
+    #[ORM\ManyToOne(targetEntity: ProductInfo::class)]
+    #[ORM\JoinColumn(name: "product_info_id", referencedColumnName: "id")]
+    private ?ProductInfo $productInfo = null;
+
+    // Getter and Setter methods for the relationship
+    public function getProductInfo(): ?ProductInfo
+    {
+        return $this->productInfo;
+    }
+
+    public function setProductInfo(?ProductInfo $productInfo): self
+    {
+        $this->productInfo = $productInfo;
+        return $this;
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 }

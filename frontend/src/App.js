@@ -63,6 +63,8 @@ import EnovaContractorList from "./Resources/EnovaContractors/EnovaContractorLis
 import EnovaProductEdit from "./Resources/EnovaProduct/EnovaProductEdit";
 import BlankPage from "./Pages/Admin/EnovaProducts/BlankPage";
 import CategoryList from "./Resources/Category/CategoryList";
+import CategoryEdit from "./Resources/Category/CategoryEdit";
+import CategoryCreate from "./Resources/Category/CategoryCreate";
 // import BrandEdit from "./Resources/Product/BrandEdit";
 // import {SidebarComponent} from "./Components/SidebarComponent/SidebarComponent";
 // import {FooterComponent} from "./Components/FooterComponent/FooterComponent";
@@ -175,12 +177,11 @@ const AdminLayout = () => {
     <Admin dataProvider={dataProvider} authProvider={authProvider} layout={MyLayout} locale="en" i18nProvider={i18nProvider} basename="/admin">
       <Resource name="products" list={ProductList} edit={ProductEdit} />
       <Resource name="enova-products" list={EnovaProductList} edit={EnovaProductEdit} />
-      <Resource name="enova contractors" list={EnovaContractorList} edit={ProductEdit} />
-      <Resource name="categories" list={CategoryList} />
-      <Resource name="users" list={UserList} edit={UserEdit} />
+      <Resource name="enova-contractors" list={EnovaContractorList} />
       <Resource name="brands" list={BrandList} edit={BrandEdit} create={BrandCreate} />
       <Resource name="variants" list={VariantList} edit={VariantEdit} create={VariantCreate} />
-
+      <Resource name="categories" list={CategoryList} edit={CategoryEdit} create={CategoryCreate}/>
+      <Resource name="users" list={UserList} edit={UserEdit} />
       {/* Other resources... */}
     </Admin>
   );

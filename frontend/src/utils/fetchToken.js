@@ -2,7 +2,7 @@
 
 export const fetchToken = async () => {
     try {
-        const response = await fetch('https://127.0.0.1:8000/api/fetch-enova-token', {
+        const response = await fetch('https://se-europe-test.pl/api/fetch-enova-token', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

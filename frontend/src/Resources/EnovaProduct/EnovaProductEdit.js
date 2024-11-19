@@ -19,6 +19,7 @@ const EnovaProductEdit = () => {
     const [product, setProduct] = useState(null);
     const [brands, setBrands] = useState([]);
     const [variants, setVariants] = useState([]);
+    const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
     const [image, setImage] = useState(null);
     const [imagePreview, setImagePreview] = useState(null);
@@ -27,19 +28,22 @@ const EnovaProductEdit = () => {
         const fetchProductData = async () => {
             try {
                 // Fetch the product details by ID
-                const response = await fetch(`https://127.0.0.1:8000/api/product_infos/${id}`);
+                const response = await fetch(`https://se-europe-test.pl/api/product_infos/${id}`);
                 const productData = await response.json();
                 setProduct(productData);
 
                 // Fetch brands and variants data
-                const [brandsResponse, variantsResponse] = await Promise.all([
-                    fetch('https://127.0.0.1:8000/api/brands'),
-                    fetch('https://127.0.0.1:8000/api/variants')
+                const [brandsResponse, variantsResponse, categoriesResponse] = await Promise.all([
+                    fetch('https://se-europe-test.pl/api/brands'),
+                    fetch('https://se-europe-test.pl/api/variants'),
+                    fetch('https://se-europe-test.pl/api/categories')
                 ]);
                 const brandsData = await brandsResponse.json();
                 const variantsData = await variantsResponse.json();
+                const categoriesData = await categoriesResponse.json();
                 setBrands(brandsData);
                 setVariants(variantsData);
+                setCategories(categoriesData);
 
                 setLoading(false);
             } catch (error) {
@@ -73,7 +77,7 @@ const EnovaProductEdit = () => {
                 const formData = new FormData();
                 formData.append('file', image); // Append the image file
 
-                const imageUploadResponse = await fetch('https://127.0.0.1:8000/api/media_objects', {
+                const imageUploadResponse = await fetch('https://se-europe-test.pl/api/media_objects', {
                     method: 'POST',
                     headers: {
                         'Accept': 'application/json',
@@ -105,7 +109,7 @@ const EnovaProductEdit = () => {
             };
 
             // Send the PUT request to update the product
-            const productUpdateResponse = await fetch(`https://127.0.0.1:8000/api/product_infos/${id}`, {
+            const productUpdateResponse = await fetch(`https://se-europe-test.pl/api/product_infos/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Accept': 'application/json',
@@ -130,7 +134,17 @@ const EnovaProductEdit = () => {
 
 
     if (loading) {
-        return <CircularProgress />;
+        return (
+            <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                height="100vh" // Or use specific height if you want it in a smaller area
+                width="100%"
+            >
+                <CircularProgress />
+            </Box>
+        );
     }
 
     return (
@@ -169,14 +183,22 @@ const EnovaProductEdit = () => {
                 </Select>
             </FormControl>
 
-            <TextField
-                fullWidth
-                margin="normal"
-                label="Category"
-                name="category"
-                value={product?.category || ''}
-                onChange={handleChange}
-            />
+            <FormControl fullWidth margin="normal">
+                <InputLabel id="category-label">Category</InputLabel>
+                <Select
+                    labelId="category-label"
+                    name="catid"
+                    value={product?.catid || ''}
+                    onChange={handleChange}
+                    label="Category"
+                >
+                    {categories.map((category) => (
+                        <MenuItem key={category.id} value={category.id}>
+                            {category.name}
+                        </MenuItem>
+                    ))}
+                </Select>
+            </FormControl>
 
             {/* Image Upload */}
             <Box marginTop={2}>
@@ -200,7 +222,7 @@ const EnovaProductEdit = () => {
                     ) : product?.imagePath ? (
                         // Display existing image if available
                         <img
-                            src={`https://127.0.0.1:8000${product.imagePath}`}
+                            src={`https://se-europe-test.pl${product.imagePath}`}
                             alt="Existing product image"
                             style={{ maxWidth: '100%', maxHeight: '200px' }}
                         />

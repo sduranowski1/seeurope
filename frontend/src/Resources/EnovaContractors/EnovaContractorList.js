@@ -32,7 +32,7 @@ const EnovaContractorList = () => {
     setLoading(true); // Set loading true at the start of the request
     try {
       // Fetch the token first
-      const response1 = await fetch('https://127.0.0.1:8000/api/fetch-enova-token', {
+      const response1 = await fetch('https://se-europe-test.pl/api/fetch-enova-token', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -51,7 +51,7 @@ const EnovaContractorList = () => {
       setToken(data1.token); // Adjust as needed based on response structure
 
       // Fetch the second set of data (products)
-      const response2 = await fetch('https://127.0.0.1:8000/api/PanelWWW_API/DajKontrahentow', {
+      const response2 = await fetch('https://se-europe-test.pl/api/PanelWWW_API/DajKontrahentow', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

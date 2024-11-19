@@ -2,6 +2,8 @@
 // src/Entity/FetchProduct.php
 namespace App\Entity\Enova;
 
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\OpenApi\Model;
@@ -72,13 +74,18 @@ use App\Entity\Enova\ProductInfo; // Import the ProductInfo entity
                     ])
                 )
             ),
-            paginationEnabled: false,
+            paginationEnabled: true,
+            paginationItemsPerPage: 10,
             description: 'Fetch products data based on parameters.',
             output: false,   // No output entity needed
             read: false,
         ),
     ]
 )]
+#[ApiFilter(SearchFilter::class, properties: [
+    'productInfo.kod' => 'partial', // Allow searching by partial matches on 'kod'
+    'productInfo.nazwa' => 'partial', // Allow searching by partial matches on 'nazwa'
+])]
 #[ORM\Entity]
 class FetchProduct
 {

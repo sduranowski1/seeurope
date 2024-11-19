@@ -15,11 +15,13 @@ import CustomTableHead from "../../Components/AdminTableHead/CustomTableHead";
 import CustomCheckbox from "../../Components/AdminCheckbox/CustomCheckbox";
 import { fetchToken } from "../../utils/fetchToken";
 import { Link, useNavigate } from "react-router-dom";
+import {TextField} from "@mui/material";
 
 const EnovaProductList = () => {
   const [products, setProducts] = useState([]);
   const [brands, setBrands] = useState([]);
   const [variants, setVariants] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -36,23 +38,26 @@ const EnovaProductList = () => {
 
   const fetchAdditionalData = async () => {
     try {
-      const [brandsResponse, variantsResponse] = await Promise.all([
-        fetch('https://127.0.0.1:8000/api/brands'),
-        fetch('https://127.0.0.1:8000/api/variants'),
+      const [brandsResponse, variantsResponse, categoriesResponse] = await Promise.all([
+        fetch('https://se-europe-test.pl/api/brands'),
+        fetch('https://se-europe-test.pl/api/variants'),
+        fetch('https://se-europe-test.pl/api/categories'),
       ]);
 
-      if (!brandsResponse.ok || !variantsResponse.ok) {
+      if (!brandsResponse.ok || !variantsResponse.ok || !categoriesResponse.ok ) {
         throw new Error('Failed to fetch additional data');
       }
 
       const brandsData = await brandsResponse.json();
       const variantsData = await variantsResponse.json();
+      const categoriesData = await categoriesResponse.json();
 
       setBrands(brandsData);
       setVariants(variantsData);
+      setCategories(categoriesData);
     } catch (error) {
-      console.error('Error fetching brands or variants:', error);
-      setError('Failed to load brands or variants');
+      console.error('Error fetching brands, categories or variants:', error);
+      setError('Failed to load brands, categories or variants');
     }
   };
 
@@ -63,7 +68,7 @@ const EnovaProductList = () => {
       const token = await fetchToken();
       setToken(token);
 
-      const response = await fetch('https://127.0.0.1:8000/api/PanelWWW_API/DajTowary', {
+      const response = await fetch('https://se-europe-test.pl/api/PanelWWW_API/DajTowary?nazwa=Koszt', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -89,10 +94,17 @@ const EnovaProductList = () => {
         const dealerDetalPrice = product.listaCen.find((price) => price.nazwa === 'Dealer Detal');
         const netto = dealerDetalPrice ? dealerDetalPrice.netto : null;
 
+        const wzrostu = product.listaCechy.find((value) => value.nazwa === '% wzrostu');
+        const procWzrostu = wzrostu ? wzrostu.wartosc : null;
+
+        const replacement = product.listaCechy.find((value) => value.nazwa === 'Części zamienne');
+        const replacementParts = replacement ? replacement.wartosc : null;
+
         const brandName = brands.find((brand) => brand.id === product.productInfo?.braid)?.name || 'N/A';
         const variantName = variants.find((variant) => variant.id === product.productInfo?.varid)?.variantname || 'N/A';
+        const categoryName = categories.find((category) => category.id === product.productInfo?.catid)?.name || 'N/A';
 
-        return { ...product, netto, brandName, variantName };
+        return { ...product, netto, procWzrostu, replacementParts,  brandName, variantName, categoryName };
       });
 
       setProducts(productsData);
@@ -102,7 +114,7 @@ const EnovaProductList = () => {
     } finally {
       setLoading(false); // Set loading to false when done
     }
-  }, [currentPage, limit, brands, variants]);
+  }, [currentPage, limit, brands, variants, categories]);
 
   useEffect(() => {
     fetchAdditionalData();
@@ -156,6 +168,11 @@ const EnovaProductList = () => {
                     </TableCell>
                     <TableCell>Id</TableCell>
                     <TableCell>Product Name</TableCell>
+                    <TableCell>Code</TableCell>
+                    <TableCell>% Increase</TableCell>
+                    <TableCell>Replacement Parts</TableCell>
+                    <TableCell>Unit</TableCell>
+                    <TableCell>Quantity</TableCell>
                     <TableCell align="right">Price (Netto)</TableCell>
                     <TableCell>Brand</TableCell>
                     <TableCell>Variant</TableCell>
@@ -178,6 +195,11 @@ const EnovaProductList = () => {
                         </TableCell>
                         <TableCell>{product.id}</TableCell>
                         <TableCell>{product.nazwa}</TableCell>
+                        <TableCell>{product.kod}</TableCell>
+                        <TableCell>{product.procWzrostu}</TableCell>
+                        <TableCell>{product.replacementParts}</TableCell>
+                        <TableCell>{product.jednostka}</TableCell>
+                        <TableCell>{product.Ilosc}</TableCell>
                         <TableCell align="right">{product.netto}</TableCell>
                         <TableCell>
                           {product.brandName !== 'N/A' ? (
@@ -197,7 +219,15 @@ const EnovaProductList = () => {
                               'N/A'
                           )}
                         </TableCell>
-                        <TableCell>{product.productInfo ? product.productInfo.catid : 'TT'}</TableCell>
+                        <TableCell>
+                          {product.categoryName !== 'N/A' ? (
+                              <Link to={`/admin/brands/${product.productInfo?.catid}`}>
+                                {product.categoryName}
+                              </Link>
+                          ) : (
+                              'N/A'
+                          )}
+                        </TableCell>
                       </TableRow>
                   ))}
                 </TableBody>
@@ -206,17 +236,46 @@ const EnovaProductList = () => {
           {error && <Box sx={{ color: 'red' }}>{error}</Box>}
         </TableContainer>
 
-        <Box display="flex" justifyContent="center" marginTop={2}>
-          <Button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1 || loading}>
+        <Box display="flex" justifyContent="center" alignItems="center" marginTop={2} gap={2}>
+          <Button
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1 || loading}
+          >
             Previous
           </Button>
-          <Box display="flex" alignItems="center" marginX={2}>
-            <span>Page {currentPage} of {totalPages}</span>
+
+          <Box display="flex" alignItems="center" gap={1}>
+            <span>Page</span>
+            <TextField
+                size="small"
+                type="number"
+                value={currentPage}
+                onChange={(e) => {
+                  const page = Math.max(1, Math.min(totalPages, Number(e.target.value))); // Ensure page is within range
+                  setCurrentPage(page);
+                }}
+                onBlur={() => handlePageChange(currentPage)} // Trigger page change on blur
+                InputProps={{
+                  inputProps: {
+                    min: 1,
+                    max: totalPages,
+                    style: { textAlign: 'center', width: '60px' }, // Inner input styles
+                  },
+                }}
+            />
+
+            <span>of {totalPages}</span>
           </Box>
-          <Button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages || loading}>
+
+          <Button
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === totalPages || loading}
+          >
             Next
           </Button>
         </Box>
+
+
       </div>
   );
 };

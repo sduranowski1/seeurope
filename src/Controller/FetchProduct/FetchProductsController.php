@@ -97,6 +97,7 @@ class FetchProductsController extends AbstractController
                     'id' => $productInfo->getId(),
                     'braid' => $productInfo->getBraid(), // Add braid
                     'catid' => $productInfo->getCatid(), // Add catid
+                    'scatid' => $productInfo->getScatid(), // Add catid
                     'varid' => $productInfo->getVarid(), // Add catid
 
                     // Add any other fields from the productInfo entity that you need

@@ -31,6 +31,9 @@ class ProductInfo
     #[ORM\Column(type: "integer", options: ["default" => 0])]
     private int $catid;
 
+    #[ORM\Column(type: "integer", options: ["default" => 0])]
+    private int $scatid;
+
     #[ORM\ManyToOne(targetEntity: MediaObject::class)]
     #[ORM\JoinColumn(nullable: true)]
     #[ApiProperty(types: ['https://schema.org/image'])]
@@ -94,6 +97,16 @@ class ProductInfo
     {
         $this->varid = $varid;
         return $this;
+    }
+
+    public function getScatid(): int
+    {
+        return $this->scatid;
+    }
+
+    public function setScatid(int $scatid): void
+    {
+        $this->scatid = $scatid;
     }
 
     public function getCatid(): int

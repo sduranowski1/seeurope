@@ -22,6 +22,7 @@ const EnovaProductList = () => {
   const [brands, setBrands] = useState([]);
   const [variants, setVariants] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [subcategories, setSubcategories] = useState([]);
   const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -38,10 +39,11 @@ const EnovaProductList = () => {
 
   const fetchAdditionalData = async () => {
     try {
-      const [brandsResponse, variantsResponse, categoriesResponse] = await Promise.all([
+      const [brandsResponse, variantsResponse, categoriesResponse, subcategoriesResponse] = await Promise.all([
         fetch('https://se-europe-test.pl/api/brands'),
         fetch('https://se-europe-test.pl/api/variants'),
         fetch('https://se-europe-test.pl/api/categories'),
+        fetch('https://se-europe-test.pl/api/subcategories'),
       ]);
 
       if (!brandsResponse.ok || !variantsResponse.ok || !categoriesResponse.ok ) {
@@ -51,10 +53,12 @@ const EnovaProductList = () => {
       const brandsData = await brandsResponse.json();
       const variantsData = await variantsResponse.json();
       const categoriesData = await categoriesResponse.json();
+      const subcategoriesData = await subcategoriesResponse.json();
 
       setBrands(brandsData);
       setVariants(variantsData);
       setCategories(categoriesData);
+      setSubcategories(subcategoriesData);
     } catch (error) {
       console.error('Error fetching brands, categories or variants:', error);
       setError('Failed to load brands, categories or variants');
@@ -103,6 +107,7 @@ const EnovaProductList = () => {
         const brandName = brands.find((brand) => brand.id === product.productInfo?.braid)?.name || 'N/A';
         const variantName = variants.find((variant) => variant.id === product.productInfo?.varid)?.variantname || 'N/A';
         const categoryName = categories.find((category) => category.id === product.productInfo?.catid)?.name || 'N/A';
+        const subcategoryName = subcategories.find((subcategory) => subcategory.id === product.productInfo?.scatid)?.subCatName || 'N/A';
 
         return { ...product, netto, procWzrostu, replacementParts,  brandName, variantName, categoryName };
       });
@@ -114,7 +119,7 @@ const EnovaProductList = () => {
     } finally {
       setLoading(false); // Set loading to false when done
     }
-  }, [currentPage, limit, brands, variants, categories]);
+  }, [currentPage, limit, brands, variants, categories, subcategories]);
 
   useEffect(() => {
     fetchAdditionalData();
@@ -177,6 +182,7 @@ const EnovaProductList = () => {
                     <TableCell>Brand</TableCell>
                     <TableCell>Variant</TableCell>
                     <TableCell>Category</TableCell>
+                    <TableCell>Subcategory</TableCell>
                   </TableRow>
                 </CustomTableHead>
                 <TableBody>
@@ -223,6 +229,15 @@ const EnovaProductList = () => {
                           {product.categoryName !== 'N/A' ? (
                               <Link to={`/admin/brands/${product.productInfo?.catid}`}>
                                 {product.categoryName}
+                              </Link>
+                          ) : (
+                              'N/A'
+                          )}
+                        </TableCell>
+                        <TableCell>
+                          {product.subcategoryName !== 'N/A' ? (
+                              <Link to={`/admin/brands/${product.productInfo?.scatid}`}>
+                                {product.subcategoryName}
                               </Link>
                           ) : (
                               'N/A'

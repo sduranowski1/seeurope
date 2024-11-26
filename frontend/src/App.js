@@ -65,6 +65,8 @@ import BlankPage from "./Pages/Admin/EnovaProducts/BlankPage";
 import CategoryList from "./Resources/Category/CategoryList";
 import CategoryEdit from "./Resources/Category/CategoryEdit";
 import CategoryCreate from "./Resources/Category/CategoryCreate";
+import SubcategoryList from "./Resources/Subcategory/SubcategoryList";
+import SubcategoryEdit from "./Resources/Subcategory/SubcategoryEdit";
 // import BrandEdit from "./Resources/Product/BrandEdit";
 // import {SidebarComponent} from "./Components/SidebarComponent/SidebarComponent";
 // import {FooterComponent} from "./Components/FooterComponent/FooterComponent";
@@ -181,6 +183,7 @@ const AdminLayout = () => {
       <Resource name="brands" list={BrandList} edit={BrandEdit} create={BrandCreate} />
       <Resource name="variants" list={VariantList} edit={VariantEdit} create={VariantCreate} />
       <Resource name="categories" list={CategoryList} edit={CategoryEdit} create={CategoryCreate}/>
+      <Resource name="subcategories" list={SubcategoryList}  edit={SubcategoryEdit}/>
       <Resource name="users" list={UserList} edit={UserEdit} />
       {/* Other resources... */}
     </Admin>

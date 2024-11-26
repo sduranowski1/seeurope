@@ -1,4 +1,4 @@
-@import '../../Styles/Abstracts/_variables';
+@import '../../styles/abstracts/variables';
 
 .form {
   .field-container {
@@ -48,4 +48,13 @@ label {
 .message-input {
   height: 200px;
   width: 100%;
+}
+
+.informational {
+  padding: 15px;
+  background: rgba(170, 170, 170, .2);
+
+  .fa-circle-info {
+    margin-right: 12px;
+  }
 }

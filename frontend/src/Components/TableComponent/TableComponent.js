@@ -36,8 +36,8 @@ export const TableComponent = (props) => {
                     <TableRow>
                         <div className={'btn-container'} />
                         <div className={'favourite-container'} />
-                        {Object.keys(props.data[0]).map(tableCell => {
-                            return (<TableCell >{tableCell}</TableCell>);
+                        {Object.keys(props.data[0]).map((tableCell,key) => {
+                            return (<TableCell key={key} >{tableCell[0].toUpperCase() + tableCell.substring(1)}</TableCell>);
                         })}
                     </TableRow>
                 </TableHead>
@@ -46,16 +46,16 @@ export const TableComponent = (props) => {
                         return product.weight >= props.displayedItems[0] & product.weight <= props.displayedItems[1]
                     }).filter(product => isChecked(product)).map(product => {
                         const fields = Object.values(product);
-                
+
                         return (
                             <TableRow
                                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                             ><button className='buy-btn btn-container'>BUY</button>
-                            <FontAwesomeIcon icon={faHeart} className={'like favourite-container'} onClick={onToggleFav} />
+                                <FontAwesomeIcon icon={faHeart} className={'like favourite-container'} onClick={onToggleFav} />
                                 {fields.map((field, index) => {
                                     return index === 0 ? <TableCell><Link to={`../${field}`}>{field}</Link></TableCell> : <TableCell>{field}</TableCell>;
                                 })}
-                                 {/* {fields.map(field => console.log(Object.entries(field)))} */}
+                                {/* {fields.map(field => console.log(Object.entries(field)))} */}
                             </TableRow>
                         )
                     })}

@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import './Register.scss';
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faCircleInfo} from "@fortawesome/free-solid-svg-icons";
 
 export const Register = () => {
     const [formData, setFormData] = useState({
@@ -26,7 +28,7 @@ export const Register = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-                // Convert phone_number to an integer
+        // Convert phone_number to an integer
         const phoneNumber = parseInt(formData.phone_number, 10);
         if (isNaN(phoneNumber)) {
             setErrors({ phone_number: 'Numer telefonu musi być liczbą.' });
@@ -36,9 +38,9 @@ export const Register = () => {
         const user = {
             firstname: formData.firstname,
             surname: formData.surname,
+            zip_code: formData.postal_code,
             company: formData.company,
             address: formData.address,
-            zip_code: formData.postal_code,
             country: formData.country,
             email: formData.email,
             phone: phoneNumber,
@@ -78,64 +80,87 @@ export const Register = () => {
             <section className={'section-contrains tables-page'}>
                 <div className={'heading-container left-orientation'}>
                     <h1 className={'page-title'}>WNIOSEK O REJESTRACJĘ</h1>
-                    <br />
+                    <br/>
                     <h2 className={'section-subtitle section-subtitle--secondary-color'}>WNIOSEK O REJESTRACJĘ</h2>
-                    <br />
+                    <br/>
                     <p className={'paragraph paragraph--medium'}>
                         Użyj poniższego formularza, który zawiera poniższe informacje.
                         Po otrzymaniu Twojego zapytania odpowiemy na podany adres e-mail, czy spełniasz kryterium.
                     </p>
-                    <br />
+                    <br/>
                     <p className={'paragraph paragraph--medium'}>
                         Dziękujemy za Twoją aplikacje!
+                    </p>
+                    <br/>
+                    <p className={'informational'}>
+                        <FontAwesomeIcon icon={faCircleInfo}/>
+                        Pola oznaczone * są obowiązkowe.
                     </p>
 
                     <form className={'form'} onSubmit={handleSubmit}>
                         <div className={'field-container'}>
                             <label htmlFor={'firstname'}>Imię*:</label>
-                            <input required={true} type="text" id={'firstname'} className={"textBox"} placeholder={'Wpisz imię'} value={formData.firstname} onChange={handleChange} />
+                            <input required={true} type="text" id={'firstname'} className={"textBox"}
+                                   placeholder={'Wpisz imię'} value={formData.firstname} onChange={handleChange}/>
                         </div>
                         <div className={'field-container'}>
                             <label htmlFor={'surname'}>Nazwisko*:</label>
-                            <input required={true} type="text" id={'surname'} className={"textBox"} placeholder={'Wpisz nazwisko'} value={formData.surname} onChange={handleChange} />
+                            <input required={true} type="text" id={'surname'} className={"textBox"}
+                                   placeholder={'Wpisz nazwisko'} value={formData.surname} onChange={handleChange}/>
                         </div>
                         <div className={'field-container'}>
                             <label htmlFor={'company'}>Firma:</label>
-                            <input type="text" id={'company'} className={"textBox"} placeholder={'Wpisz firmę'} value={formData.company} onChange={handleChange} />
+                            <input type="text" id={'company'} className={"textBox"} placeholder={'Wpisz firmę'}
+                                   value={formData.company} onChange={handleChange}/>
                         </div>
                         <div className={'field-container'}>
                             <label htmlFor={'address'}>Adres:</label>
-                            <input type="text" id={'address'} className={"textBox"} placeholder={'Wpisz adres'} value={formData.address} onChange={handleChange} />
+                            <input type="text" id={'address'} className={"textBox"} placeholder={'Wpisz adres'}
+                                   value={formData.address} onChange={handleChange}/>
                         </div>
                         <div className={'field-container'}>
                             <label htmlFor={'postal_code'}>Kod pocztowy:</label>
-                            <input type="text" id={'postal_code'} placeholder={'Wpisz kod pocztowy'} className={"textBox"} value={formData.postal_code} onChange={handleChange} />
+                            <input type="text" id={'postal_code'} placeholder={'Wpisz kod pocztowy'}
+                                   className={"textBox"} value={formData.postal_code} onChange={handleChange}/>
                         </div>
                         <div className={'field-container'}>
                             <label htmlFor={'country'}>Kraj:</label>
-                            <input type="text" id={'country'} className={"textBox"} placeholder={'Wpisz kraj'} value={formData.country} onChange={handleChange} />
+                            <input type="text" id={'country'} className={"textBox"} placeholder={'Wpisz kraj'}
+                                   value={formData.country} onChange={handleChange}/>
                         </div>
                         <div className={'field-container'}>
                             <label htmlFor={'email'}>Email*:</label>
-                            <input required={true} type="email" id={'email'} className={"textBox"} placeholder={'Wpisz email'} value={formData.email} onChange={handleChange} />
+                            <input required={true} type="email" id={'email'} className={"textBox"}
+                                   placeholder={'Wpisz email'} value={formData.email} onChange={handleChange}/>
                         </div>
                         <div className={'field-container'}>
                             <label htmlFor={'phone_number'}>Numer telefonu*:</label>
-                            <input required={true} type="number" id={'phone_number'} className={"textBox"} placeholder={'Wpisz numer telefonu'} value={formData.phone_number} onChange={handleChange} />
+                            <input required={true} type="number" id={'phone_number'} className={"textBox"}
+                                   placeholder={'Wpisz numer telefonu'} value={formData.phone_number}
+                                   onChange={handleChange}/>
                         </div>
                         <div className={'field-container'}>
                             <label htmlFor={'machine_type'}>Typ maszyny:</label>
-                            <input type="text" id={'machine_type'} className={"textBox"} placeholder={'Wpisz typ maszyny'} value={formData.machine_type} onChange={handleChange} />
+                            <input type="text" id={'machine_type'} className={"textBox"}
+                                   placeholder={'Wpisz typ maszyny'} value={formData.machine_type}
+                                   onChange={handleChange}/>
                         </div>
                         <div className={'field-container'}>
                             <label htmlFor={'products'}>Zainteresowanie produktami:</label>
-                            <input type="text" id={'products'} className={"textBox"} placeholder={'Wpisz, jakimi produktami się interesujesz'} value={formData.products} onChange={handleChange} />
+                            <input type="text" id={'products'} className={"textBox"}
+                                   placeholder={'Wpisz, jakimi produktami się interesujesz'} value={formData.products}
+                                   onChange={handleChange}/>
                         </div>
                         <div className={'field-container'}>
                             <label htmlFor={'message'}>Wiadomość*:</label>
-                            <textarea required={true} placeholder={'Wpisz wiadomość'} id={'message'} className={'message-input'} value={formData.message} onChange={handleChange}></textarea>
+                            <textarea required={true} placeholder={'Wpisz wiadomość'} id={'message'}
+                                      className={'message-input'} value={formData.message}
+                                      onChange={handleChange}></textarea>
                         </div>
-                        <input type="submit" />
+                        <div className='buttons-container'>
+                            <button className='button' type="submit">Wyślij</button>
+                            <button className='button button--red'>Reset</button>
+                        </div>
                     </form>
 
                     {errors && <div className="error-messages">

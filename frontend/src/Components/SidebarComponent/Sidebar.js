@@ -80,29 +80,29 @@ const Sidebar = ({ setToken }) => {
                 <div className="aside__line">
                   <FontAwesomeIcon className="sidebar-icon" icon={faUser}/>
                   {/*<p><Link to="/dashboard">Panel użytkownika</Link></p>*/}
-                                             <Link to="/logout">{t("logout")}</Link>
-                    </div>
-                    {/*<div className="aside__line">*/}
-                    {/* <p>*/}
-                    {/*   <Link to="/logout">{t("logout")}</Link>*/}
-                    {/* </p>*/}
-                    {/*</div>*/}
-                  </div>
+                  <Link to="/logout">{t("logout")}</Link>
+                </div>
+                {/*<div className="aside__line">*/}
+                {/* <p>*/}
+                {/*   <Link to="/logout">{t("logout")}</Link>*/}
+                {/* </p>*/}
+                {/*</div>*/}
+              </div>
               // <div className="aside__line-container">
               //   <div className="aside__line">
               //     <FontAwesomeIcon className="sidebar-icon" icon={faUser}/>
               //     <p><Link to="/logout">Logout</Link></p>
               //   </div>
               // </div>
-            ) : (
-            <div className="aside__line-container" onClick={toggleLoginForm}>
-          <div className="aside__line">
-            <FontAwesomeIcon className="sidebar-icon" icon={faUser}/>
-            <p>{t('logging_in')}</p>
-          </div>
-        </div>
-        )}
-        <div className="aside__line-container aside__line-container--column">
+          ) : (
+              <div className="aside__line-container" onClick={toggleLoginForm}>
+                <div className="aside__line">
+                  <FontAwesomeIcon className="sidebar-icon" icon={faUser}/>
+                  <p>{t('logging_in')}</p>
+                </div>
+              </div>
+          )}
+          <div className="aside__line-container aside__line-container--column">
             <Accordion className="aside__line aside__line--accordion">
               <AccordionSummary expandIcon={<FontAwesomeIcon className="angle-up" icon={faAngleUp}/>}
                                 aria-controls="panel1-content" id="panel1-header">
@@ -188,60 +188,64 @@ const Sidebar = ({ setToken }) => {
           <div className="aside__line-container aside__line-container--column">
             <Link className="aside__line" to="/">Start</Link>
             {token ? (            <Link className="aside__line" to="/dashboard">{t('dashboard')}</Link>
-) : (<Link className="aside__line" to="/register">{t('contact_us')}</Link>)}
+            ) : (<Link className="aside__line" to="/register">{t('contact_us')}</Link>)}
 
           </div>
         </div>
         {showLoginForm && (
-        <div className="aside__subcontainer">
-          <div className="aside__line-container">
-            <div className="aside__line aside__line--no-bg">
-              <h2 className="section-subtitle">{t('login')}</h2>
-              <FontAwesomeIcon className="btn btn--close" icon={faCircleXmark} onClick={toggleLoginForm} />
-            </div>
-          </div>
+            <div className="aside__subcontainer"  style={{background: "white", height: "100%"}}>
+              <div className="aside__line-container">
+                <div className="aside__line aside__line--no-bg">
+                  <h2 className="section-subtitle">{t('login')}</h2>
+                  <FontAwesomeIcon className="btn btn--close" icon={faCircleXmark} onClick={toggleLoginForm} />
+                </div>
+              </div>
 
-          {/* Uncomment if needed
+              {/* Uncomment if needed
           <button className="button button--toggle-login" onClick={toggleLoginForm}>
             {showLoginForm ? t('hide_form') : t('show_form')}
           </button>
           */}
 
-          <form className="form" onSubmit={handleSubmit}>
-            <div className="aside__line-container login-pop-up">
-              <div className="aside__line">
-                <div>
-                  <FontAwesomeIcon className="sidebar-icon" icon={faUser} />
-                  <label htmlFor="login">{t('login_label')}</label>
+              <form className="form" onSubmit={handleSubmit}
+              >
+                <div className="aside__line-container login-pop-up"    style={{borderTop: "1px solid rgba(170, 170, 170, 0.35)",
+                  marginInline: "25px"}}>
+                  <div className="aside__line">
+                    <div>
+                      {/*<FontAwesomeIcon className="sidebar-icon" icon={faUser} />*/}
+                      <label htmlFor="login">{t('login_label')}</label>
+                    </div>
+                    <input
+                        type="email"
+                        id="login"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder={t('enter_login')}
+                        style={{width: "100%", padding: "5px"}}
+                    />
+                  </div>
+                  <div className="aside__line">
+                    <div>
+                      {/*<FontAwesomeIcon className="sidebar-icon" icon={faLock} />*/}
+                      <label htmlFor="password">{t('password_label')}</label>
+                    </div>
+                    <input
+                        type="password"
+                        id="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder={t('enter_password')}
+                        style={{width: "100%", padding: "5px"}}
+                    />
+                  </div>
+                  <button className="button button--login" type="submit">
+                    {t('login_button')}
+                  </button>
                 </div>
-                <input
-                  type="email"
-                  id="login"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder={t('enter_login')}
-                />
-              </div>
-              <div className="aside__line">
-                <div>
-                  <FontAwesomeIcon className="sidebar-icon" icon={faLock} />
-                  <label htmlFor="password">{t('password_label')}</label>
-                </div>
-                <input
-                  type="password"
-                  id="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder={t('enter_password')}
-                />
-              </div>
-              <button className="button button--login" type="submit">
-                {t('login_button')}
-              </button>
+              </form>
             </div>
-          </form>
-        </div>
-      )}
+        )}
 
       </aside>
   );

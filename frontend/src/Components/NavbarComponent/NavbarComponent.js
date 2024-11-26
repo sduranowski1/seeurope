@@ -19,18 +19,21 @@ import {ThisIsSe} from "../../Pages/ThisIsSe/ThisIsSe";
 import {Sustainability} from "../../Pages/Sustainability/Sustainability";
 import {FindReseller} from "../../Pages/FindReseller/FindReseller";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
-import { faAngleUp } from '@fortawesome/free-solid-svg-icons';
+import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
+import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
+import { faEnvelope } from '@fortawesome/free-regular-svg-icons';
+import { faAngleUp, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { faFacebook } from '@fortawesome/free-brands-svg-icons';
 import { faYoutube } from '@fortawesome/free-brands-svg-icons';
 import { faInstagram } from '@fortawesome/free-brands-svg-icons';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
 import {useTranslation} from "react-i18next";
 import {useTranslationContext} from "../../TranslationContext";
 import dataProvider from "../../dataProvider";
 import {useProducts} from "../../ProductProvider";
 
-export const NavbarComponent = () => {
+export const NavbarComponent = (props) => {
     const [toggleSidebar, setToggleSidebar] = useContext(Context);
 
     let lastScrollTop = 0;
@@ -117,7 +120,7 @@ export const NavbarComponent = () => {
                 <li key={brand.id} className={`nav__submenu-item ${hasSubItems ? 'nav__submenu-item--list' : ''}`}>
                     <Link to={`/moje-zlacze/${brand.name}`} element={<ThreePoint />}>
                         {brand.name}
-                        {hasSubItems && <FontAwesomeIcon icon={faAngleUp} className={'angle-up'} />}
+                        {hasSubItems && <FontAwesomeIcon icon={faAngleDown} className={'angle-up'} />}
                     </Link>
                     {hasSubItems && <ul>{variantItems}</ul>}
                 </li>
@@ -131,7 +134,8 @@ export const NavbarComponent = () => {
     return (
         <nav className={'nav '} dataProvider={dataProvider}>
             <div className={'nav-bar__content visible'}>
-                <div className={'nav--top section-contrains'}>
+                {/*<div className={'nav--top section-contrains'}>*/}
+                <div className={'nav--top'}>
                     <Link to={'/'} element={<HomePage />}>
                         <picture className={'se-logo'}>
                             <img src={seLogo} alt={'SE Europe logo'} />
@@ -153,15 +157,15 @@ export const NavbarComponent = () => {
                                   target="_blank">
                                 <FontAwesomeIcon icon={faFacebook}/>
                             </Link>
-                            <Link className={'icon'} to={'https://www.instagram.com/se_equipment_poland/'}
+                            <Link className={'icon icon--container'} to={'https://www.instagram.com/se_equipment_poland/'}
                                   target="_blank">
                                 <FontAwesomeIcon icon={faInstagram}/>
                             </Link>
-                            <Link className={'icon'} to={'https://www.youtube.com/channel/UCyHY8EgVJ5y3sGhjkQuLAvQ'}
+                            <Link className={'icon icon--container'} to={'https://www.youtube.com/channel/UCyHY8EgVJ5y3sGhjkQuLAvQ'}
                                   target="_blank">
                                 <FontAwesomeIcon icon={faYoutube}/>
                             </Link>
-                            <Link className={'icon'} to={'mailto:office-pl@se-europe.com'} target="_blank">
+                            <Link className={'icon icon--container'} to={'mailto:office-pl@se-europe.com'} target="_blank">
                                 <FontAwesomeIcon icon={faEnvelope}/>
                             </Link>
                         </div>
@@ -178,8 +182,7 @@ export const NavbarComponent = () => {
                         <li className="nav__menu-item">
                             <a className={'link-container'}>
                                 {t('my_coupling')}
-                                <FontAwesomeIcon icon={faAngleUp} className={'angle-up'}/>
-                            </a>
+                                <FontAwesomeIcon icon={faAngleDown} className={'angle-up angle-up--main'}/> </a>
                             {/*<ul className="nav__submenu">*/}
                             {/*    <li className="nav__submenu-item ">*/}
                             {/*        <Link to={'/moje-zlacze/3-punkt'} element={<ThreePoint/>}>3 punkt</Link>*/}
@@ -201,24 +204,35 @@ export const NavbarComponent = () => {
                             {/*    </li>*/}
                             {/*</ul>*/}
                             <ul className="nav__submenu">
-                                {/*<li className="nav__submenu-item">*/}
-                                {/*    <Link to={'/moje-zlacze/3-punkt'} element={<ThreePoint/>}>3 punkt</Link>*/}
-                                {/*</li>*/}
+                                {/*{props.products.map((el,key) => Array.isArray(el) ?*/}
+
+
+                                {/*            <li key={key} className="nav__submenu-item nav__submenu-item--list">*/}
+                                {/*                <Link to={`/moje-zlacze/${el[0].couplings[0]}`} element={<ThreePoint />}>*/}
+                                {/*                    {el[0].couplings[1]}*/}
+                                {/*                    <FontAwesomeIcon icon={faAngleDown} className={'angle-up'} />*/}
+                                {/*                </Link>*/}
+                                {/*                <ul>*/}
+                                {/*                    {el.map((elem,key) => <li key={key}><Link to={`/moje-zlacze/${elem.url}`}> {elem.name}</Link></li>)}*/}
+                                {/*                </ul>*/}
+                                {/*            </li>*/}
+
+
+                                {/*    :*/}
+
+                                {/*        <li key={key} className="nav__submenu-item ">*/}
+                                {/*            <Link to={`/moje-zlacze/${el.url}`}>{el.name}</Link>*/}
+                                {/*        </li>*/}
+
+                                {/*)}*/}
                                 {renderBrandMenuItems()}
-                                {/*    <Link to={'/moje-zlacze/avant'} element={<ThreePoint/>}>*/}
-                                {/*        Avant*/}
-                                {/*        <FontAwesomeIcon icon={faAngleUp} className={'angle-up'}/>*/}
-                                {/*    </Link>*/}
-                                {/*    <ul>*/}
-                                {/*        {renderMenuItems('Avant')}*/}
-                                {/*    </ul>*/}
-                                {/*</li>*/}
+
                             </ul>
                         </li>
                         <li className="nav__menu-item">
                             <a className={'link-container'}>
                                 {t('my_machine')}
-                                <FontAwesomeIcon icon={faAngleUp} className={'angle-up'}/>
+                                <FontAwesomeIcon icon={faAngleDown} className={'angle-up angle-up--main'}/>
                             </a>
                             <ul className="nav__submenu">
                                 <li className="nav__submenu-item">
@@ -248,7 +262,7 @@ export const NavbarComponent = () => {
                         <li className="nav__menu-item">
                             <a className={'link-container'}>
                                 {t('about_us')}
-                                <FontAwesomeIcon icon={faAngleUp} className={'angle-up'}/>
+                                <FontAwesomeIcon icon={faAngleDown} className={'angle-up angle-up--main'}/>
                             </a>
                             <ul className="nav__submenu">
                                 <li className="nav__submenu-item">
@@ -266,6 +280,14 @@ export const NavbarComponent = () => {
                                           element={<FindReseller/>}>{t('find_reseller')}</Link>
                                 </li>
                             </ul>
+                        </li>
+                        <li className={'icon-item'}>
+                            <FontAwesomeIcon className={'sidebar-icon'} icon={faUser}
+                                             onClick={() => setToggleSidebar({sidebar: true})}/>
+                        </li>
+                        <li className={'icon-item'}>
+                            <FontAwesomeIcon className={'sidebar-icon'} icon={faCartShopping}
+                                             onClick={() => setToggleSidebar({cartSidebar: true})}/>
                         </li>
                     </ul>
                 </div>

@@ -1,4 +1,4 @@
-@import '../../Styles/Abstracts/_variables';
+@import '../../styles/abstracts/variables';
 
 aside {
   display: flex;
@@ -12,18 +12,29 @@ aside {
   max-width: 350px;
   width: 100%;
   box-sizing: border-box;
+  overflow: hidden;
   // box-shadow: 0 0 20px 20px rgba(0,0,0,.3);
   //padding: 30px 20px;
   @media (max-width: $medium) {
     max-width: 100%;
   }
 
+  label {
+    font-size: 13px;
+  }
+
   .aside__subcontainer {
     width: 350px;
     position: absolute;
-      background-color: white;
-  z-index: 10;
-    height: 100%;
+    transition: .3s all;
+
+    &:first-of-type {
+      transform: translateX(0%);
+
+      &.aside__subcontainer--hidden {
+        transform: translateX(-100%);
+      }
+    }
 
     &--hidden {
       transform: translateX(100%);
@@ -36,13 +47,29 @@ aside {
   }
 
   .btn--close {
-    color: #1d6cc1;
+    color: black;
     transition: .2s all;
-    font-size: 24px;
+    font-size: 15px;
 
     &:hover {
-      color: black;
+      color: rgba(170, 170, 170, 0.75) !important;
     }
+  }
+
+  h2 {
+    color: black !important;
+  }
+
+  .sidebar-title {
+    font-size: 20px;
+  }
+
+  a, p {
+    font-size: 14px;
+  }
+
+  .sidebar-icon + p {
+    margin-left: 5px;
   }
 
   .aside {
@@ -51,9 +78,9 @@ aside {
       width: 100%;
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      // justify-content: space-between;
       box-sizing: border-box;
-      padding: 7px 20px;
+      padding: 7px 0;
 
       &:hover {
         * {
@@ -62,7 +89,7 @@ aside {
       }
 
       a:hover {
-        color: #1d6cc1 !important;
+        color: rgba(170,170,170,.75) !important;
       }
 
       &__line {
@@ -84,7 +111,7 @@ aside {
       }
 
       &:hover {
-        color: #1d6cc1;
+        color: rgba(170, 170, 170, 0.75) !important;
 
         // .aside__line--accordion {
         //   background-color: black !important;
@@ -119,7 +146,7 @@ aside {
 
         &:hover {
           .angle-up {
-            color: white;
+            color: rgba(170, 170, 170, 0.75) !important;
           }
         }
 
@@ -129,13 +156,13 @@ aside {
 
         &:hover {
           a {
-            color: white;
+            //color: white;
           }
         }
       }
 
       &:not(.aside__line--no-bg):hover {
-        background-color: #aaaaaa;
+        // background-color: #aaaaaa;
         //color: white;
       }
     }
@@ -165,7 +192,7 @@ aside {
 
         .btn {
           position: absolute;
-          right: 20px;
+          left: 20px;
         }
       }
 
@@ -184,7 +211,14 @@ aside {
 
       &:not(:first-of-type) {
         border-top: 1px solid rgba(170,170,170,.35);
+        margin-inline: 25px;
       }
+    }
+  }
+
+  .MuiPaper-root {
+    &::before {
+      content: none;
     }
   }
 
@@ -196,8 +230,13 @@ aside {
     .aside__line {
       flex-direction: column;
 
+      div {
+        width: 100%;
+      }
+
       input {
-        margin-top: 5px;
+        border-radius: 3px;
+        border-color: rgba(170, 170, 170, .35);
       }
 
       &:hover {
@@ -209,6 +248,10 @@ aside {
 
     .button--login {
       margin-top: 25px;
+      width: 100%;
+      border-radius: 0;
+      height: 36px;
+      padding: 0;
     }
   }
 
@@ -219,55 +262,9 @@ aside {
   }
 
   .sidebar-icon {
-    height: 20px;
-    width: 20px;
+    height: 12px;
+    width: 12px;
   }
-}
-
-/* src/Sidebar.css */
-
-.sidebar {
-  height: 100%;
-  width: 250px;
-  position: fixed;
-  top: 0;
-  right: 0;
-  background-color: #111;
-  padding-top: 20px;
-  transition: 0.3s;
-}
-
-.sidebar h2 {
-  color: white;
-  text-align: center;
-}
-
-.sidebar ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-.sidebar ul li {
-  padding: 15px;
-  text-align: center;
-}
-
-.sidebar ul li a {
-  color: white;
-  text-decoration: none;
-  display: block;
-}
-
-.sidebar ul li a:hover {
-  background-color: #575757;
-}
-
-.aside-container {
-  /* your existing styles */
-}
-
-.aside-container--hidden {
-  display: none;
 }
 
 .login-pop-up {
@@ -281,6 +278,10 @@ aside {
 }
 
 .sidebar {
-    z-index: 10000;
+  z-index: 10000;
+
+}
+
+.side-login{
 
 }

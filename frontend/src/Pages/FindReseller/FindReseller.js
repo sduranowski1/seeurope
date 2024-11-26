@@ -1,4 +1,6 @@
 import './FindReseller.scss';
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faCircleInfo} from "@fortawesome/free-solid-svg-icons";
 
 export const FindReseller = () => {
     return (
@@ -6,23 +8,32 @@ export const FindReseller = () => {
             <section className={'section-contrains tables-page'}>
                 <div className={'heading-container left-orientation'}>
                     <h1 className={'page-title'}>ZNAJDŹ RESELLERA</h1>
-                    <br />
+                    <br/>
                     <h2 className={'section-subtitle section-subtitle--secondary-color'}>ZNAJDŹ RESELLERA</h2>
-                    <br />
+                    <br/>
                     <p className={'paragraph paragraph--medium'}>
-                        Użyj poniższego formularza lub wyślij e-mail na adres post@se-europe.com, który zawiera poniższe informacje.
-                        Po otrzymaniu Twojego zapytania odpowiemy na podany adres e-mail, przesyłając dane kontaktowe dealera.
+                        Użyj poniższego formularza lub wyślij e-mail na adres post@se-europe.com, który zawiera poniższe
+                        informacje.
+                        Po otrzymaniu Twojego zapytania odpowiemy na podany adres e-mail, przesyłając dane kontaktowe
+                        dealera.
                     </p>
-                    <br />
+                    <br/>
                     <p className={'paragraph paragraph--medium'}>
                         Dziękujemy za Twoje zapytanie!
+                    </p>
+                    <br/>
+
+                    <p className={'informational'}>
+                        <FontAwesomeIcon icon={faCircleInfo}/>
+                        Pola oznaczone * są obowiązkowe.
                     </p>
 
 
                     <form className={'form'}>
                         <div className={'field-container'}>
                             <label htmlFor={'first_name'}>Imię*:</label>
-                            <input required={true} type="text" id={'first_name'} className={"textBox"} placeholder={'Wpisz imię'}/>
+                            <input required={true} type="text" id={'first_name'} className={"textBox"}
+                                   placeholder={'Wpisz imię'}/>
                         </div>
                         <div className={'field-container'}>
                             <label htmlFor={'last_name'}>Nazwisko*:</label>
@@ -38,7 +49,8 @@ export const FindReseller = () => {
                         </div>
                         <div className={'field-container'}>
                             <label htmlFor={'postal_code'}>Kod pocztowy:</label>
-                            <input type="text" id={'postal_code'} className={"textBox"}  placeholder={'Wpisz kod pocztowy'}/>
+                            <input type="text" id={'postal_code'} className={"textBox"}
+                                   placeholder={'Wpisz kod pocztowy'}/>
                         </div>
                         <div className={'field-container'}>
                             <label htmlFor={'country'}>Kraj:</label>
@@ -46,25 +58,33 @@ export const FindReseller = () => {
                         </div>
                         <div className={'field-container'}>
                             <label htmlFor={'email'}>Email*:</label>
-                            <input required={true} type="text" id={'email'} className={"textBox"} placeholder={'Wpisz email'}/>
+                            <input required={true} type="text" id={'email'} className={"textBox"}
+                                   placeholder={'Wpisz email'}/>
                         </div>
                         <div className={'field-container'}>
                             <label htmlFor={'phone_number'}>Numer telefonu*:</label>
-                            <input required={true} type="number" id={'phone_number'} className={"textBox"} placeholder={'Wpisz numer telefonu'}/>
+                            <input required={true} type="number" id={'phone_number'} className={"textBox"}
+                                   placeholder={'Wpisz numer telefonu'}/>
                         </div>
                         <div className={'field-container'}>
                             <label htmlFor={'machine_type'}>Typ maszyny:</label>
-                            <input type="text" id={'machine_type'} className={"textBox"} placeholder={'Wpisz typ maszyny'}/>
+                            <input type="text" id={'machine_type'} className={"textBox"}
+                                   placeholder={'Wpisz typ maszyny'}/>
                         </div>
                         <div className={'field-container'}>
                             <label htmlFor={'products'}>Zainteresowanie produktami:</label>
-                            <input type="text" id={'products'} className={"textBox"} placeholder={'Wpisz, jakimi produktami się interesujesz'}/>
+                            <input type="text" id={'products'} className={"textBox"}
+                                   placeholder={'Wpisz, jakimi produktami się interesujesz'}/>
                         </div>
                         <div className={'field-container'}>
                             <label htmlFor={'message'}>Wiadomość*:</label>
-                            <textarea required={true} placeholder={'Wpisz wiadomość'} id={'message'} className={"textBox"} className={'message-input'}/>
+                            <textarea required={true} placeholder={'Wpisz wiadomość'} id={'message'}
+                                      className={"textBox"} className={'message-input'}/>
                         </div>
-                        <input type="submit" className={"MuiButtonBase-root"}/>
+                        <div className='buttons-container'>
+                            <button className='button' type="submit">Wyślij</button>
+                            <button className='button button--red'>Reset</button>
+                        </div>
                     </form>
                 </div>
             </section>

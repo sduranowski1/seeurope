@@ -1,0 +1,34 @@
+.amount-btn-group {
+  display: flex;
+  align-items: center;
+}
+
+.btn-amount:hover {
+  color: rgba(170,170,170,.75);
+}
+
+div.buy-btn.btn-container {
+  border: none !important;
+  padding:  0 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    background: #1d6cc1 !important;
+  }
+}
+
+.amount-btn-group {
+  p.buy-btn.btn-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+tbody {
+  th, td {
+    padding: 1px 0 0;
+  }
+}

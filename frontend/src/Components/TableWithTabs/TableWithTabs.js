@@ -29,7 +29,7 @@ export const TableWithTabs = (props) => {
 
                 { Object.values(props.productsData.tableData).map((table, i) => {
                     return (
-                        <TabPanel value={`${i+1}`}>
+                        <TabPanel key={i} value={`${i+1}`}>
                             <TableComponent data={table} displayedItems={props.displayedItems} checkboxes={props.checkboxes}/>
                         </TabPanel>
                     )

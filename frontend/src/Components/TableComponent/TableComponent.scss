@@ -1,3 +1,7 @@
+.MuiTableContainer-root {
+    box-shadow: unset !important;
+}
+
 thead {
     background: #1d6cc1;
     tr {
@@ -17,9 +21,10 @@ thead {
     transition: .2s all;
     padding: 16px 20px;
     vertical-align: text-top;
+    color: blue;
 
     &:hover {
-        color: blue;
+        color: red;
     }
 }
 
@@ -29,8 +34,18 @@ thead {
     padding: 16px 20px;
     vertical-align: text-top;
     transition: .3s all ease-in;
-    
+
     &:hover {
         background: black;
+    }
+}
+
+p.buy-btn.btn-container {
+    padding: 2px 0px !important;
+}
+
+.tr {
+    &:hover {
+        background-color: #b7c9dc;
     }
 }

@@ -75,7 +75,7 @@ class FetchProductByCodeController extends AbstractController
         $productData = $productResponse->toArray();
 
 
-        foreach ($productData as &$product) {
+        foreach ($productData as $product) {
             // Check if the product is an array and contains the 'id' key
             if (is_array($product) && isset($product['id'])) {
                 // Fetch additional product information using the product ID
@@ -90,12 +90,12 @@ class FetchProductByCodeController extends AbstractController
                         // Add any other fields from the productInfo entity that you need
                     ];
                 }
-            } 
+            }
         }
 
         // Create and persist the FetchProduct entity
         $fetchProduct = new FetchProduct();
-        $fetchProduct->setProductInfo($productInfo); // Set the related product info
+//        $fetchProduct->setProductInfo($productInfo); // Set the related product info
 
         // Save FetchProduct in the database
         $this->fetchProductRepository->save($fetchProduct);

@@ -82,7 +82,7 @@ class FetchProductByCodeController extends AbstractController
             // If productInfo is found, merge it with the product data
             if ($productInfo) {
                 $product['productInfo'] = [
-                    'imagePath' => $productInfo->getVarid(), // Add catid
+                    'imagePath' => $productInfo->getImagePath(), // Add catid
 
                     // Add any other fields from the productInfo entity that you need
                 ];

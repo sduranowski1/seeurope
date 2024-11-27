@@ -74,14 +74,8 @@ class FetchProductByCodeController extends AbstractController
         // Handle the response from the second request
         $productData = $productResponse->toArray();
 
-        $response = [
-            'liczbaWszystkich' => $productData['liczbaWszystkich'] ?? 0,
-            'wartoscWszystkich' => $productData['wartoscWszystkich'] ?? 0,
-            'wartoscNaStronie' => $productData['wartoscNaStronie'] ?? 0,
-            'elementy' => [],
-        ];
 
-        foreach ($productData['elementy'] as $product) {
+        foreach ($productData as $product) {
             // Fetch additional product information using the product ID from the API response
             $productInfo = $this->productInfoRepository->find($product['id']);
 
@@ -95,7 +89,7 @@ class FetchProductByCodeController extends AbstractController
             }
 
             // Add the product with productInfo to the 'elementy' array
-            $response['elementy'][] = $product;
+            $productData = $product;
         }
 
         // Create and persist the FetchProduct entity
@@ -105,6 +99,6 @@ class FetchProductByCodeController extends AbstractController
         // Save FetchProduct in the database
         $this->fetchProductRepository->save($fetchProduct);
 
-        return new JsonResponse($response);
+        return new JsonResponse($productData);
     }
 }

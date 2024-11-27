@@ -7,6 +7,7 @@ import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import {TableComponent} from "../../../Components/TableComponent/TableComponent";
 import {useState} from "react";
+import {ProductDescription} from "./ProductDescription";
 
 // export const SubcategoryTable = (props) => {
 //     const [value, setValue] = React.useState('1');
@@ -133,6 +134,13 @@ export const SubcategoryTable = ({ productsData, onProductClick, displayedItems,
                 ))}
                 </tbody>
             </table>
+            {/* Product Description */}
+            {selectedProduct && (
+                <div style={{ marginTop: "1rem" }}>
+                    <h3>Product Description</h3>
+                    <ProductDescription product={selectedProduct} />
+                </div>
+            )}
         </div>
     );
 };

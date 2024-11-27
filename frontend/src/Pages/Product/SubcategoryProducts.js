@@ -299,9 +299,9 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
                     productsData={filteredProducts}
                     onProductClick={handleProductClick}
                 />
-                {selectedProduct && (
-                    <ProductDescription product={selectedProduct} />
-                )}
+                {/*{selectedProduct && (*/}
+                {/*    <ProductDescription product={selectedProduct} productsData={filteredProducts}/>*/}
+                {/*)}*/}
             </section>
         </main>
     );

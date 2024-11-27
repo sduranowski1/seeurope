@@ -7,6 +7,7 @@ use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\OpenApi\Model;
+use App\Controller\FetchProduct\FetchProductByCodeController;
 use App\Controller\FetchProduct\FetchProductByIdController;
 use App\Controller\FetchProduct\FetchProductsController;
 use Doctrine\ORM\Mapping as ORM;
@@ -43,7 +44,7 @@ use App\Entity\Enova\ProductInfo; // Import the ProductInfo entity
         ),
         new Post(
             uriTemplate: '/PanelWWW_API/DajTowarWgKod',
-            controller: FetchProductByIdController::class,
+            controller: FetchProductByCodeController::class,
             openapi: new Model\Operation(
                 summary: 'Fetch an individual product details by parameter',
                 description: 'Fetch the product details based on the provided "parametr". This will return product information.',

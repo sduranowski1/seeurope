@@ -20,16 +20,20 @@ class FetchProductByCodeController extends AbstractController
     private ProductInfoRepository $productInfoRepository;
     private FetchProductRepository $fetchProductRepository; // Inject FetchProductRepository
 
+
+
     public function __construct(
         HttpClientInterface $client,
         TokenRepository $tokenRepository,
         ProductInfoRepository $productInfoRepository,
         FetchProductRepository $fetchProductRepository // Initialize repository
-    ) {
+    )
+    {
         $this->client = $client;
         $this->tokenRepository = $tokenRepository;
         $this->productInfoRepository = $productInfoRepository;
         $this->fetchProductRepository = $fetchProductRepository; // Initialize repository
+
     }
 
     public function __invoke(Request $request): JsonResponse
@@ -48,6 +52,7 @@ class FetchProductByCodeController extends AbstractController
             throw new \Exception('No token found in the database.');
         }
 
+        // Assume you have a method to fetch the token dynamically if needed
         $token = $tokenEntity->getToken();
 
         // Now, use the token for the next request (e.g., POST /DajTowarWgId)
@@ -69,27 +74,32 @@ class FetchProductByCodeController extends AbstractController
         // Handle the response from the second request
         $productData = $productResponse->toArray();
 
-        // Loop through each product
+
         foreach ($productData as &$product) {
-            // Fetch additional product information using the product ID from the API response
-            $productInfo = $this->productInfoRepository->find($product['id']);
+            // Check if the product is an array and contains the 'id' key
+            if (is_array($product) && isset($product['id'])) {
+                // Fetch additional product information using the product ID
+                $productInfo = $this->productInfoRepository->find($product['id']);
 
-            // If productInfo is found, merge it with the product data
-            if ($productInfo) {
-                $product['productInfo'] = [
-                    'id' => $productInfo->getId(),
-                    'imagePath' => $productInfo->getImagePath(), // Add imagePath
-                    // Add any other fields from the productInfo entity that you need
-                ];
-
-                // Optionally, create and persist the FetchProduct entity if you need to store it
-                $fetchProduct = new FetchProduct();
-                $fetchProduct->setProductInfo($productInfo); // Set the related product info
-                $this->fetchProductRepository->save($fetchProduct); // Save FetchProduct in the database
-            }
+                // If productInfo is found, merge it with the product data
+                if ($productInfo) {
+                    // Add imagePath to the productInfo array
+                    $product['productInfo'] = [
+                        'id' => $productInfo->getId(),
+                        'imagePath' => $productInfo->getImagePath(), // Add imagePath as a string
+                        // Add any other fields from the productInfo entity that you need
+                    ];
+                }
+            } 
         }
 
-        // Return the modified product data with added imagePath
+        // Create and persist the FetchProduct entity
+        $fetchProduct = new FetchProduct();
+        $fetchProduct->setProductInfo($productInfo); // Set the related product info
+
+        // Save FetchProduct in the database
+        $this->fetchProductRepository->save($fetchProduct);
+
         return new JsonResponse($productData);
     }
 }

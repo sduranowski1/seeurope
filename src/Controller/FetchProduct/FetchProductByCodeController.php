@@ -95,7 +95,7 @@ class FetchProductByCodeController extends AbstractController
 
         // Create and persist the FetchProduct entity
         $fetchProduct = new FetchProduct();
-//        $fetchProduct->setProductInfo($productInfo); // Set the related product info
+        $fetchProduct->setProductInfo($productInfo); // Set the related product info
 
         // Save FetchProduct in the database
         $this->fetchProductRepository->save($fetchProduct);

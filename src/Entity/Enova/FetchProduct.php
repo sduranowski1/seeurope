@@ -42,6 +42,33 @@ use App\Entity\Enova\ProductInfo; // Import the ProductInfo entity
             read: false,
         ),
         new Post(
+            uriTemplate: '/PanelWWW_API/DajTowarWgKod',
+            controller: FetchProductByIdController::class,
+            openapi: new Model\Operation(
+                summary: 'Fetch an individual product details by parameter',
+                description: 'Fetch the product details based on the provided "parametr". This will return product information.',
+                requestBody: new Model\RequestBody(
+                    content: new \ArrayObject([
+                        'application/json' => [
+                            'schema' => [
+                                'type' => 'object',
+                                'properties' => [
+                                    'parametr' => ['type' => 'integer', 'example' => 0]
+                                ]
+                            ],
+                            'example' => [
+                                'parametr' => 0
+                            ]
+                        ]
+                    ])
+                )
+            ),
+            paginationEnabled: false,
+            description: 'Fetch an individual product data based on parameter.', // We don't need an output entity
+            output: false,   // We don't need to read anything from the entity
+            read: false,
+        ),
+        new Post(
             uriTemplate: '/PanelWWW_API/DajTowary',
             controller: FetchProductsController::class,
             openapi: new Model\Operation(

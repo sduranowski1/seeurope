@@ -250,7 +250,7 @@ export const NavbarComponent = (props) => {
                                           element={<TelescopicHandler/>}>{t('telescopic_handler')}</Link>
                                 </li>
                                 <li className="nav__submenu-item">
-                                    <Link to={'/moja-maszyna/wozek-widlowy'}
+                                    <Link to={'/moja-maszyna/forklift'}
                                           element={<Forklift/>}>{t('forklift')}</Link>
                                 </li>
                                 <li className="nav__submenu-item">

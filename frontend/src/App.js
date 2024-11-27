@@ -27,6 +27,7 @@ import {Excavator} from "./Pages/Excavator/Excavator";
 import {Tractor} from "./Pages/Tractor/Tractor";
 import {TelescopicHandler} from "./Pages/TelescopicHandler/TelescopicHandler";
 import {Forklift} from "./Pages/Forklift/Forklift";
+import {ProductDetails} from "./Pages/Product/ProductDetails";
 import {WithoutCoupling} from "./Pages/WithoutCoupling/WithoutCoupling";
 import {Contact} from "./Pages/Contact/Contact";
 import {ThisIsSe} from "./Pages/ThisIsSe/ThisIsSe";
@@ -67,6 +68,7 @@ import CategoryEdit from "./Resources/Category/CategoryEdit";
 import CategoryCreate from "./Resources/Category/CategoryCreate";
 import SubcategoryList from "./Resources/Subcategory/SubcategoryList";
 import SubcategoryEdit from "./Resources/Subcategory/SubcategoryEdit";
+import {StaticForklift} from "./Pages/Forklift/StaticForklift";
 // import BrandEdit from "./Resources/Product/BrandEdit";
 // import {SidebarComponent} from "./Components/SidebarComponent/SidebarComponent";
 // import {FooterComponent} from "./Components/FooterComponent/FooterComponent";
@@ -135,7 +137,10 @@ const App = () => {
               <Route path="koparka" element={<Layout><Excavator /></Layout>} />
               <Route path="traktor" element={<Layout><Tractor /></Layout>} />
               <Route path="ladowarka-teleskopowa" element={<Layout><TelescopicHandler /></Layout>} />
-              <Route path="wozek-widlowy" element={<Layout><Forklift /></Layout>} />
+              <Route path="wozek-widlowy" element={<Layout><StaticForklift /></Layout>} />
+              <Route path="forklift" element={<Layout><Forklift /></Layout>} />
+              <Route path="forklift/:slug" element={<Layout><ProductDetails /></Layout>} />
+
               <Route path="bez-zlacz" element={<Layout><WithoutCoupling /></Layout>} />
           </Route>
           <Route path="/o-nas">

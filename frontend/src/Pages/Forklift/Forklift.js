@@ -1,50 +1,58 @@
 import './Forklift.scss';
-
-import personnel from "../../assets/forklift/personnel.png";
-import container from "../../assets/forklift/container.png";
-import stud from "../../assets/forklift/stud.png";
-import tire from "../../assets/forklift/tire.png";
-import drumLifter from "../../assets/forklift/drum-lifter.png";
-import drumRotator from "../../assets/forklift/drum-rotator.png";
-import fork from "../../assets/forklift/fork.png";
-import gaffel from "../../assets/forklift/gaffel.png";
-
-import protection from "../../assets/forklift/protection sleeve.png";
-import crane from "../../assets/forklift/crane-jib.png";
-import cross from "../../assets/forklift/cross-bar.png";
-import carpet from "../../assets/forklift/carpet-boom.png";
-import snow from "../../assets/forklift/snow-blade.png";
-import snowChain from "../../assets/forklift/snow-chain.png";
-import snowBucket from "../../assets/forklift/snow-bucket.png";
-import sweeper from "../../assets/forklift/sweeper.png";
-import bigBag from "../../assets/forklift/big-bag-lifter.png";
-import safety from "../../assets/forklift/safety-mirror.png";
-import forklift from "../../assets/forklift/forklift-yoke.png";
-import {LinksListWithImages} from "../../Components/LinksListWithImages/LinksListWithImages";
+import { useEffect, useState } from 'react';
+import { LinksListWithImages } from '../../Components/LinksListWithImages/LinksListWithImages';
+import {useNavigate} from "react-router-dom";
 
 export const Forklift = () => {
-    const products = [
-        {name: 'Kosze robocze', imgUrl: personnel},
-        {name: 'Rampy do kontenerów', imgUrl: container},
-        {name: 'Kolce do opon', imgUrl: stud},
-        {name: 'Opona', imgUrl: tire},
-        {name: 'Drum lifter', imgUrl: drumLifter},
-        {name: 'Drum rotator', imgUrl: drumRotator},
-        {name: 'Przedłużki wideł', imgUrl: fork},
-        {name: 'Gaffel', imgUrl: gaffel},
+    const [products, setProducts] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const navigate = useNavigate();
 
-        {name: 'Osłony wideł', imgUrl: protection},
-        {name: 'Żuraw', imgUrl: crane},
-        {name: 'Belki karetek', imgUrl: cross},
-        {name: 'Carpet boom', imgUrl: carpet},
-        {name: 'Snow blade', imgUrl: snow},
-        {name: 'Łańcuchy śniegowe', imgUrl: snowChain},
-        {name: 'Snow bucket', imgUrl: snowBucket},
-        {name: 'Zamiatarki', imgUrl: sweeper},
-        {name: 'Hak do big bagów', imgUrl: bigBag},
-        {name: 'Lusterka panoramiczne', imgUrl: safety},
-        {name: 'Haki', imgUrl: forklift},
-    ];
+    // Function to convert string to a URL-safe slug
+    const slugify = (text) => {
+        return text
+            .toLowerCase()
+            .replace(/\s+/g, '-') // Replace spaces with dashes
+            .replace(/[^\w-]+/g, ''); // Remove non-word characters
+    };
+
+    useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                const response = await fetch('https://se-europe-test.pl/api/subcategories');
+                if (!response.ok) {
+                    throw new Error('Failed to fetch data');
+                }
+                const data = await response.json();
+                // Transform data into desired format
+                const transformedData = data.map(item => ({
+                    name: item.subCatName,
+                    imgUrl: null, // Images not handled yet
+                    slug: slugify(item.subCatName),
+                }));
+                setProducts(transformedData);
+            } catch (err) {
+                setError(err.message);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchProducts();
+    }, []);
+
+    const handleClick = (slug) => {
+        navigate(`/${slug}`);
+    };
+
+    if (isLoading) {
+        return <p>Loading...</p>;
+    }
+
+    if (error) {
+        return <p>Error: {error}</p>;
+    }
 
     return (
         <main className={'my-machine'}>
@@ -63,4 +71,4 @@ export const Forklift = () => {
             </section>
         </main>
     );
-}
+};

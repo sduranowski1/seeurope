@@ -109,7 +109,7 @@ const EnovaProductList = () => {
         const categoryName = categories.find((category) => category.id === product.productInfo?.catid)?.name || 'N/A';
         const subcategoryName = subcategories.find((subcategory) => subcategory.id === product.productInfo?.scatid)?.subCatName || 'N/A';
 
-        return { ...product, netto, procWzrostu, replacementParts,  brandName, variantName, categoryName };
+        return { ...product, netto, procWzrostu, replacementParts,  brandName, variantName, categoryName, subcategoryName };
       });
 
       setProducts(productsData);

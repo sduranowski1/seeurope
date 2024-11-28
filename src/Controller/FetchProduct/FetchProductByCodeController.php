@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-class FetchProductsController extends AbstractController
+class FetchProductByCodeController extends AbstractController
 {
     private HttpClientInterface $client;
     private TokenRepository $tokenRepository;

@@ -8,10 +8,15 @@ use App\Repository\SubcategoryRepository;
 use App\Repository\VariantRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: SubcategoryRepository::class)]
 #[HasLifecycleCallbacks]
-#[ApiResource]
+#[ApiResource(
+    normalizationContext: ['groups' => ['subcategory:read']],
+    denormalizationContext: ['groups' => ['subcategory:create']]
+
+)]
 class Subcategory
 {
     /*
@@ -21,14 +26,22 @@ class Subcategory
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(type: 'integer')]
+    #[Groups(['subcategory:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
+    #[Groups(['subcategory:read', 'subcategory:create'])]
     private ?string $subCatName = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['subcategory:read', 'subcategory:create'])]
     private ?int $cid = null;
+
+    #[ORM\ManyToOne(targetEntity: Category::class)]
+    #[ORM\JoinColumn(name: 'cid', referencedColumnName: 'id', nullable: true)]
+    #[Groups(['subcategory:read', 'subcategory:create'])]
+    public ?Category $category = null;
 
     public function getId(): ?int
     {
@@ -56,6 +69,17 @@ class Subcategory
     {
         $this->cid = $cid;
 
+        return $this;
+    }
+
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?Category $category): self
+    {
+        $this->category = $category;
         return $this;
     }
 }

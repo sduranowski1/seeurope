@@ -69,6 +69,7 @@ export const NavbarComponent = (props) => {
 
     const [brands, setBrands] = useState([]);
     const [variants, setVariants] = useState([]);
+    const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
 
 
@@ -93,6 +94,23 @@ export const NavbarComponent = (props) => {
         };
 
         fetchData();
+    }, []);
+
+    useEffect(() => {
+        const fetchMachine = async () => {
+            try {
+                const categoryResponse = await fetch('https://se-europe-test.pl/api/categories');
+                const categoriesData = await categoryResponse.json();
+
+                setCategories(categoriesData);
+                setLoading(false);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                setLoading(false);
+            }
+        };
+
+        fetchMachine();
     }, []);
 
     if (loading) {
@@ -123,6 +141,18 @@ export const NavbarComponent = (props) => {
                         {hasSubItems && <FontAwesomeIcon icon={faAngleDown} className={'angle-up'} />}
                     </Link>
                     {hasSubItems && <ul>{variantItems}</ul>}
+                </li>
+            );
+        });
+    };
+
+    const renderCategoryMenuItems = () => {
+        return categories.map(category => {
+            return (
+                <li key={category.id} className={`nav__submenu-item 'nav__submenu-item--list' : ''}`}>
+                    <Link to={`/moja-maszyna/${category.name}`}>
+                        {category.name}
+                    </Link>
                 </li>
             );
         });
@@ -183,82 +213,48 @@ export const NavbarComponent = (props) => {
                             <a className={'link-container'}>
                                 {t('my_coupling')}
                                 <FontAwesomeIcon icon={faAngleDown} className={'angle-up angle-up--main'}/> </a>
-                            {/*<ul className="nav__submenu">*/}
-                            {/*    <li className="nav__submenu-item ">*/}
-                            {/*        <Link to={'/moje-zlacze/3-punkt'} element={<ThreePoint/>}>3 punkt</Link>*/}
-                            {/*    </li>*/}
-                            {/*    <li className="nav__submenu-item nav__submenu-item--list">*/}
-                            {/*        <Link to={'/moje-zlacze/avant'} element={<ThreePoint/>}>*/}
-                            {/*            Avant*/}
-                            {/*            <FontAwesomeIcon icon={faAngleUp} className={'angle-up'}/>*/}
-                            {/*        </Link>*/}
-                            {/*        <ul>*/}
-                            {/*            <li>*/}
-                            {/*                <Link to={'/moje-zlacze/avant-200'} element={<ThreePoint/>}>Avant 200</Link>*/}
-                            {/*            </li>*/}
-                            {/*            <li>*/}
-                            {/*                <Link to={'/moje-zlacze/avant-multione'} element={<ThreePoint/>}>Avant*/}
-                            {/*                    Multione</Link>*/}
-                            {/*            </li>*/}
-                            {/*        </ul>*/}
-                            {/*    </li>*/}
-                            {/*</ul>*/}
                             <ul className="nav__submenu">
-                                {/*{props.products.map((el,key) => Array.isArray(el) ?*/}
-
-
-                                {/*            <li key={key} className="nav__submenu-item nav__submenu-item--list">*/}
-                                {/*                <Link to={`/moje-zlacze/${el[0].couplings[0]}`} element={<ThreePoint />}>*/}
-                                {/*                    {el[0].couplings[1]}*/}
-                                {/*                    <FontAwesomeIcon icon={faAngleDown} className={'angle-up'} />*/}
-                                {/*                </Link>*/}
-                                {/*                <ul>*/}
-                                {/*                    {el.map((elem,key) => <li key={key}><Link to={`/moje-zlacze/${elem.url}`}> {elem.name}</Link></li>)}*/}
-                                {/*                </ul>*/}
-                                {/*            </li>*/}
-
-
-                                {/*    :*/}
-
-                                {/*        <li key={key} className="nav__submenu-item ">*/}
-                                {/*            <Link to={`/moje-zlacze/${el.url}`}>{el.name}</Link>*/}
-                                {/*        </li>*/}
-
-                                {/*)}*/}
                                 {renderBrandMenuItems()}
-
                             </ul>
                         </li>
                         <li className="nav__menu-item">
                             <a className={'link-container'}>
                                 {t('my_machine')}
-                                <FontAwesomeIcon icon={faAngleDown} className={'angle-up angle-up--main'}/>
-                            </a>
+                                <FontAwesomeIcon icon={faAngleDown} className={'angle-up angle-up--main'}/> </a>
                             <ul className="nav__submenu">
-                                <li className="nav__submenu-item">
-                                    <Link to={'/moja-maszyna/ladowarka-kolowa'}
-                                          element={<WheelLoader/>}>{t('wheel_loader')}</Link>
-                                </li>
-                                <li className="nav__submenu-item">
-                                    <Link to={'/moja-maszyna/koparka'} element={<Excavator/>}>{t('excavator')}</Link>
-                                </li>
-                                <li className="nav__submenu-item">
-                                    <Link to={'/moja-maszyna/traktor'} element={<Tractor/>}>{t('tractor')}</Link>
-                                </li>
-                                <li className="nav__submenu-item">
-                                    <Link to={'/moja-maszyna/ladowarka-teleskopowa'}
-                                          element={<TelescopicHandler/>}>{t('telescopic_handler')}</Link>
-                                </li>
-                                <li className="nav__submenu-item">
-                                    <Link to={'/moja-maszyna/forklift'}
-                                          element={<Forklift/>}>{t('forklift')}</Link>
-                                </li>
-                                <li className="nav__submenu-item">
-                                    <Link to={'/moja-maszyna/bez-zlacz'}
-                                          element={<WithoutCoupling/>}>{t('without_coupling')}</Link>
-                                </li>
+                                {renderCategoryMenuItems()}
                             </ul>
                         </li>
+                        {/*<li className="nav__menu-item">*/}
+                        {/*    <a className={'link-container'}>*/}
+                        {/*        {t('my_machine')}*/}
+                        {/*        <FontAwesomeIcon icon={faAngleDown} className={'angle-up angle-up--main'}/>*/}
+                        {/*    </a>*/}
+                        {/*    <ul className="nav__submenu">*/}
+                        {/*        <li className="nav__submenu-item">*/}
+                        {/*            <Link to={'/moja-maszyna/ladowarka-kolowa'}*/}
+                        {/*                  element={<WheelLoader/>}>{t('wheel_loader')}</Link>*/}
+                        {/*        </li>*/}
+                        {/*        <li className="nav__submenu-item">*/}
+                        {/*            <Link to={'/moja-maszyna/koparka'} element={<Excavator/>}>{t('excavator')}</Link>*/}
+                        {/*        </li>*/}
+                        {/*        <li className="nav__submenu-item">*/}
+                        {/*            <Link to={'/moja-maszyna/traktor'} element={<Tractor/>}>{t('tractor')}</Link>*/}
+                        {/*        </li>*/}
+                        {/*        <li className="nav__submenu-item">*/}
+                        {/*            <Link to={'/moja-maszyna/ladowarka-teleskopowa'}*/}
+                        {/*                  element={<TelescopicHandler/>}>{t('telescopic_handler')}</Link>*/}
+                        {/*        </li>*/}
+                        {/*        <li className="nav__submenu-item">*/}
+                        {/*            <Link to={'/moja-maszyna/forklift'}*/}
+                        {/*                  element={<Category/>}>{t('forklift')}</Link>*/}
+                        {/*        </li>*/}
+                        {/*        <li className="nav__submenu-item">*/}
+                        {/*            <Link to={'/moja-maszyna/bez-zlacz'}*/}
+                        {/*                  element={<WithoutCoupling/>}>{t('without_coupling')}</Link>*/}
+                        {/*        </li>*/}
+                        {/*    </ul>*/}
+                        {/*</li>*/}
                         <li className="nav__menu-item">
                             <a className={'link-container'}>
                                 {t('about_us')}

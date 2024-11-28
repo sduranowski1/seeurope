@@ -98,11 +98,63 @@ export const ProductDescription = ({ product }) => {
 
         // Render table rows dynamically
         return prices.map((price, index) => (
-            <TableRow key={index}>
-                <TableCell>{price.waluta}</TableCell>
-                <TableCell>{price.netto ? `${price.netto}` : 'N/A'}</TableCell>
-                <TableCell>{price.nazwa}</TableCell>
-            </TableRow>
+
+            <ul className='price-container' key={index}>
+                <li>{price.waluta} {price.netto ? `${price.netto}` : 'N/A'} {price.nazwa}</li>
+                {/*<li>{price.netto ? `${price.netto}` : 'N/A'}</li>*/}
+                {/*<li>{price.nazwa}</li>*/}
+            </ul>
+    ));
+    };
+
+    const renderFeatures = (product) => {
+        // Define the desired price names
+        const featuresList = [
+            'Capacity',
+            'Depth',
+            'Dimension',
+            'Equipment side',
+            'Exisiting fork',
+            'Height',
+            'Information',
+            'Length',
+            'Machine side',
+            'Masa do',
+            'Masa od',
+            'Model',
+            'More information',
+            'My Machine',
+            'OPIS WC',
+            'Product',
+            "Recommended Machine weight",
+            "Type",
+            "Variant",
+            "Volume",
+            "WC_OutOfStock",
+            "WC_prodID",
+            "WC_Ukryty",
+            "Weight",
+            "Width"
+        ];
+
+        // Map through desiredPrices and fetch matching price objects
+        const features = featuresList.map((featureName) => {
+            const matchedFeature = product.listaCechy.find((feature) => feature.nazwa === featureName);
+            return {
+                nazwa: featureName,
+                wartosc: matchedFeature ? matchedFeature.wartosc : null,
+                // waluta: matchedPrice ? matchedPrice.waluta : 'N/A',
+            };
+        });
+
+        // Render table rows dynamically
+        return features.map((feature, index) => (
+
+            <ul className='price-container' key={index}>
+                <li>{feature.nazwa}: {feature.wartosc ? `${feature.wartosc}` : 'N/A'} </li>
+                {/*<li>{price.netto ? `${price.netto}` : 'N/A'}</li>*/}
+                {/*<li>{price.nazwa}</li>*/}
+            </ul>
         ));
     };
 
@@ -147,53 +199,52 @@ export const ProductDescription = ({ product }) => {
             )}
 
             {!loading && data ? (
-                <div>
-                    <section className={'section-contrains tables-page item-page'}>
-                        <div>
-                            <h1>{data.nazwa}</h1>
-                            <p>{data.kod}</p>
-                            <br></br>
-                            <h2>Adapter do ciągnika</h2>
-                            <br></br>
-                            <p>Z adapterem od SE Equipment oszczędzasz zarówno czas, jak i pieniądze.</p>
-                            <br></br>
-                            <p>SE Equipment oferuje proste rozwiązanie, które sprawi, że Twoja praca będzie bardziej
-                                efektywna.
-                                Dzięki naszemu adapterowi z mocowaniem 3-punktowym kat 2 po stronie maszyny i SMS/Euro
-                                po
-                                stronie osprzętu, masz możliwość zamontowania jednego osprzętu z innym złączem niż to,
-                                do
-                                którego maszyna jest przystosowana. Z naszym adapterem nie musisz ponosić dodatkowych
-                                kosztów
-                                związanych z zakupem nowego sprzętu lub nowej maszyny.</p>
-                            <br></br>
-                            <p>Prezentujemy nasze adaptery w dużej różnorodności i w wielu różnych kombinacjach, ale
-                                wszystkie
-                                są produkowane z solidną ramą, aby wytrzymać cięższe obciążenia. Jeśli masz zadanie, w
-                                którym
-                                często musisz przełączać się między różnymi urządzeniami, nasz adapter jest optymalnym
-                                rozwiązaniem.</p>
-                            <br></br>
-                            <h3>Korzyści:</h3>
-                            <ul>
-                                <li>Proste rozwiązanie dla bardziej efektywnej pracy</li>
-                                <li>Uniknięcie zakupu nowej maszyny lub sprzętu</li>
-                                <li>Wiele różnych modeli</li>
-                            </ul>
+                    <div>
+                        <section className={'section-contrains tables-page item-page'}>
+                            <div>
+                                <h1>{data.nazwa || "'N/A"}</h1>
+                                <p>{data.kod}</p>
+                                <br></br>
+                                <h2>Nagłówek produktu</h2>
+                                <br/>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt
+                                    ut labore et dolore magna aliqua.</p>
+                                <br/>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis aute irure dolor in
+                                    reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
+                                    sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
+                                    est laborum.</p>
+                                <br/>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque sit amet est et sapien
+                                    ullamcorper pharetra. Nulla at augue ac arcu cursus vehicula. Fusce volutpat dolor a
+                                    metus tincidunt vehicula. Phasellus mollis, justo et iaculis varius, sem metus lacinia
+                                    ex, eu volutpat elit tortor vitae libero.</p>
+                                <br/>
+                                <h3>Korzyści:</h3>
+                                <ul>
+                                    <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
+                                    <li>Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</li>
+                                    <li>Quisque sit amet est et sapien ullamcorper pharetra.</li>
+                                </ul>
+                            {/*</ul>*/}
                             <br></br>
                             <h3>DANE TECHNICZNE</h3>
-                            <ul>
-                                <li>Capacity: {data.capacityFeat}</li>
-                                <li>Szerokość: 1134 mm</li>
-                                <li>Wysokość: 781 mm</li>
-                                <li>Waga: 87 kg</li>
-                                <li>Mocowanie: 3 punktowe</li>
-                                <li>Strona maszyny: 3 punktowe Kat 2</li>
-                                <li>Strona osprzętu: SMS/Euro</li>
-                                <li>Produkt: Adapter</li>
-                            </ul>
+                            {/*<ul>*/}
+                            {/*    <li>Capacity: {data.capacityFeat || "N/A"}</li>*/}
+                            {/*    <li>Szerokość: 1134 mm</li>*/}
+                            {/*    <li>Wysokość: 781 mm</li>*/}
+                            {/*    <li>Waga: 87 kg</li>*/}
+                            {/*    <li>Mocowanie: 3 punktowe</li>*/}
+                            {/*    <li>Strona maszyny: 3 punktowe Kat 2</li>*/}
+                            {/*    <li>Strona osprzętu: SMS/Euro</li>*/}
+                            {/*    <li>Produkt: Adapter</li>*/}
+                            {/*</ul>*/}
+                                {renderFeatures(data)}
+                                <br/>
                             <div className='price-container'>
-                                <h2>899.99$</h2>
+                                {/*<h2>899.99$</h2>*/}
+                                <h2>Ceny:</h2>
+                                {renderPrices(data)}
                             </div>
                             <div className={'item-quantity'}>
                                 <button className='quantity-btn'>-</button>
@@ -203,90 +254,12 @@ export const ProductDescription = ({ product }) => {
 
                             </div>
                             <h2>{data.stanMagazynowy}</h2>
-                        </div>
-                        <div>
-                            <img src={sketch}/>
-                            <img src={data.stanMagazynowy}/>
-                        </div>
-                    </section>
-                    <TableContainer component={Paper} sx={{position: 'relative', marginTop: "15px"}}>
-
-                        <Table>
-                            <TableBody>
-                                <TableRow>
-                                    <TableCell sx={{fontWeight: 'bold'}}>Id</TableCell>
-                                    <TableCell>{data.id || 'N/A'}</TableCell>
-                                </TableRow>
-                                <TableRow>
-                                    <TableCell sx={{fontWeight: 'bold'}}>Product Name</TableCell>
-                                    <TableCell>{data.nazwa || 'N/A'}</TableCell>
-                                </TableRow>
-                                <TableRow>
-                                    <TableCell sx={{fontWeight: 'bold'}}>Code</TableCell>
-                                    <TableCell>{data.kod || 'N/A'}</TableCell>
-                                </TableRow>
-                                {/*<TableRow>*/}
-                                {/*    <TableCell sx={{ fontWeight: 'bold' }}>% Increase</TableCell>*/}
-                                {/*    <TableCell>{data.procWzrostu || 'N/A'}</TableCell>*/}
-                                {/*</TableRow>*/}
-                                {/*<TableRow>*/}
-                                {/*    <TableCell sx={{ fontWeight: 'bold' }}>Replacement Parts</TableCell>*/}
-                                {/*    <TableCell>{data.replacementParts || 'N/A'}</TableCell>*/}
-                                {/*</TableRow>*/}
-                                <TableRow>
-                                    <TableCell sx={{fontWeight: 'bold'}}>Unit</TableCell>
-                                    <TableCell>{data.jednostka || 'N/A'}</TableCell>
-                                </TableRow>
-                                <TableRow>
-                                    <TableCell sx={{fontWeight: 'bold'}}>Quantity</TableCell>
-                                    <TableCell>{data.Ilosc || 'N/A'}</TableCell>
-                                </TableRow>
-                                <TableRow>
-                                    <TableCell sx={{fontWeight: 'bold'}}>Availability</TableCell>
-                                    <TableCell>{data.stanMagazynowy || 'N/A'}</TableCell>
-                                </TableRow>
-                                {/*<TableRow>*/}
-                                {/*    <TableCell sx={{ fontWeight: 'bold' }}>Price (Netto)</TableCell>*/}
-                                {/*    <TableCell>{data.netto || 'N/A'}</TableCell>*/}
-                                {/*</TableRow>*/}
-                            </TableBody>
-                        </Table>
-
-
-                    </TableContainer>
-
-                    <Typography variant="h5" component="h5" sx={{marginTop: "20px"}}>Attributes</Typography>
-                    <TableContainer component={Paper} sx={{position: 'relative', marginTop: "15px"}}>
-                        <Table>
-                            {/*<CustomTableHead>*/}
-                            {/*    <TableRow>*/}
-                            {/*        <TableCell>Name</TableCell>*/}
-                            {/*        <TableCell>Value</TableCell>*/}
-                            {/*    </TableRow>*/}
-                            {/*</CustomTableHead>*/}
-                            <TableBody>
-                                {/* Render Details Section */}
-                                {renderDetails(data)}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-
-                    <Typography variant="h5" component="h5" sx={{marginTop: "20px"}}>Prices</Typography>
-                    <TableContainer component={Paper} sx={{position: 'relative', marginTop: "15px"}}>
-                        <Table>
-                            <CustomTableHead>
-                                <TableRow>
-                                    <TableCell>Currency</TableCell>
-                                    <TableCell>Netto</TableCell>
-                                    <TableCell>Name</TableCell>
-                                </TableRow>
-                            </CustomTableHead>
-                            <TableBody>
-                                {/* Render Details Section */}
-                                {renderPrices(data)}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
+                    </div>
+                <div>
+                    {/*<img src={sketch}/>*/}
+                    <img src={`https://se-europe-test.pl${data.productInfo?.imagePath}`}/>
+                </div>
+                </section>
                 </div>
             ) : (
                 <p>Loading data...</p>

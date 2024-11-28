@@ -69,6 +69,7 @@ import CategoryCreate from "./Resources/Category/CategoryCreate";
 import SubcategoryList from "./Resources/Subcategory/SubcategoryList";
 import SubcategoryEdit from "./Resources/Subcategory/SubcategoryEdit";
 import {StaticForklift} from "./Pages/Forklift/StaticForklift";
+import {Category} from "./Pages/Category/Category";
 // import BrandEdit from "./Resources/Product/BrandEdit";
 // import {SidebarComponent} from "./Components/SidebarComponent/SidebarComponent";
 // import {FooterComponent} from "./Components/FooterComponent/FooterComponent";
@@ -133,6 +134,7 @@ const App = () => {
           </Route>
           <Route path="/moja-maszyna">
               <Route index element={<Layout><MyMachine /></Layout>} />
+              <Route path=":category" element={<Layout><Category /></Layout>} />
               <Route path="ladowarka-kolowa" element={<Layout><WheelLoader /></Layout>} />
               <Route path="koparka" element={<Layout><Excavator /></Layout>} />
               <Route path="traktor" element={<Layout><Tractor /></Layout>} />

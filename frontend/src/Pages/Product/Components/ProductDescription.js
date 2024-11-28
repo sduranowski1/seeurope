@@ -41,6 +41,7 @@ export const ProductDescription = ({ product }) => {
                 }
 
                 const result = await response.json();
+                console.log(result)
                 setData(result);
                 setLoading(false); // Set loading to false after data is fetched
             } catch (error) {

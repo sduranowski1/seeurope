@@ -81,31 +81,25 @@ class FetchProductsController extends AbstractController
         $productData = $productResponse->toArray();
 
         $response = [
-            'liczbaWszystkich' => $productData['liczbaWszystkich'] ?? 0,
-            'wartoscWszystkich' => $productData['wartoscWszystkich'] ?? 0,
-            'wartoscNaStronie' => $productData['wartoscNaStronie'] ?? 0,
-            'elementy' => [],
+            'productInfo' => [], // Root-level productInfo array
         ];
 
-        foreach ($productData['elementy'] as $product) {
-            // Fetch additional product information using the product ID from the API response
+        // Loop through the product IDs in the response to fetch additional information
+        foreach ($productData as $product) {
+            // Fetch product information using the product ID
             $productInfo = $this->productInfoRepository->find($product['id']);
 
-            // If productInfo is found, merge it with the product data
             if ($productInfo) {
-                $product['productInfo'] = [
-                    'id' => $productInfo->getId(),
-                    'braid' => $productInfo->getBraid(), // Add braid
-                    'catid' => $productInfo->getCatid(), // Add catid
-                    'scatid' => $productInfo->getScatid(), // Add catid
-                    'varid' => $productInfo->getVarid(), // Add catid
+                // Construct the image path using braid
+                $imagePath = sprintf('/images/products/%d.jpg', $productInfo->getBraid());
 
-                    // Add any other fields from the productInfo entity that you need
+                // Add productInfo to the response
+                $response['productInfo'][] = [
+                    'id' => $productInfo->getId(),
+                    'imagePath' => $imagePath, // Use imagePath instead of braid
+                    // Include additional fields if needed
                 ];
             }
-
-            // Add the product with productInfo to the 'elementy' array
-            $response['elementy'][] = $product;
         }
 
         // Create and persist the FetchProduct entity

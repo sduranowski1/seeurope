@@ -70,6 +70,7 @@ import SubcategoryList from "./Resources/Subcategory/SubcategoryList";
 import SubcategoryEdit from "./Resources/Subcategory/SubcategoryEdit";
 import {StaticForklift} from "./Pages/Forklift/StaticForklift";
 import {Category} from "./Pages/Category/Category";
+import {Brand} from "./Pages/Brand/Brand";
 // import BrandEdit from "./Resources/Product/BrandEdit";
 // import {SidebarComponent} from "./Components/SidebarComponent/SidebarComponent";
 // import {FooterComponent} from "./Components/FooterComponent/FooterComponent";
@@ -127,21 +128,25 @@ const App = () => {
                 <Route path="enova-product/:id" element={<EnovaProductEdit />} />
             </Route>
             {/* <Route path="*" element={<Navigate to="/" replace />} /> */}
-          <Route path="/moje-zlacze/:brand" element={<Layout><Se /></Layout>}>
-              {/*<Route index  element={<Layout><MyCoupling /></Layout>} />*/}
+          <Route path="/moje-zlacze">
+              <Route index  element={<Layout><MyCoupling /></Layout>} />
+              {/*<Route path=":brand" element={<Layout><Se /></Layout>} />*/}
+              <Route path=":brand" element={<Layout><Brand /></Layout>} />
+              <Route path=":brand/:slug" element={<Layout><ProductDetails /></Layout>} />
               {/*<Route path="100838" element={<Layout><Se/></Layout>} />*/}
               {/*<Route path="3-punkt" element={<Layout><ThreePoint /></Layout>} />*/}
           </Route>
           <Route path="/moja-maszyna">
               <Route index element={<Layout><MyMachine /></Layout>} />
               <Route path=":category" element={<Layout><Category /></Layout>} />
+              <Route path=":category/:slug" element={<Layout><ProductDetails /></Layout>} />
               <Route path="ladowarka-kolowa" element={<Layout><WheelLoader /></Layout>} />
               <Route path="koparka" element={<Layout><Excavator /></Layout>} />
               <Route path="traktor" element={<Layout><Tractor /></Layout>} />
               <Route path="ladowarka-teleskopowa" element={<Layout><TelescopicHandler /></Layout>} />
               <Route path="wozek-widlowy" element={<Layout><StaticForklift /></Layout>} />
-              <Route path="forklift" element={<Layout><Forklift /></Layout>} />
-              <Route path="forklift/:slug" element={<Layout><ProductDetails /></Layout>} />
+              {/*<Route path="forklift" element={<Layout><Forklift /></Layout>} />*/}
+              {/*<Route path="forklift/:slug" element={<Layout><ProductDetails /></Layout>} />*/}
 
               <Route path="bez-zlacz" element={<Layout><WithoutCoupling /></Layout>} />
           </Route>

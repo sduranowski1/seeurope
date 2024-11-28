@@ -7,27 +7,37 @@ use App\Entity\Traits\Timestampable;
 use App\Repository\VariantRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: VariantRepository::class)]
 #[HasLifecycleCallbacks]
-#[ApiResource]
+#[ApiResource(
+    normalizationContext: ['groups' => ['variant:read']],
+    denormalizationContext: ['groups' => ['variant:create']]
+
+)]
 class Variant
 {
-            /*
-     * Timestampable trait
-     */
     use Timestampable;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['variant:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
+    #[Groups(['variant:read', 'variant:create'])]
     private ?string $variantname = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['variant:read', 'variant:create'])]
     private ?int $bid = null;
+
+    #[ORM\ManyToOne(targetEntity: Brand::class)]
+    #[ORM\JoinColumn(name: 'bid', referencedColumnName: 'id', nullable: true)]
+    #[Groups(['variant:read', 'variant:create'])]
+    public ?Brand $brand = null;
 
     public function getId(): ?int
     {
@@ -55,6 +65,17 @@ class Variant
     {
         $this->bid = $bid;
 
+        return $this;
+    }
+
+    public function getBrand(): ?Brand
+    {
+        return $this->brand;
+    }
+
+    public function setBrand(?Variant $brand): self
+    {
+        $this->brand = $brand;
         return $this;
     }
 }

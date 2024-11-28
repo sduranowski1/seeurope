@@ -7,24 +7,26 @@ use App\Entity\Traits\Timestampable;
 use App\Repository\BrandRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: BrandRepository::class)]
 #[HasLifecycleCallbacks]
-#[ApiResource]
+#[ApiResource(
+    normalizationContext: ['groups' => ['brand:read']],
+    denormalizationContext: ['groups' => ['brand:write']]
+)]
 class Brand
 {
-
-            /*
-     * Timestampable trait
-     */
     use Timestampable;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['brand:read', 'variant:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
+    #[Groups(['brand:read', 'brand:create', 'brand:update', 'variant:read', 'variant:create', 'variant:update'])]
     private ?string $name = null;
 
 //    #[ORM\Column(length: 255)]

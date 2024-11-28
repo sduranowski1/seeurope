@@ -108,7 +108,7 @@ class FetchProductByCodeController extends AbstractController
                 ],
             "productInfo" => [
                 "id" => $productInfo->getId() ?? 0,
-                "imagePath" => $imagePath ?? "default/path", // Provide a default path if $imagePath is null
+                "imagePath" => $productInfo->getImagePath() ?? 0, // Provide a default path if $imagePath is null
                 // Add additional fields here as needed
             ],
         ];

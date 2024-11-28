@@ -54,7 +54,7 @@ class FetchProductByCodeController extends AbstractController
         $token = $tokenEntity->getToken();
 
         // Now, use the token for the next request (e.g., POST /DajTowarWgId)
-        $productUrl = 'http://extranet.seequipment.pl:9010/api/PanelWWW_API/DajTowary';
+        $productUrl = 'http://extranet.seequipment.pl:9010/api/PanelWWW_API/DajTowarWgKod';
 
         // POST request to fetch the product data
         $productResponse = $this->client->request('POST', $productUrl, [

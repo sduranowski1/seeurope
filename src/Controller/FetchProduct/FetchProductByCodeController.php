@@ -2,9 +2,9 @@
 namespace App\Controller\FetchProduct;
 
 use App\Repository\TokenRepository;
-use App\Entity\Enova\FetchProduct; // Import the FetchProduct entity
-use App\Repository\ProductInfoRepository; // Import ProductInfo repository
-use App\Repository\FetchProductRepository; // Import FetchProduct repository
+use App\Entity\Enova\FetchProduct;
+use App\Repository\ProductInfoRepository;
+use App\Repository\FetchProductRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,30 +16,27 @@ class FetchProductByCodeController extends AbstractController
     private HttpClientInterface $client;
     private TokenRepository $tokenRepository;
     private ProductInfoRepository $productInfoRepository;
-    private FetchProductRepository $fetchProductRepository; // Inject FetchProductRepository
+    private FetchProductRepository $fetchProductRepository;
 
     public function __construct(
         HttpClientInterface $client,
         TokenRepository $tokenRepository,
         ProductInfoRepository $productInfoRepository,
-        FetchProductRepository $fetchProductRepository // Initialize repository
-    )
-    {
+        FetchProductRepository $fetchProductRepository
+    ) {
         $this->client = $client;
         $this->tokenRepository = $tokenRepository;
         $this->productInfoRepository = $productInfoRepository;
-        $this->fetchProductRepository = $fetchProductRepository; // Initialize repository
+        $this->fetchProductRepository = $fetchProductRepository;
     }
 
     public function __invoke(Request $request): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
 
-        // Validate the required fields
-        foreach (['parametr'] as $field) {
-            if (!isset($data[$field])) {
-                throw new BadRequestHttpException(sprintf('Missing "%s" field in request body.', $field));
-            }
+        // Validate required field
+        if (!isset($data['parametr'])) {
+            throw new BadRequestHttpException('Missing "parametr" field in request body.');
         }
 
         $parametr = $data['parametr'];
@@ -50,58 +47,51 @@ class FetchProductByCodeController extends AbstractController
             throw new \Exception('No token found in the database.');
         }
 
-        // Assume you have a method to fetch the token dynamically if needed
         $token = $tokenEntity->getToken();
 
-        // Now, use the token for the next request (e.g., POST /DajTowarWgId)
+        // POST request to fetch the product data by code
         $productUrl = 'http://extranet.seequipment.pl:9010/api/PanelWWW_API/DajTowarWgKod';
-
-        // POST request to fetch the product data
         $productResponse = $this->client->request('POST', $productUrl, [
-            'json' => [
-                'parametr' => $parametr,  // Use the input parameter
-            ],
+            'json' => ['parametr' => $parametr],
             'headers' => [
-                'Authorization' => 'Bearer ' . $token,  // Use the token here
-                'Content-Type' => 'application/json',  // Content-Type header to specify the body format
-                'Accept' => 'application/json',        // Accept header to specify the expected response format
+                'Authorization' => 'Bearer ' . $token,
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/json',
             ],
-            'verify_peer' => false, // Add this to disable SSL verification
+            'verify_peer' => false,
         ]);
 
-        // Handle the response from the second request
         $productData = $productResponse->toArray();
 
-        $response = [
-            'productInfo' => [], // Root-level productInfo array
-        ];
-
-        // Loop through the product IDs in the response to fetch additional information
-        foreach ($productData as $product) {
-            // Fetch product information using the product ID
-            $productInfo = $this->productInfoRepository->find($product['id']);
-
-            if ($productInfo) {
-                // Construct the image path using braid
-                $imagePath = sprintf('/images/products/%d.jpg', $productInfo->getBraid());
-
-                // Add productInfo to the response
-                $response['productInfo'][] = [
-                    'id' => $productInfo->getId(),
-                    'imagePath' => $imagePath, // Use imagePath instead of braid
-                    // Include additional fields if needed
-                ];
-            }
+        if (empty($productData)) {
+            throw $this->createNotFoundException('Product not found.');
         }
+
+        // Extract product information
+        $productId = $productData['id']; // Assuming the API returns a single product object with an ID
+        $productInfo = $this->productInfoRepository->find($productId);
+
+        if (!$productInfo) {
+            throw $this->createNotFoundException(sprintf('Product with ID %d not found.', $productId));
+        }
+
+        // Construct the image path using braid
+        $imagePath = sprintf('/images/products/%d.jpg', $productInfo->getBraid());
+
+        // Build the response
+        $response = [
+            'productInfo' => [
+                'id' => $productInfo->getId(),
+                'imagePath' => $imagePath, // Use imagePath instead of braid
+                // Include additional fields if needed
+            ],
+        ];
 
         // Create and persist the FetchProduct entity
         $fetchProduct = new FetchProduct();
-        $fetchProduct->setProductInfo($productInfo); // Set the related product info
-
-        // Save FetchProduct in the database
+        $fetchProduct->setProductInfo($productInfo);
         $this->fetchProductRepository->save($fetchProduct);
 
         return new JsonResponse($response);
     }
 }
-

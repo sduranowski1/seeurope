@@ -80,6 +80,34 @@ class FetchProductByCodeController extends AbstractController
 
         // Build the response
         $response = [
+            "id" => 0,
+            "bid" => 0,
+            "vid" => 0,
+            "cid" => 0,
+            "kod" => "string",
+            "nazwa" => "string",
+            "ean" => "string",
+            "jednostka" => "string",
+            "ilosc" => 0,
+            "stanMagazynowy" => "string",
+            "listaCechy" => [
+                // Include characteristics or features here
+            ],
+            "listaCen" => [
+                [
+                    "waluta" => "string",
+                    "netto" => 0,
+                    "nazwa" => "string"
+                ]
+            ],
+            "listaCenIndywidualnych" => [
+                [
+                    "waluta" => "string",
+                    "netto" => 0,
+                    "towarID" => 0,
+                    "kontrahentID" => 0
+                ]
+            ],
             'productInfo' => [
                 'id' => $productInfo->getId(),
                 'imagePath' => $imagePath, // Use imagePath instead of braid

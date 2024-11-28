@@ -1,26 +1,22 @@
 <?php
-// src/Controller/FetchProductByIdController.php
-
 namespace App\Controller\FetchProduct;
 
-use App\Entity\Enova\FetchProduct;
-use App\Repository\FetchProductRepository;
-use App\Repository\ProductInfoRepository;
 use App\Repository\TokenRepository;
+use App\Entity\Enova\FetchProduct; // Import the FetchProduct entity
+use App\Repository\ProductInfoRepository; // Import ProductInfo repository
+use App\Repository\FetchProductRepository; // Import FetchProduct repository
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-class FetchProductByCodeController extends AbstractController
+class FetchProductsController extends AbstractController
 {
     private HttpClientInterface $client;
     private TokenRepository $tokenRepository;
     private ProductInfoRepository $productInfoRepository;
     private FetchProductRepository $fetchProductRepository; // Inject FetchProductRepository
-
-
 
     public function __construct(
         HttpClientInterface $client,
@@ -33,18 +29,24 @@ class FetchProductByCodeController extends AbstractController
         $this->tokenRepository = $tokenRepository;
         $this->productInfoRepository = $productInfoRepository;
         $this->fetchProductRepository = $fetchProductRepository; // Initialize repository
-
     }
 
     public function __invoke(Request $request): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
 
-        if (!isset($data['parametr'])) {
-            throw new BadRequestHttpException('Missing "parametr" field in request body.');
+        // Validate the required fields
+        foreach (['strona', 'limit', 'pokazCeny', 'poleSortowane', 'czyRosnaco'] as $field) {
+            if (!isset($data[$field])) {
+                throw new BadRequestHttpException(sprintf('Missing "%s" field in request body.', $field));
+            }
         }
 
-        $parametr = $data['parametr'];
+        $strona = $data['strona'];
+        $limit = $data['limit'];
+        $pokazCeny = $data['pokazCeny'];
+        $poleSortowane = $data['poleSortowane'];
+        $czyRosnaco = $data['czyRosnaco'];
 
         // Get the token from the database
         $tokenEntity = $this->tokenRepository->findLatestToken();
@@ -56,12 +58,16 @@ class FetchProductByCodeController extends AbstractController
         $token = $tokenEntity->getToken();
 
         // Now, use the token for the next request (e.g., POST /DajTowarWgId)
-        $productUrl = 'http://extranet.seequipment.pl:9010/api/PanelWWW_API/DajTowarWgKod';
+        $productUrl = 'http://extranet.seequipment.pl:9010/api/PanelWWW_API/DajTowary';
 
         // POST request to fetch the product data
         $productResponse = $this->client->request('POST', $productUrl, [
             'json' => [
-                'parametr' => $parametr  // Use the input parameter
+                'strona' => $strona,  // Use the input parameter
+                'limit' => $limit,  // Use the input parameter
+                'pokazCeny' => $pokazCeny,  // Use the input parameter
+                'poleSortowane' => $poleSortowane,  // Use the input parameter
+                'czyRosnaco' => $czyRosnaco  // Use the input parameter
             ],
             'headers' => [
                 'Authorization' => 'Bearer ' . $token,  // Use the token here
@@ -74,33 +80,36 @@ class FetchProductByCodeController extends AbstractController
         // Handle the response from the second request
         $productData = $productResponse->toArray();
 
+        $response = [
+            'productInfo' => [], // Root-level productInfo array
+        ];
 
+        // Loop through the product IDs in the response to fetch additional information
         foreach ($productData as $product) {
-            // Check if the product is an array and contains the 'id' key
-            if (is_array($product) && isset($product['id'])) {
-                // Fetch additional product information using the product ID
-                $productInfo = $this->productInfoRepository->find($product['id']);
+            // Fetch product information using the product ID
+            $productInfo = $this->productInfoRepository->find($product['id']);
 
-                // If productInfo is found, merge it with the product data
-                if ($productInfo) {
-                    // Add imagePath to the productInfo array
-                    $product['productInfo'] = [
-                        'id' => $productInfo->getId(),
-                        'imagePath' => $productInfo->getImagePath(), // Add imagePath as a string
-                        // Add any other fields from the productInfo entity that you need
-                    ];
-                }
-                // Create and persist the FetchProduct entity
-                $fetchProduct = new FetchProduct();
-                $fetchProduct->setProductInfo($productInfo); // Set the related product info
+            if ($productInfo) {
+                // Construct the image path using braid
+                $imagePath = sprintf('/images/products/%d.jpg', $productInfo->getBraid());
 
-                // Save FetchProduct in the database
-                $this->fetchProductRepository->save($fetchProduct);
+                // Add productInfo to the response
+                $response['productInfo'][] = [
+                    'id' => $productInfo->getId(),
+                    'imagePath' => $imagePath, // Use imagePath instead of braid
+                    // Include additional fields if needed
+                ];
             }
         }
 
+        // Create and persist the FetchProduct entity
+        $fetchProduct = new FetchProduct();
+        $fetchProduct->setProductInfo($productInfo); // Set the related product info
 
+        // Save FetchProduct in the database
+        $this->fetchProductRepository->save($fetchProduct);
 
-        return new JsonResponse($productData);
+        return new JsonResponse($response);
     }
 }
+

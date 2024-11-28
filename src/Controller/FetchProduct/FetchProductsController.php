@@ -81,25 +81,31 @@ class FetchProductsController extends AbstractController
         $productData = $productResponse->toArray();
 
         $response = [
-            'productInfo' => [], // Root-level productInfo array
+            'liczbaWszystkich' => $productData['liczbaWszystkich'] ?? 0,
+            'wartoscWszystkich' => $productData['wartoscWszystkich'] ?? 0,
+            'wartoscNaStronie' => $productData['wartoscNaStronie'] ?? 0,
+            'elementy' => [],
         ];
 
-        // Loop through the product IDs in the response to fetch additional information
-        foreach ($productData as $product) {
-            // Fetch product information using the product ID
+        foreach ($productData['elementy'] as $product) {
+            // Fetch additional product information using the product ID from the API response
             $productInfo = $this->productInfoRepository->find($product['id']);
 
+            // If productInfo is found, merge it with the product data
             if ($productInfo) {
-                // Construct the image path using braid
-                $imagePath = sprintf('/images/products/%d.jpg', $productInfo->getBraid());
-
-                // Add productInfo to the response
-                $response['productInfo'][] = [
+                $product['productInfo'] = [
                     'id' => $productInfo->getId(),
-                    'imagePath' => $imagePath, // Use imagePath instead of braid
-                    // Include additional fields if needed
+                    'braid' => $productInfo->getBraid(), // Add braid
+                    'catid' => $productInfo->getCatid(), // Add catid
+                    'scatid' => $productInfo->getScatid(), // Add catid
+                    'varid' => $productInfo->getVarid(), // Add catid
+
+                    // Add any other fields from the productInfo entity that you need
                 ];
             }
+
+            // Add the product with productInfo to the 'elementy' array
+            $response['elementy'][] = $product;
         }
 
         // Create and persist the FetchProduct entity

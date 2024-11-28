@@ -36,17 +36,13 @@ class FetchProductByCodeController extends AbstractController
         $data = json_decode($request->getContent(), true);
 
         // Validate the required fields
-        foreach (['strona', 'limit', 'pokazCeny', 'poleSortowane', 'czyRosnaco'] as $field) {
+        foreach (['parametr'] as $field) {
             if (!isset($data[$field])) {
                 throw new BadRequestHttpException(sprintf('Missing "%s" field in request body.', $field));
             }
         }
 
-        $strona = $data['strona'];
-        $limit = $data['limit'];
-        $pokazCeny = $data['pokazCeny'];
-        $poleSortowane = $data['poleSortowane'];
-        $czyRosnaco = $data['czyRosnaco'];
+        $parametr = $data['parametr'];
 
         // Get the token from the database
         $tokenEntity = $this->tokenRepository->findLatestToken();
@@ -63,11 +59,7 @@ class FetchProductByCodeController extends AbstractController
         // POST request to fetch the product data
         $productResponse = $this->client->request('POST', $productUrl, [
             'json' => [
-                'strona' => $strona,  // Use the input parameter
-                'limit' => $limit,  // Use the input parameter
-                'pokazCeny' => $pokazCeny,  // Use the input parameter
-                'poleSortowane' => $poleSortowane,  // Use the input parameter
-                'czyRosnaco' => $czyRosnaco  // Use the input parameter
+                'parametr' => $parametr,  // Use the input parameter
             ],
             'headers' => [
                 'Authorization' => 'Bearer ' . $token,  // Use the token here

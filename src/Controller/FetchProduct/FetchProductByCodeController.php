@@ -80,38 +80,36 @@ class FetchProductByCodeController extends AbstractController
 
         // Build the response
         $response = [
-            "id" => 0,
-            "bid" => 0,
-            "vid" => 0,
-            "cid" => 0,
-            "kod" => "string",
-            "nazwa" => "string",
-            "ean" => "string",
-            "jednostka" => "string",
-            "ilosc" => 0,
-            "stanMagazynowy" => "string",
-            "listaCechy" => [
-                // Include characteristics or features here
-            ],
-            "listaCen" => [
-                [
-                    "waluta" => "string",
-                    "netto" => 0,
-                    "nazwa" => "string"
-                ]
-            ],
-            "listaCenIndywidualnych" => [
-                [
-                    "waluta" => "string",
-                    "netto" => 0,
-                    "towarID" => 0,
-                    "kontrahentID" => 0
-                ]
-            ],
-            'productInfo' => [
-                'id' => $productInfo->getId(),
-                'imagePath' => $imagePath, // Use imagePath instead of braid
-                // Include additional fields if needed
+            "id" => $productData['id'] ?? 0,
+            "bid" => $productData['bid'] ?? 0,
+            "vid" => $productData['vid'] ?? 0,
+            "cid" => $productData['cid'] ?? 0,
+            "kod" => $productData['kod'] ?? "string",
+            "nazwa" => $productData['nazwa'] ?? "string",
+            "ean" => $productData['ean'] ?? "string",
+            "jednostka" => $productData['jednostka'] ?? "string",
+            "ilosc" => $productData['ilosc'] ?? 0,
+            "stanMagazynowy" => $productData['stanMagazynowy'] ?? "string",
+            "listaCechy" => $productData['listaCechy'] ?? [],
+            "listaCen" => $productData['listaCen'] ?? [
+                    [
+                        "waluta" => "string",
+                        "netto" => 0,
+                        "nazwa" => "string"
+                    ]
+                ],
+            "listaCenIndywidualnych" => $productData['listaCenIndywidualnych'] ?? [
+                    [
+                        "waluta" => "string",
+                        "netto" => 0,
+                        "towarID" => 0,
+                        "kontrahentID" => 0
+                    ]
+                ],
+            "productInfo" => [
+                "id" => $productInfo->getId() ?? 0,
+                "imagePath" => $imagePath ?? "default/path", // Provide a default path if $imagePath is null
+                // Add additional fields here as needed
             ],
         ];
 

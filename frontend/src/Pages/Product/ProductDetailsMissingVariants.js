@@ -3,27 +3,30 @@ import {useState} from "react";
 import {ThreePoint} from "../ThreePoint/ThreePoint";
 import sketch from "../../assets/100838.png";
 import {SubcategoryProducts} from "./SubcategoryProducts";
+import {VariantProducts} from "./VariantProducts";
+import {MissingVariantsProducts} from "./MissingVariantsProducts";
 
-export const ProductDetails = () => {
-    const { slug } = useParams();
+export const ProductDetailsMissingVariants = () => {
     const [itemsToOrder, setItemsToOrder] = useState(1);
 
     function makeOrder(number) {
         console.log(`${itemsToOrder} ordered`);
     }
 
+    const fullUrl = window.location.href;
+
     // Get the last part of the slug
-    const lastPartOfSlug = slug?.split("/").pop();
+    const lastPartOfSlug = fullUrl?.split("/").pop();
 
     const capitalizedLastPart = lastPartOfSlug
         ? lastPartOfSlug.charAt(0).toUpperCase() + lastPartOfSlug.slice(1)
         : null;
 
-    console.log(capitalizedLastPart)
+    console.log(lastPartOfSlug)
 
     return (
         <main className='product-page'>
-            <SubcategoryProducts lastPart={capitalizedLastPart} slug={slug}></SubcategoryProducts>
+            <MissingVariantsProducts lastPart={capitalizedLastPart}></MissingVariantsProducts>
 
         </main>
     );

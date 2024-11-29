@@ -61,7 +61,7 @@ const productsData = {
     }
 };
 
-export const SubcategoryProducts = ({lastPart, slug}) => {
+export const MissingVariantsProducts = ({lastPart, slug}) => {
     const [displayedItems, setDisplayedItems] = useState([0, 1000000]);
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [checkboxes, setCheckboxes] = useState({});
@@ -194,13 +194,13 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
 
     useEffect(() => {
         fetchAdditionalData();
-    }, []); // Only fetch brands and variants once on mount
+    }, [lastPart]); // Only fetch brands and variants once on mount
 
     useEffect(() => {
         if (brands.length > 0 && variants.length > 0) {
             fetchProductData();
         }
-    }, [brands, variants, currentPage, limit]); // Fetch product data after brands and variants are loaded
+    }, [brands, variants, currentPage, limit, lastPart]); // Fetch product data after brands and variants are loaded
 
     const handlePageChange = useCallback((page) => {
         if (page >= 1 && page <= totalPages && !loading) {
@@ -213,53 +213,25 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
     }, [navigate]);
 
     useEffect(() => {
-        // Get the full URL of the current page
-        const fullUrl = window.location.href;
-        console.log("Full URL:", fullUrl);  // Log the full URL
+        // Get the last part of the slug
+        const slugParts = window.location.pathname.split("/").filter(Boolean); // Split by "/" and remove empty strings
+        const normalizedLastPart = slugParts.at(-1)?.replace(/[^a-zA-Z0-9]/g, "").toLowerCase(); // Normalize the last part
 
-        // Now you can split the slug from the full URL if needed
-        const slug = fullUrl.split(window.location.origin)[1];  // Extract the part after the domain
-        console.log("Extracted Slug:", slug);
+        console.log("Normalized Last Part (Brand):", normalizedLastPart);
 
-        // Continue with your existing logic, splitting slug and filtering products
-        const slugParts = slug.split("/"); // Split the slug into parts
-        console.log("slugParts:", slugParts); // Log the parts
-
-        // Normalize the last and second-last part of the slug
-        const normalizedLastPart = slugParts.at(-1)?.replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
-        const normalizedSecondLastPart = slugParts.length > 1
-            ? slugParts.at(-2)?.replace(/[^a-zA-Z0-9]/g, "").toLowerCase()
-            : undefined;
-
-        console.log("normalizedLastPart:", normalizedLastPart);
-        console.log("normalizedSecondLastPart:", normalizedSecondLastPart);
-
-        // Filter products as per your previous logic
+        // Filter products by the normalized brand name
         const filtered = products.filter((product) => {
-            const normalizedSubcategory = product.subcategoryName
+            const normalizedBrand = product.brandName
                 ?.replace(/[^a-zA-Z0-9]/g, "")
-                .toLowerCase();
-            const normalizedCategory = product.categoryName
-                ?.replace(/[^a-zA-Z0-9]/g, "")
-                .toLowerCase();
+                .toLowerCase(); // Normalize product brand name
 
-            // Log to check the normalized subcategory and category
-            console.log("normalizedSubcategory:", normalizedSubcategory);
-            console.log("normalizedCategory:", normalizedCategory);
+            console.log("Normalized Product Brand:", normalizedBrand);
 
-            // Filter based on the last part of the slug or second-to-last if necessary
-            if (slugParts.length === 1) {
-                return normalizedSubcategory === normalizedLastPart;
-            }
-
-            return (
-                (normalizedSubcategory && normalizedSubcategory === normalizedLastPart) ||
-                (normalizedCategory && normalizedCategory === normalizedSecondLastPart)
-            );
+            return normalizedBrand === normalizedLastPart;
         });
 
         setFilteredProducts(filtered);
-    }, [products, slug]);
+    }, [products, lastPart]);
 
     const handleProductClick = (product) => {
         setSelectedProduct(product);

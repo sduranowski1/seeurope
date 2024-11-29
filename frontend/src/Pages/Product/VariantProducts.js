@@ -61,7 +61,7 @@ const productsData = {
     }
 };
 
-export const SubcategoryProducts = ({lastPart, slug}) => {
+export const VariantProducts = ({lastPart, slug}) => {
     const [displayedItems, setDisplayedItems] = useState([0, 1000000]);
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [checkboxes, setCheckboxes] = useState({});
@@ -236,25 +236,24 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
 
         // Filter products as per your previous logic
         const filtered = products.filter((product) => {
-            const normalizedSubcategory = product.subcategoryName
+            const normalizedVariant = product.variantName
                 ?.replace(/[^a-zA-Z0-9]/g, "")
                 .toLowerCase();
-            const normalizedCategory = product.categoryName
+            const normalizedBrand = product.brandName
                 ?.replace(/[^a-zA-Z0-9]/g, "")
                 .toLowerCase();
 
             // Log to check the normalized subcategory and category
-            console.log("normalizedSubcategory:", normalizedSubcategory);
-            console.log("normalizedCategory:", normalizedCategory);
+            console.log("normalizedVariant:", normalizedVariant);
+            console.log("normalizedBrand:", normalizedBrand);
 
             // Filter based on the last part of the slug or second-to-last if necessary
             if (slugParts.length === 1) {
-                return normalizedSubcategory === normalizedLastPart;
+                return normalizedVariant === normalizedLastPart;
             }
 
             return (
-                (normalizedSubcategory && normalizedSubcategory === normalizedLastPart) ||
-                (normalizedCategory && normalizedCategory === normalizedSecondLastPart)
+                (normalizedVariant && normalizedVariant === normalizedLastPart)
             );
         });
 

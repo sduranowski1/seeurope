@@ -71,6 +71,7 @@ import SubcategoryEdit from "./Resources/Subcategory/SubcategoryEdit";
 import {StaticForklift} from "./Pages/Forklift/StaticForklift";
 import {Category} from "./Pages/Category/Category";
 import {Brand} from "./Pages/Brand/Brand";
+import {ProductDetailsForBrands} from "./Pages/Product/ProductDetailsForBrands";
 // import BrandEdit from "./Resources/Product/BrandEdit";
 // import {SidebarComponent} from "./Components/SidebarComponent/SidebarComponent";
 // import {FooterComponent} from "./Components/FooterComponent/FooterComponent";
@@ -132,7 +133,7 @@ const App = () => {
               <Route index  element={<Layout><MyCoupling /></Layout>} />
               {/*<Route path=":brand" element={<Layout><Se /></Layout>} />*/}
               <Route path=":brand" element={<Layout><Brand /></Layout>} />
-              <Route path=":brand/:slug" element={<Layout><ProductDetails /></Layout>} />
+              <Route path=":brand/:slug" element={<Layout><ProductDetailsForBrands /></Layout>} />
               {/*<Route path="100838" element={<Layout><Se/></Layout>} />*/}
               {/*<Route path="3-punkt" element={<Layout><ThreePoint /></Layout>} />*/}
           </Route>

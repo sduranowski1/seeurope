@@ -15,7 +15,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[HasLifecycleCallbacks]
 #[ApiResource(
     normalizationContext: ['groups' => ['category:read']],
-    denormalizationContext: ['groups' => ['category:write']]
+    denormalizationContext: ['groups' => ['category:create']]
 )]
 class Category
 {

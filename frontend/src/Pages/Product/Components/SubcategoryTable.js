@@ -6,7 +6,7 @@ import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import {TableComponent} from "../../../Components/TableComponent/TableComponent";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {ProductDescription} from "./ProductDescription";
 
 // export const SubcategoryTable = (props) => {
@@ -41,7 +41,7 @@ import {ProductDescription} from "./ProductDescription";
 //     );
 // }
 
-export const SubcategoryTable = ({ productsData, onProductClick, displayedItems, checkboxes }) => {
+export const SubcategoryTable = ({ productsData, onProductClick, lastPartToCollapse, displayedItems, checkboxes }) => {
     const [activeFilter, setActiveFilter] = useState("All");
     const [selectedProduct, setSelectedProduct] = useState(null);
 
@@ -61,6 +61,11 @@ export const SubcategoryTable = ({ productsData, onProductClick, displayedItems,
         setSelectedProduct(product); // Highlight selected product
         onProductClick(product); // Trigger callback
     };
+
+    // Reset selected product when lastPartToCollapse changes
+    useEffect(() => {
+        setSelectedProduct(null); // Reset selected product when lastPartToCollapse changes
+    }, [lastPartToCollapse]);
 
     return (
         <div>

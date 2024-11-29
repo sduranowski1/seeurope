@@ -3,8 +3,9 @@ import {useState} from "react";
 import {ThreePoint} from "../ThreePoint/ThreePoint";
 import sketch from "../../assets/100838.png";
 import {SubcategoryProducts} from "./SubcategoryProducts";
+import {VariantProducts} from "./VariantProducts";
 
-export const ProductDetails = () => {
+export const ProductDetailsForBrands = () => {
     const { slug } = useParams();
     const [itemsToOrder, setItemsToOrder] = useState(1);
 
@@ -19,11 +20,9 @@ export const ProductDetails = () => {
         ? lastPartOfSlug.charAt(0).toUpperCase() + lastPartOfSlug.slice(1)
         : null;
 
-    console.log(capitalizedLastPart)
-
     return (
         <main className='product-page'>
-            <SubcategoryProducts lastPart={capitalizedLastPart} slug={slug}></SubcategoryProducts>
+            <VariantProducts lastPart={capitalizedLastPart} slug={slug}></VariantProducts>
 
         </main>
     );

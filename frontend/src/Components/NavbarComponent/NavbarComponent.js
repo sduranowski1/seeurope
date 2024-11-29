@@ -120,23 +120,38 @@ export const NavbarComponent = (props) => {
     const renderVariantItems = (brandId) => {
         return variants
             .filter(variant => variant.bid === brandId)
-            .map(variant => (
-                <li key={variant.id}>
-                    <Link to={`/moje-zlacze/${variant.variantname}`} element={<ThreePoint />}>
-                        {variant.variantname}
-                    </Link>
-                </li>
-            ));
+            .map(variant => {
+                const variantSlug = variant.variantname.replace(/\s+/g, '-'); // Convert spaces to dashes
+                const brandSlug = variant.brand?.name.replace(/\s+/g, '-'); // Convert spaces to dashes
+
+
+                return (
+                    <li key={variant.id}>
+                        <Link to={`/moje-zlacze/${brandSlug}/${variantSlug}`} element={<ThreePoint />}>
+                            {variant.variantname}
+                        </Link>
+                    </li>
+                );
+            });
     };
 
     const renderBrandMenuItems = () => {
-        return brands.map(brand => {
+        return brands.map((brand) => {
             const variantItems = renderVariantItems(brand.id);
             const hasSubItems = variantItems.length > 0;
 
+            // Replace spaces with dashes in the brand name
+            const brandSlug = brand.name.replace(/\s+/g, '-'); // Convert spaces to dashes
+
             return (
                 <li key={brand.id} className={`nav__submenu-item ${hasSubItems ? 'nav__submenu-item--list' : ''}`}>
-                    <Link to={`/moje-zlacze/${brand.name}`} element={<ThreePoint />}>
+                    <Link
+                        to={hasSubItems ? '#' : `/moje-zlacze/${brandSlug}`} // Use `#` to make it visually consistent but non-functional
+                        element={<ThreePoint />}
+                        onClick={(e) => {
+                            if (hasSubItems) e.preventDefault(); // Prevent navigation if the brand has variants
+                        }}
+                    >
                         {brand.name}
                         {hasSubItems && <FontAwesomeIcon icon={faAngleDown} className={'angle-up'} />}
                     </Link>
@@ -145,6 +160,8 @@ export const NavbarComponent = (props) => {
             );
         });
     };
+
+
 
     const renderCategoryMenuItems = () => {
         return categories.map(category => {
@@ -210,7 +227,7 @@ export const NavbarComponent = (props) => {
 
                     <ul className="nav__menu">
                         <li className="nav__menu-item">
-                            <a className={'link-container'}>
+                            <a className={'link-container'} href={'/moje-zlacze'}>
                                 {t('my_coupling')}
                                 <FontAwesomeIcon icon={faAngleDown} className={'angle-up angle-up--main'}/> </a>
                             <ul className="nav__submenu">
@@ -218,7 +235,7 @@ export const NavbarComponent = (props) => {
                             </ul>
                         </li>
                         <li className="nav__menu-item">
-                            <a className={'link-container'}>
+                            <a className={'link-container'}  href={'/moja-maszyna'}>
                                 {t('my_machine')}
                                 <FontAwesomeIcon icon={faAngleDown} className={'angle-up angle-up--main'}/> </a>
                             <ul className="nav__submenu">

@@ -3,6 +3,7 @@ import {useNavigate} from "react-router-dom";
 
 export const LinksListWithImages = (props) => {
     const navigate = useNavigate();
+    console.log(props)
 
     const handleNavigation = (slug) => {
         navigate(`${slug}`);

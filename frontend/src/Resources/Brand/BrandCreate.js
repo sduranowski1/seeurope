@@ -20,9 +20,9 @@ const BrandCreate = (props) => (
       {/*</ReferenceInput>*/}
       {/*<DateInput source="createdAt" />*/}
       {/*<DateInput source="updatedAt" />*/}
-      {/*<ImageInput source="pictures" label="Related pictures">*/}
-      {/*  <ImageField source="src" title="title" />*/}
-      {/*</ImageInput>*/}
+      <ImageInput source="pictures" label="Related pictures">
+        <ImageField source="src" title="title" />
+      </ImageInput>
     </SimpleForm>
   </Create>
 );

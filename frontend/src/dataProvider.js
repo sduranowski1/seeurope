@@ -2,6 +2,7 @@
 import { fetchUtils } from 'react-admin';
 
 const apiUrl = 'https://se-europe-test.pl/api';
+const domainUrl = 'https://se-europe-test.pl';
 // const apiUrl = 'https://127.0.0.1:8000/api';
 const httpClient = fetchUtils.fetchJson
 
@@ -84,21 +85,78 @@ const dataProvider = {
             throw new Error('Bulk delete failed');
         });
     },
-  create: (resource, params) => {
-    const url = `${apiUrl}/${resource}`;
-    const options = {
-      method: 'POST',
-      body: JSON.stringify(params.data),
-      headers: new Headers({
-        'Content-Type': 'application/json',
-      }),
-    };
+    create: async (resource, params) => {
+        try {
+            let brandData = { ...params.data };
 
-    return httpClient(url, options).then(({ json }) => ({
-      data: { ...params.data, id: json.id },
-    }));
-  },
-  // Other CRUD methods...
+            console.log('Brand Data before upload:', brandData);
+
+            if (resource === "brands" && brandData.pictures?.rawFile) {
+                // Step 1: Upload the image
+                const formData = new FormData();
+                formData.append("file", brandData.pictures.rawFile);
+
+                const uploadResponse = await httpClient(`${apiUrl}/brands_media_objects`, {
+                    method: "POST",
+                    body: formData,
+                });
+
+                // Log the uploadResponse to check its structure
+                console.log('Upload Response:', uploadResponse);
+
+                // Access the json directly (since it is already parsed)
+                const responseJson = uploadResponse.json; // No need to call .json()
+
+                console.log('Upload Response JSON:', responseJson);
+
+                // Step 2: Extract the MediaObject URL (adjust based on actual response structure)
+                const mediaUrl = responseJson.contentUrl;
+                console.log('Extracted Media URL:', mediaUrl);
+
+                // Step 3: Extract filename from the mediaUrl (e.g., /media/brands/filename.jpg -> filename.jpg)
+                const filename = mediaUrl.split('/').pop();
+                console.log('Extracted Filename:', filename);
+
+                // Step 4: Assign the filename to the image_path (correct field)
+                brandData.imagePath = filename; // Use image_path with the filename
+
+                // Optional: If your API expects the full media URL, you can also assign it here
+                brandData.image = mediaUrl;
+
+                console.log('Brand Data with image_path:', brandData);
+            }
+
+            // Step 5: Create the brand
+            const url = `${apiUrl}/${resource}`;
+            const mediaUrl = `${domainUrl}/media/${resource}`;
+            const options = {
+                method: "POST",
+                body: JSON.stringify({
+                    name: brandData.name,
+                    imagePath: brandData.imagePath,
+                    domainImagePath: `${mediaUrl}` + brandData.domainImagePath,
+                }),
+                headers: new Headers({
+                    "Content-Type": "application/json",
+                }),
+            };
+
+            console.log(options.body)
+
+            // const response = await httpClient(`${apiUrl}/${resource}`, options);
+            // const responseJson = await response.json(); // Await the create response
+            // console.log('Create Brand Response:', responseJson);
+
+            return httpClient(url, options).then(({ json }) => ({
+                data: { ...params.data, id: json.id },
+            }));
+        } catch (error) {
+            console.error('Create Brand Error:', error);
+            throw error;
+        }
+    },
+
+    // Other CRUD methods...
 };
 
 export default dataProvider;

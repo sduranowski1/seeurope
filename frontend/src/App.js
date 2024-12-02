@@ -188,6 +188,19 @@ const AdminLayout = () => {
   // Access token from context to pass to react-admin authProvider
   const { token } = React.useContext(AuthContext);
 
+    // Example: Adding debug information for `dataProvider` or props
+    React.useEffect(() => {
+        dataProvider.getList('brands', {
+            pagination: { page: 1, perPage: 1 },
+            sort: { field: 'id', order: 'ASC' },
+            filter: {},
+        }).then(response => {
+            console.log("Sample Brand Data:", response);
+        }).catch(error => {
+            console.error("Error fetching brands:", error);
+        });
+    }, []);
+
   return (
     <Admin dataProvider={dataProvider} authProvider={authProvider} layout={MyLayout} locale="en" i18nProvider={i18nProvider} basename="/admin">
       <Resource name="products" list={ProductList} edit={ProductEdit} />

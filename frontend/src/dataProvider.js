@@ -32,26 +32,89 @@ const dataProvider = {
       data: json,
     }));
   },
-  update: (resource, params) => {
-    console.log('Updating user with data:', params.data);
+  // update: (resource, params) => {
+  //   console.log('Updating user with data:', params.data);
+  //
+  //   const url = `${apiUrl}/${resource}/${params.id}`;
+  //   const options = {
+  //     method: 'PUT',
+  //     body: JSON.stringify(params.data),
+  //     headers: new Headers({
+  //       'Content-Type': 'application/json',
+  //     }),
+  //   };
+  //
+  //   return httpClient(url, options).then(({ json }) => ({
+  //     data: json,
+  //   })).catch(error => {
+  //     console.error('Update error', error);
+  //     throw error;
+  //   });
+  // },
+    update: async (resource, params) => {
+        try {
+            let brandData = { ...params.data };
 
-    const url = `${apiUrl}/${resource}/${params.id}`;
-    const options = {
-      method: 'PUT',
-      body: JSON.stringify(params.data),
-      headers: new Headers({
-        'Content-Type': 'application/json',
-      }),
-    };
+            console.log("Brand Data before upload:", brandData);
 
-    return httpClient(url, options).then(({ json }) => ({
-      data: json,
-    })).catch(error => {
-      console.error('Update error', error);
-      throw error;
-    });
-  },
-  delete: async (resource, params) => {
+            if (resource === "brands" && brandData.pictures?.rawFile) {
+                // Step 1: Handle file upload
+                const formData = new FormData();
+                formData.append("file", brandData.pictures.rawFile);
+
+                const uploadResponse = await httpClient(`${apiUrl}/brands_media_objects`, {
+                    method: "POST",
+                    body: formData,
+                });
+
+                // Log the upload response
+                console.log("Upload Response:", uploadResponse);
+
+                const responseJson = uploadResponse.json; // Parsed JSON from the response
+                console.log("Upload Response JSON:", responseJson);
+
+                // Extract media URL or filename
+                const mediaUrl = responseJson.contentUrl;
+                console.log("Extracted Media URL:", mediaUrl);
+
+                // Extract filename (if required)
+                const filename = mediaUrl.split("/").pop();
+                console.log("Extracted Filename:", filename);
+
+                // Update the imagePath or domainImagePath in the brand data
+                brandData.imagePath = filename;
+                brandData.domainImagePath = mediaUrl; // Optional: Assign full URL
+            }
+
+            // Step 2: Update the brand
+            const url = `${apiUrl}/${resource}/${params.id}`;
+            const mediaUrl = `${domainUrl}/media/${resource}`; // Replace `yourDomainUrl` with the correct base URL
+
+            const options = {
+                method: "PUT", // Use PUT for updates
+                body: JSON.stringify({
+                    name: brandData.name,
+                    imagePath: brandData.imagePath,
+                    domainImagePath: `${mediaUrl}/${brandData.imagePath}`, // Full URL with domain
+                }),
+                headers: new Headers({
+                    "Content-Type": "application/json",
+                }),
+            };
+
+            console.log("Update Payload:", options.body);
+
+            // Make the update request
+            return httpClient(url, options).then(({ json }) => ({
+                data: { ...params.data, id: json.id },
+            }));
+        } catch (error) {
+            console.error("Update Brand Error:", error);
+            throw error;
+        }
+    },
+
+    delete: async (resource, params) => {
         const url = `${apiUrl}/${resource}/${params.id}`;
         const { json } = await httpClient(url, {
             method: 'DELETE',
@@ -85,6 +148,20 @@ const dataProvider = {
             throw new Error('Bulk delete failed');
         });
     },
+    // create: (resource, params) => {
+    //     const url = ${apiUrl}/${resource};
+    //     const options = {
+    //         method: 'POST',
+    //         body: JSON.stringify(params.data),
+    //         headers: new Headers({
+    //             'Content-Type': 'application/json',
+    //         }),
+    //     };
+    //
+    //     return httpClient(url, options).then(({ json }) => ({
+    //         data: { ...params.data, id: json.id },
+    //     }));
+    // },
     create: async (resource, params) => {
         try {
             let brandData = { ...params.data };
@@ -134,7 +211,7 @@ const dataProvider = {
                 body: JSON.stringify({
                     name: brandData.name,
                     imagePath: brandData.imagePath,
-                    domainImagePath: `${mediaUrl}` + brandData.domainImagePath,
+                    domainImagePath: `${mediaUrl}/${brandData.imagePath}`, // Full URL with domain
                 }),
                 headers: new Headers({
                     "Content-Type": "application/json",

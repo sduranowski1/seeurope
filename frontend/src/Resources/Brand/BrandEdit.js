@@ -10,9 +10,9 @@ const BrandEdit = (props) => (
           <TextInput source="name" />
           {/*<TextInput source="variant" />*/}
           <ImageInput source="pictures" label="Related pictures">
-            <ImageField source="pictures" src="imagePath" title="desc"  />
+              <ImageField source="domainImagePath"/>
           </ImageInput>
-            <ImageField source="domainImagePath" />
+          <ImageField source="domainImagePath"/>
 
         </SimpleForm>
     </Edit>

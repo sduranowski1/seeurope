@@ -34,7 +34,7 @@ class Brand
     #[ORM\JoinColumn(nullable: true)]
     #[ApiProperty(types: ['https://schema.org/image'])]
     #[Groups(['brand:read', 'brand:create', 'brand:update'])]
-    public ?MediaObject $image = null;
+    public ?BrandsMediaObject $image = null;
 
     #[ORM\Column(type: "string")]
     #[Groups(['brand:read', 'brand:create', 'brand:update'])]

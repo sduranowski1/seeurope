@@ -95,7 +95,7 @@ export const MyCoupling = () => {
                     // .filter(item => slugify(item.brand.name) === currentSlug)
                     .map(item => ({
                         name: item.name,
-                        imgUrl: null, // Images not handled yet
+                        imgUrl: item.domainImagePath, // Images not handled yet
                         slug: slugify(item.name),
                     }));
                 console.log(filteredData);

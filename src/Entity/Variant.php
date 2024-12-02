@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use App\Entity\Traits\Timestampable;
 use App\Repository\VariantRepository;
@@ -27,7 +28,7 @@ class Variant
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
-    #[Groups(['variant:read', 'variant:create'])]
+    #[Groups(['variant:read', 'variant:create', 'variant:update'])]
     private ?string $variantname = null;
 
     #[ORM\Column(nullable: true)]
@@ -38,6 +39,41 @@ class Variant
     #[ORM\JoinColumn(name: 'bid', referencedColumnName: 'id', nullable: true)]
     #[Groups(['variant:read', 'variant:create'])]
     public ?Brand $brand = null;
+
+
+    #[ORM\ManyToOne(targetEntity: BrandsMediaObject::class)]
+    #[ORM\JoinColumn(nullable: true)]
+    #[ApiProperty(types: ['https://schema.org/image'])]
+    #[Groups(['variant:read', 'variant:create', 'variant:update'])]
+    public ?VariantsMediaObject $image = null;
+
+    #[ORM\Column(type: "string")]
+    #[Groups(['variant:read', 'variant:create', 'variant:update'])]
+    private string $imagePath;
+
+    #[ORM\Column(type: "string")]
+    #[Groups(['variant:read', 'variant:create', 'variant:update'])]
+    private string $domainImagePath;
+
+    public function getImagePath(): string
+    {
+        return $this->imagePath;
+    }
+
+    public function setImagePath(string $imagePath): void
+    {
+        $this->imagePath = $imagePath;
+    }
+
+    public function getDomainImagePath(): string
+    {
+        return $this->domainImagePath;
+    }
+
+    public function setDomainImagePath(string $domainImagePath): void
+    {
+        $this->domainImagePath = $domainImagePath;
+    }
 
     public function getId(): ?int
     {

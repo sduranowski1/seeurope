@@ -7,8 +7,9 @@ import skidLoader from "../../assets/home/skid-loader.png";
 import forkLift from "../../assets/home/fork-lift.png";
 import {LinksListWithImages} from "../../Components/LinksListWithImages/LinksListWithImages";
 import { useTranslation } from 'react-i18next';
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useLocation, useNavigate} from "react-router-dom";
+import {Box, CircularProgress} from "@mui/material";
 
 export const MyMachine = () => {
     // const products = [
@@ -74,7 +75,15 @@ export const MyMachine = () => {
     }, [currentSlug]); // Refetch if the slug changes
 
     if (isLoading) {
-        return <p>Loading...</p>;
+        return <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            height="50vh" // Or use specific height if you want it in a smaller area
+            width="100%"
+        >
+            <CircularProgress />
+        </Box>;
     }
 
     if (error) {

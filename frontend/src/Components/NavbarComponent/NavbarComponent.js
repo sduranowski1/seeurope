@@ -19,7 +19,7 @@ import {ThisIsSe} from "../../Pages/ThisIsSe/ThisIsSe";
 import {Sustainability} from "../../Pages/Sustainability/Sustainability";
 import {FindReseller} from "../../Pages/FindReseller/FindReseller";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
+import {faAngleDown, faSpinner} from '@fortawesome/free-solid-svg-icons';
 import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
 import { faEnvelope } from '@fortawesome/free-regular-svg-icons';
 import { faAngleUp, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
@@ -70,7 +70,9 @@ export const NavbarComponent = (props) => {
     const [brands, setBrands] = useState([]);
     const [variants, setVariants] = useState([]);
     const [categories, setCategories] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [loadingCoupling, setLoadingCoupling] = useState(true);
+    const [loadingMachine, setLoadingMachine] = useState(true);
+
 
 
     useEffect(() => {
@@ -86,10 +88,10 @@ export const NavbarComponent = (props) => {
 
                 setBrands(brandsData);
                 setVariants(variantsData);
-                setLoading(false);
+                setLoadingCoupling(false);
             } catch (error) {
                 console.error('Error fetching data:', error);
-                setLoading(false);
+                setLoadingCoupling(false);
             }
         };
 
@@ -103,19 +105,19 @@ export const NavbarComponent = (props) => {
                 const categoriesData = await categoryResponse.json();
 
                 setCategories(categoriesData);
-                setLoading(false);
+                setLoadingMachine(false);
             } catch (error) {
                 console.error('Error fetching data:', error);
-                setLoading(false);
+                setLoadingMachine(false);
             }
         };
 
         fetchMachine();
     }, []);
 
-    if (loading) {
-        return <div>Loading...</div>;
-    }
+    // if (loading) {
+    //     return <div>Loading...</div>;
+    // }
 
     const renderVariantItems = (brandId) => {
         return variants
@@ -229,7 +231,15 @@ export const NavbarComponent = (props) => {
                         <li className="nav__menu-item">
                             <a className={'link-container'} href={'/moje-zlacze'}>
                                 {t('my_coupling')}
-                                <FontAwesomeIcon icon={faAngleDown} className={'angle-up angle-up--main'}/> </a>
+                                {loadingCoupling ? (
+                                    <div className="loading-spinner">
+                                        {/* Replace this with your preferred spinner/loading icon */}
+                                        <FontAwesomeIcon icon={faSpinner} spin className={'loading-icon'} />
+                                    </div>
+                                ) : (
+                                    <FontAwesomeIcon icon={faAngleDown} className={'angle-up angle-up--main'} />
+                                )}
+                            </a>
                             <ul className="nav__submenu">
                                 {renderBrandMenuItems()}
                             </ul>
@@ -237,7 +247,15 @@ export const NavbarComponent = (props) => {
                         <li className="nav__menu-item">
                             <a className={'link-container'}  href={'/moja-maszyna'}>
                                 {t('my_machine')}
-                                <FontAwesomeIcon icon={faAngleDown} className={'angle-up angle-up--main'}/> </a>
+                                {loadingMachine ? (
+                                    <div className="loading-spinner">
+                                        {/* Replace this with your preferred spinner/loading icon */}
+                                        <FontAwesomeIcon icon={faSpinner} spin className={'loading-icon'} />
+                                    </div>
+                                ) : (
+                                    <FontAwesomeIcon icon={faAngleDown} className={'angle-up angle-up--main'} />
+                                )}
+                            </a>
                             <ul className="nav__submenu">
                                 {renderCategoryMenuItems()}
                             </ul>

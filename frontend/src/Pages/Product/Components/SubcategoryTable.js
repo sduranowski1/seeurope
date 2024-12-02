@@ -70,19 +70,22 @@ export const SubcategoryTable = ({ productsData, onProductClick, lastPartToColla
     return (
         <div>
             {/* Filter Tabs */}
-            <div style={{ marginBottom: "1rem" }}>
+            <div>
                 {uniqueCapacities.map((capacity, index) => (
                     <button
                         key={index}
                         onClick={() => setActiveFilter(capacity)}
                         style={{
+                            fontSize: "1em",
+                            fontWeight: "400",
                             padding: "0.5rem 1rem",
-                            marginRight: "0.5rem",
+                            marginRight: "0.1rem",
                             cursor: "pointer",
-                            backgroundColor: activeFilter === capacity ? "#007BFF" : "#f1f1f1",
-                            color: activeFilter === capacity ? "white" : "black",
-                            border: "1px solid #ccc",
-                            borderRadius: "4px",
+                            backgroundColor: activeFilter === capacity ? "#1d6cc1" : "#aaa",
+                            color: activeFilter === capacity ? "white" : "white",
+                            // border: "1px solid #ccc",
+                            borderTopLeftRadius: "10px",
+                            borderTopRightRadius: "10px",
                         }}
                     >
                         {capacity}
@@ -91,7 +94,7 @@ export const SubcategoryTable = ({ productsData, onProductClick, lastPartToColla
             </div>
 
             {/* Products Table */}
-            <table>
+            <table style={{width: "100%"}}>
                 <thead>
                 <tr>
                     <th>Kod</th>
@@ -105,44 +108,52 @@ export const SubcategoryTable = ({ productsData, onProductClick, lastPartToColla
                 </tr>
                 </thead>
                 <tbody>
-                {filteredProducts.map((product, index) => (
-                    <tr
-                        key={index}
-                        onClick={() => handleRowClick(product)}
-                        style={{
-                            cursor: "pointer",
-                            backgroundColor:
-                                selectedProduct === product ? "#72a2d5" : "transparent",
-                            // color: selectedProduct === product ? "white" : "black",
-                            transition: "background-color 0.3s, color 0.3s",
-                        }}
-                        onMouseEnter={(e) => {
-                            if (selectedProduct !== product) {
-                                e.currentTarget.style.backgroundColor = "#aaaaaa";
-                            }
-                        }}
-                        onMouseLeave={(e) => {
-                            if (selectedProduct !== product) {
-                                e.currentTarget.style.backgroundColor = "transparent";
-                            }
-                        }}
-                    >
-                        <td>{product.kod || "N/A"}</td>
-                        <td>{product.nazwa || "N/A"}</td>
-                        <td>{product.capacityFeat || "N/A"}</td>
-                        <td>{product.netto || "N/A"}</td>
-                        <td>{product.brandName || "N/A"}</td>
-                        <td>{product.variantName || "N/A"}</td>
-                        <td>{product.categoryName || "N/A"}</td>
-                        <td>{product.subcategoryName || "N/A"}</td>
+                {filteredProducts.length > 0 ? (
+                    filteredProducts.map((product, index) => (
+                        <tr
+                            key={index}
+                            onClick={() => handleRowClick(product)}
+                            style={{
+                                cursor: "pointer",
+                                backgroundColor:
+                                    selectedProduct === product ? "#72a2d5" : "transparent",
+                                // color: selectedProduct === product ? "white" : "black",
+                                transition: "background-color 0.3s, color 0.3s",
+                            }}
+                            onMouseEnter={(e) => {
+                                if (selectedProduct !== product) {
+                                    e.currentTarget.style.backgroundColor = "#aaaaaa";
+                                }
+                            }}
+                            onMouseLeave={(e) => {
+                                if (selectedProduct !== product) {
+                                    e.currentTarget.style.backgroundColor = "transparent";
+                                }
+                            }}
+                        >
+                            <td>{product.kod || "N/A"}</td>
+                            <td>{product.nazwa || "N/A"}</td>
+                            <td>{product.capacityFeat || "N/A"}</td>
+                            <td>{product.netto || "N/A"}</td>
+                            <td>{product.brandName || "N/A"}</td>
+                            <td>{product.variantName || "N/A"}</td>
+                            <td>{product.categoryName || "N/A"}</td>
+                            <td>{product.subcategoryName || "N/A"}</td>
+                        </tr>
+                        ))
+                ) : (
+                    <tr>
+                        <td colSpan="8" style={{ textAlign: "center", padding: "20px" }}>
+                            No Items Found
+                        </td>
                     </tr>
-                ))}
+                )}
                 </tbody>
             </table>
             {/* Product Description */}
             {selectedProduct && (
-                <div style={{ marginTop: "1rem" }}>
-                    <h3>Product Description</h3>
+                // <div style={{ marginTop: "1rem" }}>
+                <div>
                     <ProductDescription product={selectedProduct} />
                 </div>
             )}

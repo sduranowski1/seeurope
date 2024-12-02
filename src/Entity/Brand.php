@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use App\Entity\Traits\Timestampable;
 use App\Repository\BrandRepository;
@@ -29,8 +30,25 @@ class Brand
     #[Groups(['brand:read', 'brand:create', 'brand:update', 'variant:read', 'variant:create', 'variant:update'])]
     private ?string $name = null;
 
-//    #[ORM\Column(length: 255)]
-//    private ?string $variant = null;
+    #[ORM\ManyToOne(targetEntity: BrandsMediaObject::class)]
+    #[ORM\JoinColumn(nullable: true)]
+    #[ApiProperty(types: ['https://schema.org/image'])]
+    #[Groups(['brand:read', 'brand:create', 'brand:update'])]
+    public ?MediaObject $image = null;
+
+    #[ORM\Column(type: "string")]
+    #[Groups(['brand:read', 'brand:create', 'brand:update'])]
+    private string $imagePath;
+
+    public function getImagePath(): string
+    {
+        return $this->imagePath;
+    }
+
+    public function setImagePath(string $imagePath): void
+    {
+        $this->imagePath = $imagePath;
+    }
 
     public function getId(): ?int
     {
@@ -48,16 +66,4 @@ class Brand
 
         return $this;
     }
-
-//    public function getVariant(): ?string
-//    {
-//        return $this->variant;
-//    }
-//
-//    public function setVariant(string $variant): static
-//    {
-//        $this->variant = $variant;
-//
-//        return $this;
-//    }
 }

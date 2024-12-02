@@ -165,7 +165,7 @@ export const ProductDescription = ({ product }) => {
                 display="flex"
                 justifyContent="center"
                 alignItems="center"
-                height="100vh" // Or use specific height if you want it in a smaller area
+                height="25vh" // Or use specific height if you want it in a smaller area
                 width="100%"
             >
                 <CircularProgress />

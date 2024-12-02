@@ -21,8 +21,9 @@ import terex from "../../assets/couplings/terex.png";
 import weidemann from "../../assets/couplings/weidemann.png";
 import {LinksListWithImages} from "../../Components/LinksListWithImages/LinksListWithImages";
 import { useTranslation } from 'react-i18next';
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useLocation, useNavigate} from "react-router-dom";
+import {Box, CircularProgress} from "@mui/material";
 
 export const MyCoupling = () => {
     // const products = [
@@ -111,7 +112,15 @@ export const MyCoupling = () => {
     }, [currentSlug]); // Refetch if the slug changes
 
     if (isLoading) {
-        return <p>Loading...</p>;
+        return <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            height="50vh" // Or use specific height if you want it in a smaller area
+            width="100%"
+        >
+            <CircularProgress />
+        </Box>;
     }
 
     if (error) {

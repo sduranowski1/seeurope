@@ -8,6 +8,9 @@ import {useNavigate} from "react-router-dom";
 import {fetchToken} from "../../utils/fetchToken";
 import {SubcategoryTable} from "./Components/SubcategoryTable";
 import {ProductDescription} from "./Components/ProductDescription";
+import Box from "@mui/material/Box";
+import {CircularProgress} from "@mui/material";
+import * as React from "react";
 
 const productsData = {
     name: '3 POINT',
@@ -88,7 +91,7 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
     const [categories, setCategories] = useState([]);
     const [subcategories, setSubcategories] = useState([]);
     const [token, setToken] = useState(null);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalItems, setTotalItems] = useState(0);
@@ -253,8 +256,9 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
             }
 
             return (
-                (normalizedSubcategory && normalizedSubcategory === normalizedLastPart) ||
-                (normalizedCategory && normalizedCategory === normalizedSecondLastPart)
+                // (normalizedSubcategory && normalizedSubcategory === normalizedLastPart) ||
+                // (normalizedCategory && normalizedCategory === normalizedSecondLastPart)
+                normalizedSubcategory && normalizedSubcategory === normalizedLastPart
             );
         });
 
@@ -272,26 +276,38 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
                     <h1 className={'page-title'}>{lastPart ? lastPart : t("my_coupling")}</h1>
                     <p className={'paragraph paragraph--medium'}>{t("tractor_equipment")}</p>
                 </div>
+                {loading ? (
+                    <Box
+                        display="flex"
+                        justifyContent="center"
+                        alignItems="center"
+                        height="25vh" // Adjust height to suit your layout
+                        width="100%"
+                    >
+                        <CircularProgress />
+                    </Box>
+                ) : (<div>
                 <div className={'available-choices-container'}>
+
                     <div className={'choice-container'}>
                         <h2>{t("machine_weight")}</h2>
                         <ProductRangeComponent/>
                     </div>
-                    {/*<div className={'choice-container'}>*/}
-                    {/*    <h2>{t("coupling")}</h2>*/}
-                    {/*    <div className={'choice-container__checkboxes'}>*/}
-                    {/*        {checkboxes && Object.keys(checkboxes).map((name, i) => {*/}
-                    {/*            return (*/}
-                    {/*                <BoxWithCheckboxes*/}
-                    {/*                    key={i}*/}
-                    {/*                    label={name}*/}
-                    {/*                    checkboxes={checkboxes}*/}
-                    {/*                    setCheckboxes={(checkboxValue) => setCheckboxes(checkboxValue)}*/}
-                    {/*                />*/}
-                    {/*            );*/}
-                    {/*        })}*/}
-                    {/*    </div>*/}
-                    {/*</div>*/}
+                    <div className={'choice-container'}>
+                        <h2>{t("coupling")}</h2>
+                        <div className={'choice-container__checkboxes'}>
+                            {checkboxes && Object.keys(checkboxes).map((name, i) => {
+                                return (
+                                    <BoxWithCheckboxes
+                                        key={i}
+                                        label={name}
+                                        checkboxes={checkboxes}
+                                        setCheckboxes={(checkboxValue) => setCheckboxes(checkboxValue)}
+                                    />
+                                );
+                            })}
+                        </div>
+                    </div>
                 </div>
                 {/*<SubcategoryTable productsData={productsData} displayedItems={displayedItems}/>*/}
                 {/*<SubcategoryTable productsData={productsData} displayedItems={displayedItems} checkboxes={checkboxes}/>*/}
@@ -303,6 +319,8 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
                 {/*{selectedProduct && (*/}
                 {/*    <ProductDescription product={selectedProduct} productsData={filteredProducts}/>*/}
                 {/*)}*/}
+                </div>
+                )}
             </section>
         </main>
     );

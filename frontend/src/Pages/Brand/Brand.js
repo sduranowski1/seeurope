@@ -4,6 +4,8 @@ import { LinksListWithImages } from '../../Components/LinksListWithImages/LinksL
 import { useNavigate, useLocation } from 'react-router-dom';
 import {ProductDetailsForBrands} from "../Product/ProductDetailsForBrands";
 import {ProductDetailsMissingVariants} from "../Product/ProductDetailsMissingVariants";
+import Box from "@mui/material/Box";
+import {CircularProgress} from "@mui/material";
 
 export const Brand = () => {
     const [products, setProducts] = useState([]);
@@ -61,7 +63,21 @@ export const Brand = () => {
     };
 
     if (isLoading) {
-        return <p>Loading...</p>;
+        return (
+            <section className={'section-contrains tables-page'}>
+                <div className={'loading-container'}>
+                    <Box
+                        display="flex"
+                        justifyContent="center"
+                        alignItems="center"
+                        minHeight="40vh" // Or use specific height if you want it in a smaller area
+                        width="100%"
+                    >
+                        <CircularProgress/>
+                    </Box>
+                </div>
+            </section>
+        );
     }
 
     if (error) {

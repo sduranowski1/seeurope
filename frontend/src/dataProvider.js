@@ -85,27 +85,14 @@ const dataProvider = {
         });
     },
   create: (resource, params) => {
-    let url = `${apiUrl}/${resource}`;
-    let options;
-
-    if (resource === 'brands_media_objects' && params.data.pictures?.rawFile) {
-          // Handle file upload
-          const formData = new FormData();
-          formData.append('file', params.data.pictures.rawFile); // Assuming 'pictures' contains the file
-
-          options = {
-              method: 'POST',
-              body: formData,
-          };
-    } else {
-        options = {
-          method: 'POST',
-          body: JSON.stringify(params.data),
-          headers: new Headers({
-            'Content-Type': 'application/json',
-          }),
-        };
-    }
+    const url = `${apiUrl}/${resource}`;
+    const options = {
+      method: 'POST',
+      body: JSON.stringify(params.data),
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+    };
 
     return httpClient(url, options).then(({ json }) => ({
       data: { ...params.data, id: json.id },

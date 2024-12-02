@@ -14,7 +14,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[HasLifecycleCallbacks]
 #[ApiResource(
     normalizationContext: ['groups' => ['brand:read']],
-    denormalizationContext: ['groups' => ['brand:write']]
+    denormalizationContext: ['groups' => ['brand:create']]
 )]
 class Brand
 {

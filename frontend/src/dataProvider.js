@@ -162,76 +162,85 @@ const dataProvider = {
     //         data: { ...params.data, id: json.id },
     //     }));
     // },
+
     create: async (resource, params) => {
         try {
-            let brandData = { ...params.data };
+            let data = { ...params.data };
+            console.log("Data before upload:", data);
 
-            console.log('Brand Data before upload:', brandData);
-
-            if (resource === "brands" && brandData.pictures?.rawFile) {
-                // Step 1: Upload the image
+            // Handle image upload for both brands and variants
+            if (data.pictures?.rawFile) {
                 const formData = new FormData();
-                formData.append("file", brandData.pictures.rawFile);
+                formData.append("file", data.pictures.rawFile);
 
-                const uploadResponse = await httpClient(`${apiUrl}/brands_media_objects`, {
+                const mediaEndpoint =
+                    resource === "brands"
+                        ? `${apiUrl}/brands_media_objects`
+                        : `${apiUrl}/variants_media_objects`;
+
+                const uploadResponse = await httpClient(mediaEndpoint, {
                     method: "POST",
                     body: formData,
                 });
 
-                // Log the uploadResponse to check its structure
-                console.log('Upload Response:', uploadResponse);
-
-                // Access the json directly (since it is already parsed)
-                const responseJson = uploadResponse.json; // No need to call .json()
-
-                console.log('Upload Response JSON:', responseJson);
-
-                // Step 2: Extract the MediaObject URL (adjust based on actual response structure)
+                const responseJson = uploadResponse.json;
                 const mediaUrl = responseJson.contentUrl;
-                console.log('Extracted Media URL:', mediaUrl);
+                const filename = mediaUrl.split("/").pop();
 
-                // Step 3: Extract filename from the mediaUrl (e.g., /media/brands/filename.jpg -> filename.jpg)
-                const filename = mediaUrl.split('/').pop();
-                console.log('Extracted Filename:', filename);
+                data.imagePath = filename;
+                data.domainImagePath = mediaUrl;
 
-                // Step 4: Assign the filename to the image_path (correct field)
-                brandData.imagePath = filename; // Use image_path with the filename
-
-                // Optional: If your API expects the full media URL, you can also assign it here
-                brandData.image = mediaUrl;
-
-                console.log('Brand Data with image_path:', brandData);
+                console.log(`${resource} Data with image_path:`, data);
             }
 
-            // Step 5: Create the brand
+            // Determine the URL and name field based on the resource
             const url = `${apiUrl}/${resource}`;
-            const mediaUrl = `${domainUrl}/media/${resource}`;
+            const nameField = resource === "variants" ? data.variantname : data.name;
+
+            // Construct the payload
+            const payload = {
+                ...(resource === "variants"
+                    ? {
+                        variantname: nameField,
+                        brand: {
+                            id: data.bid
+                        } // Include `bid` only for `variants`
+                    }
+                    : {
+                        name: nameField
+                    }),
+                imagePath: data.imagePath,
+                domainImagePath: `${domainUrl}/media/${resource}/${data.imagePath}`, // Full URL with domain
+                // Add any other fields required by the resource
+            };
+
+            console.log("Payload for creation:", payload);
+
+            // Set up the request options
             const options = {
                 method: "POST",
-                body: JSON.stringify({
-                    name: brandData.name,
-                    imagePath: brandData.imagePath,
-                    domainImagePath: `${mediaUrl}/${brandData.imagePath}`, // Full URL with domain
-                }),
+                body: JSON.stringify(payload),
                 headers: new Headers({
                     "Content-Type": "application/json",
                 }),
             };
 
-            console.log(options.body)
+            // Make the request to create the resource
+            const response = await httpClient(url, options);
+            const responseJson = response.json;
 
-            // const response = await httpClient(`${apiUrl}/${resource}`, options);
-            // const responseJson = await response.json(); // Await the create response
-            // console.log('Create Brand Response:', responseJson);
+            console.log("Create Resource Response:", responseJson);
 
-            return httpClient(url, options).then(({ json }) => ({
-                data: { ...params.data, id: json.id },
-            }));
+            return {
+                data: { ...params.data, id: responseJson.id },
+            };
         } catch (error) {
-            console.error('Create Brand Error:', error);
+            console.error("Create Resource Error:", error);
             throw error;
         }
     },
+
+
 
     // Other CRUD methods...
 };

@@ -109,7 +109,7 @@ class Variant
         return $this->brand;
     }
 
-    public function setBrand(?Variant $brand): self
+    public function setBrand(?Brand $brand): self
     {
         $this->brand = $brand;
         return $this;

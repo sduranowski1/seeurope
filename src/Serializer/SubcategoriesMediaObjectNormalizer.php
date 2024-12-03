@@ -2,7 +2,7 @@
 
 namespace App\Serializer;
 
-use App\Entity\CategoriesMediaObject;
+use App\Entity\SubcategoriesMediaObject;
 use Vich\UploaderBundle\Storage\StorageInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -35,13 +35,13 @@ class SubcategoriesMediaObjectNormalizer implements NormalizerInterface
             return false;
         }
 
-        return $data instanceof CategoriesMediaObject;
+        return $data instanceof SubcategoriesMediaObject;
     }
 
     public function getSupportedTypes(?string $format): array
     {
         return [
-            CategoriesMediaObject::class => true,
+            SubcategoriesMediaObject::class => true,
         ];
     }
 }

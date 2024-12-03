@@ -53,14 +53,14 @@ const dataProvider = {
   // },
     update: async (resource, params) => {
         try {
-            let brandData = { ...params.data };
+            let data = { ...params.data };
 
-            console.log("Brand Data before upload:", brandData);
+            console.log("Brand Data before upload:", data);
 
-            if (resource === "brands" && brandData.pictures?.rawFile) {
+            if (resource === "brands" && data.pictures?.rawFile) {
                 // Step 1: Handle file upload
                 const formData = new FormData();
-                formData.append("file", brandData.pictures.rawFile);
+                formData.append("file", data.pictures.rawFile);
 
                 const uploadResponse = await httpClient(`${apiUrl}/brands_media_objects`, {
                     method: "POST",
@@ -82,21 +82,42 @@ const dataProvider = {
                 console.log("Extracted Filename:", filename);
 
                 // Update the imagePath or domainImagePath in the brand data
-                brandData.imagePath = filename;
-                brandData.domainImagePath = mediaUrl; // Optional: Assign full URL
+                data.imagePath = filename;
+                data.domainImagePath = mediaUrl; // Optional: Assign full URL
             }
 
             // Step 2: Update the brand
             const url = `${apiUrl}/${resource}/${params.id}`;
             const mediaUrl = `${domainUrl}/media/${resource}`; // Replace `yourDomainUrl` with the correct base URL
 
+            const nameField = resource === "variants" ? data.variantname : data.name;
+
+
+            // Construct the payload
+            const payload = {
+                ...(resource === "variants"
+                    ? {
+                        variantname: nameField,
+                        brand: {
+                            id: data.bid
+                        } // Include `bid` only for `variants`
+                    }
+                    : {
+                        name: nameField
+                    }),
+                imagePath: data.imagePath,
+                domainImagePath: `${domainUrl}/media/${resource}/${data.imagePath}`, // Full URL with domain
+                // Add any other fields required by the resource
+            };
+
             const options = {
                 method: "PUT", // Use PUT for updates
-                body: JSON.stringify({
-                    name: brandData.name,
-                    imagePath: brandData.imagePath,
-                    domainImagePath: `${mediaUrl}/${brandData.imagePath}`, // Full URL with domain
-                }),
+                // body: JSON.stringify({
+                //     name: data.name,
+                //     imagePath: data.imagePath,
+                //     domainImagePath: `${mediaUrl}/${data.imagePath}`, // Full URL with domain
+                // }),
+                body: JSON.stringify(payload),
                 headers: new Headers({
                     "Content-Type": "application/json",
                 }),

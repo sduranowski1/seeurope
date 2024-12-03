@@ -39,10 +39,10 @@ export const Brand = () => {
 
                 // Filter the products to only include those from the current category
                 const filteredData = data
-                    .filter(item => slugify(item.brand.name) === currentSlug)
+                    // .filter(item => slugify(item.brand.name) === currentSlug)
                     .map(item => ({
                         name: item.variantname,
-                        imgUrl: null, // Images not handled yet
+                        imgUrl: item.domainImagePath, // Images not handled yet
                         slug: slugify(item.variantname),
                     }));
                 console.log(filteredData);

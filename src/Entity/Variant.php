@@ -41,7 +41,7 @@ class Variant
     public ?Brand $brand = null;
 
 
-    #[ORM\ManyToOne(targetEntity: BrandsMediaObject::class)]
+    #[ORM\ManyToOne(targetEntity: VariantsMediaObject::class)]
     #[ORM\JoinColumn(nullable: true)]
     #[ApiProperty(types: ['https://schema.org/image'])]
     #[Groups(['variant:read', 'variant:create', 'variant:update'])]

@@ -57,12 +57,13 @@ const dataProvider = {
 
             console.log("Brand Data before upload:", data);
 
-            if (resource === "brands" && data.pictures?.rawFile) {
+            // Handle image upload for both brands and variants
+            if (data.pictures?.rawFile) {
                 // Step 1: Handle file upload
                 const formData = new FormData();
                 formData.append("file", data.pictures.rawFile);
 
-                const uploadResponse = await httpClient(`${apiUrl}/brands_media_objects`, {
+                const uploadResponse = await httpClient(`${apiUrl}/${resource}_media_objects`, {
                     method: "POST",
                     body: formData,
                 });
@@ -194,10 +195,12 @@ const dataProvider = {
                 const formData = new FormData();
                 formData.append("file", data.pictures.rawFile);
 
-                const mediaEndpoint =
-                    resource === "brands"
-                        ? `${apiUrl}/brands_media_objects`
-                        : `${apiUrl}/variants_media_objects`;
+                const mediaEndpoint = `${apiUrl}/${resource}_media_objects`
+
+                // const mediaEndpoint =
+                //     resource === "brands"
+                //         ? `${apiUrl}/brands_media_objects`
+                //         : `${apiUrl}/variants_media_objects`;
 
                 const uploadResponse = await httpClient(mediaEndpoint, {
                     method: "POST",

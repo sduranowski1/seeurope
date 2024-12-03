@@ -44,7 +44,7 @@ export const Category = () => {
                     .filter(item => slugify(item.category.name) === currentSlug)
                     .map(item => ({
                         name: item.subCatName,
-                        imgUrl: null, // Images not handled yet
+                        imgUrl: item.domainImagePath, // Images not handled yet
                         slug: slugify(item.subCatName),
                     }));
 

@@ -2,10 +2,10 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use App\Entity\Traits\Timestampable;
 use App\Repository\SubcategoryRepository;
-use App\Repository\VariantRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -19,9 +19,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
 )]
 class Subcategory
 {
-    /*
-* Timestampable trait
-*/
     use Timestampable;
 
     #[ORM\Id]
@@ -42,6 +39,40 @@ class Subcategory
     #[ORM\JoinColumn(name: 'cid', referencedColumnName: 'id', nullable: true)]
     #[Groups(['subcategory:read', 'subcategory:create'])]
     public ?Category $category = null;
+
+    #[ORM\ManyToOne(targetEntity: SubcategoriesMediaObject::class)]
+    #[ORM\JoinColumn(nullable: true)]
+    #[ApiProperty(types: ['https://schema.org/image'])]
+    #[Groups(['subcategory:read', 'subcategory:create', 'subcategory:update'])]
+    public ?SubcategoriesMediaObject $image = null;
+
+    #[ORM\Column(type: "string")]
+    #[Groups(['subcategory:read', 'subcategory:create', 'subcategory:update'])]
+    private string $imagePath;
+
+    #[ORM\Column(type: "string")]
+    #[Groups(['subcategory:read', 'subcategory:create', 'subcategory:update'])]
+    private string $domainImagePath;
+
+    public function getImagePath(): string
+    {
+        return $this->imagePath;
+    }
+
+    public function setImagePath(string $imagePath): void
+    {
+        $this->imagePath = $imagePath;
+    }
+
+    public function getDomainImagePath(): string
+    {
+        return $this->domainImagePath;
+    }
+
+    public function setDomainImagePath(string $domainImagePath): void
+    {
+        $this->domainImagePath = $domainImagePath;
+    }
 
     public function getId(): ?int
     {

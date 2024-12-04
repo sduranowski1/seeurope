@@ -296,7 +296,9 @@ const dataProvider = {
                         name: nameField
                     }),
                 imagePath: data.imagePath,
-                domainImagePath: `${domainUrl}/media/${resource}/${data.imagePath}`, // Full URL with domain
+                domainImagePath: (data.imagePath && data.imagePath !== undefined)
+                    ? `${domainUrl}/media/${resource}/${data.imagePath}`
+                    : `${domainUrl}/media/${resource}/landscape-placeholder.svg`, // Set domainImagePath to empty if imagePath is undefined or empty
                 // Add any other fields required by the resource
             };
 

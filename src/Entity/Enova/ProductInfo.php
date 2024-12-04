@@ -5,7 +5,7 @@ namespace App\Entity\Enova;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use App\Entity\Brand;
-use App\Entity\MediaObject;
+use App\Entity\ProductsMediaObject;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
@@ -34,10 +34,10 @@ class ProductInfo
     #[ORM\Column(type: "integer", options: ["default" => 0])]
     private int $scatid;
 
-    #[ORM\ManyToOne(targetEntity: MediaObject::class)]
+    #[ORM\ManyToOne(targetEntity: ProductsMediaObject::class)]
     #[ORM\JoinColumn(nullable: true)]
     #[ApiProperty(types: ['https://schema.org/image'])]
-    public ?MediaObject $image = null;
+    public ?ProductsMediaObject $image = null;
 
     #[ORM\Column(type: "string")]
     private string $imagePath;

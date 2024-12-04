@@ -1,5 +1,5 @@
 <?php
-// api/src/Entity/MediaObject.php
+// api/src/Entity/ProductsMediaObject.php
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiProperty;
@@ -7,7 +7,7 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
-use App\Controller\CreateMediaObjectAction;
+use App\Controller\CreateProductsMediaObjectAction;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -22,7 +22,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
         new Get(),
         new GetCollection(),
         new Post(
-            controller: CreateMediaObjectAction::class,
+            controller: CreateProductsMediaObjectAction::class,
             openapiContext: [
                 'requestBody' => [
                     'content' => [
@@ -40,23 +40,23 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
                     ]
                 ]
             ],
-            validationContext: ['groups' => ['Default', 'media_object_create']],
+            validationContext: ['groups' => ['Default', 'products_media_object_create']],
             deserialize: false
         )
     ],
-    normalizationContext: ['groups' => ['media_object:read']]
+    normalizationContext: ['groups' => ['products_media_object:read']]
 )]
-class MediaObject
+class ProductsMediaObject
 {
     #[ORM\Id, ORM\Column, ORM\GeneratedValue]
     private ?int $id = null;
 
     #[ApiProperty(types: ['https://schema.org/contentUrl'])]
-    #[Groups(['media_object:read'])]
+    #[Groups(['products_media_object:read'])]
     public ?string $contentUrl = null;
 
-    #[Vich\UploadableField(mapping: "media_object", fileNameProperty: "filePath")]
-    #[Assert\NotNull(groups: ['media_object_create'])]
+    #[Vich\UploadableField(mapping: "products_media_object", fileNameProperty: "filePath")]
+    #[Assert\NotNull(groups: ['products_media_object_create'])]
     public ?File $file = null;
 
     #[ORM\Column(nullable: true)]

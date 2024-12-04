@@ -1,27 +1,27 @@
 <?php
-// api/src/Controller/CreateMediaObjectAction.php
+// api/src/Controller/CreateProductsMediaObjectAction.php
 
 namespace App\Controller;
 
-use App\Entity\MediaObject;
+use App\Entity\ProductsMediaObject;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 #[AsController]
-final class CreateMediaObjectAction extends AbstractController
+final class CreateProductsMediaObjectAction extends AbstractController
 {
-    public function __invoke(Request $request): MediaObject
+    public function __invoke(Request $request): ProductsMediaObject
     {
         $uploadedFile = $request->files->get('file');
         if (!$uploadedFile) {
             throw new BadRequestHttpException('"file" is required');
         }
 
-        $mediaObject = new MediaObject();
-        $mediaObject->file = $uploadedFile;
+        $productsObject = new ProductsMediaObject();
+        $productsObject->file = $uploadedFile;
 
-        return $mediaObject;
+        return $productsObject;
     }
 }

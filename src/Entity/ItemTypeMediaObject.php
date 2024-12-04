@@ -7,8 +7,7 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
-use App\Controller\CreateBrandsMediaObjectAction;
-use App\Controller\CreateMediaObjectAction;
+use App\Controller\CreateItemTypesMediaObjectAction;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -23,7 +22,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
         new Get(),
         new GetCollection(),
         new Post(
-            controller: CreateBrandsMediaObjectAction::class,
+            controller: CreateItemTypesMediaObjectAction::class,
             openapiContext: [
                 'requestBody' => [
                     'content' => [
@@ -41,23 +40,23 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
                     ]
                 ]
             ],
-            validationContext: ['groups' => ['Default', 'brands_media_object_create']],
+            validationContext: ['groups' => ['Default', 'itemType_media_object_create']],
             deserialize: false
         )
     ],
-    normalizationContext: ['groups' => ['brands_media_object:read']]
+    normalizationContext: ['groups' => ['itemType_media_object:read']]
 )]
-class BrandsMediaObject
+class ItemTypeMediaObject
 {
     #[ORM\Id, ORM\Column, ORM\GeneratedValue]
     private ?int $id = null;
 
     #[ApiProperty(types: ['https://schema.org/contentUrl'])]
-    #[Groups(['brands_media_object:read'])]
+    #[Groups(['itemType_media_object:read'])]
     public ?string $contentUrl = null;
 
-    #[Vich\UploadableField(mapping: "brands_media_object", fileNameProperty: "filePath")]
-    #[Assert\NotNull(groups: ['brands_media_object_create'])]
+    #[Vich\UploadableField(mapping: "itemType_media_object", fileNameProperty: "filePath")]
+    #[Assert\NotNull(groups: ['itemType_media_object_create'])]
     public ?File $file = null;
 
     #[ORM\Column(nullable: true)]

@@ -1,5 +1,5 @@
 <?php
-// api/src/Controller/CreateMediaObjectAction.php
+// api/src/Controller/CreateProductsMediaObjectAction.php
 
 namespace App\Controller;
 

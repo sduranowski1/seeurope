@@ -72,6 +72,7 @@ import {StaticForklift} from "./Pages/Forklift/StaticForklift";
 import {Category} from "./Pages/Category/Category";
 import {Brand} from "./Pages/Brand/Brand";
 import {ProductDetailsForBrands} from "./Pages/Product/ProductDetailsForBrands";
+import SubcategoryCreate from "./Resources/Subcategory/SubcategoryCreate";
 // import BrandEdit from "./Resources/Product/BrandEdit";
 // import {SidebarComponent} from "./Components/SidebarComponent/SidebarComponent";
 // import {FooterComponent} from "./Components/FooterComponent/FooterComponent";
@@ -209,7 +210,7 @@ const AdminLayout = () => {
       <Resource name="brands" list={BrandList} edit={BrandEdit} create={BrandCreate} />
       <Resource name="variants" list={VariantList} edit={VariantEdit} create={VariantCreate} />
       <Resource name="categories" list={CategoryList} edit={CategoryEdit} create={CategoryCreate}/>
-      <Resource name="subcategories" list={SubcategoryList}  edit={SubcategoryEdit}/>
+      <Resource name="subcategories" list={SubcategoryList}  edit={SubcategoryEdit} create={SubcategoryCreate}/>
       <Resource name="users" list={UserList} edit={UserEdit} />
       {/* Other resources... */}
     </Admin>

@@ -1,4 +1,4 @@
-// src/Resources/UserEdit.js
+
 import React from 'react';
 import {
     Edit,
@@ -8,7 +8,7 @@ import {
     NumberInput,
     TextField,
     SelectInput,
-    ReferenceInput
+    ReferenceInput, ImageInput, ImageField
 } from 'react-admin';
 
 import "../../mui_fix.css"
@@ -24,6 +24,10 @@ const SubcategoryEdit = (props) => (
                     optionText="name"
                 />
             </ReferenceInput>
+            <ImageInput source="pictures" label="Related pictures">
+                <ImageField source="domainImagePath"/>
+            </ImageInput>
+            <ImageField source="domainImagePath"/>
         </SimpleForm>
     </Edit>
 );

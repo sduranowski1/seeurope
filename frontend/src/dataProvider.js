@@ -53,6 +53,27 @@ const dataProvider = {
   // },
     update: async (resource, params) => {
         try {
+            // Simplified logic for "users" resource
+            if (resource === "users") {
+                console.log('Updating user with data:', params.data);
+
+                const url = `${apiUrl}/${resource}/${params.id}`;
+                const options = {
+                    method: 'PUT',
+                    body: JSON.stringify(params.data),
+                    headers: new Headers({
+                        'Content-Type': 'application/json',
+                    }),
+                };
+
+                return httpClient(url, options).then(({ json }) => ({
+                    data: json,
+                })).catch(error => {
+                    console.error('Update error', error);
+                    throw error;
+                });
+            }
+
             let data = { ...params.data };
 
             console.log("Brand Data before upload:", data);
@@ -91,7 +112,12 @@ const dataProvider = {
             const url = `${apiUrl}/${resource}/${params.id}`;
             const mediaUrl = `${domainUrl}/media/${resource}`; // Replace `yourDomainUrl` with the correct base URL
 
-            const nameField = resource === "variants" ? data.variantname : data.name;
+            const nameField =
+                resource === "variants"
+                    ? data.variantname
+                    : resource === "subcategories"
+                        ? data.subCatName
+                        : data.name;
 
 
             // Construct the payload
@@ -103,6 +129,13 @@ const dataProvider = {
                             id: data.bid
                         } // Include `bid` only for `variants`
                     }
+                    : resource === "subcategories"
+                        ? {
+                            subCatName: nameField, // Include `subCatName` for `subcategories`
+                            category: {
+                                id: data.cid // Include `cid` only for `categories`
+                            }
+                        }
                     : {
                         name: nameField
                     }),
@@ -187,6 +220,23 @@ const dataProvider = {
 
     create: async (resource, params) => {
         try {
+            // Simplified logic for "users" resource
+            if (resource === "users") {
+                const url = `${apiUrl}/${resource}`;
+                const options = {
+                    method: "POST",
+                    body: JSON.stringify(params.data),
+                    headers: new Headers({
+                        "Content-Type": "application/json",
+                    }),
+                };
+
+                const { json } = await httpClient(url, options);
+                return {
+                    data: { ...params.data, id: json.id },
+                };
+            }
+
             let data = { ...params.data };
             console.log("Data before upload:", data);
 
@@ -219,7 +269,12 @@ const dataProvider = {
 
             // Determine the URL and name field based on the resource
             const url = `${apiUrl}/${resource}`;
-            const nameField = resource === "variants" ? data.variantname : data.name;
+            const nameField =
+                resource === "variants"
+                    ? data.variantname
+                    : resource === "subcategories"
+                        ? data.subCatName
+                        : data.name;
 
             // Construct the payload
             const payload = {
@@ -229,6 +284,13 @@ const dataProvider = {
                         brand: {
                             id: data.bid
                         } // Include `bid` only for `variants`
+                    }
+                    : resource === "subcategories"
+                        ? {
+                            subCatName: nameField, // Include `subCatName` for `subcategories`
+                            category: {
+                                id: data.cid // Include `cid` only for `categories`
+                            }
                     }
                     : {
                         name: nameField

@@ -73,6 +73,9 @@ import {Category} from "./Pages/Category/Category";
 import {Brand} from "./Pages/Brand/Brand";
 import {ProductDetailsForBrands} from "./Pages/Product/ProductDetailsForBrands";
 import SubcategoryCreate from "./Resources/Subcategory/SubcategoryCreate";
+import ItemTypeList from "./Resources/ItemType/ItemTypeList";
+import ItemTypeCreate from "./Resources/ItemType/ItemTypeCreate";
+import ItemTypeEdit from "./Resources/ItemType/ItemTypeEdit";
 // import BrandEdit from "./Resources/Product/BrandEdit";
 // import {SidebarComponent} from "./Components/SidebarComponent/SidebarComponent";
 // import {FooterComponent} from "./Components/FooterComponent/FooterComponent";
@@ -204,13 +207,14 @@ const AdminLayout = () => {
 
   return (
     <Admin dataProvider={dataProvider} authProvider={authProvider} layout={MyLayout} locale="en" i18nProvider={i18nProvider} basename="/admin">
-      <Resource name="products" list={ProductList} edit={ProductEdit} />
+      {/*<Resource name="products" list={ProductList} edit={ProductEdit} />*/}
       <Resource name="enova-products" list={EnovaProductList} edit={EnovaProductEdit} />
       <Resource name="enova-contractors" list={EnovaContractorList} />
       <Resource name="brands" list={BrandList} edit={BrandEdit} create={BrandCreate} />
       <Resource name="variants" list={VariantList} edit={VariantEdit} create={VariantCreate} />
       <Resource name="categories" list={CategoryList} edit={CategoryEdit} create={CategoryCreate}/>
       <Resource name="subcategories" list={SubcategoryList}  edit={SubcategoryEdit} create={SubcategoryCreate}/>
+      <Resource name="item_types" list={ItemTypeList} edit={ItemTypeEdit} create={ItemTypeCreate}/>
       <Resource name="users" list={UserList} edit={UserEdit} />
       {/* Other resources... */}
     </Admin>

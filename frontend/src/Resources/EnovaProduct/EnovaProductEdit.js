@@ -97,7 +97,7 @@ const EnovaProductEdit = () => {
                 const formData = new FormData();
                 formData.append('file', image); // Append the image file
 
-                const imageUploadResponse = await fetch('https://se-europe-test.pl/api/media_objects', {
+                const imageUploadResponse = await fetch('https://se-europe-test.pl/api/products_media_objects', {
                     method: 'POST',
                     headers: {
                         'Accept': 'application/json',

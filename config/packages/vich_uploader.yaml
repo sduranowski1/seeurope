@@ -29,7 +29,7 @@ vich_uploader:
             # Will rename uploaded files using a uniqueid as a suffix.
             namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
         itemTypes_media_object:
-            uri_prefix: /media/itemTypes
-            upload_destination: '%kernel.project_dir%/public/media/itemTypes'
+            uri_prefix: /media/item_types
+            upload_destination: '%kernel.project_dir%/public/media/item_types'
             # Will rename uploaded files using a uniqueid as a suffix.
             namer: Vich\UploaderBundle\Naming\SmartUniqueNamer

@@ -296,9 +296,7 @@ const dataProvider = {
                         name: nameField
                     }),
                 imagePath: data.imagePath,
-                domainImagePath: (data.imagePath && data.imagePath !== undefined)
-                    ? `${domainUrl}/media/${resource}/${data.imagePath}`
-                    : '', // Set domainImagePath to empty if imagePath is undefined or empty
+                domainImagePath: `${domainUrl}/media/${resource}/${data.imagePath}`, // Full URL with domain
                 // Add any other fields required by the resource
             };
 

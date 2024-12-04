@@ -30,11 +30,11 @@ class ItemType
     #[Groups(['itemType:read', 'itemType:create', 'itemType:update'])]
     private ?string $name = null;
 
-    #[ORM\ManyToOne(targetEntity: CategoriesMediaObject::class)]
+    #[ORM\ManyToOne(targetEntity: ItemTypesMediaObject::class)]
     #[ORM\JoinColumn(nullable: true)]
     #[ApiProperty(types: ['https://schema.org/image'])]
     #[Groups(['itemType:read', 'itemType:create', 'itemType:update'])]
-    public ?CategoriesMediaObject $image = null;
+    public ?ItemTypesMediaObject $image = null;
 
     #[ORM\Column(type: "string")]
     #[Groups(['itemType:read', 'itemType:create', 'itemType:update'])]

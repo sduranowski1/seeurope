@@ -46,7 +46,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
     ],
     normalizationContext: ['groups' => ['itemType_media_object:read']]
 )]
-class ItemTypeMediaObject
+class ItemTypesMediaObject
 {
     #[ORM\Id, ORM\Column, ORM\GeneratedValue]
     private ?int $id = null;

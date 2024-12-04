@@ -2,19 +2,19 @@
 
 namespace App\Serializer;
 
-use App\Entity\ItemTypeMediaObject;
+use App\Entity\ItemTypesMediaObject;
 
 class ItemTypeMediaObjectNormalizer extends BaseMediaObjectNormalizer
 {
     protected function supports($data): bool
     {
-        return $data instanceof ItemTypeMediaObject;
+        return $data instanceof ItemTypesMediaObject;
     }
 
     public function getSupportedTypes(?string $format): array
     {
         return [
-            ItemTypeMediaObject::class => true,
+            ItemTypesMediaObject::class => true,
         ];
     }
 }

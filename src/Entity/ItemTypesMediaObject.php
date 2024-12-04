@@ -40,11 +40,11 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
                     ]
                 ]
             ],
-            validationContext: ['groups' => ['Default', 'itemType_media_object_create']],
+            validationContext: ['groups' => ['Default', 'itemTypes_media_object_create']],
             deserialize: false
         )
     ],
-    normalizationContext: ['groups' => ['itemType_media_object:read']]
+    normalizationContext: ['groups' => ['itemTypes_media_object:read']]
 )]
 class ItemTypesMediaObject
 {
@@ -52,11 +52,11 @@ class ItemTypesMediaObject
     private ?int $id = null;
 
     #[ApiProperty(types: ['https://schema.org/contentUrl'])]
-    #[Groups(['itemType_media_object:read'])]
+    #[Groups(['itemTypes_media_object:read'])]
     public ?string $contentUrl = null;
 
-    #[Vich\UploadableField(mapping: "itemType_media_object", fileNameProperty: "filePath")]
-    #[Assert\NotNull(groups: ['itemType_media_object_create'])]
+    #[Vich\UploadableField(mapping: "itemTypes_media_object", fileNameProperty: "filePath")]
+    #[Assert\NotNull(groups: ['itemTypes_media_object_create'])]
     public ?File $file = null;
 
     #[ORM\Column(nullable: true)]

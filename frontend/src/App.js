@@ -13,6 +13,11 @@ import Logout from "./Components/Logout"; // Your protected component for /dashb
 import AuthContext from "./AuthContext";
 import './mui_fix.css'
 import i18nProvider from './i18nProvider';
+import InventoryIcon from '@mui/icons-material/Inventory';
+import GroupIcon from '@mui/icons-material/Group';
+import AppsIcon from '@mui/icons-material/Apps';
+import ClassIcon from '@mui/icons-material/Class';
+import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 // import MyLayout from "./Components/Layouts/AdminLayout";
 
 import {NavbarComponent} from "./Components/NavbarComponent/NavbarComponent";
@@ -76,6 +81,7 @@ import SubcategoryCreate from "./Resources/Subcategory/SubcategoryCreate";
 import ItemTypeList from "./Resources/ItemType/ItemTypeList";
 import ItemTypeCreate from "./Resources/ItemType/ItemTypeCreate";
 import ItemTypeEdit from "./Resources/ItemType/ItemTypeEdit";
+import AdminLayout from "./Components/Layouts/AdminLayout";
 // import BrandEdit from "./Resources/Product/BrandEdit";
 // import {SidebarComponent} from "./Components/SidebarComponent/SidebarComponent";
 // import {FooterComponent} from "./Components/FooterComponent/FooterComponent";
@@ -179,45 +185,6 @@ const App = () => {
       </Context.Provider>
     </Router>
       </ProductProvider>
-  );
-};
-
-// const PrivateRoute = ({ element }) => {
-//   const { token } = React.useContext(AuthContext);
-//
-//   return token ? element : <Navigate to="/login" replace />;
-// };
-
-const AdminLayout = () => {
-  // Access token from context to pass to react-admin authProvider
-  const { token } = React.useContext(AuthContext);
-
-    // Example: Adding debug information for `dataProvider` or props
-    React.useEffect(() => {
-        dataProvider.getList('brands', {
-            pagination: { page: 1, perPage: 1 },
-            sort: { field: 'id', order: 'ASC' },
-            filter: {},
-        }).then(response => {
-            console.log("Sample Brand Data:", response);
-        }).catch(error => {
-            console.error("Error fetching brands:", error);
-        });
-    }, []);
-
-  return (
-    <Admin dataProvider={dataProvider} authProvider={authProvider} layout={MyLayout} locale="en" i18nProvider={i18nProvider} basename="/admin">
-      {/*<Resource name="products" list={ProductList} edit={ProductEdit} />*/}
-      <Resource name="enova-products" list={EnovaProductList} edit={EnovaProductEdit} />
-      <Resource name="enova-contractors" list={EnovaContractorList} />
-      <Resource name="brands" list={BrandList} edit={BrandEdit} create={BrandCreate} />
-      <Resource name="variants" list={VariantList} edit={VariantEdit} create={VariantCreate} />
-      <Resource name="categories" list={CategoryList} edit={CategoryEdit} create={CategoryCreate}/>
-      <Resource name="subcategories" list={SubcategoryList}  edit={SubcategoryEdit} create={SubcategoryCreate}/>
-      <Resource name="item_types" list={ItemTypeList} edit={ItemTypeEdit} create={ItemTypeCreate}/>
-      <Resource name="users" list={UserList} edit={UserEdit} />
-      {/* Other resources... */}
-    </Admin>
   );
 };
 

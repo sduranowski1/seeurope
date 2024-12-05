@@ -30,6 +30,15 @@ class ItemType
     #[Groups(['itemType:read', 'itemType:create', 'itemType:update'])]
     private ?string $name = null;
 
+    #[ORM\Column(nullable: true)]
+    #[Groups(['itemType:read', 'itemType:create'])]
+    private ?int $scid = null;
+
+    #[ORM\ManyToOne(targetEntity: Subcategory::class)]
+    #[ORM\JoinColumn(name: 'scid', referencedColumnName: 'id', nullable: true)]
+    #[Groups(['itemType:read', 'itemType:create'])]
+    public ?Subcategory $subcategory = null;
+
     #[ORM\ManyToOne(targetEntity: ItemTypesMediaObject::class)]
     #[ORM\JoinColumn(nullable: true)]
     #[ApiProperty(types: ['https://schema.org/image'])]
@@ -79,5 +88,25 @@ class ItemType
         $this->name = $name;
 
         return $this;
+    }
+
+    public function getSubcategory(): ?Subcategory
+    {
+        return $this->subcategory;
+    }
+
+    public function setSubcategory(?Subcategory $subcategory): void
+    {
+        $this->subcategory = $subcategory;
+    }
+
+    public function getScid(): ?int
+    {
+        return $this->scid;
+    }
+
+    public function setScid(?int $scid): void
+    {
+        $this->scid = $scid;
     }
 }

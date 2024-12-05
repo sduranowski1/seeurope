@@ -24,11 +24,11 @@ class Subcategory
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(['subcategory:read'])]
+    #[Groups(['subcategory:read', 'itemType:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
-    #[Groups(['subcategory:read', 'subcategory:create'])]
+    #[Groups(['subcategory:read', 'subcategory:create', 'subcategory:update', 'itemType:read', 'itemType:create', 'itemType:update'])]
     private ?string $subCatName = null;
 
     #[ORM\Column(nullable: true)]

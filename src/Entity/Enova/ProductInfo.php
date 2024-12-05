@@ -34,6 +34,9 @@ class ProductInfo
     #[ORM\Column(type: "integer", options: ["default" => 0])]
     private int $scatid;
 
+    #[ORM\Column(type: "integer", options: ["default" => 0])]
+    private int $itypeid;
+
     #[ORM\ManyToOne(targetEntity: ProductsMediaObject::class)]
     #[ORM\JoinColumn(nullable: true)]
     #[ApiProperty(types: ['https://schema.org/image'])]
@@ -118,6 +121,16 @@ class ProductInfo
     {
         $this->catid = $catid;
         return $this;
+    }
+
+    public function getItypeid(): int
+    {
+        return $this->itypeid;
+    }
+
+    public function setItypeid(int $itypeid): void
+    {
+        $this->itypeid = $itypeid;
     }
 
     // Add the toArray method

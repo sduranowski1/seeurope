@@ -82,6 +82,9 @@ import ItemTypeList from "./Resources/ItemType/ItemTypeList";
 import ItemTypeCreate from "./Resources/ItemType/ItemTypeCreate";
 import ItemTypeEdit from "./Resources/ItemType/ItemTypeEdit";
 import AdminLayout from "./Components/Layouts/AdminLayout";
+import {Subcategory} from "./Pages/Subcategory/Subcategory";
+import Box from "@mui/material/Box";
+import {CircularProgress} from "@mui/material";
 // import BrandEdit from "./Resources/Product/BrandEdit";
 // import {SidebarComponent} from "./Components/SidebarComponent/SidebarComponent";
 // import {FooterComponent} from "./Components/FooterComponent/FooterComponent";
@@ -97,7 +100,8 @@ const App = () => {
     const [email, setEmail] = useState('');
 
 
-  useEffect(() => {
+
+    useEffect(() => {
     // Check if token exists in localStorage to maintain session
     const storedToken = localStorage.getItem('token');
     if (storedToken) {
@@ -110,14 +114,6 @@ const App = () => {
     setToken(newToken);
     console.log('Logged in with token:', newToken); // Console log the token on login
   };
-
-  // const handleLogout = () => {
-  //   localStorage.removeItem('token');
-  //   setToken(null);
-  // };
-
-  const { t, changeLanguage } = useTranslationContext();
-
 
   return (
       <ProductProvider>
@@ -151,6 +147,7 @@ const App = () => {
               <Route index element={<Layout><MyMachine /></Layout>} />
               <Route path=":category" element={<Layout><Category /></Layout>} />
               <Route path=":category/:slug" element={<Layout><ProductDetails /></Layout>} />
+              <Route path=":category/:subcategory/:slug" element={<Layout><Subcategory /></Layout>} />
               <Route path="ladowarka-kolowa" element={<Layout><WheelLoader /></Layout>} />
               <Route path="koparka" element={<Layout><Excavator /></Layout>} />
               <Route path="traktor" element={<Layout><Tractor /></Layout>} />

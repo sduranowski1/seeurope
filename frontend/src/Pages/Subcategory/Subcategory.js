@@ -1,13 +1,13 @@
-import './Category.scss';
+import './Subcategory.scss';
 import { useEffect, useState } from 'react';
 import { LinksListWithImages } from '../../Components/LinksListWithImages/LinksListWithImages';
 import { useNavigate, useLocation } from 'react-router-dom';
 import {ProductDetailsMissingVariants} from "../Product/ProductDetailsMissingVariants";
 import {CircularProgress} from "@mui/material";
 import Box from "@mui/material/Box";
-import {ProductDetails} from "../Product/ProductDetails";
+import {SubcategoryProducts} from "../Product/SubcategoryProducts";
 
-export const Category = () => {
+export const Subcategory = () => {
     const [products, setProducts] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -32,7 +32,7 @@ export const Category = () => {
         const fetchProducts = async () => {
             setIsLoading(true); // Ensure loading state is true before starting the fetch
             try {
-                const response = await fetch('https://se-europe-test.pl/api/subcategories');
+                const response = await fetch('https://se-europe-test.pl/api/item_types');
                 if (!response.ok) {
                     throw new Error('Failed to fetch data');
                 }
@@ -42,11 +42,11 @@ export const Category = () => {
 
                 // Filter the products to only include those from the current category
                 const filteredData = data
-                    .filter(item => slugify(item.category.name) === currentSlug)
+                    .filter(item => slugify(item.subcategory.subCatName) === currentSlug)
                     .map(item => ({
-                        name: item.subCatName,
+                        name: item.name,
                         imgUrl: item.domainImagePath, // Images not handled yet
-                        slug: slugify(item.subCatName),
+                        slug: slugify(item.name),
                     }));
 
                 setProducts(filteredData);
@@ -64,6 +64,17 @@ export const Category = () => {
     const handleClick = (slug) => {
         navigate(`/${slug}`);
     };
+
+    const fullUrl = window.location.href;
+
+    // Get the last part of the slug
+    const lastPartOfSlug = fullUrl?.split("/").pop();
+
+    const capitalizedLastPart = lastPartOfSlug
+        ? lastPartOfSlug.charAt(0).toUpperCase() + lastPartOfSlug.slice(1)
+        : null;
+
+    console.log(lastPartOfSlug)
 
     if (isLoading) {
         return (
@@ -85,7 +96,7 @@ export const Category = () => {
 
     if (error) {
         return <p>Error: {error}</p>
-    ;
+            ;
     }
 
     return (
@@ -116,7 +127,7 @@ export const Category = () => {
                     <LinksListWithImages data={products} />
                 </section>
             ) : (
-                <ProductDetails />
+                <SubcategoryProducts lastPart={capitalizedLastPart}/>
             )}
         </main>
     );

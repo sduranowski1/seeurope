@@ -11,6 +11,7 @@ import {ProductDescription} from "./Components/ProductDescription";
 import Box from "@mui/material/Box";
 import {CircularProgress} from "@mui/material";
 import * as React from "react";
+import {WeightRange} from "./Components/WeightRange";
 
 const productsData = {
     name: '3 POINT',
@@ -69,19 +70,19 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [checkboxes, setCheckboxes] = useState({});
 
-    function findCheckboxes() {
-        return Object.values(productsData.tableData).flat().reduce((acc, product) => {
-            if (!acc.hasOwnProperty(product.coupling)) {
-                acc[product.coupling] = false;
-            }
-            return acc;
-        }, {});
-    }
-
-    useEffect(() => {
-        const uniqueCheckboxes = findCheckboxes();
-        setCheckboxes(uniqueCheckboxes);
-    }, [productsData.tableData]);
+    // function findCheckboxes() {
+    //     return Object.values(productsData.tableData).flat().reduce((acc, product) => {
+    //         if (!acc.hasOwnProperty(product.coupling)) {
+    //             acc[product.coupling] = false;
+    //         }
+    //         return acc;
+    //     }, {});
+    // }
+    //
+    // useEffect(() => {
+    //     const uniqueCheckboxes = findCheckboxes();
+    //     setCheckboxes(uniqueCheckboxes);
+    // }, [productsData.tableData]);
 
     const { t } = useTranslation();
 
@@ -90,6 +91,7 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
     const [variants, setVariants] = useState([]);
     const [categories, setCategories] = useState([]);
     const [subcategories, setSubcategories] = useState([]);
+    const [itemTypes, setItemTypes] = useState([]);
     const [token, setToken] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -98,6 +100,7 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
     const [limit, setLimit] = useState(10); // Number of items per page
     const navigate = useNavigate();
     const [filteredProducts, setFilteredProducts] = useState([]);
+    const [weightRange, setWeightRange] = useState([0, 30000]);
 
 
     // Debounce timeout variable
@@ -108,11 +111,12 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
 
     const fetchAdditionalData = async () => {
         try {
-            const [brandsResponse, variantsResponse, categoriesResponse, subcategoriesResponse] = await Promise.all([
+            const [brandsResponse, variantsResponse, categoriesResponse, subcategoriesResponse, itemTypesResponse] = await Promise.all([
                 fetch('https://se-europe-test.pl/api/brands'),
                 fetch('https://se-europe-test.pl/api/variants'),
                 fetch('https://se-europe-test.pl/api/categories'),
                 fetch('https://se-europe-test.pl/api/subcategories'),
+                fetch('https://se-europe-test.pl/api/item_types'),
             ]);
 
             if (!brandsResponse.ok || !variantsResponse.ok || !categoriesResponse.ok ) {
@@ -123,11 +127,13 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
             const variantsData = await variantsResponse.json();
             const categoriesData = await categoriesResponse.json();
             const subcategoriesData = await subcategoriesResponse.json();
+            const itemTypesData = await itemTypesResponse.json();
 
             setBrands(brandsData);
             setVariants(variantsData);
             setCategories(categoriesData);
             setSubcategories(subcategoriesData);
+            setItemTypes(itemTypesData);
         } catch (error) {
             console.error('Error fetching brands, categories or variants:', error);
             setError('Failed to load brands, categories or variants');
@@ -180,8 +186,9 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
                 const variantName = variants.find((variant) => variant.id === product.productInfo?.varid)?.variantname || 'N/A';
                 const categoryName = categories.find((category) => category.id === product.productInfo?.catid)?.name || 'N/A';
                 const subcategoryName = subcategories.find((subcategory) => subcategory.id === product.productInfo?.scatid)?.subCatName || 'N/A';
+                const itemTypeName = itemTypes.find((itemType) => itemType.id === product.productInfo?.itypeid)?.name || 'N/A';
 
-                return { ...product, netto, procWzrostu, replacementParts, capacityFeat,  brandName, variantName, categoryName, subcategoryName };
+                return { ...product, netto, procWzrostu, replacementParts, capacityFeat,  brandName, variantName, categoryName, subcategoryName, itemTypeName };
             });
 
             console.log(productsData)
@@ -193,7 +200,7 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
         } finally {
             setLoading(false); // Set loading to false when done
         }
-    }, [currentPage, limit, brands, variants, categories, subcategories]);
+    }, [currentPage, limit, brands, variants, categories, subcategories, itemTypes]);
 
     useEffect(() => {
         fetchAdditionalData();
@@ -218,17 +225,17 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
     useEffect(() => {
         // Get the full URL of the current page
         const fullUrl = window.location.href;
-        console.log("Full URL:", fullUrl);  // Log the full URL
+        console.log("Full URL:", fullUrl); // Log the full URL
 
-        // Now you can split the slug from the full URL if needed
-        const slug = fullUrl.split(window.location.origin)[1];  // Extract the part after the domain
+        // Extract the slug (the part of the URL after the domain)
+        const slug = fullUrl.split(window.location.origin)[1];
         console.log("Extracted Slug:", slug);
 
-        // Continue with your existing logic, splitting slug and filtering products
-        const slugParts = slug.split("/"); // Split the slug into parts
-        console.log("slugParts:", slugParts); // Log the parts
+        // Split the slug into parts
+        const slugParts = slug.split("/").filter(Boolean); // Remove empty parts (e.g., trailing slashes)
+        console.log("slugParts:", slugParts);
 
-        // Normalize the last and second-last part of the slug
+        // Normalize the parts of the slug
         const normalizedLastPart = slugParts.at(-1)?.replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
         const normalizedSecondLastPart = slugParts.length > 1
             ? slugParts.at(-2)?.replace(/[^a-zA-Z0-9]/g, "").toLowerCase()
@@ -237,7 +244,6 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
         console.log("normalizedLastPart:", normalizedLastPart);
         console.log("normalizedSecondLastPart:", normalizedSecondLastPart);
 
-        // Filter products as per your previous logic
         const filtered = products.filter((product) => {
             const normalizedSubcategory = product.subcategoryName
                 ?.replace(/[^a-zA-Z0-9]/g, "")
@@ -245,29 +251,69 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
             const normalizedCategory = product.categoryName
                 ?.replace(/[^a-zA-Z0-9]/g, "")
                 .toLowerCase();
+            const normalizedItemType = product.itemTypeName // Assuming `itemTypeName` exists in the product
+                ?.replace(/[^a-zA-Z0-9]/g, "")
+                .toLowerCase();
 
-            // Log to check the normalized subcategory and category
             console.log("normalizedSubcategory:", normalizedSubcategory);
             console.log("normalizedCategory:", normalizedCategory);
+            console.log("normalizedItemType:", normalizedItemType);
 
-            // Filter based on the last part of the slug or second-to-last if necessary
-            if (slugParts.length === 1) {
-                return normalizedSubcategory === normalizedLastPart;
+            const weightString = product.capacityFeat; // Example: "2500kg"
+            const weight = parseFloat(weightString.replace(/[^\d.-]/g, ""));
+
+            if (slugParts.length < 4) {
+                return normalizedSubcategory === normalizedLastPart &&
+                    weight >= weightRange[0] &&
+                    weight <= weightRange[1];
+            } else if (slugParts.length === 4) {
+                // When the link has 4 parts, swap subcategory with item type
+                return normalizedItemType === normalizedLastPart &&
+                    weight >= weightRange[0] &&
+                    weight <= weightRange[1];
+            } else {
+                // Default behavior for other lengths
+                return normalizedSubcategory === normalizedLastPart &&
+                    weight >= weightRange[0] &&
+                    weight <= weightRange[1];
             }
-
-            return (
-                // (normalizedSubcategory && normalizedSubcategory === normalizedLastPart) ||
-                // (normalizedCategory && normalizedCategory === normalizedSecondLastPart)
-                normalizedSubcategory && normalizedSubcategory === normalizedLastPart
-            );
         });
 
         setFilteredProducts(filtered);
-    }, [products, slug]);
+        console.log("oh:", filtered)
+    }, [products, weightRange]);
+
 
     const handleProductClick = (product) => {
         setSelectedProduct(product);
     };
+
+    // Handle weight range change
+    const handleWeightRangeChange = (event, newValue) => {
+        setWeightRange(newValue);
+    };
+
+    // Find the maximum weight in the filtered products
+    const maxWeight = Math.max(
+        ...filteredProducts.map(product => parseFloat(product.capacityFeat.replace(/[^\d.-]/g, "")) || 0),
+        30000 // Default fallback value for the max weight if no valid products are found
+    );
+
+    console.log(maxWeight)
+
+    function findCheckboxes() {
+        return Object.values(filteredProducts).flat().reduce((acc, product) => {
+            if (!acc.hasOwnProperty(product.brandName)) {
+                acc[product.brandName] = false;
+            }
+            return acc;
+        }, {});
+    }
+
+    useEffect(() => {
+        const uniqueCheckboxes = findCheckboxes();
+        setCheckboxes(uniqueCheckboxes);
+    }, [filteredProducts]);
 
     return (
         <main>
@@ -291,7 +337,12 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
 
                     <div className={'choice-container'}>
                         <h2>{t("machine_weight")}</h2>
-                        <ProductRangeComponent/>
+                        {/*<ProductRangeComponent/>*/}
+                        <WeightRange
+                            weightRange={weightRange}
+                            maxWeight={maxWeight}
+                            onChange={handleWeightRangeChange}
+                        />
                     </div>
                     <div className={'choice-container'}>
                         <h2>{t("coupling")}</h2>

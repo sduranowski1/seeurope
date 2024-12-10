@@ -116,7 +116,7 @@ export const NavbarComponent = (props) => {
     }, []);
 
     // if (loading) {
-    //     return <div>Loading...</div>;
+    //     return <div>LoadingComponent...</div>;
     // }
 
     const renderVariantItems = (brandId) => {

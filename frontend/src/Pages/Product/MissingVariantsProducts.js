@@ -11,6 +11,9 @@ import {ProductDescription} from "./Components/ProductDescription";
 import Box from "@mui/material/Box";
 import {CircularProgress} from "@mui/material";
 import * as React from "react";
+import {SubcategoryTableBrands} from "./Components/SubcategoryTableBrands";
+import Slider from "@mui/material/Slider";
+import {WeightRange} from "./Components/WeightRange";
 
 const productsData = {
     name: '3 POINT',
@@ -69,19 +72,19 @@ export const MissingVariantsProducts = ({lastPart, slug}) => {
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [checkboxes, setCheckboxes] = useState({});
 
-    function findCheckboxes() {
-        return Object.values(productsData.tableData).flat().reduce((acc, product) => {
-            if (!acc.hasOwnProperty(product.coupling)) {
-                acc[product.coupling] = false;
-            }
-            return acc;
-        }, {});
-    }
-
-    useEffect(() => {
-        const uniqueCheckboxes = findCheckboxes();
-        setCheckboxes(uniqueCheckboxes);
-    }, [productsData.tableData]);
+    // function findCheckboxes() {
+    //     return Object.values(productsData.tableData).flat().reduce((acc, product) => {
+    //         if (!acc.hasOwnProperty(product.coupling)) {
+    //             acc[product.coupling] = false;
+    //         }
+    //         return acc;
+    //     }, {});
+    // }
+    //
+    // useEffect(() => {
+    //     const uniqueCheckboxes = findCheckboxes();
+    //     setCheckboxes(uniqueCheckboxes);
+    // }, [productsData.tableData]);
 
     const { t } = useTranslation();
 
@@ -98,6 +101,8 @@ export const MissingVariantsProducts = ({lastPart, slug}) => {
     const [limit, setLimit] = useState(10); // Number of items per page
     const navigate = useNavigate();
     const [filteredProducts, setFilteredProducts] = useState([]);
+    const [weightRange, setWeightRange] = useState([0, 30000]);
+
 
 
     // Debounce timeout variable
@@ -216,29 +221,70 @@ export const MissingVariantsProducts = ({lastPart, slug}) => {
     }, [navigate]);
 
     useEffect(() => {
-        // Get the last part of the slug
+        // Get the last part of the slug (normalized brand)
         const slugParts = window.location.pathname.split("/").filter(Boolean); // Split by "/" and remove empty strings
         const normalizedLastPart = slugParts.at(-1)?.replace(/[^a-zA-Z0-9]/g, "").toLowerCase(); // Normalize the last part
 
         console.log("Normalized Last Part (Brand):", normalizedLastPart);
 
-        // Filter products by the normalized brand name
+        // Filter products by the normalized brand name and weight range
         const filtered = products.filter((product) => {
+            // Normalize product brand name
             const normalizedBrand = product.brandName
                 ?.replace(/[^a-zA-Z0-9]/g, "")
-                .toLowerCase(); // Normalize product brand name
+                .toLowerCase();
 
-            console.log("Normalized Product Brand:", normalizedBrand);
+            // Filter by brand and weight range
+            const weightString = product.capacityFeat; // Example: "2500kg"
+            const weight = parseFloat(weightString.replace(/[^\d.-]/g, ""));
 
-            return normalizedBrand === normalizedLastPart;
+            // Match selected categories (checkboxes)
+            const isBrandSelected = Object.entries(checkboxes).some(([key, isChecked]) => {
+                return isChecked && product.brandName === key;
+            });
+
+            return (
+                normalizedBrand === normalizedLastPart &&
+                weight >= weightRange[0] &&
+                weight <= weightRange[1] &&
+                (Object.values(checkboxes).some((val) => val) ? isBrandSelected : true)
+            );
         });
 
         setFilteredProducts(filtered);
-    }, [products, lastPart]);
+    }, [products, weightRange, checkboxes]); // Re-filter when products or weightRange change
+
 
     const handleProductClick = (product) => {
         setSelectedProduct(product);
     };
+
+    // Handle weight range change
+    const handleWeightRangeChange = (event, newValue) => {
+        setWeightRange(newValue);
+    };
+
+    // Find the maximum weight in the filtered products
+    const maxWeight = Math.max(
+        ...filteredProducts.map(product => parseFloat(product.capacityFeat.replace(/[^\d.-]/g, "")) || 0),
+        30000 // Default fallback value for the max weight if no valid products are found
+    );
+
+    console.log(maxWeight)
+
+    function findCheckboxes() {
+        return Object.values(filteredProducts).flat().reduce((acc, product) => {
+            if (!acc.hasOwnProperty(product.brandName)) {
+                acc[product.brandName] = false;
+            }
+            return acc;
+        }, {});
+    }
+
+    useEffect(() => {
+        const uniqueCheckboxes = findCheckboxes();
+        setCheckboxes(uniqueCheckboxes);
+    }, [filteredProducts]);
 
     return (
         <main>
@@ -261,7 +307,27 @@ export const MissingVariantsProducts = ({lastPart, slug}) => {
                     <div className={'available-choices-container'}>
                         <div className={'choice-container'}>
                             <h2>{t("machine_weight")}</h2>
-                            <ProductRangeComponent/>
+                            <WeightRange
+                                weightRange={weightRange}
+                                maxWeight={maxWeight}
+                                onChange={handleWeightRangeChange}
+                            />
+                            {/*<div>*/}
+                            {/*    <h3>Filter by Weight</h3>*/}
+                            {/*    <Slider*/}
+                            {/*        value={weightRange}*/}
+                            {/*        onChange={handleWeightRangeChange}*/}
+                            {/*        valueLabelDisplay="auto"*/}
+                            {/*        valueLabelFormat={(value) => `${value}kg`}*/}
+                            {/*        min={0}*/}
+                            {/*        max={maxWeight} // Dynamically set the max value based on filtered products*/}
+                            {/*        marks={[*/}
+                            {/*            { value: 0, label: "0 kg" },*/}
+                            {/*            { value: maxWeight / 2, label: `${maxWeight / 2} kg` }, // Midpoint mark*/}
+                            {/*            { value: maxWeight, label: `${maxWeight} kg` },*/}
+                            {/*        ]}*/}
+                            {/*    />*/}
+                            {/*</div>*/}
                         </div>
                         <div className={'choice-container'}>
                             <h2>{t("coupling")}</h2>
@@ -272,7 +338,9 @@ export const MissingVariantsProducts = ({lastPart, slug}) => {
                                             key={i}
                                             label={name}
                                             checkboxes={checkboxes}
-                                            setCheckboxes={(checkboxValue) => setCheckboxes(checkboxValue)}
+                                            setCheckboxes={(updatedCheckbox) => {
+                                                setCheckboxes((prev) => ({ ...prev, [name]: updatedCheckbox }));
+                                            }}
                                         />
                                     );
                                 })}
@@ -281,7 +349,7 @@ export const MissingVariantsProducts = ({lastPart, slug}) => {
                     </div>
                     {/*<SubcategoryTable productsData={productsData} displayedItems={displayedItems}/>*/}
                     {/*<SubcategoryTable productsData={productsData} displayedItems={displayedItems} checkboxes={checkboxes}/>*/}
-                    <SubcategoryTable
+                    <SubcategoryTableBrands
                         productsData={filteredProducts}
                         onProductClick={handleProductClick}
                         lastPartToCollapse={lastPart}

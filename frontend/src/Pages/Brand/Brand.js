@@ -35,17 +35,17 @@ export const Brand = () => {
                 }
                 const data = await response.json();
 
-                console.log(data);
+                console.log("brands:", data)
 
                 // Filter the products to only include those from the current category
                 const filteredData = data
-                    // .filter(item => slugify(item.brand.name) === currentSlug)
+                    .filter(item => item.brand?.name && slugify(item.brand.name) === currentSlug) // Check if brand and brand.name exist
                     .map(item => ({
                         name: item.variantname,
                         imgUrl: item.domainImagePath, // Images not handled yet
                         slug: slugify(item.variantname),
                     }));
-                console.log(filteredData);
+                console.log("filtered:", filteredData);
 
                 setProducts(filteredData);
             } catch (err) {

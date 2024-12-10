@@ -136,6 +136,13 @@ const dataProvider = {
                                 id: data.cid // Include `cid` only for `categories`
                             }
                         }
+                    : resource === "item_types"
+                        ? {
+                            name: nameField, // Include `subCatName` for `subcategories`
+                            subcategory: {
+                                id: data.scid // Include `cid` only for `categories`
+                            }
+                        }
                     : {
                         name: nameField
                     }),
@@ -292,6 +299,13 @@ const dataProvider = {
                                 id: data.cid // Include `cid` only for `categories`
                             }
                     }
+                    : resource === "item_types"
+                        ? {
+                            name: nameField, // Include `subCatName` for `subcategories`
+                            subcategory: {
+                                id: data.scid // Include `cid` only for `categories`
+                            }
+                        }
                     : {
                         name: nameField
                     }),

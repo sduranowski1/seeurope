@@ -32,6 +32,7 @@ const EnovaProductEdit = () => {
     const [variants, setVariants] = useState([]);
     const [categories, setCategories] = useState([]);
     const [subcategories, setSubcategories] = useState([]);
+    const [itemTypes, setItemTypes] = useState([]);
     const [loading, setLoading] = useState(true);
     const [image, setImage] = useState(null);
     const [imagePreview, setImagePreview] = useState(null);
@@ -50,20 +51,23 @@ const EnovaProductEdit = () => {
                 setProduct(productData);
 
                 // Fetch brands and variants data
-                const [brandsResponse, variantsResponse, categoriesResponse, subcategoriesResponse] = await Promise.all([
+                const [brandsResponse, variantsResponse, categoriesResponse, subcategoriesResponse, itemTypesResponse] = await Promise.all([
                     fetch('https://se-europe-test.pl/api/brands'),
                     fetch('https://se-europe-test.pl/api/variants'),
                     fetch('https://se-europe-test.pl/api/categories'),
-                    fetch('https://se-europe-test.pl/api/subcategories')
+                    fetch('https://se-europe-test.pl/api/subcategories'),
+                    fetch('https://se-europe-test.pl/api/item_types')
                 ]);
                 const brandsData = await brandsResponse.json();
                 const variantsData = await variantsResponse.json();
                 const categoriesData = await categoriesResponse.json();
                 const subcategoriesData = await subcategoriesResponse.json();
+                const itemTypesData = await itemTypesResponse.json();
                 setBrands(brandsData);
                 setVariants(variantsData);
                 setCategories(categoriesData);
                 setSubcategories(subcategoriesData);
+                setItemTypes(itemTypesData);
 
                 setLoading(false);
             } catch (error) {
@@ -126,6 +130,7 @@ const EnovaProductEdit = () => {
                 varid: product.varid,
                 catid: product.catid,
                 scatid: product.scatid,
+                itypeid: product.itypeid,
                 imagePath: imageId, // Only the image ID as a string
             };
 
@@ -248,6 +253,23 @@ const EnovaProductEdit = () => {
                                 {subcategories.map((subcategory) => (
                                     <MenuItem key={subcategory.id} value={subcategory.id}>
                                         {subcategory.subCatName}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+
+                        <FormControl fullWidth margin="normal">
+                            <InputLabel id="itemType-label">Item Type</InputLabel>
+                            <Select
+                                labelId="itemType-label"
+                                name="itypeid"
+                                value={product?.itypeid || ''}
+                                onChange={handleChange}
+                                label="Item Type"
+                            >
+                                {itemTypes.map((itemType) => (
+                                    <MenuItem key={itemType.id} value={itemType.id}>
+                                        {itemType.name}
                                     </MenuItem>
                                 ))}
                             </Select>

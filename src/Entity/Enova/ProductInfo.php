@@ -37,6 +37,9 @@ class ProductInfo
     #[ORM\Column(type: "integer", options: ["default" => 0])]
     private int $itypeid;
 
+    #[ORM\Column(type: "text", nullable: true)]
+    private ?string $description = null;
+
     #[ORM\ManyToOne(targetEntity: ProductsMediaObject::class)]
     #[ORM\JoinColumn(nullable: true)]
     #[ApiProperty(types: ['https://schema.org/image'])]
@@ -131,6 +134,16 @@ class ProductInfo
     public function setItypeid(int $itypeid): void
     {
         $this->itypeid = $itypeid;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): void
+    {
+        $this->description = $description;
     }
 
     // Add the toArray method

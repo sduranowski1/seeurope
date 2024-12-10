@@ -6,11 +6,12 @@ import {useState, useEffect, useMemo, useCallback} from "react";
 import { useTranslation } from 'react-i18next';
 import {useNavigate} from "react-router-dom";
 import {fetchToken} from "../../utils/fetchToken";
-import {SubcategoryTable} from "./Components/SubcategoryTable";
 import {ProductDescription} from "./Components/ProductDescription";
 import Box from "@mui/material/Box";
 import {CircularProgress} from "@mui/material";
 import * as React from "react";
+import {SubcategoryTableBrands} from "./Components/SubcategoryTableBrands";
+import {WeightRange} from "./Components/WeightRange";
 
 const productsData = {
     name: '3 POINT',
@@ -69,19 +70,19 @@ export const VariantProducts = ({lastPart, slug}) => {
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [checkboxes, setCheckboxes] = useState({});
 
-    function findCheckboxes() {
-        return Object.values(productsData.tableData).flat().reduce((acc, product) => {
-            if (!acc.hasOwnProperty(product.coupling)) {
-                acc[product.coupling] = false;
-            }
-            return acc;
-        }, {});
-    }
-
-    useEffect(() => {
-        const uniqueCheckboxes = findCheckboxes();
-        setCheckboxes(uniqueCheckboxes);
-    }, [productsData.tableData]);
+    // function findCheckboxes() {
+    //     return Object.values(productsData.tableData).flat().reduce((acc, product) => {
+    //         if (!acc.hasOwnProperty(product.coupling)) {
+    //             acc[product.coupling] = false;
+    //         }
+    //         return acc;
+    //     }, {});
+    // }
+    //
+    // useEffect(() => {
+    //     const uniqueCheckboxes = findCheckboxes();
+    //     setCheckboxes(uniqueCheckboxes);
+    // }, [productsData.tableData]);
 
     const { t } = useTranslation();
 
@@ -98,6 +99,7 @@ export const VariantProducts = ({lastPart, slug}) => {
     const [limit, setLimit] = useState(10); // Number of items per page
     const navigate = useNavigate();
     const [filteredProducts, setFilteredProducts] = useState([]);
+    const [weightRange, setWeightRange] = useState([0, 30000]);
 
 
     // Debounce timeout variable
@@ -267,6 +269,33 @@ export const VariantProducts = ({lastPart, slug}) => {
         setSelectedProduct(product);
     };
 
+    // Handle weight range change
+    const handleWeightRangeChange = (event, newValue) => {
+        setWeightRange(newValue);
+    };
+
+    // Find the maximum weight in the filtered products
+    const maxWeight = Math.max(
+        ...filteredProducts.map(product => parseFloat(product.capacityFeat.replace(/[^\d.-]/g, "")) || 0),
+        30000 // Default fallback value for the max weight if no valid products are found
+    );
+
+    console.log(maxWeight)
+
+    function findCheckboxes() {
+        return Object.values(filteredProducts).flat().reduce((acc, product) => {
+            if (!acc.hasOwnProperty(product.brandName)) {
+                acc[product.brandName] = false;
+            }
+            return acc;
+        }, {});
+    }
+
+    useEffect(() => {
+        const uniqueCheckboxes = findCheckboxes();
+        setCheckboxes(uniqueCheckboxes);
+    }, [filteredProducts]);
+
     return (
         <main>
             <section className={'section-contrains tables-page'}>
@@ -288,7 +317,11 @@ export const VariantProducts = ({lastPart, slug}) => {
                 <div className={'available-choices-container'}>
                     <div className={'choice-container'}>
                         <h2>{t("machine_weight")}</h2>
-                        <ProductRangeComponent/>
+                        <WeightRange
+                            weightRange={weightRange}
+                            maxWeight={maxWeight}
+                            onChange={handleWeightRangeChange}
+                        />
                     </div>
                     <div className={'choice-container'}>
                         <h2>{t("coupling")}</h2>
@@ -308,7 +341,7 @@ export const VariantProducts = ({lastPart, slug}) => {
                 </div>
                 {/*<SubcategoryTable productsData={productsData} displayedItems={displayedItems}/>*/}
                 {/*<SubcategoryTable productsData={productsData} displayedItems={displayedItems} checkboxes={checkboxes}/>*/}
-                <SubcategoryTable
+                <SubcategoryTableBrands
                     productsData={filteredProducts}
                     onProductClick={handleProductClick}
                     lastPartToCollapse={lastPart}

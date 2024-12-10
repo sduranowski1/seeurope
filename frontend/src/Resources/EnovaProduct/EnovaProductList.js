@@ -23,6 +23,7 @@ const EnovaProductList = () => {
   const [variants, setVariants] = useState([]);
   const [categories, setCategories] = useState([]);
   const [subcategories, setSubcategories] = useState([]);
+  const [itemTypes, setItemTypes] = useState([]);
   const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -39,11 +40,12 @@ const EnovaProductList = () => {
 
   const fetchAdditionalData = async () => {
     try {
-      const [brandsResponse, variantsResponse, categoriesResponse, subcategoriesResponse] = await Promise.all([
+      const [brandsResponse, variantsResponse, categoriesResponse, subcategoriesResponse, itemTypesResponse] = await Promise.all([
         fetch('https://se-europe-test.pl/api/brands'),
         fetch('https://se-europe-test.pl/api/variants'),
         fetch('https://se-europe-test.pl/api/categories'),
         fetch('https://se-europe-test.pl/api/subcategories'),
+        fetch('https://se-europe-test.pl/api/item_types'),
       ]);
 
       if (!brandsResponse.ok || !variantsResponse.ok || !categoriesResponse.ok ) {
@@ -54,11 +56,13 @@ const EnovaProductList = () => {
       const variantsData = await variantsResponse.json();
       const categoriesData = await categoriesResponse.json();
       const subcategoriesData = await subcategoriesResponse.json();
+      const itemTypesData = await itemTypesResponse.json();
 
       setBrands(brandsData);
       setVariants(variantsData);
       setCategories(categoriesData);
       setSubcategories(subcategoriesData);
+      setItemTypes(itemTypesData);
     } catch (error) {
       console.error('Error fetching brands, categories or variants:', error);
       setError('Failed to load brands, categories or variants');
@@ -108,8 +112,9 @@ const EnovaProductList = () => {
         const variantName = variants.find((variant) => variant.id === product.productInfo?.varid)?.variantname || 'N/A';
         const categoryName = categories.find((category) => category.id === product.productInfo?.catid)?.name || 'N/A';
         const subcategoryName = subcategories.find((subcategory) => subcategory.id === product.productInfo?.scatid)?.subCatName || 'N/A';
+        const itemTypeName = itemTypes.find((itemType) => itemType.id === product.productInfo?.itypeid)?.name || 'N/A';
 
-        return { ...product, netto, procWzrostu, replacementParts,  brandName, variantName, categoryName, subcategoryName };
+        return { ...product, netto, procWzrostu, replacementParts,  brandName, variantName, categoryName, subcategoryName, itemTypeName };
       });
 
       setProducts(productsData);
@@ -119,7 +124,7 @@ const EnovaProductList = () => {
     } finally {
       setLoading(false); // Set loading to false when done
     }
-  }, [currentPage, limit, brands, variants, categories, subcategories]);
+  }, [currentPage, limit, brands, variants, categories, subcategories, itemTypes]);
 
   useEffect(() => {
     fetchAdditionalData();
@@ -183,6 +188,7 @@ const EnovaProductList = () => {
                     <TableCell>Variant</TableCell>
                     <TableCell>Category</TableCell>
                     <TableCell>Subcategory</TableCell>
+                    <TableCell>Item Type</TableCell>
                   </TableRow>
                 </CustomTableHead>
                 <TableBody>
@@ -218,7 +224,7 @@ const EnovaProductList = () => {
                         </TableCell>
                         <TableCell>
                           {product.variantName !== 'N/A' ? (
-                              <Link to={`/admin/brands/${product.productInfo?.varid}`}>
+                              <Link to={`/admin/variants/${product.productInfo?.varid}`}>
                                 {product.variantName}
                               </Link>
                           ) : (
@@ -227,7 +233,7 @@ const EnovaProductList = () => {
                         </TableCell>
                         <TableCell>
                           {product.categoryName !== 'N/A' ? (
-                              <Link to={`/admin/brands/${product.productInfo?.catid}`}>
+                              <Link to={`/admin/categories/${product.productInfo?.catid}`}>
                                 {product.categoryName}
                               </Link>
                           ) : (
@@ -236,8 +242,17 @@ const EnovaProductList = () => {
                         </TableCell>
                         <TableCell>
                           {product.subcategoryName !== 'N/A' ? (
-                              <Link to={`/admin/brands/${product.productInfo?.scatid}`}>
+                              <Link to={`/admin/subcategories/${product.productInfo?.scatid}`}>
                                 {product.subcategoryName}
+                              </Link>
+                          ) : (
+                              'N/A'
+                          )}
+                        </TableCell>
+                        <TableCell>
+                          {product.itemTypeName !== 'N/A' ? (
+                              <Link to={`/admin/item_types/${product.productInfo?.itypeid}`}>
+                                {product.itemTypeName}
                               </Link>
                           ) : (
                               'N/A'

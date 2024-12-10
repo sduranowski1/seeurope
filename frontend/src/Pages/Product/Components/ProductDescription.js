@@ -177,6 +177,9 @@ export const ProductDescription = ({ product }) => {
     const description = data.productInfo?.description;
     const sanitizedDescription = DOMPurify.sanitize(description);
 
+    const polishDescription = data.productInfo?.polishDescription;
+    const sanitizedPolishDescription = DOMPurify.sanitize(polishDescription);
+
     return (
         <div>
             {loading && (
@@ -211,8 +214,13 @@ export const ProductDescription = ({ product }) => {
                                 {/*<p>{String(data.productInfo?.description || 'No description')}</p>*/}
                                 <div dangerouslySetInnerHTML={{
                                     __html: sanitizedDescription || 'No description available'
-                                    }}
+                                }}
                                 />
+                                <div dangerouslySetInnerHTML={{
+                                    __html: sanitizedPolishDescription || 'Brak opisu'
+                                }}
+                                />
+                                {data.productInfo?.polishDescription}
                                 {/*<br></br>*/}
                                 {/*<h2>Nagłówek produktu</h2>*/}
                                 {/*<br/>*/}
@@ -235,40 +243,40 @@ export const ProductDescription = ({ product }) => {
                                 {/*    <li>Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</li>*/}
                                 {/*    <li>Quisque sit amet est et sapien ullamcorper pharetra.</li>*/}
                                 {/*</ul>*/}
-                            {/*</ul>*/}
-                            <br></br>
-                            <h3>DANE TECHNICZNE</h3>
-                            {/*<ul>*/}
-                            {/*    <li>Capacity: {data.capacityFeat || "N/A"}</li>*/}
-                            {/*    <li>Szerokość: 1134 mm</li>*/}
-                            {/*    <li>Wysokość: 781 mm</li>*/}
-                            {/*    <li>Waga: 87 kg</li>*/}
-                            {/*    <li>Mocowanie: 3 punktowe</li>*/}
-                            {/*    <li>Strona maszyny: 3 punktowe Kat 2</li>*/}
-                            {/*    <li>Strona osprzętu: SMS/Euro</li>*/}
-                            {/*    <li>Produkt: Adapter</li>*/}
-                            {/*</ul>*/}
+                                {/*</ul>*/}
+                                <br></br>
+                                <h3>DANE TECHNICZNE</h3>
+                                {/*<ul>*/}
+                                {/*    <li>Capacity: {data.capacityFeat || "N/A"}</li>*/}
+                                {/*    <li>Szerokość: 1134 mm</li>*/}
+                                {/*    <li>Wysokość: 781 mm</li>*/}
+                                {/*    <li>Waga: 87 kg</li>*/}
+                                {/*    <li>Mocowanie: 3 punktowe</li>*/}
+                                {/*    <li>Strona maszyny: 3 punktowe Kat 2</li>*/}
+                                {/*    <li>Strona osprzętu: SMS/Euro</li>*/}
+                                {/*    <li>Produkt: Adapter</li>*/}
+                                {/*</ul>*/}
                                 {renderFeatures(data)}
                                 <br/>
-                            <div className='price-container'>
-                                {/*<h2>899.99$</h2>*/}
-                                <h2>Ceny:</h2>
-                                {renderPrices(data)}
-                            </div>
-                            <div className={'item-quantity'}>
-                                <button className='quantity-btn'>-</button>
-                                <p>0</p>
-                                <button className='quantity-btn'>+</button>
-                                <button className='buy-btn btn-container'>BUY</button>
+                                <div className='price-container'>
+                                    {/*<h2>899.99$</h2>*/}
+                                    <h2>Ceny:</h2>
+                                    {renderPrices(data)}
+                                </div>
+                                <div className={'item-quantity'}>
+                                    <button className='quantity-btn'>-</button>
+                                    <p>0</p>
+                                    <button className='quantity-btn'>+</button>
+                                    <button className='buy-btn btn-container'>BUY</button>
 
+                                </div>
+                                <h2>{data.stanMagazynowy}</h2>
                             </div>
-                            <h2>{data.stanMagazynowy}</h2>
-                    </div>
-                <div>
-                    {/*<img src={sketch}/>*/}
-                    <img src={`https://se-europe-test.pl${data.productInfo?.imagePath}`}/>
-                </div>
-                </section>
+                            <div>
+                                {/*<img src={sketch}/>*/}
+                                <img src={`https://se-europe-test.pl${data.productInfo?.imagePath}`}/>
+                            </div>
+                        </section>
                 </div>
             ) : (
                 <p>Loading data...</p>

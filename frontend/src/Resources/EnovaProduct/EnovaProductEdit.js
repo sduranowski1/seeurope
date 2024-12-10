@@ -129,6 +129,7 @@ const EnovaProductEdit = () => {
                 scatid: product.scatid,
                 itypeid: product.itypeid,
                 description: product.description,
+                polishDescription: product.polishDescription,
                 imagePath: imageId, // Only the image ID as a string
             };
 
@@ -147,20 +148,20 @@ const EnovaProductEdit = () => {
             }
 
             // Add description to translations.json
-            const translationUpdateResponse = await fetch('/path/to/update/translations', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    key: `product_${id}_description`, // Unique key for the product description
-                    value: product.description, // The description text
-                }),
-            });
-
-            if (!translationUpdateResponse.ok) {
-                throw new Error('Translation update failed');
-            }
+            // const translationUpdateResponse = await fetch('/path/to/update/translations', {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //     },
+            //     body: JSON.stringify({
+            //         key: `product_${id}_description`, // Unique key for the product description
+            //         value: product.description, // The description text
+            //     }),
+            // });
+            //
+            // if (!translationUpdateResponse.ok) {
+            //     throw new Error('Translation update failed');
+            // }
 
             console.log('Product updated successfully');
             // Redirect after saving
@@ -296,6 +297,15 @@ const EnovaProductEdit = () => {
                                 value={product?.description || ''}
                                 onChange={(value) => handleChange({ target: { name: 'description', value } })}
                                 placeholder="Enter the product description"
+                            />
+                        </FormControl>
+
+                        <FormControl fullWidth margin="normal">
+                            <ReactQuill
+                                theme="snow"
+                                value={product?.polishDescription || ''}
+                                onChange={(value) => handleChange({ target: { name: 'polishDescription', value } })}
+                                placeholder="Enter the product description in polish"
                             />
                         </FormControl>
 

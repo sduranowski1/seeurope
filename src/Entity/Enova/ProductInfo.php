@@ -157,7 +157,7 @@ class ProductInfo
             'id' => $this->getId(),
         ];
     }
-    
+
     public function getPolishDescription(): ?string
     {
         return $this->polishDescription;

@@ -9,6 +9,7 @@ import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import CustomTableHead from "../../../Components/AdminTableHead/CustomTableHead";
+import DOMPurify from 'dompurify';
 
 export const ProductDescription = ({ product }) => {
     const [token, setToken] = useState(null);
@@ -173,6 +174,9 @@ export const ProductDescription = ({ product }) => {
         );
     }
 
+    const description = data.productInfo?.description;
+    const sanitizedDescription = DOMPurify.sanitize(description);
+
     return (
         <div>
             {loading && (
@@ -204,7 +208,11 @@ export const ProductDescription = ({ product }) => {
                             <div>
                                 <h1>{data.nazwa || "'N/A"}</h1>
                                 <p>{data.kod}</p>
-                                {data.description}
+                                {/*<p>{String(data.productInfo?.description || 'No description')}</p>*/}
+                                <div dangerouslySetInnerHTML={{
+                                    __html: sanitizedDescription || 'No description available'
+                                    }}
+                                />
                                 {/*<br></br>*/}
                                 {/*<h2>Nagłówek produktu</h2>*/}
                                 {/*<br/>*/}

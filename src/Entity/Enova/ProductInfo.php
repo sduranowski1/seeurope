@@ -40,6 +40,10 @@ class ProductInfo
     #[ORM\Column(type: "text", nullable: true)]
     private ?string $description = null;
 
+    #[ORM\Column(type: "text", nullable: true)]
+    private ?string $polishDescription = null;
+
+
     #[ORM\ManyToOne(targetEntity: ProductsMediaObject::class)]
     #[ORM\JoinColumn(nullable: true)]
     #[ApiProperty(types: ['https://schema.org/image'])]
@@ -152,5 +156,15 @@ class ProductInfo
         return [
             'id' => $this->getId(),
         ];
+    }
+    
+    public function getPolishDescription(): ?string
+    {
+        return $this->polishDescription;
+    }
+
+    public function setPolishDescription(?string $polishDescription): void
+    {
+        $this->polishDescription = $polishDescription;
     }
 }

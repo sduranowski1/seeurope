@@ -12,16 +12,9 @@ import {
     Typography, IconButton
 } from '@mui/material';
 import { CloudUpload as CloudUploadIcon } from '@mui/icons-material';
-import {fetchToken} from "../../utils/fetchToken";
-import Paper from "@mui/material/Paper";
-import Table from "@mui/material/Table";
-import CustomTableHead from "../../Components/AdminTableHead/CustomTableHead";
-import TableRow from "@mui/material/TableRow";
-import TableCell from "@mui/material/TableCell";
-import CustomCheckbox from "../../Components/AdminCheckbox/CustomCheckbox";
-import TableBody from "@mui/material/TableBody";
-import TableContainer from "@mui/material/TableContainer";
 import EnovaProductById from "./EnovaProductById";
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css'; // Import Quill styles
 
 const EnovaProductEdit = () => {
     const {id} = useParams(); // Get the product ID from the URL
@@ -40,6 +33,10 @@ const EnovaProductEdit = () => {
     const [products, setProducts] = useState([]);
     const [totalItems, setTotalItems] = useState(0);
     const [error, setError] = useState(null);
+    const [descriptions, setDescriptions] = useState({
+        en: '', // English description
+        pl: '', // Polish description
+    });
 
 
     useEffect(() => {
@@ -131,6 +128,7 @@ const EnovaProductEdit = () => {
                 catid: product.catid,
                 scatid: product.scatid,
                 itypeid: product.itypeid,
+                description: product.description,
                 imagePath: imageId, // Only the image ID as a string
             };
 
@@ -146,6 +144,22 @@ const EnovaProductEdit = () => {
 
             if (!productUpdateResponse.ok) {
                 throw new Error('Product update failed');
+            }
+
+            // Add description to translations.json
+            const translationUpdateResponse = await fetch('/path/to/update/translations', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    key: `product_${id}_description`, // Unique key for the product description
+                    value: product.description, // The description text
+                }),
+            });
+
+            if (!translationUpdateResponse.ok) {
+                throw new Error('Translation update failed');
             }
 
             console.log('Product updated successfully');
@@ -273,6 +287,16 @@ const EnovaProductEdit = () => {
                                     </MenuItem>
                                 ))}
                             </Select>
+                        </FormControl>
+
+
+                        <FormControl fullWidth margin="normal">
+                            <ReactQuill
+                                theme="snow"
+                                value={product?.description || ''}
+                                onChange={(value) => handleChange({ target: { name: 'description', value } })}
+                                placeholder="Enter the product description"
+                            />
                         </FormControl>
 
                         {/* Image Upload */}

@@ -204,28 +204,29 @@ export const ProductDescription = ({ product }) => {
                             <div>
                                 <h1>{data.nazwa || "'N/A"}</h1>
                                 <p>{data.kod}</p>
-                                <br></br>
-                                <h2>Nagłówek produktu</h2>
-                                <br/>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt
-                                    ut labore et dolore magna aliqua.</p>
-                                <br/>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis aute irure dolor in
-                                    reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
-                                    sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
-                                    est laborum.</p>
-                                <br/>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque sit amet est et sapien
-                                    ullamcorper pharetra. Nulla at augue ac arcu cursus vehicula. Fusce volutpat dolor a
-                                    metus tincidunt vehicula. Phasellus mollis, justo et iaculis varius, sem metus lacinia
-                                    ex, eu volutpat elit tortor vitae libero.</p>
-                                <br/>
-                                <h3>Korzyści:</h3>
-                                <ul>
-                                    <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
-                                    <li>Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</li>
-                                    <li>Quisque sit amet est et sapien ullamcorper pharetra.</li>
-                                </ul>
+                                {data.description}
+                                {/*<br></br>*/}
+                                {/*<h2>Nagłówek produktu</h2>*/}
+                                {/*<br/>*/}
+                                {/*<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt*/}
+                                {/*    ut labore et dolore magna aliqua.</p>*/}
+                                {/*<br/>*/}
+                                {/*<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis aute irure dolor in*/}
+                                {/*    reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur*/}
+                                {/*    sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id*/}
+                                {/*    est laborum.</p>*/}
+                                {/*<br/>*/}
+                                {/*<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque sit amet est et sapien*/}
+                                {/*    ullamcorper pharetra. Nulla at augue ac arcu cursus vehicula. Fusce volutpat dolor a*/}
+                                {/*    metus tincidunt vehicula. Phasellus mollis, justo et iaculis varius, sem metus lacinia*/}
+                                {/*    ex, eu volutpat elit tortor vitae libero.</p>*/}
+                                {/*<br/>*/}
+                                {/*<h3>Korzyści:</h3>*/}
+                                {/*<ul>*/}
+                                {/*    <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>*/}
+                                {/*    <li>Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</li>*/}
+                                {/*    <li>Quisque sit amet est et sapien ullamcorper pharetra.</li>*/}
+                                {/*</ul>*/}
                             {/*</ul>*/}
                             <br></br>
                             <h3>DANE TECHNICZNE</h3>

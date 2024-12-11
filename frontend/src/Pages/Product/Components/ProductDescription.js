@@ -10,6 +10,7 @@ import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import CustomTableHead from "../../../Components/AdminTableHead/CustomTableHead";
 import DOMPurify from 'dompurify';
+import i18n from "i18next";
 
 export const ProductDescription = ({ product }) => {
     const [token, setToken] = useState(null);
@@ -212,15 +213,20 @@ export const ProductDescription = ({ product }) => {
                                 <h1>{data.nazwa || "'N/A"}</h1>
                                 <p>{data.kod}</p>
                                 {/*<p>{String(data.productInfo?.description || 'No description')}</p>*/}
-                                <div dangerouslySetInnerHTML={{
-                                    __html: sanitizedDescription || 'No description available'
-                                }}
-                                />
-                                <div dangerouslySetInnerHTML={{
-                                    __html: sanitizedPolishDescription || 'Brak opisu'
-                                }}
-                                />
-                                {data.productInfo?.polishDescription}
+                                {i18n.language === 'en' ? (
+                                    <div
+                                        dangerouslySetInnerHTML={{
+                                            __html: sanitizedDescription || 'No description available',
+                                        }}
+                                    />
+                                ) : (
+                                    <div
+                                        dangerouslySetInnerHTML={{
+                                            __html: sanitizedPolishDescription || 'Brak opisu',
+                                        }}
+                                    />
+                                )}
+
                                 {/*<br></br>*/}
                                 {/*<h2>Nagłówek produktu</h2>*/}
                                 {/*<br/>*/}

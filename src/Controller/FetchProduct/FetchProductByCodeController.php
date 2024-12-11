@@ -111,6 +111,7 @@ class FetchProductByCodeController extends AbstractController
                 "imagePath" => $productInfo->getImagePath() ?? "string", // Provide a default path if $imagePath is null
                 "description" => $productInfo->getDescription() ?? "string", // description
                 "polishDescription" => $productInfo->getPolishDescription() ?? "string", // description
+                "germanDescription" => $productInfo->getGermanDescription() ?? "string", // description
                 // Add additional fields here as needed
             ],
         ];

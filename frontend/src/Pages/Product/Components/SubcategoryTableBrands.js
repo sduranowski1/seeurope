@@ -8,6 +8,9 @@ import TabPanel from '@mui/lab/TabPanel';
 import {TableComponent} from "../../../Components/TableComponent/TableComponent";
 import {useEffect, useState} from "react";
 import {ProductDescription} from "./ProductDescription";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import ErrorIcon from '@mui/icons-material/Error';
+import {Tooltip} from "@mui/material";
 
 export const SubcategoryTableBrands = ({ productsData, onProductClick, lastPartToCollapse, displayedItems, checkboxes }) => {
     const [activeFilter, setActiveFilter] = useState("All");
@@ -73,6 +76,7 @@ export const SubcategoryTableBrands = ({ productsData, onProductClick, lastPartT
                     <th>Variant</th>
                     <th>Category</th>
                     <th>Subcategory</th>
+                    <th>Status</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -107,11 +111,24 @@ export const SubcategoryTableBrands = ({ productsData, onProductClick, lastPartT
                             <td>{product.variantName || "N/A"}</td>
                             <td>{product.categoryName || "N/A"}</td>
                             <td>{product.subcategoryName || "N/A"}</td>
+                            <td>
+                                {product.stanMagazynowy === "instock" ? (
+                                    <Tooltip title="In Stock: This product is available.">
+                                        <CheckCircleIcon style={{color: "green", cursor: "pointer"}}/>
+                                    </Tooltip>
+                                ) : product.stanMagazynowy === "onbackorder" ? (
+                                    <Tooltip title="On Backorder: This product is not currently available.">
+                                        <ErrorIcon style={{color: "orange", cursor: "pointer"}}/>
+                                    </Tooltip>
+                                ) : (
+                                    product.stanMagazynowy || "N/A"
+                                )}
+                            </td>
                         </tr>
-                        ))
+                    ))
                 ) : (
                     <tr>
-                        <td colSpan="8" style={{ textAlign: "center", padding: "20px" }}>
+                        <td colSpan="8" style={{textAlign: "center", padding: "20px"}}>
                             No Items Found
                         </td>
                     </tr>

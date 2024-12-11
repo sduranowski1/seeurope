@@ -43,6 +43,8 @@ class ProductInfo
     #[ORM\Column(type: "text", nullable: true)]
     private ?string $polishDescription = null;
 
+    #[ORM\Column(type: "text", nullable: true)]
+    private ?string $germanDescription = null;
 
     #[ORM\ManyToOne(targetEntity: ProductsMediaObject::class)]
     #[ORM\JoinColumn(nullable: true)]
@@ -166,5 +168,15 @@ class ProductInfo
     public function setPolishDescription(?string $polishDescription): void
     {
         $this->polishDescription = $polishDescription;
+    }
+
+    public function getGermanDescription(): ?string
+    {
+        return $this->germanDescription;
+    }
+
+    public function setGermanDescription(?string $germanDescription): void
+    {
+        $this->germanDescription = $germanDescription;
     }
 }

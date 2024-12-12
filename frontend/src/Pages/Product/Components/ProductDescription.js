@@ -3,7 +3,7 @@ import sketch from "../../../assets/100838.png";
 import {fetchToken} from "../../../utils/fetchToken";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
-import {Box, CircularProgress, Typography} from "@mui/material";
+import {Box, CircularProgress, Tooltip, Typography} from "@mui/material";
 import TableContainer from "@mui/material/TableContainer";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
@@ -11,6 +11,8 @@ import TableBody from "@mui/material/TableBody";
 import CustomTableHead from "../../../Components/AdminTableHead/CustomTableHead";
 import DOMPurify from 'dompurify';
 import i18n from "i18next";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import ErrorIcon from "@mui/icons-material/Error";
 
 export const ProductDescription = ({ product }) => {
     const [token, setToken] = useState(null);
@@ -181,6 +183,9 @@ export const ProductDescription = ({ product }) => {
     const polishDescription = data.productInfo?.polishDescription;
     const sanitizedPolishDescription = DOMPurify.sanitize(polishDescription);
 
+    const germanDescription = data.productInfo?.germanDescription;
+    const sanitizedGermanDescription = DOMPurify.sanitize(germanDescription);
+
     return (
         <div>
             {loading && (
@@ -210,22 +215,32 @@ export const ProductDescription = ({ product }) => {
                     <div>
                         <section className={'section-contrains tables-page item-page'}>
                             <div>
-                                <h1>{data.nazwa || "'N/A"}</h1>
+                                <h1 className={"description-header"}>{data.nazwa || "'N/A"}</h1>
+                                <hr></hr>
                                 <p>{data.kod}</p>
+                                <br/>
                                 {/*<p>{String(data.productInfo?.description || 'No description')}</p>*/}
-                                {i18n.language === 'en' ? (
-                                    <div
-                                        dangerouslySetInnerHTML={{
-                                            __html: sanitizedDescription || 'No description available',
-                                        }}
-                                    />
-                                ) : (
-                                    <div
-                                        dangerouslySetInnerHTML={{
-                                            __html: sanitizedPolishDescription || 'Brak opisu',
-                                        }}
-                                    />
-                                )}
+                                <div className={"description"}>
+                                    {i18n.language === 'en' ? (
+                                        <div
+                                            dangerouslySetInnerHTML={{
+                                                __html: sanitizedDescription || 'No description available',
+                                            }}
+                                        />
+                                    ) : i18n.language === 'pl' ? (
+                                        <div
+                                            dangerouslySetInnerHTML={{
+                                                __html: sanitizedPolishDescription || 'Brak opisu',
+                                            }}
+                                        />
+                                    ) : (
+                                        <div
+                                            dangerouslySetInnerHTML={{
+                                                __html: sanitizedGermanDescription || 'keine Beschreibung',
+                                            }}
+                                        />
+                                    )}
+                                </div>
 
                                 {/*<br></br>*/}
                                 {/*<h2>Nagłówek produktu</h2>*/}
@@ -251,7 +266,7 @@ export const ProductDescription = ({ product }) => {
                                 {/*</ul>*/}
                                 {/*</ul>*/}
                                 <br></br>
-                                <h3>DANE TECHNICZNE</h3>
+                                <h3 className={"description-header tech-data-header"}>DANE TECHNICZNE</h3>
                                 {/*<ul>*/}
                                 {/*    <li>Capacity: {data.capacityFeat || "N/A"}</li>*/}
                                 {/*    <li>Szerokość: 1134 mm</li>*/}
@@ -262,7 +277,25 @@ export const ProductDescription = ({ product }) => {
                                 {/*    <li>Strona osprzętu: SMS/Euro</li>*/}
                                 {/*    <li>Produkt: Adapter</li>*/}
                                 {/*</ul>*/}
-                                {renderFeatures(data)}
+                                <div className={""}>
+                                    {renderFeatures(data)}
+                                </div>
+                                <br/>
+                                <div className={"hr-price"}></div>
+                                <br/>
+                                <div className={"in-stock"}>
+                                    {data.stanMagazynowy === "instock" ? (
+                                        <Tooltip title="In Stock: This product is available.">
+                                            <CheckCircleIcon style={{color: "green", cursor: "pointer", paddingTop: "9px"}}/>
+                                        </Tooltip>
+                                    ) : data.stanMagazynowy === "onbackorder" ? (
+                                        <Tooltip title="On Backorder: This product is not currently available.">
+                                            <ErrorIcon style={{color: "orange", cursor: "pointer", paddingTop: "9px"}}/>
+                                        </Tooltip>
+                                    ) : (
+                                        data.stanMagazynowy || "N/A"
+                                    )} {data.stanMagazynowy}
+                                </div>
                                 <br/>
                                 <div className='price-container'>
                                     {/*<h2>899.99$</h2>*/}

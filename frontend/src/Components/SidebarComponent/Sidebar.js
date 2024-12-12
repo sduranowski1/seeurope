@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import './SidebarComponent.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleXmark, faUser, faAngleUp, faLock } from '@fortawesome/free-solid-svg-icons';
@@ -17,6 +17,11 @@ const Sidebar = ({ setToken }) => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const [categories, setCategories] = useState([]);
+  const [brands, setBrands] = useState([]);
+  const [loadingCoupling, setLoadingCoupling] = useState(true);
+  const [loadingMachine, setLoadingMachine] = useState(true);
   const navigate = useNavigate();
 
   const toggleLoginForm = () => {
@@ -56,6 +61,61 @@ const Sidebar = ({ setToken }) => {
     localStorage.removeItem('token');
     setToken(null);
     // navigate('/'); // Redirect to login page after logout
+  };
+
+  useEffect(() => {
+    const fetchMachine = async () => {
+      try {
+        const categoryResponse = await fetch('https://se-europe-test.pl/api/categories');
+        const categoriesData = await categoryResponse.json();
+
+        setCategories(categoriesData);
+        setLoadingMachine(false);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        setLoadingMachine(false);
+      }
+    };
+
+    const fetchCoupling = async () => {
+      try {
+        const brandResponse = await fetch('https://se-europe-test.pl/api/brands');
+        const brandsData = await brandResponse.json();
+
+        setBrands(brandsData);
+        setLoadingCoupling(false);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        setLoadingCoupling(false);
+      }
+    };
+
+    fetchMachine();
+    fetchCoupling();
+  }, []);
+
+  const renderCategoryMenuItems = () => {
+    return categories.map(category => {
+      return (
+          <li key={category.id} className={`nav__submenu-item 'nav__submenu-item--list' : ''}`}>
+            <Link to={`/my-machine/${category.name}`}>
+              {category.name}
+            </Link>
+          </li>
+      );
+    });
+  };
+
+  const renderBrandMenuItems = () => {
+    return brands.map(brand => {
+      return (
+          <li key={brand.id} className={`nav__submenu-item 'nav__submenu-item--list' : ''}`}>
+            <Link to={`/my-coupling/${brand.name}`}>
+              {brand.name}
+            </Link>
+          </li>
+      );
+    });
   };
 
   const { t, changeLanguage } = useTranslationContext();
@@ -106,59 +166,62 @@ const Sidebar = ({ setToken }) => {
             <Accordion className="aside__line aside__line--accordion">
               <AccordionSummary expandIcon={<FontAwesomeIcon className="angle-up" icon={faAngleUp}/>}
                                 aria-controls="panel1-content" id="panel1-header">
-                <Link className="aside__line aside__line--narrow" to="moje-zlacze">{t('my_coupling')}</Link>
+                <Link className="aside__line aside__line--narrow" to="my-coupling">{t('my_coupling')}</Link>
               </AccordionSummary>
               <AccordionDetails>
                 <ul>
-                  <li className="nav__submenu-item ">
-                    <Link to="/moje-zlacze/3-punkt">3 punkt</Link>
-                  </li>
-                  <li className="nav__submenu-item ">
-                    <Accordion className="aside__line aside__line--accordion">
-                      <AccordionSummary expandIcon={<FontAwesomeIcon className="angle-up" icon={faAngleUp}/>}
-                                        aria-controls="panel2-content" id="panel2-header">
-                        <Link className="aside__line aside__line--narrow" to="/moja-maszyna">Atlas</Link>
-                      </AccordionSummary>
-                      <AccordionDetails>
-                        <ul>
-                          <li className="nav__submenu-item ">
-                            <Link to="">Atlas 35</Link>
-                          </li>
-                          <li className="nav__submenu-item ">
-                            <Link to="">Atlas 95</Link>
-                          </li>
-                        </ul>
-                      </AccordionDetails>
-                    </Accordion>
-                  </li>
+                  {renderBrandMenuItems()}
+                  {/*<li className="nav__submenu-item ">*/}
+                  {/*  <Link to="/moje-zlacze/3-punkt">3 punkt</Link>*/}
+                  {/*</li>*/}
+                  {/*<li className="nav__submenu-item ">*/}
+                  {/*  <Accordion className="aside__line aside__line--accordion">*/}
+                  {/*    <AccordionSummary expandIcon={<FontAwesomeIcon className="angle-up" icon={faAngleUp}/>}*/}
+                  {/*                      aria-controls="panel2-content" id="panel2-header">*/}
+                  {/*      <Link className="aside__line aside__line--narrow" to="/moja-maszyna">Atlas</Link>*/}
+                  {/*    </AccordionSummary>*/}
+                  {/*    <AccordionDetails>*/}
+                  {/*      <ul>*/}
+                  {/*        <li className="nav__submenu-item ">*/}
+                  {/*          <Link to="">Atlas 35</Link>*/}
+                  {/*        </li>*/}
+                  {/*        <li className="nav__submenu-item ">*/}
+                  {/*          <Link to="">Atlas 95</Link>*/}
+                  {/*        </li>*/}
+                  {/*      </ul>*/}
+                  {/*    </AccordionDetails>*/}
+                  {/*  </Accordion>*/}
+                  {/*</li>*/}
                 </ul>
               </AccordionDetails>
             </Accordion>
             <Accordion className="aside__line aside__line--accordion">
               <AccordionSummary expandIcon={<FontAwesomeIcon className="angle-up" icon={faAngleUp}/>}
                                 aria-controls="panel2-content" id="panel2-header">
-                <Link className="aside__line aside__line--narrow" to="/moja-maszyna">{t('my_machine')}</Link>
+                <Link className="aside__line aside__line--narrow" to="/my-machine">{t('my_machine')}</Link>
               </AccordionSummary>
               <AccordionDetails>
                 <ul>
-                  <li className="nav__submenu-item ">
-                    <Link to="/moja-maszyna/ladowarka-kolowa">{t('wheel_loader')}</Link>
-                  </li>
-                  <li className="nav__submenu-item ">
-                    <Link to="/moja-maszyna/koparka">{t('excavator')}</Link>
-                  </li>
-                  <li className="nav__submenu-item ">
-                    <Link to="/moja-maszyna/traktor">{t('tractor')}</Link>
-                  </li>
-                  <li className="nav__submenu-item ">
-                    <Link to="/moja-maszyna/ladowarka-teleskopowa">{t('telescopic_handler')}</Link>
-                  </li>
-                  <li className="nav__submenu-item ">
-                    <Link to="/moja-maszyna/wozek-widlowy">{t('forklift')}</Link>
-                  </li>
-                  <li className="nav__submenu-item ">
-                    <Link to="/moja-maszyna/bez-zlacz">{t('without_coupling')}</Link>
-                  </li>
+                  {/* Dynamically render the category items */}
+                  {renderCategoryMenuItems()}
+                  {/*<li className="nav__submenu-item ">*/}
+                  {/*  <Link to="/moja-maszyna/ladowarka-kolowa">{t('wheel_loader')}</Link>*/}
+                  {/*</li>*/}
+                  {/*<li className="nav__submenu-item ">*/}
+                  {/*  <Link to="/moja-maszyna/koparka">{t('excavator')}</Link>*/}
+                  {/*</li>*/}
+                  {/*<li className="nav__submenu-item ">*/}
+                  {/*  <Link to="/moja-maszyna/traktor">{t('tractor')}</Link>*/}
+                  {/*</li>*/}
+                  {/*<li className="nav__submenu-item ">*/}
+                  {/*  <Link to="/moja-maszyna/ladowarka-teleskopowa">{t('telescopic_handler')}</Link>*/}
+                  {/*</li>*/}
+                  {/*<li className="nav__submenu-item ">*/}
+                  {/*  <Link to="/moja-maszyna/wozek-widlowy">{t('forklift')}</Link>*/}
+                  {/*</li>*/}
+                  {/*<li className="nav__submenu-item ">*/}
+                  {/*  <Link to="/moja-maszyna/bez-zlacz">{t('without_coupling')}</Link>*/}
+                  {/*</li>*/}
                 </ul>
               </AccordionDetails>
             </Accordion>

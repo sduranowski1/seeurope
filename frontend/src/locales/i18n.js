@@ -5,6 +5,7 @@ import { initReactI18next } from 'react-i18next';
 // Import your translation files
 import enTranslation from './en/translation.json';
 import plTranslation from './pl/translation.json';
+import deTranslation from './de/translation.json';
 
 // Initialize i18next
 i18n.use(initReactI18next).init({
@@ -14,6 +15,9 @@ i18n.use(initReactI18next).init({
     },
     pl: {
       translation: plTranslation,
+    },
+    de: {
+      translation: deTranslation,
     },
   },
   lng: 'pl', // default language

@@ -2,6 +2,7 @@ import '../../styles.scss';
 import './NavbarComponent.scss';
 import seLogo from '../../assets/logos/se-logo.png';
 import poland from '../../assets/icons/poland.png';
+import germany from '../../assets/icons/germany.png';
 import england from '../../assets/icons/england.png';
 import {Link} from "react-router-dom";
 import HomePage from "../../Pages/HomePage/HomePage";
@@ -129,7 +130,7 @@ export const NavbarComponent = (props) => {
 
                 return (
                     <li key={variant.id}>
-                        <Link to={`/moje-zlacze/${brandSlug}/${variantSlug}`} element={<ThreePoint />}>
+                        <Link to={`/my-coupling/${brandSlug}/${variantSlug}`} element={<ThreePoint />}>
                             {variant.variantname}
                         </Link>
                     </li>
@@ -148,8 +149,7 @@ export const NavbarComponent = (props) => {
             return (
                 <li key={brand.id} className={`nav__submenu-item ${hasSubItems ? 'nav__submenu-item--list' : ''}`}>
                     <Link
-                        to={hasSubItems ? '#' : `/moje-zlacze/${brandSlug}`} // Use `#` to make it visually consistent but non-functional
-                        element={<ThreePoint />}
+                        to={hasSubItems ? '#' : `/my-coupling/${brandSlug}`} // Use `#` to make it visually consistent but non-functional
                         onClick={(e) => {
                             if (hasSubItems) e.preventDefault(); // Prevent navigation if the brand has variants
                         }}
@@ -169,7 +169,7 @@ export const NavbarComponent = (props) => {
         return categories.map(category => {
             return (
                 <li key={category.id} className={`nav__submenu-item 'nav__submenu-item--list' : ''}`}>
-                    <Link to={`/moja-maszyna/${category.name}`}>
+                    <Link to={`/my-machine/${category.name}`}>
                         {category.name}
                     </Link>
                 </li>
@@ -191,30 +191,40 @@ export const NavbarComponent = (props) => {
                         </picture>
                     </Link>
                     <div className={'icons-container'}>
-                        <div>
-                            <button onClick={() => changeLanguage('en')} className={'icon'} target="_blank">
-                                <img src={england} className={'langs'}/>
-                            </button>
-                        </div>
-                        <div>
-                            <button onClick={() => changeLanguage('pl')} className={'icon'} target="_blank">
-                                <img src={poland} className={'langs'}/>
-                            </button>
+                        <div className={"socials"}>
+                            <a>
+                                <button onClick={() => changeLanguage('en')} className={'icon'} target="_blank">
+                                    <img src={england} className={'langs'}/>
+                                </button>
+                            </a>
+                            <a>
+                                <button onClick={() => changeLanguage('pl')} className={'icon'} target="_blank">
+                                    <img src={poland} className={'langs'}/>
+                                </button>
+                            </a>
+                            <a>
+                                <button onClick={() => changeLanguage('de')} className={'icon'} target="_blank">
+                                    <img src={germany} className={'langs'}/>
+                                </button>
+                            </a>
                         </div>
                         <div className={'socials'}>
                             <Link className={'icon'} to={'https://www.facebook.com/SEEquipmentPolandSpzoo/'}
                                   target="_blank">
                                 <FontAwesomeIcon icon={faFacebook}/>
                             </Link>
-                            <Link className={'icon icon--container'} to={'https://www.instagram.com/se_equipment_poland/'}
+                            <Link className={'icon icon--container'}
+                                  to={'https://www.instagram.com/se_equipment_poland/'}
                                   target="_blank">
                                 <FontAwesomeIcon icon={faInstagram}/>
                             </Link>
-                            <Link className={'icon icon--container'} to={'https://www.youtube.com/channel/UCyHY8EgVJ5y3sGhjkQuLAvQ'}
+                            <Link className={'icon icon--container'}
+                                  to={'https://www.youtube.com/channel/UCyHY8EgVJ5y3sGhjkQuLAvQ'}
                                   target="_blank">
                                 <FontAwesomeIcon icon={faYoutube}/>
                             </Link>
-                            <Link className={'icon icon--container'} to={'mailto:office-pl@se-europe.com'} target="_blank">
+                            <Link className={'icon icon--container'} to={'mailto:office-pl@se-europe.com'}
+                                  target="_blank">
                                 <FontAwesomeIcon icon={faEnvelope}/>
                             </Link>
                         </div>
@@ -229,7 +239,7 @@ export const NavbarComponent = (props) => {
 
                     <ul className="nav__menu">
                         <li className="nav__menu-item">
-                            <a className={'link-container'} href={'/moje-zlacze'}>
+                            <a className={'link-container'} href={'/my-coupling'}>
                                 {t('my_coupling')}
                                 {loadingCoupling ? (
                                     <div className="loading-spinner">
@@ -245,7 +255,7 @@ export const NavbarComponent = (props) => {
                             </ul>
                         </li>
                         <li className="nav__menu-item">
-                            <a className={'link-container'}  href={'/moja-maszyna'}>
+                            <a className={'link-container'}  href={'/my-machine'}>
                                 {t('my_machine')}
                                 {loadingMachine ? (
                                     <div className="loading-spinner">

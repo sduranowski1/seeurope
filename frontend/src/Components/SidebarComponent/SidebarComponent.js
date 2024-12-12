@@ -12,6 +12,7 @@ import { faCircleXmark, faUser, faLock, faAngleUp } from '@fortawesome/free-soli
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
+import {t} from "i18next";
 
 export const SidebarComponent = () => {
     const [toggleSidebar, setToggleSidebar] = useContext(Context);
@@ -23,7 +24,7 @@ export const SidebarComponent = () => {
     async function onAuthSet(event) {
         event.preventDefault();
         try {
-            const response = await fetch("http://127.0.0.1:8000/api/login", {
+            const response = await fetch("http://se-europe-test.pl/api/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -77,7 +78,7 @@ export const SidebarComponent = () => {
                 <div className={'aside__line-container aside__line-container--column'}>
                     <Accordion className={'aside__line aside__line--accordion'}>
                         <AccordionSummary expandIcon={<FontAwesomeIcon className={'angle-up'} icon={faAngleUp} />} aria-controls="panel1-content" id="panel1-header">
-                            <Link className={'aside__line aside__line--narrow'} to={'moje-zlacze'} element={<MyCoupling />}>Moje złącze</Link>
+                            <Link className={'aside__line aside__line--narrow'} to={'my-coupling'} element={<MyCoupling />}>{t('my-coupling')}</Link>
                         </AccordionSummary>
                         <AccordionDetails>
                             <ul>
@@ -87,7 +88,7 @@ export const SidebarComponent = () => {
                                 <li className="nav__submenu-item ">
                                     <Accordion className={'aside__line aside__line--accordion'}>
                                         <AccordionSummary expandIcon={<FontAwesomeIcon className={'angle-up'} icon={faAngleUp} />} aria-controls="panel2-content" id="panel2-header">
-                                            <Link className={'aside__line aside__line--narrow'} to={'/moja-maszyna'} element={<MyMachine />}>Atlas</Link>
+                                            <Link className={'aside__line aside__line--narrow'} to={'/my-machine'} element={<MyMachine />}>Atlas</Link>
                                         </AccordionSummary>
                                         <AccordionDetails>
                                             <ul>
@@ -106,7 +107,7 @@ export const SidebarComponent = () => {
                     </Accordion>
                     <Accordion className={'aside__line aside__line--accordion'}>
                         <AccordionSummary expandIcon={<FontAwesomeIcon className={'angle-up'} icon={faAngleUp} />} aria-controls="panel2-content" id="panel2-header">
-                            <Link className={'aside__line aside__line--narrow'} to={'/moja-maszyna'} element={<MyMachine />}>Moja maszyna</Link>
+                            <Link className={'aside__line aside__line--narrow'} to={'/my-machine'} element={<MyMachine />}>{t('my-machine')}</Link>
                         </AccordionSummary>
                         <AccordionDetails>
                             <ul>

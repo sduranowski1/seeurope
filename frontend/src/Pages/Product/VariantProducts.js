@@ -4,11 +4,11 @@ import {ProductRangeComponent} from "./Components/ProductRangeComponent";
 import {TableWithTabs} from "../../Components/TableWithTabs/TableWithTabs";
 import {useState, useEffect, useMemo, useCallback} from "react";
 import { useTranslation } from 'react-i18next';
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {fetchToken} from "../../utils/fetchToken";
 import {ProductDescription} from "./Components/ProductDescription";
 import Box from "@mui/material/Box";
-import {CircularProgress} from "@mui/material";
+import {Breadcrumbs, CircularProgress, Typography} from "@mui/material";
 import * as React from "react";
 import {SubcategoryTableBrands} from "./Components/SubcategoryTableBrands";
 import {WeightRange} from "./Components/WeightRange";
@@ -296,9 +296,37 @@ export const VariantProducts = ({lastPart, slug}) => {
         setCheckboxes(uniqueCheckboxes);
     }, [filteredProducts]);
 
+    // Keep the domain and the first part of the slug
+    const fullUrl = window.location.href;
+
+    const parts = fullUrl.split("/"); // Split the string by delimiter
+
+    // Keep the domain and the first part of the slug
+    const brandsSlug = parts[4]; // First part of the slug
+
     return (
         <main>
             <section className={'section-contrains tables-page'}>
+                <Breadcrumbs aria-label="breadcrumb">
+                    <Link underline="hover" color="inherit" to={"/"}>
+                        Start
+                    </Link>
+                    <Link
+                        underline="hover"
+                        color="inherit"
+                        to={"/my-coupling"}
+                    >
+                        My Coupling
+                    </Link>
+                    <Link
+                        underline="hover"
+                        color="inherit"
+                        to={`/my-coupling/${brandsSlug}`}
+                    >
+                        {brandsSlug}
+                    </Link>
+                    <Typography sx={{ color: 'text.primary' }}>{lastPart ? lastPart : t("my_coupling")}</Typography>
+                </Breadcrumbs>
                 <div className={'heading-container'}>
                     <h1 className={'page-title'}>{lastPart ? lastPart : t("my_coupling")}</h1>
                     <p className={'paragraph paragraph--medium'}>{t("tractor_equipment")}</p>

@@ -90,13 +90,12 @@ const EnovaProductEdit = () => {
 
     const handleSave = async () => {
         try {
-            console.log('Uploading file:', image.name);
-            // Upload the image and get the image ID if needed
-            let imageId = product.imageId; // Default to the existing image ID if no new image is uploaded
+            let imageId = product?.imagePath; // Default to the existing image path
 
+            // Only upload if a new image is selected
             if (image) {
                 const formData = new FormData();
-                formData.append('file', image); // Append the image file
+                formData.append('file', image);
 
                 const imageUploadResponse = await fetch('https://se-europe-test.pl/api/products_media_objects', {
                     method: 'POST',
@@ -106,22 +105,15 @@ const EnovaProductEdit = () => {
                     body: formData,
                 });
 
-                // Log the full response object for debugging
-                console.log('Full response:', imageUploadResponse);
-
                 if (!imageUploadResponse.ok) {
                     throw new Error('Image upload failed');
                 }
 
                 const result = await imageUploadResponse.json();
-                console.log('Upload result:', result);
-
-                const filePath = result.contentUrl;
-                console.log(filePath)
-                imageId = result.contentUrl
+                imageId = result.contentUrl; // Use the new image's URL or ID
             }
 
-            // Create the payload for updating the product
+            // Prepare the updated product data
             const updatedProduct = {
                 braid: product.braid,
                 varid: product.varid,
@@ -130,10 +122,11 @@ const EnovaProductEdit = () => {
                 itypeid: product.itypeid,
                 description: product.description,
                 polishDescription: product.polishDescription,
-                imagePath: imageId, // Only the image ID as a string
+                germanDescription: product.germanDescription,
+                imagePath: imageId, // Use the existing or updated image path
             };
 
-            // Send the PUT request to update the product
+            // Send the PUT request
             const productUpdateResponse = await fetch(`https://se-europe-test.pl/api/product_infos/${id}`, {
                 method: 'PUT',
                 headers: {
@@ -147,29 +140,13 @@ const EnovaProductEdit = () => {
                 throw new Error('Product update failed');
             }
 
-            // Add description to translations.json
-            // const translationUpdateResponse = await fetch('/path/to/update/translations', {
-            //     method: 'POST',
-            //     headers: {
-            //         'Content-Type': 'application/json',
-            //     },
-            //     body: JSON.stringify({
-            //         key: `product_${id}_description`, // Unique key for the product description
-            //         value: product.description, // The description text
-            //     }),
-            // });
-            //
-            // if (!translationUpdateResponse.ok) {
-            //     throw new Error('Translation update failed');
-            // }
-
             console.log('Product updated successfully');
-            // Redirect after saving
-            navigate('/admin/enova-products');
+            navigate('/admin/enova-products'); // Redirect after successful update
         } catch (error) {
             console.error('Error saving product:', error);
         }
     };
+
 
     if (loading) {
         return (
@@ -291,6 +268,7 @@ const EnovaProductEdit = () => {
                         </FormControl>
 
 
+                        <Typography variant="h5" component="h5" sx={{marginTop: "20px"}}>English</Typography>
                         <FormControl fullWidth margin="normal">
                             <ReactQuill
                                 theme="snow"
@@ -300,12 +278,23 @@ const EnovaProductEdit = () => {
                             />
                         </FormControl>
 
+                        <Typography variant="h5" component="h5" sx={{marginTop: "20px"}}>Polski</Typography>
                         <FormControl fullWidth margin="normal">
                             <ReactQuill
                                 theme="snow"
                                 value={product?.polishDescription || ''}
                                 onChange={(value) => handleChange({ target: { name: 'polishDescription', value } })}
                                 placeholder="Enter the product description in polish"
+                            />
+                        </FormControl>
+
+                        <Typography variant="h5" component="h5" sx={{marginTop: "20px"}}>Deutsch</Typography>
+                        <FormControl fullWidth margin="normal">
+                            <ReactQuill
+                                theme="snow"
+                                value={product?.germanDescription || ''}
+                                onChange={(value) => handleChange({ target: { name: 'germanDescription', value } })}
+                                placeholder="Enter the product description in german"
                             />
                         </FormControl>
 

@@ -4,12 +4,12 @@ import {ProductRangeComponent} from "./Components/ProductRangeComponent";
 import {TableWithTabs} from "../../Components/TableWithTabs/TableWithTabs";
 import {useState, useEffect, useMemo, useCallback} from "react";
 import { useTranslation } from 'react-i18next';
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {fetchToken} from "../../utils/fetchToken";
 import {SubcategoryTable} from "./Components/SubcategoryTable";
 import {ProductDescription} from "./Components/ProductDescription";
 import Box from "@mui/material/Box";
-import {CircularProgress} from "@mui/material";
+import {Breadcrumbs, CircularProgress, Typography} from "@mui/material";
 import * as React from "react";
 import {WeightRange} from "./Components/WeightRange";
 
@@ -315,11 +315,50 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
         setCheckboxes(uniqueCheckboxes);
     }, [filteredProducts]);
 
+    const fullUrl = window.location.href;
+
+    const parts = fullUrl.split("/"); // Split the string by delimiter
+
+    // Get all parts from index 4, excluding the last part
+    const categoriesSlug = parts[4]; // First part of the slug
+    const subcategoriesSlug = parts.slice(5, -1).join("/");
+
+    console.log("categories slug:", categoriesSlug); // Outputs the desired middle part of the URL
+
     return (
         <main>
             <section className={'section-contrains tables-page'}>
+                <Breadcrumbs aria-label="breadcrumb">
+                    <Link underline="hover" color="inherit" to={"/"}>
+                        Start
+                    </Link>
+                    <Link
+                        underline="hover"
+                        color="inherit"
+                        to={"/my-machine"}
+                    >
+                        My Machine
+                    </Link>
+                    <Link
+                        underline="hover"
+                        color="inherit"
+                        to={`/my-machine/${categoriesSlug}`}
+                    >
+                        {categoriesSlug}
+                    </Link>
+                    {subcategoriesSlug && (
+                        <Link
+                            underline="hover"
+                            color="inherit"
+                            to={`/my-machine/${categoriesSlug}/${subcategoriesSlug}`}
+                        >
+                            {subcategoriesSlug}
+                        </Link>
+                    )}
+                    <Typography sx={{ color: 'text.primary' }}>{lastPart ? lastPart : t("my_coupling")}</Typography>
+                </Breadcrumbs>
                 <div className={'heading-container'}>
-                    <h1 className={'page-title'}>{lastPart ? lastPart : t("my_coupling")}</h1>
+                    <h1 className={'page-title'}>{lastPart ? lastPart : t("my_machine")}</h1>
                     <p className={'paragraph paragraph--medium'}>{t("tractor_equipment")}</p>
                 </div>
                 {loading ? (

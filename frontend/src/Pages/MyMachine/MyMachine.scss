@@ -65,3 +65,29 @@
     }
   }
 }
+
+.description-header {
+  margin: 0px !important;
+  color: #1d6cc1
+}
+
+.description {
+  font-size: 1.3rem !important;
+}
+
+.tech-data-header {
+  font-size: 1.2rem
+}
+
+.hr-price {
+  text-align: center;
+  padding: 20px 0;
+  border-top: 1px solid rgba(170,170,170,.35);
+  border-bottom: 1px solid rgba(170,170,170,.35);
+}
+
+.in-stock {
+  background-color: rgba(170,170,170,.35);
+  text-align: center;
+  padding: 20px 0;
+}

@@ -146,11 +146,11 @@ export const SubcategoryTable = ({ productsData, onProductClick, lastPartToColla
                             <td>
                                 {product.stanMagazynowy === "instock" ? (
                                     <Tooltip title="In Stock: This product is available.">
-                                        <CheckCircleIcon style={{color: "green", cursor: "pointer"}}/>
+                                        <CheckCircleIcon style={{color: "green", cursor: "pointer", paddingTop: "9px"}}/>
                                     </Tooltip>
                                 ) : product.stanMagazynowy === "onbackorder" ? (
                                     <Tooltip title="On Backorder: This product is not currently available.">
-                                        <ErrorIcon style={{color: "orange", cursor: "pointer"}}/>
+                                        <ErrorIcon style={{color: "orange", cursor: "pointer", paddingTop: "9px"}}/>
                                     </Tooltip>
                                 ) : (
                                     product.stanMagazynowy || "N/A"

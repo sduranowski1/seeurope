@@ -135,7 +135,8 @@ const App = () => {
                 <Route path="enova-product/:id" element={<EnovaProductEdit />} />
             </Route>
             {/* <Route path="*" element={<Navigate to="/" replace />} /> */}
-          <Route path="/moje-zlacze">
+          {/*<Route path="/moje-zlacze">*/}
+          <Route path="/my-coupling">
               <Route index  element={<Layout><MyCoupling /></Layout>} />
               {/*<Route path=":brand" element={<Layout><Se /></Layout>} />*/}
               <Route path=":brand" element={<Layout><Brand /></Layout>} />
@@ -143,7 +144,8 @@ const App = () => {
               {/*<Route path="100838" element={<Layout><Se/></Layout>} />*/}
               {/*<Route path="3-punkt" element={<Layout><ThreePoint /></Layout>} />*/}
           </Route>
-          <Route path="/moja-maszyna">
+          {/*<Route path="/moja-maszyna">*/}
+          <Route path="/my-machine">
               <Route index element={<Layout><MyMachine /></Layout>} />
               <Route path=":category" element={<Layout><Category /></Layout>} />
               <Route path=":category/:slug" element={<Layout><ProductDetails /></Layout>} />

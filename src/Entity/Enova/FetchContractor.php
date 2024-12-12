@@ -7,6 +7,7 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\OpenApi\Model;
 use App\Controller\FetchContractor\FetchContractorByIdController;
+use App\Controller\FetchContractor\FetchContractorPeopleController;
 use App\Controller\FetchContractor\FetchContractorsController;
 
 #[ApiResource(
@@ -41,6 +42,42 @@ use App\Controller\FetchContractor\FetchContractorsController;
         new Post(
             uriTemplate: '/PanelWWW_API/DajKontrahentow',
             controller: FetchContractorsController::class,
+            openapi: new Model\Operation(
+                summary: 'Fetch products data based on given parameters.',
+                description: 'Fetch products data based on parameters like strona, limit, poleSortowane, etc. This will return product information.',
+                requestBody: new Model\RequestBody(
+                    content: new \ArrayObject([
+                        'application/json' => [
+                            'schema' => [
+                                'type' => 'object',
+                                'properties' => [
+                                    'strona' => ['type' => 'integer', 'example' => 0],
+                                    'limit' => ['type' => 'integer', 'example' => 0],
+                                    'poleSortowane' => ['type' => 'string', 'example' => 'string'],
+                                    'czyRosnaco' => ['type' => 'integer', 'example' => 0],
+                                    'dataAktualizacji' => ['type' => 'string', 'format' => 'date-time', 'example' => '2024-11-07T11:44:00.099Z'],
+                                ],
+                                'additionalProperties' => false, // Allow extra properties if needed
+                            ],
+                            'example' => [
+                                'strona' => 0,
+                                'limit' => 0,
+                                'poleSortowane' => 'string',
+                                'czyRosnaco' => 0,
+                                'dataAktualizacji' => '2024-11-07T11:44:00.099Z',
+                            ],
+                        ]
+                    ])
+                )
+            ),
+            paginationEnabled: false,
+            description: 'Fetch products data based on parameters.',
+            output: false,   // No output entity needed
+            read: false,
+        ),
+        new Post(
+            uriTemplate: '/PanelWWW_API/DajLudziKontrahentow',
+            controller: FetchContractorPeopleController::class,
             openapi: new Model\Operation(
                 summary: 'Fetch products data based on given parameters.',
                 description: 'Fetch products data based on parameters like strona, limit, poleSortowane, etc. This will return product information.',

@@ -299,17 +299,17 @@ export const ProductDescription = ({ product }) => {
                                 <br/>
                                 <div className='price-container'>
                                     {/*<h2>899.99$</h2>*/}
-                                    <h2>Ceny:</h2>
-                                    {renderPrices(data)}
+                                    {/*<h2>Ceny:</h2>*/}
+                                    {/*{renderPrices(data)}*/}
                                 </div>
                                 <div className={'item-quantity'}>
-                                    <button className='quantity-btn'>-</button>
-                                    <p>0</p>
-                                    <button className='quantity-btn'>+</button>
-                                    <button className='buy-btn btn-container'>BUY</button>
+                                    {/*<button className='quantity-btn'>-</button>*/}
+                                    {/*<p>0</p>*/}
+                                    {/*<button className='quantity-btn'>+</button>*/}
+                                    {/*<button className='buy-btn btn-container'>BUY</button>*/}
 
                                 </div>
-                                <h2>{data.stanMagazynowy}</h2>
+                                {/*<h2>{data.stanMagazynowy}</h2>*/}
                             </div>
                             <div>
                                 {/*<img src={sketch}/>*/}

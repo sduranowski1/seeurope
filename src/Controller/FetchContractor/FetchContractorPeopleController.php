@@ -1,6 +1,5 @@
 <?php
-
-// src/Controller/FetchProductByIdController.php
+// src/Controller/FetchContractorPeopleController.php
 
 namespace App\Controller\FetchContractor;
 
@@ -26,23 +25,12 @@ class FetchContractorPeopleController extends AbstractController
     {
         $data = json_decode($request->getContent(), true);
 
-        if (!isset($data['strona'])) {
-            throw new BadRequestHttpException('Missing "strona" field in request body.');
+        if (!isset($data['strona']) || !isset($data['limit'])) {
+            throw new BadRequestHttpException('Missing "strona" or "limit" field in request body.');
         }
 
-        $strona = $data['strona'];
-
-        if (!isset($data['limit'])) {
-            throw new BadRequestHttpException('Missing "limit" field in request body.');
-        }
-
-        $limit = $data['limit'];
-
-//        if (!isset($data['pokazCeny'])) {
-//            throw new BadRequestHttpException('Missing "pokazCeny" field in request body.');
-//        }
-//
-//        $pokazCeny = $data['pokazCeny'];
+        $strona = (int) $data['strona'];
+        $limit = (int) $data['limit'];
 
         // Get the token from the database
         $tokenEntity = $this->tokenRepository->findLatestToken();
@@ -50,38 +38,40 @@ class FetchContractorPeopleController extends AbstractController
             throw new \Exception('No token found in the database.');
         }
 
-        // Assume you have a method to fetch the token dynamically if needed
         $token = $tokenEntity->getToken();
 
-        // Now, use the token for the next request (e.g., POST /DajTowarWgId)
+        // Fetch all contractors upfront (adjust as necessary for API constraints)
         $productUrl = 'http://extranet.seequipment.pl:9010/api/PanelWWW_API/DajKontrahentow';
-
-        // POST request to fetch the product data
         $productResponse = $this->client->request('POST', $productUrl, [
             'json' => [
-                'strona' => $strona,  // Use the input parameter
-                'limit' => $limit,  // Use the input parameter
-//                'pokazCeny' => $pokazCeny  // Use the input parameter
+                'strona' => 1, // Start with the first page
+                'limit' => 1000, // Fetch a large number to simulate fetching all data
             ],
             'headers' => [
-                'Authorization' => 'Bearer ' . $token,  // Use the token here
-                'Content-Type' => 'application/json',  // Content-Type header to specify the body format
-                'Accept' => 'application/json',        // Accept header to specify the expected response format
+                'Authorization' => 'Bearer ' . $token,
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/json',
             ],
-            'verify_peer' => false, // Add this to disable SSL verification
+            'verify_peer' => false,
         ]);
 
-        // Handle the response from the second request
         $productData = $productResponse->toArray();
 
         // Filter out contractors with empty "listaOsobyKontrahenta"
-        $filteredData = array_filter($productData['elementy'], function ($contractor) {
+        $filteredData = array_filter($productData['elementy'] ?? [], function ($contractor) {
             return !empty($contractor['listaOsobyKontrahenta']);
         });
 
-        // Replace the original "elementy" with the filtered data
-        $productData['elementy'] = $filteredData;
+        // Calculate total items after filtering
+        $totalItems = count($filteredData);
 
-        return new JsonResponse($productData);
+        // Paginate filtered data
+        $paginatedData = array_slice($filteredData, ($strona - 1) * $limit, $limit);
+
+        // Return response with updated pagination info
+        return new JsonResponse([
+            'liczbaWszystkich' => $totalItems,
+            'elementy' => $paginatedData,
+        ]);
     }
 }

@@ -3,7 +3,11 @@
 
 namespace App\Controller\FetchProduct;
 
+use App\Entity\Enova\FetchContractor;
+use App\Repository\FetchProductRepository;
+use App\Repository\ProductInfoRepository;
 use App\Repository\TokenRepository;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

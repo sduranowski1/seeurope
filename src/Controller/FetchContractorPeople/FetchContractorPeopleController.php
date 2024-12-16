@@ -1,7 +1,7 @@
 <?php
 // src/Controller/FetchContractorPeopleController.php
 
-namespace App\Controller\FetchContractor;
+namespace App\Controller\FetchContractorPeople;
 
 use App\Repository\TokenRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

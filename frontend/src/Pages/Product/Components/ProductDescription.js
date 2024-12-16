@@ -87,7 +87,7 @@ export const ProductDescription = ({ product }) => {
             'Dealer Detal',
             'Volvo PL',
             'Volvo EUR',
-            'End User',
+            'End Submission',
         ];
 
         // Map through desiredPrices and fetch matching price objects

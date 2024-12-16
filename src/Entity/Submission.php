@@ -1,5 +1,5 @@
 <?php
-// api/src/Entity/User.php
+// api/src/Entity/Submission.php
 
 namespace App\Entity;
 
@@ -14,7 +14,7 @@ use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use App\Repository\UserRepository;
+use App\Repository\SubmissionRepository;
 use App\State\UserPasswordHasher;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -35,12 +35,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 //    denormalizationContext: ['groups' => ['user:create', 'user:update']],
 //)]
 #[ApiResource()]
-#[ORM\Entity(repositoryClass: UserRepository::class)]
-#[ORM\Table(name: '`user`')]
+#[ORM\Entity(repositoryClass: SubmissionRepository::class)]
+//#[ORM\Table(name: '`submission`')]
 #[UniqueEntity('email')]
-class User implements UserInterface, PasswordAuthenticatedUserInterface
+class Submission implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    #[Groups(['user:read'])]
+    #[Groups(['submission:read'])]
     #[ORM\Id]
     #[ORM\Column(type: 'integer')]
     #[ORM\GeneratedValue]
@@ -48,7 +48,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[Assert\NotBlank]
     #[Assert\Email]
-    #[Groups(['user:read', 'user:create', 'user:update'])]
+    #[Groups(['submission:read', 'submission:create', 'submission:update'])]
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
 
@@ -93,7 +93,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private array $roles = [];
 
     #[ORM\Column(type: 'boolean')]
-    #[Groups(['user:read', 'user:create', 'user:update'])]
+    #[Groups(['submission:read', 'submission:create', 'submission:update'])]
     private bool $enabled = false;
 
     public function getId(): ?int

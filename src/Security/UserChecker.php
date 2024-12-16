@@ -11,7 +11,7 @@ class UserChecker implements UserCheckerInterface
 {
     public function checkPreAuth(UserInterface $user): void
     {
-        if (!$user instanceof \App\Entity\User) {
+        if (!$user instanceof \App\Entity\Submission) {
             return;
         }
 

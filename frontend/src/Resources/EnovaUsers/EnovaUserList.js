@@ -13,16 +13,18 @@ import Box from "@mui/material/Box";
 import ExportButton from "../../Components/AdminExportButton/ExportButton";
 import CustomTableHead from "../../Components/AdminTableHead/CustomTableHead";
 import CustomCheckbox from "../../Components/AdminCheckbox/CustomCheckbox";
+import {useNavigate} from "react-router-dom";
 
 
 const EnovaUserList = () => {
-  const [products, setProducts] = useState([]);
+  const [people, setPeople] = useState([]);
   const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalItems, setTotalItems] = useState(0);
   const [limit, setLimit] = useState(10); // Number of items per page
+  const navigate = useNavigate();
 
   // Debounce timeout variable
   const [debounceTimeout, setDebounceTimeout] = useState(null);
@@ -70,8 +72,19 @@ const EnovaUserList = () => {
       const data2 = await response2.json();
       console.log('Second response:', data2);
 
+      const productsData = data2.elementy || [];
+
+      // Flatten the data to include people with contrahent name
+      const flattenedData = productsData.flatMap((contrahent) =>
+          (contrahent.listaOsobyKontrahenta || []).map((person) => ({
+            contrahentName: contrahent.nazwa,
+            contrahentId: contrahent.idEnova,
+            ...person,
+          }))
+      );
+
       // Extract the relevant product data
-      setProducts(Object.values(data2.elementy || {})); // Convert object to array
+      setPeople(flattenedData);
 
       setTotalItems(data2.liczbaWszystkich || 0);
     } catch (error) {
@@ -108,6 +121,10 @@ const EnovaUserList = () => {
     }
   };
 
+  const handleRowClick = useCallback((userId) => {
+    navigate(`/admin/enova-users/${userId}`);
+  }, [navigate]);
+
   return (
       <div>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
@@ -134,32 +151,31 @@ const EnovaUserList = () => {
           )}
           {!loading && !error && (
               <Table>
-                <CustomTableHead>
+                <TableHead>
                   <TableRow>
-                    <TableCell padding="checkbox">
-                      <CustomCheckbox inputProps={{ 'aria-label': 'select all' }} />
-                    </TableCell>
-                    <TableCell>Id</TableCell>
+                    <TableCell>User ID</TableCell>
+                    <TableCell>Contrahent ID</TableCell>
+                    <TableCell>Person Name</TableCell>
+                    <TableCell>Person Last Name</TableCell>
                     <TableCell>Contrahent Name</TableCell>
-                    {/*<TableCell align="right">Price (Netto)</TableCell>*/}
                   </TableRow>
-                </CustomTableHead>
+                </TableHead>
                 <TableBody>
-                  {products.map((product, index) => (
-                      <TableRow key={index}>
-                        <TableCell padding="checkbox">
-                          <CustomCheckbox />
-                        </TableCell>
-                        <TableCell>{product.idEnova}</TableCell>
-                        <TableCell>{product.nazwa}</TableCell>
-                        <TableCell>
-                          {product.listaOsobyKontrahenta?.map((osoba, idx) => (
-                              <div key={idx}>
-                                {osoba.imie} {osoba.nazwisko}
-                              </div>
-                          )) || "No contacts available"}
-                        </TableCell>
-                        {/*<TableCell align="right">{product.netto}</TableCell>*/}
+                  {people.map((person, index) => (
+                      <TableRow
+                          key={index}
+                          onClick={() => handleRowClick(person.id)}
+                          sx={{
+                                cursor: 'pointer',
+                                '&:hover': {
+                                  backgroundColor: '#f0f0f0',
+                                }
+                          }}>
+                        <TableCell>{person.id}</TableCell>
+                        <TableCell>{person.contrahentId}</TableCell>
+                        <TableCell>{person.imie}</TableCell>
+                        <TableCell>{person.nazwisko}</TableCell>
+                        <TableCell>{person.contrahentName}</TableCell>
                       </TableRow>
                   ))}
                 </TableBody>

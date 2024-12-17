@@ -7,4 +7,6 @@ nelmio_cors:
         expose_headers: ['Link']  # Add 'X-Total-Count' here
         max_age: 3600
     paths:
-        '^/api/': ~
+        '^/': null
+        '^/api/':
+            allow_origin: [ '*' ]

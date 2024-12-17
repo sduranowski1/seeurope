@@ -61,6 +61,9 @@ const authProvider = {
             fullName: 'SE-Admin',
         }),
     getPermissions: () => Promise.resolve(''),
+    getToken: () => {
+        return localStorage.getItem('authToken');
+    }
 };
 
 export default authProvider;

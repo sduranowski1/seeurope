@@ -28,7 +28,7 @@ const EnovaUserEdit = () => {
     const [loading, setLoading] = useState(true);
     const [image, setImage] = useState(null);
     const [imagePreview, setImagePreview] = useState(null);
-    const [token, setToken] = useState(null);
+    // const [token, setToken] = useState(null);
     const [products, setProducts] = useState([]);
     const [totalItems, setTotalItems] = useState(0);
     const [error, setError] = useState(null);
@@ -36,6 +36,7 @@ const EnovaUserEdit = () => {
         en: '', // English description
         pl: '', // Polish description
     });
+
 
 
     useEffect(() => {
@@ -64,37 +65,15 @@ const EnovaUserEdit = () => {
         }));
     };
 
-    const handleFileChange = (event) => {
-        const file = event.target.files[0];
-        if (file) {
-            setImage(file);
-            setImagePreview(URL.createObjectURL(file)); // Set image preview
-        }
-    };
-
     const handleSave = async () => {
         try {
-            let imageId = product?.imagePath; // Default to the existing image path
+            const token = localStorage.getItem('authToken'); // Retrieve the token from localStorage
 
-            // Only upload if a new image is selected
-            if (image) {
-                const formData = new FormData();
-                formData.append('file', image);
-
-                const imageUploadResponse = await fetch('https://se-europe-test.pl/api/products_media_objects', {
-                    method: 'POST',
-                    headers: {
-                        'Accept': 'application/json',
-                    },
-                    body: formData,
-                });
-
-                if (!imageUploadResponse.ok) {
-                    throw new Error('Image upload failed');
-                }
-
-                const result = await imageUploadResponse.json();
-                imageId = result.contentUrl; // Use the new image's URL or ID
+            console.log(token)
+            if (!token) {
+                // Handle case where token is not found (e.g., redirect to login)
+                console.error('No token found in localStorage');
+                return;
             }
 
             // Prepare the updated product data
@@ -102,12 +81,16 @@ const EnovaUserEdit = () => {
                 email: product.email,
             };
 
+            console.log(JSON.stringify(updatedProduct))
+
             // Send the PUT request
             const productUpdateResponse = await fetch(`https://se-europe-test.pl/api/user_enovas/${id}`, {
                 method: 'PATCH',
                 headers: {
                     'Accept': 'application/json',
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'application/merge-patch+json',
+                    'Authorization': `Bearer ${token}`, // Add token to Authorization header
+
                 },
                 body: JSON.stringify(updatedProduct),
             });
@@ -163,157 +146,6 @@ const EnovaUserEdit = () => {
                             <TextField id="filled-basic" name="email" value={product?.email || ''}   onChange={handleChange} // Connect the change handler
                                         label="Email" variant="filled" />
                         </FormControl>
-
-                        {/*<FormControl fullWidth margin="normal">*/}
-                        {/*    <InputLabel id="brand-label">Brand</InputLabel>*/}
-                        {/*    <Select*/}
-                        {/*        labelId="brand-label"*/}
-                        {/*        name="braid"*/}
-                        {/*        value={product?.braid || ''}*/}
-                        {/*        onChange={handleChange}*/}
-                        {/*        label="Brand"*/}
-                        {/*    >*/}
-                        {/*        {brands.map((brand) => (*/}
-                        {/*            <MenuItem key={brand.id} value={brand.id}>*/}
-                        {/*                {brand.name}*/}
-                        {/*            </MenuItem>*/}
-                        {/*        ))}*/}
-                        {/*    </Select>*/}
-                        {/*</FormControl>*/}
-
-                        {/*<FormControl fullWidth margin="normal">*/}
-                        {/*    <InputLabel id="variant-label">Variant</InputLabel>*/}
-                        {/*    <Select*/}
-                        {/*        labelId="variant-label"*/}
-                        {/*        name="varid"*/}
-                        {/*        value={product?.varid || ''}*/}
-                        {/*        onChange={handleChange}*/}
-                        {/*        label="Variant"*/}
-                        {/*    >*/}
-                        {/*        {variants.map((variant) => (*/}
-                        {/*            <MenuItem key={variant.id} value={variant.id}>*/}
-                        {/*                {variant.variantname}*/}
-                        {/*            </MenuItem>*/}
-                        {/*        ))}*/}
-                        {/*    </Select>*/}
-                        {/*</FormControl>*/}
-
-                        {/*<FormControl fullWidth margin="normal">*/}
-                        {/*    <InputLabel id="category-label">Category</InputLabel>*/}
-                        {/*    <Select*/}
-                        {/*        labelId="category-label"*/}
-                        {/*        name="catid"*/}
-                        {/*        value={product?.catid || ''}*/}
-                        {/*        onChange={handleChange}*/}
-                        {/*        label="Category"*/}
-                        {/*    >*/}
-                        {/*        {categories.map((category) => (*/}
-                        {/*            <MenuItem key={category.id} value={category.id}>*/}
-                        {/*                {category.name}*/}
-                        {/*            </MenuItem>*/}
-                        {/*        ))}*/}
-                        {/*    </Select>*/}
-                        {/*</FormControl>*/}
-
-                        {/*<FormControl fullWidth margin="normal">*/}
-                        {/*    <InputLabel id="subcategory-label">Subcategory</InputLabel>*/}
-                        {/*    <Select*/}
-                        {/*        labelId="subcategory-label"*/}
-                        {/*        name="scatid"*/}
-                        {/*        value={product?.scatid || ''}*/}
-                        {/*        onChange={handleChange}*/}
-                        {/*        label="Subcategory"*/}
-                        {/*    >*/}
-                        {/*        {subcategories.map((subcategory) => (*/}
-                        {/*            <MenuItem key={subcategory.id} value={subcategory.id}>*/}
-                        {/*                {subcategory.subCatName}*/}
-                        {/*            </MenuItem>*/}
-                        {/*        ))}*/}
-                        {/*    </Select>*/}
-                        {/*</FormControl>*/}
-
-                        {/*<FormControl fullWidth margin="normal">*/}
-                        {/*    <InputLabel id="itemType-label">Item Type</InputLabel>*/}
-                        {/*    <Select*/}
-                        {/*        labelId="itemType-label"*/}
-                        {/*        name="itypeid"*/}
-                        {/*        value={product?.itypeid || ''}*/}
-                        {/*        onChange={handleChange}*/}
-                        {/*        label="Item Type"*/}
-                        {/*    >*/}
-                        {/*        {itemTypes.map((itemType) => (*/}
-                        {/*            <MenuItem key={itemType.id} value={itemType.id}>*/}
-                        {/*                {itemType.name}*/}
-                        {/*            </MenuItem>*/}
-                        {/*        ))}*/}
-                        {/*    </Select>*/}
-                        {/*</FormControl>*/}
-
-
-                        {/*<Typography variant="h5" component="h5" sx={{marginTop: "20px"}}>English</Typography>*/}
-                        {/*<FormControl fullWidth margin="normal">*/}
-                        {/*    <ReactQuill*/}
-                        {/*        theme="snow"*/}
-                        {/*        value={product?.description || ''}*/}
-                        {/*        onChange={(value) => handleChange({ target: { name: 'description', value } })}*/}
-                        {/*        placeholder="Enter the product description"*/}
-                        {/*    />*/}
-                        {/*</FormControl>*/}
-
-                        {/*<Typography variant="h5" component="h5" sx={{marginTop: "20px"}}>Polski</Typography>*/}
-                        {/*<FormControl fullWidth margin="normal">*/}
-                        {/*    <ReactQuill*/}
-                        {/*        theme="snow"*/}
-                        {/*        value={product?.polishDescription || ''}*/}
-                        {/*        onChange={(value) => handleChange({ target: { name: 'polishDescription', value } })}*/}
-                        {/*        placeholder="Enter the product description in polish"*/}
-                        {/*    />*/}
-                        {/*</FormControl>*/}
-
-                        {/*<Typography variant="h5" component="h5" sx={{marginTop: "20px"}}>Deutsch</Typography>*/}
-                        {/*<FormControl fullWidth margin="normal">*/}
-                        {/*    <ReactQuill*/}
-                        {/*        theme="snow"*/}
-                        {/*        value={product?.germanDescription || ''}*/}
-                        {/*        onChange={(value) => handleChange({ target: { name: 'germanDescription', value } })}*/}
-                        {/*        placeholder="Enter the product description in german"*/}
-                        {/*    />*/}
-                        {/*</FormControl>*/}
-
-                        {/*/!* Image Upload *!/*/}
-                        {/*<Box marginTop={2}>*/}
-                        {/*    <input*/}
-                        {/*        accept="image/*"*/}
-                        {/*        id="upload-image"*/}
-                        {/*        type="file"*/}
-                        {/*        onChange={handleFileChange}*/}
-                        {/*        style={{display: 'none'}}*/}
-                        {/*    />*/}
-                        {/*    <label htmlFor="upload-image">*/}
-                        {/*        <IconButton*/}
-                        {/*            color="primary"*/}
-                        {/*            component="span"*/}
-                        {/*            sx={{width: 40, height: 40, marginRight: 1}}*/}
-                        {/*        >*/}
-                        {/*            <CloudUploadIcon/>*/}
-                        {/*        </IconButton>*/}
-                        {/*        {imagePreview ? (*/}
-                        {/*            <img*/}
-                        {/*                src={imagePreview}*/}
-                        {/*                alt="Preview"*/}
-                        {/*                style={{maxWidth: '100%', maxHeight: '200px'}}*/}
-                        {/*            />*/}
-                        {/*        ) : product?.imagePath ? (*/}
-                        {/*            <img*/}
-                        {/*                src={`https://se-europe-test.pl${product.imagePath}`}*/}
-                        {/*                alt="Existing product image"*/}
-                        {/*                style={{maxWidth: '100%', maxHeight: '200px', borderRadius: '15px'}}*/}
-                        {/*            />*/}
-                        {/*        ) : (*/}
-                        {/*            <span>Upload Image</span>*/}
-                        {/*        )}*/}
-                        {/*    </label>*/}
-                        {/*</Box>*/}
 
                         <Box display="flex" justifyContent="space-between" marginTop={2}>
                             <Button variant="outlined" onClick={() => navigate('/admin/enova-products')}>

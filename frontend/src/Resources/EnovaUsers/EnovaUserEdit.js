@@ -42,7 +42,7 @@ const EnovaUserEdit = () => {
         const fetchProductData = async () => {
             try {
                 // Fetch the product details by ID
-                const response = await fetch(`https://se-europe-test.pl/api/users/${id}`);
+                const response = await fetch(`https://se-europe-test.pl/api/user_enovas/${id}`);
                 const productData = await response.json();
                 setProduct(productData);
 
@@ -57,7 +57,11 @@ const EnovaUserEdit = () => {
     }, [id]);
 
     const handleChange = (event) => {
-        setProduct({...product, [event.target.name]: event.target.value});
+        const { name, value } = event.target;
+        setProduct((prevProduct) => ({
+            ...prevProduct,
+            [name]: value,
+        }));
     };
 
     const handleFileChange = (event) => {
@@ -95,20 +99,12 @@ const EnovaUserEdit = () => {
 
             // Prepare the updated product data
             const updatedProduct = {
-                braid: product.braid,
-                varid: product.varid,
-                catid: product.catid,
-                scatid: product.scatid,
-                itypeid: product.itypeid,
-                description: product.description,
-                polishDescription: product.polishDescription,
-                germanDescription: product.germanDescription,
-                imagePath: imageId, // Use the existing or updated image path
+                email: product.email,
             };
 
             // Send the PUT request
-            const productUpdateResponse = await fetch(`https://se-europe-test.pl/api/product_infos/${id}`, {
-                method: 'PUT',
+            const productUpdateResponse = await fetch(`https://se-europe-test.pl/api/user_enovas/${id}`, {
+                method: 'PATCH',
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
@@ -164,20 +160,8 @@ const EnovaUserEdit = () => {
                     <Box component="form" sx={{maxWidth: '100%'}}>
                         <FormControl fullWidth margin="normal">
                             {/*<InputLabel id="brand-label">Email</InputLabel>*/}
-                            <TextField id="filled-basic" name="email" value={product?.email || ''} label="Email" variant="filled" />
-                            {/*<Select*/}
-                            {/*    labelId="brand-label"*/}
-                            {/*    name="braid"*/}
-                            {/*    value={product?.email || ''}*/}
-                            {/*    onChange={handleChange}*/}
-                            {/*    label="Brand"*/}
-                            {/*>*/}
-                            {/*    {brands.map((brand) => (*/}
-                            {/*        <MenuItem key={brand.id} value={brand.id}>*/}
-                            {/*            {brand.name}*/}
-                            {/*        </MenuItem>*/}
-                            {/*    ))}*/}
-                            {/*</Select>*/}
+                            <TextField id="filled-basic" name="email" value={product?.email || ''}   onChange={handleChange} // Connect the change handler
+                                        label="Email" variant="filled" />
                         </FormControl>
 
                         {/*<FormControl fullWidth margin="normal">*/}

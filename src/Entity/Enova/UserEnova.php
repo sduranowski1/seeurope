@@ -26,9 +26,13 @@ use Symfony\Component\Validator\Constraints as Assert;
         new GetCollection(),
         new Post(validationContext: ['groups' => ['Default', 'userEnova:create']], processor: UserPasswordHasher::class),
         new Get(),
-        new Put(processor: UserPasswordHasher::class),
-        new Patch(processor: UserPasswordHasher::class),
-        new Delete(),
+        new Put(security: 'is_granted("ROLE_ADMIN") or object == user'),
+        new Patch(security: 'is_granted("ROLE_ADMIN") or object == user',
+            processor: UserPasswordHasher::class // Allow admins or the user themselves to update
+        ),
+        new Delete(
+            security: 'is_granted("ROLE_ADMIN") or object == user' // Allow admins or the user themselves to delete
+        ),
     ],
     normalizationContext: ['groups' => ['userEnova:read']],
     denormalizationContext: ['groups' => ['userEnova:create', 'userEnova:update']],

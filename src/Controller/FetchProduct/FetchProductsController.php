@@ -47,6 +47,7 @@ class FetchProductsController extends AbstractController
         $pokazCeny = $data['pokazCeny'];
         $poleSortowane = $data['poleSortowane'];
         $czyRosnaco = $data['czyRosnaco'];
+        $nazwaFilter = $data['nazwa'] ?? null; // Optional filter by 'nazwa'
 
         // Get the token from the database
         $tokenEntity = $this->tokenRepository->findLatestToken();
@@ -54,69 +55,76 @@ class FetchProductsController extends AbstractController
             throw new \Exception('No token found in the database.');
         }
 
-        // Assume you have a method to fetch the token dynamically if needed
         $token = $tokenEntity->getToken();
 
-        // Now, use the token for the next request (e.g., POST /DajTowarWgId)
-        $productUrl = 'http://extranet.seequipment.pl:9010/api/PanelWWW_API/DajTowary';
+        $allProducts = []; // Collect all products
+        $currentPage = 1;
 
-        // POST request to fetch the product data
-        $productResponse = $this->client->request('POST', $productUrl, [
-            'json' => [
-                'strona' => $strona,  // Use the input parameter
-                'limit' => $limit,  // Use the input parameter
-                'pokazCeny' => $pokazCeny,  // Use the input parameter
-                'poleSortowane' => $poleSortowane,  // Use the input parameter
-                'czyRosnaco' => $czyRosnaco  // Use the input parameter
-            ],
-            'headers' => [
-                'Authorization' => 'Bearer ' . $token,  // Use the token here
-                'Content-Type' => 'application/json',  // Content-Type header to specify the body format
-                'Accept' => 'application/json',        // Accept header to specify the expected response format
-            ],
-            'verify_peer' => false, // Add this to disable SSL verification
-        ]);
+        do {
+            // POST request to fetch the product data
+            $productUrl = 'http://extranet.seequipment.pl:9010/api/PanelWWW_API/DajTowary';
+            $productResponse = $this->client->request('POST', $productUrl, [
+                'json' => [
+                    'strona' => $currentPage,
+                    'limit' => $limit,
+                    'pokazCeny' => $pokazCeny,
+                    'poleSortowane' => $poleSortowane,
+                    'czyRosnaco' => $czyRosnaco
+                ],
+                'headers' => [
+                    'Authorization' => 'Bearer ' . $token,
+                    'Content-Type' => 'application/json',
+                    'Accept' => 'application/json',
+                ],
+                'verify_peer' => false,
+            ]);
 
-        // Handle the response from the second request
-        $productData = $productResponse->toArray();
+            $productData = $productResponse->toArray();
+
+            if (!isset($productData['elementy']) || empty($productData['elementy'])) {
+                break; // Stop fetching if no more elements
+            }
+
+            $allProducts = array_merge($allProducts, $productData['elementy']);
+            $currentPage++;
+        } while (count($allProducts) < $productData['liczbaWszystkich']);
+
+        // Apply 'nazwa' filter across all collected data
+        $filteredProducts = array_filter($allProducts, function ($product) use ($nazwaFilter) {
+            return $nazwaFilter === null || stripos($product['nazwa'], $nazwaFilter) !== false;
+        });
+
+        // Paginate the filtered results locally
+        $offset = ($strona - 1) * $limit;
+        $paginatedProducts = array_slice($filteredProducts, $offset, $limit);
 
         $response = [
-            'liczbaWszystkich' => $productData['liczbaWszystkich'] ?? 0,
-            'wartoscWszystkich' => $productData['wartoscWszystkich'] ?? 0,
-            'wartoscNaStronie' => $productData['wartoscNaStronie'] ?? 0,
+            'liczbaWszystkich' => count($filteredProducts),
+            'wartoscWszystkich' => 0,
+            'wartoscNaStronie' => 0,
             'elementy' => [],
         ];
 
-        foreach ($productData['elementy'] as $product) {
-            // Fetch additional product information using the product ID from the API response
+        foreach ($paginatedProducts as $product) {
+            // Fetch additional product information using the product ID
             $productInfo = $this->productInfoRepository->find($product['id']);
 
-            // If productInfo is found, merge it with the product data
             if ($productInfo) {
                 $product['productInfo'] = [
                     'id' => $productInfo->getId(),
-                    'braid' => $productInfo->getBraid(), // Add braid
-                    'catid' => $productInfo->getCatid(), // Add catid
-                    'scatid' => $productInfo->getScatid(), // Add scatid
-                    'varid' => $productInfo->getVarid(), // Add varid
-                    'itypeid' => $productInfo->getItypeid(), // Add itypeid
-
-                    // Add any other fields from the productInfo entity that you need
+                    'braid' => $productInfo->getBraid(),
+                    'catid' => $productInfo->getCatid(),
+                    'scatid' => $productInfo->getScatid(),
+                    'varid' => $productInfo->getVarid(),
+                    'itypeid' => $productInfo->getItypeid(),
                 ];
             }
 
-            // Add the product with productInfo to the 'elementy' array
             $response['elementy'][] = $product;
         }
 
-        // Create and persist the FetchProduct entity
-        $fetchProduct = new FetchProduct();
-        $fetchProduct->setProductInfo($productInfo); // Set the related product info
-
-        // Save FetchProduct in the database
-        $this->fetchProductRepository->save($fetchProduct);
-
         return new JsonResponse($response);
     }
+
 }
 

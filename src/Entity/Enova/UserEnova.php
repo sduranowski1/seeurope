@@ -3,6 +3,8 @@
 
 namespace App\Entity\Enova;
 
+use ApiPlatform\Doctrine\Common\Filter\SearchFilterInterface;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
@@ -36,6 +38,12 @@ use Symfony\Component\Validator\Constraints as Assert;
     ],
     normalizationContext: ['groups' => ['userEnova:read']],
     denormalizationContext: ['groups' => ['userEnova:create', 'userEnova:update']],
+),
+ApiFilter(
+    SearchFilter::class,
+    properties: [
+        'email' => SearchFilterInterface::STRATEGY_PARTIAL
+    ]
 )]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 //#[ORM\Table(name: '`user`')]

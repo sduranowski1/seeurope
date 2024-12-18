@@ -8,7 +8,7 @@ import TableBody from "@mui/material/TableBody";
 import Paper from "@mui/material/Paper";
 import { styled } from '@mui/material/styles';
 import Checkbox from "@mui/material/Checkbox";
-import { Button, CircularProgress } from "@mui/material";
+import {Button, CircularProgress, InputAdornment} from "@mui/material";
 import Box from "@mui/material/Box";
 import ExportButton from "../../Components/AdminExportButton/ExportButton";
 import CustomTableHead from "../../Components/AdminTableHead/CustomTableHead";
@@ -16,6 +16,8 @@ import CustomCheckbox from "../../Components/AdminCheckbox/CustomCheckbox";
 import { fetchToken } from "../../utils/fetchToken";
 import { Link, useNavigate } from "react-router-dom";
 import {TextField} from "@mui/material";
+import SearchIcon from '@mui/icons-material/Search';
+
 
 const EnovaProductList = () => {
   const [products, setProducts] = useState([]);
@@ -31,6 +33,8 @@ const EnovaProductList = () => {
   const [totalItems, setTotalItems] = useState(0);
   const [limit, setLimit] = useState(10); // Number of items per page
   const navigate = useNavigate();
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
 
   // Debounce timeout variable
   const [debounceTimeout, setDebounceTimeout] = useState(null);
@@ -146,9 +150,34 @@ const EnovaProductList = () => {
     navigate(`/admin/enova-products/${productId}`);
   }, [navigate]);
 
+  // Handle search input
+  const handleSearch = (query) => {
+    setSearchQuery(query);
+
+    // Filter products based on the search query
+    const filtered = products.filter((product) =>
+        product.nazwa.toLowerCase().includes(query.toLowerCase())
+    );
+    setFilteredProducts(filtered);
+  };
+
   return (
       <div>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+          <TextField
+              variant="outlined"
+              InputProps={{
+                startAdornment: (
+                    <InputAdornment position="start">
+                      <SearchIcon />
+                    </InputAdornment>
+                ),
+              }}
+              size="small"
+              placeholder="Search..."
+              sx={{ width: '300px' }}
+              onChange={(e) => handleSearch(e.target.value)}
+          />
           <ExportButton />
         </Box>
 

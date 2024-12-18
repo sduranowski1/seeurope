@@ -13,7 +13,8 @@ import {
 } from '@mui/material';
 import { CloudUpload as CloudUploadIcon } from '@mui/icons-material';
 import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css'; // Import Quill styles
+import 'react-quill/dist/quill.snow.css';
+import EnovaUserById from "./EnovaUserById"; // Import Quill styles
 
 const EnovaUserEdit = () => {
     const {id} = useParams(); // Get the product ID from the URL
@@ -79,6 +80,7 @@ const EnovaUserEdit = () => {
             // Prepare the updated product data
             const updatedProduct = {
                 email: product.email,
+                plainPassword: product.plainPassword,
             };
 
             console.log(JSON.stringify(updatedProduct))
@@ -135,7 +137,7 @@ const EnovaUserEdit = () => {
                     },
                     scrollbarWidth: 'none', // Hides scrollbar in Firefox
                 }}>
-                    {/*<EnovaProductById /> /!* Assuming this component renders your table *!/*/}
+                    <EnovaUserById /> {/* Assuming this component renders your table */}
                 </Box>
 
                 {/* Sticky Section */}
@@ -144,7 +146,13 @@ const EnovaUserEdit = () => {
                         <FormControl fullWidth margin="normal">
                             {/*<InputLabel id="brand-label">Email</InputLabel>*/}
                             <TextField id="filled-basic" name="email" value={product?.email || ''}   onChange={handleChange} // Connect the change handler
-                                        label="Email" variant="filled" />
+                                        label="Login Email" variant="filled" />
+                        </FormControl>
+
+                        <FormControl fullWidth margin="normal">
+                            {/*<InputLabel id="brand-label">Email</InputLabel>*/}
+                            <TextField id="filled-basic" name="plainPassword" value={product?.plainPassword || ''}   onChange={handleChange} // Connect the change handler
+                                       label="Change password" variant="filled" />
                         </FormControl>
 
                         <Box display="flex" justifyContent="space-between" marginTop={2}>

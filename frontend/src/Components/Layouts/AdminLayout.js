@@ -37,6 +37,7 @@ import {AdminMyMenu} from "./AdminMyMenu";
 import ViewListIcon from "@mui/icons-material/ViewList";
 import EnovaUserList from "../../Resources/EnovaUsers/EnovaUserList";
 import EnovaUserEdit from "../../Resources/EnovaUsers/EnovaUserEdit";
+import PermIdentityIcon from "@mui/icons-material/PermIdentity";
 
 
 
@@ -62,13 +63,13 @@ const AdminLayout = () => {
             {/*<Resource name="products" list={ProductList} edit={ProductEdit} />*/}
             <Resource name="enova-products" list={EnovaProductList} edit={EnovaProductEdit} icon={InventoryIcon} />
             <Resource name="enova-contractors" list={EnovaContractorList} icon={GroupIcon}/>
-            <Resource name="enova-users" list={EnovaUserList} edit={EnovaUserEdit} icon={GroupIcon}/>
+            <Resource name="enova-users" list={EnovaUserList} edit={EnovaUserEdit} icon={PermIdentityIcon}/>
             <Resource name="brands" list={BrandList} edit={BrandEdit} create={BrandCreate} icon={AppsIcon}/>
             <Resource name="variants" list={VariantList} edit={VariantEdit} create={VariantCreate} />
             <Resource name="categories" list={CategoryList} edit={CategoryEdit} create={CategoryCreate} icon={ClassIcon}/>
             <Resource name="subcategories" list={SubcategoryList}  edit={SubcategoryEdit} create={SubcategoryCreate}/>
             <Resource name="item_types" list={ItemTypeList} edit={ItemTypeEdit} create={ItemTypeCreate} />
-            <Resource name="users" list={UserList} edit={UserEdit} icon={PersonAddAlt1Icon} />
+            <Resource name="submissions" list={UserList} edit={UserEdit} icon={PersonAddAlt1Icon} />
             {/* Other resources... */}
         </Admin>
     );

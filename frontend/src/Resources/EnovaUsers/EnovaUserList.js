@@ -14,6 +14,7 @@ import ExportButton from "../../Components/AdminExportButton/ExportButton";
 import CustomTableHead from "../../Components/AdminTableHead/CustomTableHead";
 import CustomCheckbox from "../../Components/AdminCheckbox/CustomCheckbox";
 import {useNavigate} from "react-router-dom";
+import {TextField} from "@mui/material";
 
 
 const EnovaUserList = () => {
@@ -125,11 +126,26 @@ const EnovaUserList = () => {
     navigate(`/admin/enova-users/${userId}`);
   }, [navigate]);
 
+  const handleSearch = (query) => {
+    console.log('Search query:', query);
+    // Add logic to filter data or trigger a search API call
+  };
+
   return (
       <div>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+          <TextField
+              variant="outlined"
+              size="small"
+              placeholder="Search..."
+              sx={{ width: '300px' }}
+              onChange={(e) => handleSearch(e.target.value)}
+           />
           <ExportButton />
         </Box>
+
+
+
 
         <TableContainer component={Paper} sx={{ height: 583, position: 'relative' }}>
           {/* Add a fixed height to ensure space is reserved for the spinner */}

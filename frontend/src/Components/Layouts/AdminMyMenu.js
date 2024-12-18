@@ -8,6 +8,7 @@ import ViewListIcon from '@mui/icons-material/ViewList';
 import AppsIcon from "@mui/icons-material/Apps";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import ClassIcon from "@mui/icons-material/Class";
+import PermIdentityIcon from '@mui/icons-material/PermIdentity';
 import NestedSubmenu from "./NestedSubmenu";
 
 export const AdminMyMenu = () => (
@@ -26,6 +27,6 @@ export const AdminMyMenu = () => (
 
             </Submenu>
         </Submenu>
-        <Menu.ResourceItem name="users" />
+        <Menu.ResourceItem name="submissions" />
     </Menu>
 );

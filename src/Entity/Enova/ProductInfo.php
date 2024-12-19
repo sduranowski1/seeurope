@@ -7,6 +7,7 @@ use ApiPlatform\Metadata\ApiResource;
 use App\Entity\Brand;
 use App\Entity\ProductsMediaObject;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'product_info')]  // Optional: define the table name if it's different from the class name
@@ -16,6 +17,7 @@ class ProductInfo
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: "AUTO")]
     #[ORM\Column(type: "integer")]
+    #[Groups(['enovaProduct:read'])]
     private int $id;
 
 //    #[ORM\ManyToOne(targetEntity: Brand::class)]
@@ -23,27 +25,35 @@ class ProductInfo
 //    private ?Brand $brand;
 
     #[ORM\Column(type: "integer", options: ["default" => 0])]
+    #[Groups(['enovaProduct:read'])]
     private int $braid;
 
     #[ORM\Column(type: "integer", options: ["default" => 0])]
+    #[Groups(['enovaProduct:read'])]
     private int $varid;
 
     #[ORM\Column(type: "integer", options: ["default" => 0])]
+    #[Groups(['enovaProduct:read'])]
     private int $catid;
 
     #[ORM\Column(type: "integer", options: ["default" => 0])]
+    #[Groups(['enovaProduct:read'])]
     private int $scatid;
 
     #[ORM\Column(type: "integer", options: ["default" => 0])]
+    #[Groups(['enovaProduct:read'])]
     private int $itypeid;
 
     #[ORM\Column(type: "text", nullable: true)]
+    #[Groups(['enovaProduct:read'])]
     private ?string $description = null;
 
     #[ORM\Column(type: "text", nullable: true)]
+    #[Groups(['enovaProduct:read'])]
     private ?string $polishDescription = null;
 
     #[ORM\Column(type: "text", nullable: true)]
+    #[Groups(['enovaProduct:read'])]
     private ?string $germanDescription = null;
 
     #[ORM\ManyToOne(targetEntity: ProductsMediaObject::class)]
@@ -52,6 +62,7 @@ class ProductInfo
     public ?ProductsMediaObject $image = null;
 
     #[ORM\Column(type: "string")]
+    #[Groups(['enovaProduct:read'])]
     private string $imagePath;
 
     public function getImagePath(): string

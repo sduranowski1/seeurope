@@ -121,10 +121,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
     denormalizationContext: ['groups' => ['enovaProduct:create']]
 
 )]
-#[ApiFilter(SearchFilter::class, properties: [
-    'enovaProduct.code' => 'partial', // Allow searching by partial matches on 'kod'
-    'enovaProduct.name' => 'partial', // Allow searching by partial matches on 'nazwa'
-])]
+#[ApiFilter(SearchFilter::class, properties: ['name' => 'partial', 'code' => 'partial'])]
 #[ORM\Entity]
 class EnovaProduct
 {

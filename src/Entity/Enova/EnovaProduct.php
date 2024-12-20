@@ -122,8 +122,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 )]
 #[ApiFilter(SearchFilter::class, properties: [
-    'productInfo.code' => 'partial', // Allow searching by partial matches on 'kod'
-    'productInfo.name' => 'partial', // Allow searching by partial matches on 'nazwa'
+    'enovaProduct.code' => 'partial', // Allow searching by partial matches on 'kod'
+    'enovaProduct.name' => 'partial', // Allow searching by partial matches on 'nazwa'
 ])]
 #[ORM\Entity]
 class EnovaProduct

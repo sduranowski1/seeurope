@@ -17,6 +17,7 @@
     "dompurify": "^3.2.3",
     "i18next": "^23.12.1",
     "jwt-decode": "^4.0.0",
+    "lodash.debounce": "^4.0.8",
     "ra-data-json-server": "^5.0.3",
     "ra-data-simple-rest": "^5.0.3",
     "ra-i18n-polyglot": "^5.0.4",

@@ -92,6 +92,7 @@ const EnovaProductList = () => {
           pokazCeny: true,
           poleSortowane: "ID",
           czyRosnaco: 1,
+          nazwa: searchQuery || "", // Use the dynamic search query
         }),
       });
 
@@ -128,7 +129,7 @@ const EnovaProductList = () => {
     } finally {
       setLoading(false); // Set loading to false when done
     }
-  }, [currentPage, limit, brands, variants, categories, subcategories, itemTypes]);
+  }, [currentPage, limit, searchQuery, brands, variants, categories, subcategories, itemTypes]);
 
   useEffect(() => {
     fetchAdditionalData();
@@ -151,14 +152,16 @@ const EnovaProductList = () => {
   }, [navigate]);
 
   // Handle search input
-  const handleSearch = (query) => {
-    setSearchQuery(query);
 
-    // Filter products based on the search query
-    const filtered = products.filter((product) =>
-        product.nazwa.toLowerCase().includes(query.toLowerCase())
-    );
-    setFilteredProducts(filtered);
+
+// Handle search input changes
+  const handleSearchChange = (query) => {
+    setSearchQuery(query); // Update the search query state
+  };
+
+// Trigger the API call on submit
+  const handleSearchSubmit = () => {
+    fetchProductData();
   };
 
   return (
@@ -176,8 +179,17 @@ const EnovaProductList = () => {
               size="small"
               placeholder="Search..."
               sx={{ width: '300px' }}
-              onChange={(e) => handleSearch(e.target.value)}
+              value={searchQuery}
+              onChange={(e) => handleSearchChange(e.target.value)} // Update the search query
           />
+          <Button
+              variant="contained"
+              color="primary"
+              sx={{ marginLeft: '5px', height: "3" }}
+              onClick={handleSearchSubmit} // Trigger the search
+          >
+            Search
+          </Button>
           <ExportButton />
         </Box>
 
@@ -200,11 +212,11 @@ const EnovaProductList = () => {
           )}
           {!loading && !error && (
               <Table>
-                <CustomTableHead>
+                <TableHead>
                   <TableRow>
-                    <TableCell padding="checkbox">
-                      <CustomCheckbox inputProps={{ 'aria-label': 'select all' }} />
-                    </TableCell>
+                    {/*<TableCell padding="checkbox">*/}
+                    {/*  <CustomCheckbox inputProps={{ 'aria-label': 'select all' }} />*/}
+                    {/*</TableCell>*/}
                     <TableCell>Id</TableCell>
                     <TableCell>Product Name</TableCell>
                     <TableCell>Code</TableCell>
@@ -219,7 +231,7 @@ const EnovaProductList = () => {
                     <TableCell>Subcategory</TableCell>
                     <TableCell>Item Type</TableCell>
                   </TableRow>
-                </CustomTableHead>
+                </TableHead>
                 <TableBody>
                   {products.map((product, index) => (
                       <TableRow
@@ -231,9 +243,9 @@ const EnovaProductList = () => {
                               backgroundColor: '#f0f0f0',
                             },
                           }}>
-                        <TableCell padding="checkbox">
-                          <CustomCheckbox />
-                        </TableCell>
+                        {/*<TableCell padding="checkbox">*/}
+                        {/*  <CustomCheckbox />*/}
+                        {/*</TableCell>*/}
                         <TableCell>{product.id}</TableCell>
                         <TableCell>{product.nazwa}</TableCell>
                         <TableCell>{product.kod}</TableCell>

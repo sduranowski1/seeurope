@@ -38,6 +38,7 @@ import ViewListIcon from "@mui/icons-material/ViewList";
 import EnovaUserList from "../../Resources/EnovaUsers/EnovaUserList";
 import EnovaUserEdit from "../../Resources/EnovaUsers/EnovaUserEdit";
 import PermIdentityIcon from "@mui/icons-material/PermIdentity";
+import EnovaDbProductList from "../../Resources/EnovaProduct/EnovaDbProductList";
 
 
 
@@ -61,7 +62,7 @@ const AdminLayout = () => {
     return (
         <Admin dataProvider={dataProvider} authProvider={authProvider} layout={MyLayout} locale="en" i18nProvider={i18nProvider} basename="/admin">
             {/*<Resource name="products" list={ProductList} edit={ProductEdit} />*/}
-            <Resource name="enova-products" list={EnovaProductList} edit={EnovaProductEdit} icon={InventoryIcon} />
+            <Resource name="enova-products" list={EnovaDbProductList} edit={EnovaProductEdit} icon={InventoryIcon} />
             <Resource name="enova-contractors" list={EnovaContractorList} icon={GroupIcon}/>
             <Resource name="enova-users" list={EnovaUserList} edit={EnovaUserEdit} icon={PermIdentityIcon}/>
             <Resource name="brands" list={BrandList} edit={BrandEdit} create={BrandCreate} icon={AppsIcon}/>

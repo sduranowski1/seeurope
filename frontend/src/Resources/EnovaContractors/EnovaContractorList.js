@@ -135,22 +135,22 @@ const EnovaContractorList = () => {
           )}
           {!loading && !error && (
               <Table>
-                <CustomTableHead>
+                <TableHead>
                   <TableRow>
-                    <TableCell padding="checkbox">
-                      <CustomCheckbox inputProps={{ 'aria-label': 'select all' }} />
-                    </TableCell>
+                    {/*<TableCell padding="checkbox">*/}
+                    {/*  <CustomCheckbox inputProps={{ 'aria-label': 'select all' }} />*/}
+                    {/*</TableCell>*/}
                     <TableCell>Id</TableCell>
                     <TableCell>Contrahent Name</TableCell>
                     {/*<TableCell align="right">Price (Netto)</TableCell>*/}
                   </TableRow>
-                </CustomTableHead>
+                </TableHead>
                 <TableBody>
                   {products.map((product, index) => (
                       <TableRow key={index}>
-                        <TableCell padding="checkbox">
-                          <CustomCheckbox />
-                        </TableCell>
+                        {/*<TableCell padding="checkbox">*/}
+                        {/*  <CustomCheckbox />*/}
+                        {/*</TableCell>*/}
                         <TableCell>{product.idEnova}</TableCell>
                         <TableCell>{product.nazwa}</TableCell>
                         {/*<TableCell align="right">{product.netto}</TableCell>*/}

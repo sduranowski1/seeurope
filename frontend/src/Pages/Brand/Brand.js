@@ -18,13 +18,15 @@ export const Brand = () => {
     const slugify = (text) => {
         return text
             .toLowerCase()
-            .replace(/\s+/g, '-') // Replace spaces with dashes
+            .replace(/\s+/g, '_') // Replace spaces with dashes
             .replace(/[^\w-]+/g, ''); // Remove non-word characters
     };
 
     // Get the current category slug from the URL
     const pathParts = location.pathname.split('/');
     const currentSlug = slugify(pathParts[pathParts.length - 1]); // Last part of the URL
+
+    console.log(currentSlug)
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -103,7 +105,7 @@ export const Brand = () => {
                     <LinksListWithImages data={products}/>
                 </section>
             ) : (
-                <ProductDetailsMissingVariants/>
+                <ProductDetailsMissingVariants currentSlug={currentSlug}/>
             )}
         </main>
     );

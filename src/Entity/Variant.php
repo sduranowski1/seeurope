@@ -28,7 +28,7 @@ class Variant
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
-    #[Groups(['variant:read', 'variant:create', 'variant:update'])]
+    #[Groups(['variant:read', 'variant:create', 'variant:update', "productInfo:read", 'enovaProduct:read'])]
     private ?string $variantname = null;
 
     #[ORM\Column(nullable: true)]

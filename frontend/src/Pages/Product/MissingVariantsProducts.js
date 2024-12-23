@@ -114,7 +114,7 @@ export const MissingVariantsProducts = ({lastPart, slug}) => {
     const fetchAdditionalData = async () => {
         try {
             const [brandsResponse, variantsResponse, categoriesResponse, subcategoriesResponse] = await Promise.all([
-                fetch(`https://se-europe-test.pl/api/brands?name=${lastPart}`),
+                fetch(`https://se-europe-test.pl/api/brands`),
                 fetch('https://se-europe-test.pl/api/variants'),
                 fetch('https://se-europe-test.pl/api/categories'),
                 fetch('https://se-europe-test.pl/api/subcategories'),
@@ -143,22 +143,23 @@ export const MissingVariantsProducts = ({lastPart, slug}) => {
     const fetchProductData = useCallback(async () => {
         setLoading(true); // Set loading true at the start of the request
         try {
-            const token = await fetchToken();
-            setToken(token);
+            // const token = await fetchToken();
+            // setToken(token);
 
-            const response = await fetch('https://se-europe-test.pl/api/PanelWWW_API/DajTowary?nazwa=Koszt', {
-                method: 'POST',
+            // const response = await fetch('https://se-europe-test.pl/api/PanelWWW_API/DajTowary?nazwa=Koszt', {
+            const response = await fetch('https://se-europe-test.pl/api/enova_products', {
+                method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
                 },
-                body: JSON.stringify({
-                    strona: currentPage,
-                    limit: limit,
-                    pokazCeny: true,
-                    poleSortowane: "ID",
-                    czyRosnaco: 1,
-                }),
+                // body: JSON.stringify({
+                //     strona: currentPage,
+                //     limit: limit,
+                //     pokazCeny: true,
+                //     poleSortowane: "ID",
+                //     czyRosnaco: 1,
+                // }),
             });
 
             if (!response.ok) {
@@ -168,7 +169,7 @@ export const MissingVariantsProducts = ({lastPart, slug}) => {
             const data = await response.json();
 
             // Map product data with brand and variant names
-            const productsData = data.elementy.map((product) => {
+            const productsData = data.map((product) => {
                 const dealerDetalPrice = product.listaCen.find((price) => price.nazwa === 'Dealer Detal');
                 const netto = dealerDetalPrice ? dealerDetalPrice.netto : null;
 
@@ -192,7 +193,7 @@ export const MissingVariantsProducts = ({lastPart, slug}) => {
             console.log(productsData)
 
             setProducts(productsData);
-            setTotalItems(data.liczbaWszystkich);
+            // setTotalItems(data.liczbaWszystkich);
         } catch (error) {
             setError(error.message);
         } finally {
@@ -285,6 +286,8 @@ export const MissingVariantsProducts = ({lastPart, slug}) => {
         const uniqueCheckboxes = findCheckboxes();
         setCheckboxes(uniqueCheckboxes);
     }, [filteredProducts]);
+
+    console.log(products)
 
     return (
         <main>

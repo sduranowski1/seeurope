@@ -121,7 +121,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
     denormalizationContext: ['groups' => ['enovaProduct:create']]
 
 )]
-#[ApiFilter(SearchFilter::class, properties: ['name' => 'partial', 'code' => 'partial'])]
+#[ApiFilter(SearchFilter::class, properties: [
+    'name' => 'partial',
+    'code' => 'partial',
+    'productInfo.brand.name' => 'partial'])]
 #[ORM\Entity]
 class EnovaProduct
 {
@@ -131,7 +134,7 @@ class EnovaProduct
     #[Groups(['enovaProduct:read'])]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(targetEntity: ProductInfo::class)]
+    #[ORM\ManyToOne(targetEntity: ProductInfo::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(name: "product_info_id", referencedColumnName: "id")]
     #[Groups(['enovaProduct:read', 'enovaProduct:create'])]
     private ?ProductInfo $productInfo = null;

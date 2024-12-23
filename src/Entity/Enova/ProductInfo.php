@@ -6,54 +6,64 @@ use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use App\Entity\Brand;
 use App\Entity\ProductsMediaObject;
+use App\Entity\Variant;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity]
-#[ORM\Table(name: 'product_info')]  // Optional: define the table name if it's different from the class name
-#[ApiResource]
+#[ORM\Table(name: 'product_info')]  // Optional: define the table name if it's different from the class nam
+#[ApiResource(
+    normalizationContext: ['groups' => ['productInfo:read']],
+//    denormalizationContext: ['groups' => ['productInfo:create']]
+)]
 class ProductInfo
 {
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: "AUTO")]
     #[ORM\Column(type: "integer")]
-    #[Groups(['enovaProduct:read'])]
+    #[Groups(['enovaProduct:read', "productInfo:read"])]
     private int $id;
 
-//    #[ORM\ManyToOne(targetEntity: Brand::class)]
-//    #[ORM\JoinColumn(name: 'braid', referencedColumnName: 'id', nullable: false, options: ["default" => 0])]
-//    private ?Brand $brand;
+    #[ORM\ManyToOne(targetEntity: Brand::class)]
+    #[ORM\JoinColumn(name: 'braid', referencedColumnName: 'id', nullable: false, options: ["default" => 0])]
+    #[Groups(['enovaProduct:read', "productInfo:read"])]
+    private ?Brand $brand;
 
     #[ORM\Column(type: "integer", options: ["default" => 0])]
-    #[Groups(['enovaProduct:read'])]
+    #[Groups(['enovaProduct:read', "productInfo:read"])]
     private int $braid;
 
+    #[ORM\ManyToOne(targetEntity: Variant::class)]
+    #[ORM\JoinColumn(name: 'varid', referencedColumnName: 'id', nullable: false, options: ["default" => 0])]
+    #[Groups(['enovaProduct:read', "productInfo:read"])]
+    private ?Variant $variant;
+
     #[ORM\Column(type: "integer", options: ["default" => 0])]
-    #[Groups(['enovaProduct:read'])]
+    #[Groups(['enovaProduct:read', "productInfo:read"])]
     private int $varid;
 
     #[ORM\Column(type: "integer", options: ["default" => 0])]
-    #[Groups(['enovaProduct:read'])]
+    #[Groups(['enovaProduct:read', "productInfo:read"])]
     private int $catid;
 
     #[ORM\Column(type: "integer", options: ["default" => 0])]
-    #[Groups(['enovaProduct:read'])]
+    #[Groups(['enovaProduct:read', "productInfo:read"])]
     private int $scatid;
 
     #[ORM\Column(type: "integer", options: ["default" => 0])]
-    #[Groups(['enovaProduct:read'])]
+    #[Groups(['enovaProduct:read', "productInfo:read"])]
     private int $itypeid;
 
     #[ORM\Column(type: "text", nullable: true)]
-    #[Groups(['enovaProduct:read'])]
+    #[Groups(['enovaProduct:read', "productInfo:read"])]
     private ?string $description = null;
 
     #[ORM\Column(type: "text", nullable: true)]
-    #[Groups(['enovaProduct:read'])]
+    #[Groups(['enovaProduct:read', "productInfo:read"])]
     private ?string $polishDescription = null;
 
     #[ORM\Column(type: "text", nullable: true)]
-    #[Groups(['enovaProduct:read'])]
+    #[Groups(['enovaProduct:read', "productInfo:read"])]
     private ?string $germanDescription = null;
 
     #[ORM\ManyToOne(targetEntity: ProductsMediaObject::class)]
@@ -62,7 +72,7 @@ class ProductInfo
     public ?ProductsMediaObject $image = null;
 
     #[ORM\Column(type: "string")]
-    #[Groups(['enovaProduct:read'])]
+    #[Groups(['enovaProduct:read', "productInfo:read"])]
     private string $imagePath;
 
     public function getImagePath(): string
@@ -89,16 +99,10 @@ class ProductInfo
         return $this;
     }
 
-//    public function getBrand(): ?Brand
-//    {
-//        return $this->brand;
-//    }
-//
-//    public function setBrand(?Brand $brand): self
-//    {
-//        $this->brand = $brand;
-//        return $this;
-//    }
+    public function getBrand(): ?Brand
+    {
+        return $this->brand;
+    }
 
     public function getBraid(): int
     {
@@ -109,6 +113,11 @@ class ProductInfo
     {
         $this->braid = $braid;
         return $this;
+    }
+
+    public function getVariant(): ?Variant
+    {
+        return $this->variant;
     }
 
     public function getVarid(): int

@@ -14,7 +14,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ORM\Table(name: 'product_info')]  // Optional: define the table name if it's different from the class nam
 #[ApiResource(
     normalizationContext: ['groups' => ['productInfo:read']],
-    denormalizationContext: ['groups' => ['productInfo:create']]
+//    denormalizationContext: ['groups' => ['productInfo:create']]
 )]
 class ProductInfo
 {
@@ -30,7 +30,7 @@ class ProductInfo
     private ?Brand $brand;
 
     #[ORM\Column(type: "integer", options: ["default" => 0])]
-    #[Groups(['enovaProduct:read', "productInfo:read", 'productInfo:create'])]
+    #[Groups(['enovaProduct:read', "productInfo:read"])]
     private int $braid;
 
     #[ORM\ManyToOne(targetEntity: Variant::class)]
@@ -39,31 +39,31 @@ class ProductInfo
     private ?Variant $variant;
 
     #[ORM\Column(type: "integer", options: ["default" => 0])]
-    #[Groups(['enovaProduct:read', "productInfo:read", 'productInfo:create'])]
+    #[Groups(['enovaProduct:read', "productInfo:read"])]
     private int $varid;
 
     #[ORM\Column(type: "integer", options: ["default" => 0])]
-    #[Groups(['enovaProduct:read', "productInfo:read", 'productInfo:create'])]
+    #[Groups(['enovaProduct:read', "productInfo:read"])]
     private int $catid;
 
     #[ORM\Column(type: "integer", options: ["default" => 0])]
-    #[Groups(['enovaProduct:read', "productInfo:read", 'productInfo:create'])]
+    #[Groups(['enovaProduct:read', "productInfo:read"])]
     private int $scatid;
 
     #[ORM\Column(type: "integer", options: ["default" => 0])]
-    #[Groups(['enovaProduct:read', "productInfo:read", 'productInfo:create'])]
+    #[Groups(['enovaProduct:read', "productInfo:read"])]
     private int $itypeid;
 
     #[ORM\Column(type: "text", nullable: true)]
-    #[Groups(['enovaProduct:read', "productInfo:read", 'productInfo:create'])]
+    #[Groups(['enovaProduct:read', "productInfo:read"])]
     private ?string $description = null;
 
     #[ORM\Column(type: "text", nullable: true)]
-    #[Groups(['enovaProduct:read', "productInfo:read", 'productInfo:create'])]
+    #[Groups(['enovaProduct:read', "productInfo:read"])]
     private ?string $polishDescription = null;
 
     #[ORM\Column(type: "text", nullable: true)]
-    #[Groups(['enovaProduct:read', "productInfo:read", 'productInfo:create'])]
+    #[Groups(['enovaProduct:read', "productInfo:read"])]
     private ?string $germanDescription = null;
 
     #[ORM\ManyToOne(targetEntity: ProductsMediaObject::class)]
@@ -72,7 +72,7 @@ class ProductInfo
     public ?ProductsMediaObject $image = null;
 
     #[ORM\Column(type: "string")]
-    #[Groups(['enovaProduct:read', "productInfo:read", 'productInfo:create'])]
+    #[Groups(['enovaProduct:read', "productInfo:read"])]
     private string $imagePath;
 
     public function getImagePath(): string

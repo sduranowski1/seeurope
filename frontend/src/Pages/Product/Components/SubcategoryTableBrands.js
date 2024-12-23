@@ -74,8 +74,8 @@ export const SubcategoryTableBrands = ({ productsData, onProductClick, lastPartT
                     <th>Netto</th>
                     <th>Brand</th>
                     <th>Variant</th>
-                    <th>Category</th>
-                    <th>Subcategory</th>
+                    {/*<th>Category</th>*/}
+                    {/*<th>Subcategory</th>*/}
                     <th>Status</th>
                 </tr>
                 </thead>
@@ -103,25 +103,25 @@ export const SubcategoryTableBrands = ({ productsData, onProductClick, lastPartT
                                 }
                             }}
                         >
-                            <td>{product.kod || "N/A"}</td>
-                            <td>{product.nazwa || "N/A"}</td>
+                            <td>{product.code || "N/A"}</td>
+                            <td>{product.name || "N/A"}</td>
                             <td>{product.capacityFeat || "N/A"}</td>
                             <td>{product.netto || "N/A"}</td>
-                            <td>{product.brandName || "N/A"}</td>
+                            <td>{product.productInfo?.brand?.name  || "N/A"}</td>
                             <td>{product.variantName || "N/A"}</td>
-                            <td>{product.categoryName || "N/A"}</td>
-                            <td>{product.subcategoryName || "N/A"}</td>
+                            {/*<td>{product.categoryName || "N/A"}</td>*/}
+                            {/*<td>{product.subcategoryName || "N/A"}</td>*/}
                             <td>
-                                {product.stanMagazynowy === "instock" ? (
+                                {product.stockStatus === "instock" ? (
                                     <Tooltip title="In Stock: This product is available.">
                                         <CheckCircleIcon style={{color: "green", cursor: "pointer", paddingTop: "9px"}}/>
                                     </Tooltip>
-                                ) : product.stanMagazynowy === "onbackorder" ? (
+                                ) : product.stockStatus === "onbackorder" ? (
                                     <Tooltip title="On Backorder: This product is not currently available.">
                                         <ErrorIcon style={{color: "orange", cursor: "pointer", paddingTop: "9px"}}/>
                                     </Tooltip>
                                 ) : (
-                                    product.stanMagazynowy || "N/A"
+                                    product.stockStatus || "N/A"
                                 )}
                             </td>
                         </tr>

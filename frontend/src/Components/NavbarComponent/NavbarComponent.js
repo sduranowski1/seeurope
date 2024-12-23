@@ -124,8 +124,8 @@ export const NavbarComponent = (props) => {
         return variants
             .filter(variant => variant.bid === brandId)
             .map(variant => {
-                const variantSlug = variant.variantname.replace(/\s+/g, '-'); // Convert spaces to dashes
-                const brandSlug = variant.brand?.name.replace(/\s+/g, '-'); // Convert spaces to dashes
+                const variantSlug = variant.variantname.replace(/\s+/g, '_'); // Convert spaces to dashes
+                const brandSlug = variant.brand?.name.replace(/\s+/g, '_'); // Convert spaces to dashes
 
 
                 return (
@@ -144,7 +144,7 @@ export const NavbarComponent = (props) => {
             const hasSubItems = variantItems.length > 0;
 
             // Replace spaces with dashes in the brand name
-            const brandSlug = brand.name.replace(/\s+/g, '-'); // Convert spaces to dashes
+            const brandSlug = brand.name.replace(/\s+/g, '_'); // Convert spaces to dashes
 
             return (
                 <li key={brand.id} className={`nav__submenu-item ${hasSubItems ? 'nav__submenu-item--list' : ''}`}>

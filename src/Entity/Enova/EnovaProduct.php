@@ -124,7 +124,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ApiFilter(SearchFilter::class, properties: [
     'name' => 'partial',
     'code' => 'partial',
-    'productInfo.brand.name' => 'partial'])]
+    'productInfo.brand.name' => 'partial',
+    'productInfo.variant.variantname' => 'partial'])]
 #[ORM\Entity]
 class EnovaProduct
 {

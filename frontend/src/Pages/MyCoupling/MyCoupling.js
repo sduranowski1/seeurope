@@ -71,7 +71,7 @@ export const MyCoupling = () => {
     const slugify = (text) => {
         return text
             .toLowerCase()
-            .replace(/\s+/g, '-') // Replace spaces with dashes
+            .replace(/\s+/g, '_') // Replace spaces with dashes
             .replace(/[^\w-]+/g, ''); // Remove non-word characters
     };
 

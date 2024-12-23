@@ -113,26 +113,22 @@ export const MissingVariantsProducts = ({lastPart, slug}) => {
 
     const fetchAdditionalData = async () => {
         try {
-            const [brandsResponse, variantsResponse, categoriesResponse, subcategoriesResponse] = await Promise.all([
+            const [brandsResponse, variantsResponse] = await Promise.all([
                 fetch(`https://se-europe-test.pl/api/brands`),
                 fetch('https://se-europe-test.pl/api/variants'),
-                fetch('https://se-europe-test.pl/api/categories'),
-                fetch('https://se-europe-test.pl/api/subcategories'),
+                // fetch('https://se-europe-test.pl/api/categories'),
+                // fetch('https://se-europe-test.pl/api/subcategories'),
             ]);
 
-            if (!brandsResponse.ok || !variantsResponse.ok || !categoriesResponse.ok ) {
+            if (!brandsResponse.ok || !variantsResponse.ok ) {
                 throw new Error('Failed to fetch additional data');
             }
 
             const brandsData = await brandsResponse.json();
             const variantsData = await variantsResponse.json();
-            const categoriesData = await categoriesResponse.json();
-            const subcategoriesData = await subcategoriesResponse.json();
 
             setBrands(brandsData);
             setVariants(variantsData);
-            setCategories(categoriesData);
-            setSubcategories(subcategoriesData);
         } catch (error) {
             console.error('Error fetching brands, categories or variants:', error);
             setError('Failed to load brands, categories or variants');
@@ -143,23 +139,14 @@ export const MissingVariantsProducts = ({lastPart, slug}) => {
     const fetchProductData = useCallback(async () => {
         setLoading(true); // Set loading true at the start of the request
         try {
-            // const token = await fetchToken();
-            // setToken(token);
-
             // const response = await fetch('https://se-europe-test.pl/api/PanelWWW_API/DajTowary?nazwa=Koszt', {
-            const response = await fetch('https://se-europe-test.pl/api/enova_products', {
+            const response = await fetch(`https://se-europe-test.pl/api/enova_products?productInfo.brand.name=${lastPart}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
                 },
-                // body: JSON.stringify({
-                //     strona: currentPage,
-                //     limit: limit,
-                //     pokazCeny: true,
-                //     poleSortowane: "ID",
-                //     czyRosnaco: 1,
-                // }),
+
             });
 
             if (!response.ok) {
@@ -167,27 +154,26 @@ export const MissingVariantsProducts = ({lastPart, slug}) => {
             }
 
             const data = await response.json();
+            console.log(data)
 
             // Map product data with brand and variant names
             const productsData = data.map((product) => {
-                const dealerDetalPrice = product.listaCen.find((price) => price.nazwa === 'Dealer Detal');
+                const dealerDetalPrice = product.listaCen?.find((price) => price.nazwa === 'Dealer Detal');
                 const netto = dealerDetalPrice ? dealerDetalPrice.netto : null;
 
-                const wzrostu = product.listaCechy.find((value) => value.nazwa === '% wzrostu');
+                const wzrostu = product.listaCechy?.find((value) => value.nazwa === '% wzrostu');
                 const procWzrostu = wzrostu ? wzrostu.wartosc : null;
 
-                const replacement = product.listaCechy.find((value) => value.nazwa === 'Części zamienne');
+                const replacement = product.listaCechy?.find((value) => value.nazwa === 'Części zamienne');
                 const replacementParts = replacement ? replacement.wartosc : null;
 
-                const capacity = product.listaCechy.find((value) => value.nazwa === 'Capacity');
+                const capacity = product.listaCechy?.find((value) => value.nazwa === 'Capacity');
                 const capacityFeat = capacity ? capacity.wartosc : null;
 
-                const brandName = brands.find((brand) => brand.id === product.productInfo?.braid)?.name || 'N/A';
+                // const brandName = brands.find((brand) => brand.id === product.productInfo?.braid)?.name || 'N/A';
                 const variantName = variants.find((variant) => variant.id === product.productInfo?.varid)?.variantname || 'N/A';
-                const categoryName = categories.find((category) => category.id === product.productInfo?.catid)?.name || 'N/A';
-                const subcategoryName = subcategories.find((subcategory) => subcategory.id === product.productInfo?.scatid)?.subCatName || 'N/A';
 
-                return { ...product, netto, procWzrostu, replacementParts, capacityFeat,  brandName, variantName, categoryName, subcategoryName };
+                return { ...product, netto, procWzrostu, replacementParts, capacityFeat,  variantName};
             });
 
             console.log(productsData)
@@ -220,41 +206,6 @@ export const MissingVariantsProducts = ({lastPart, slug}) => {
     const handleRowClick = useCallback((productId) => {
         navigate(`/admin/enova-products/${productId}`);
     }, [navigate]);
-
-    // useEffect(() => {
-    //     // Get the last part of the slug (normalized brand)
-    //     const slugParts = window.location.pathname.split("/").filter(Boolean); // Split by "/" and remove empty strings
-    //     const normalizedLastPart = slugParts.at(-1)?.replace(/[^a-zA-Z0-9]/g, "").toLowerCase(); // Normalize the last part
-    //
-    //     console.log("Normalized Last Part (Brand):", normalizedLastPart);
-    //
-    //     // Filter products by the normalized brand name and weight range
-    //     const filtered = products.filter((product) => {
-    //         // Normalize product brand name
-    //         const normalizedBrand = product.brandName
-    //             ?.replace(/[^a-zA-Z0-9]/g, "")
-    //             .toLowerCase();
-    //
-    //         // Filter by brand and weight range
-    //         const weightString = product.capacityFeat; // Example: "2500kg"
-    //         const weight = parseFloat(weightString.replace(/[^\d.-]/g, ""));
-    //
-    //         // Match selected categories (checkboxes)
-    //         const isBrandSelected = Object.entries(checkboxes).some(([key, isChecked]) => {
-    //             return isChecked && product.brandName === key;
-    //         });
-    //
-    //         return (
-    //             normalizedBrand === normalizedLastPart &&
-    //             weight >= weightRange[0] &&
-    //             weight <= weightRange[1] &&
-    //             (Object.values(checkboxes).some((val) => val) ? isBrandSelected : true)
-    //         );
-    //     });
-    //
-    //     setFilteredProducts(filtered);
-    // }, [products, weightRange, checkboxes]); // Re-filter when products or weightRange change
-
 
     const handleProductClick = (product) => {
         setSelectedProduct(product);
@@ -366,7 +317,7 @@ export const MissingVariantsProducts = ({lastPart, slug}) => {
                     {/*<SubcategoryTable productsData={productsData} displayedItems={displayedItems}/>*/}
                     {/*<SubcategoryTable productsData={productsData} displayedItems={displayedItems} checkboxes={checkboxes}/>*/}
                     <SubcategoryTableBrands
-                        productsData={filteredProducts}
+                        productsData={products}
                         onProductClick={handleProductClick}
                         lastPartToCollapse={lastPart}
                     />

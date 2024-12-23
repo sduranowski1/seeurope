@@ -114,7 +114,7 @@ export const MissingVariantsProducts = ({lastPart, slug}) => {
     const fetchAdditionalData = async () => {
         try {
             const [brandsResponse, variantsResponse, categoriesResponse, subcategoriesResponse] = await Promise.all([
-                fetch(`https://se-europe-test.pl/api/brandss?name=${lastPart}`),
+                fetch(`https://se-europe-test.pl/api/brands?name=${lastPart}`),
                 fetch('https://se-europe-test.pl/api/variants'),
                 fetch('https://se-europe-test.pl/api/categories'),
                 fetch('https://se-europe-test.pl/api/subcategories'),

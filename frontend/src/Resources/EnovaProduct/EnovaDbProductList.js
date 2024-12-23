@@ -8,7 +8,7 @@ import TableBody from "@mui/material/TableBody";
 import Paper from "@mui/material/Paper";
 import { styled } from '@mui/material/styles';
 import Checkbox from "@mui/material/Checkbox";
-import {Button, CircularProgress, debounce, InputAdornment} from "@mui/material";
+import {Button, CircularProgress, InputAdornment} from "@mui/material";
 import Box from "@mui/material/Box";
 import ExportButton from "../../Components/AdminExportButton/ExportButton";
 import CustomTableHead from "../../Components/AdminTableHead/CustomTableHead";
@@ -17,6 +17,8 @@ import { fetchToken } from "../../utils/fetchToken";
 import { Link, useNavigate } from "react-router-dom";
 import {TextField} from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
+import debounce from 'lodash.debounce';
+
 
 
 const EnovaDbProductList = () => {
@@ -35,6 +37,8 @@ const EnovaDbProductList = () => {
     const navigate = useNavigate();
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
+    const [searchName, setSearchName] = useState('');
+    const [searchCode, setSearchCode] = useState('');
 
     // Debounce timeout variable
     const [debounceTimeout, setDebounceTimeout] = useState(null);
@@ -77,7 +81,15 @@ const EnovaDbProductList = () => {
     const fetchProductData = useCallback(async () => {
         setLoading(true); // Set loading true at the start of the request
         try {
-            const response = await fetch(`https://se-europe-test.pl/api/enova_products?page=${currentPage}&limit=${limit}&search=${searchQuery}` // Add page and limit params
+            // Build the query string based on the filters
+            const queryString = new URLSearchParams({
+                page: currentPage,
+                limit: limit,
+                name: searchName,
+                code: searchCode,
+            }).toString();
+
+            const response = await fetch(`https://se-europe-test.pl/api/enova_products?${queryString}` // Add page and limit params
                 , {
                 method: 'GET',
                 headers: {
@@ -122,7 +134,7 @@ const EnovaDbProductList = () => {
         } finally {
             setLoading(false); // Set loading to false when done
         }
-    }, [currentPage, limit, searchQuery, brands, variants, categories, subcategories, itemTypes]);
+    }, [currentPage, limit, searchName, searchCode, brands, variants, categories, subcategories, itemTypes]);
 
     useEffect(() => {
         fetchAdditionalData();
@@ -144,16 +156,25 @@ const EnovaDbProductList = () => {
         navigate(`/admin/enova-products/${productId}`);
     }, [navigate]);
 
-    // Handle search input
+    // Debounced function to handle the input change
 
-
-// Handle search input changes
+// debounced search
     const handleSearchChange = useCallback(
-        debounce((query) => {
-            setSearchQuery(query); // Update the search query state
-        }, 300), // 300ms delay
+        debounce((value) => {
+            const [name, code] = value.split(' ');
+            setSearchName(name || '');
+            setSearchCode(code || '');
+        }, 300), // 500ms debounce delay
         []
     );
+
+    // On change handler for search input
+    const handleSearchQueryChange = (e) => {
+        const value = e.target.value;
+        setSearchQuery(value); // Update query immediately as user types
+        handleSearchChange(value); // Trigger the debounced function to perform the search
+        console.log(value)
+    };
 
     return (
         <div>
@@ -171,7 +192,8 @@ const EnovaDbProductList = () => {
                     placeholder="Search..."
                     sx={{ width: '300px' }}
                     value={searchQuery}
-                    onChange={(e) => handleSearchChange(e.target.value)} // Update the search query
+                    onChange={handleSearchQueryChange} // Use the updated function
+
                 />
                 <ExportButton />
             </Box>

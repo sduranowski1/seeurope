@@ -114,7 +114,7 @@ export const MissingVariantsProducts = ({lastPart, slug}) => {
     const fetchAdditionalData = async () => {
         try {
             const [brandsResponse, variantsResponse, categoriesResponse, subcategoriesResponse] = await Promise.all([
-                fetch('https://se-europe-test.pl/api/brands'),
+                fetch(`https://se-europe-test.pl/api/brandss?name=${lastPart}`),
                 fetch('https://se-europe-test.pl/api/variants'),
                 fetch('https://se-europe-test.pl/api/categories'),
                 fetch('https://se-europe-test.pl/api/subcategories'),
@@ -220,39 +220,39 @@ export const MissingVariantsProducts = ({lastPart, slug}) => {
         navigate(`/admin/enova-products/${productId}`);
     }, [navigate]);
 
-    useEffect(() => {
-        // Get the last part of the slug (normalized brand)
-        const slugParts = window.location.pathname.split("/").filter(Boolean); // Split by "/" and remove empty strings
-        const normalizedLastPart = slugParts.at(-1)?.replace(/[^a-zA-Z0-9]/g, "").toLowerCase(); // Normalize the last part
-
-        console.log("Normalized Last Part (Brand):", normalizedLastPart);
-
-        // Filter products by the normalized brand name and weight range
-        const filtered = products.filter((product) => {
-            // Normalize product brand name
-            const normalizedBrand = product.brandName
-                ?.replace(/[^a-zA-Z0-9]/g, "")
-                .toLowerCase();
-
-            // Filter by brand and weight range
-            const weightString = product.capacityFeat; // Example: "2500kg"
-            const weight = parseFloat(weightString.replace(/[^\d.-]/g, ""));
-
-            // Match selected categories (checkboxes)
-            const isBrandSelected = Object.entries(checkboxes).some(([key, isChecked]) => {
-                return isChecked && product.brandName === key;
-            });
-
-            return (
-                normalizedBrand === normalizedLastPart &&
-                weight >= weightRange[0] &&
-                weight <= weightRange[1] &&
-                (Object.values(checkboxes).some((val) => val) ? isBrandSelected : true)
-            );
-        });
-
-        setFilteredProducts(filtered);
-    }, [products, weightRange, checkboxes]); // Re-filter when products or weightRange change
+    // useEffect(() => {
+    //     // Get the last part of the slug (normalized brand)
+    //     const slugParts = window.location.pathname.split("/").filter(Boolean); // Split by "/" and remove empty strings
+    //     const normalizedLastPart = slugParts.at(-1)?.replace(/[^a-zA-Z0-9]/g, "").toLowerCase(); // Normalize the last part
+    //
+    //     console.log("Normalized Last Part (Brand):", normalizedLastPart);
+    //
+    //     // Filter products by the normalized brand name and weight range
+    //     const filtered = products.filter((product) => {
+    //         // Normalize product brand name
+    //         const normalizedBrand = product.brandName
+    //             ?.replace(/[^a-zA-Z0-9]/g, "")
+    //             .toLowerCase();
+    //
+    //         // Filter by brand and weight range
+    //         const weightString = product.capacityFeat; // Example: "2500kg"
+    //         const weight = parseFloat(weightString.replace(/[^\d.-]/g, ""));
+    //
+    //         // Match selected categories (checkboxes)
+    //         const isBrandSelected = Object.entries(checkboxes).some(([key, isChecked]) => {
+    //             return isChecked && product.brandName === key;
+    //         });
+    //
+    //         return (
+    //             normalizedBrand === normalizedLastPart &&
+    //             weight >= weightRange[0] &&
+    //             weight <= weightRange[1] &&
+    //             (Object.values(checkboxes).some((val) => val) ? isBrandSelected : true)
+    //         );
+    //     });
+    //
+    //     setFilteredProducts(filtered);
+    // }, [products, weightRange, checkboxes]); // Re-filter when products or weightRange change
 
 
     const handleProductClick = (product) => {

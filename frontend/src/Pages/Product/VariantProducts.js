@@ -12,6 +12,7 @@ import {Breadcrumbs, CircularProgress, Typography} from "@mui/material";
 import * as React from "react";
 import {SubcategoryTableBrands} from "./Components/SubcategoryTableBrands";
 import {WeightRange} from "./Components/WeightRange";
+import {SubcategoryTable} from "./Components/SubcategoryTable";
 
 const productsData = {
     name: '3 POINT',
@@ -163,6 +164,7 @@ export const VariantProducts = ({lastPart, slug}) => {
             }
 
             const data = await response.json();
+            console.log(data)
 
             // Map product data with brand and variant names
             const productsData = data.elementy.map((product) => {
@@ -281,6 +283,7 @@ export const VariantProducts = ({lastPart, slug}) => {
     );
 
     console.log(maxWeight)
+    console.log(products)
 
     function findCheckboxes() {
         return Object.values(filteredProducts).flat().reduce((acc, product) => {

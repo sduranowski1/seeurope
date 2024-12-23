@@ -208,6 +208,9 @@ const EnovaProductEdit = () => {
                                 onChange={handleChange}
                                 label="Variant"
                             >
+                                <MenuItem value={0}>
+                                    <em></em>
+                                </MenuItem>
                                 {variants.map((variant) => (
                                     <MenuItem key={variant.id} value={variant.id}>
                                         {variant.variantname}

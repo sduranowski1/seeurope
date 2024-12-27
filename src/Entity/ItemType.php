@@ -30,7 +30,7 @@ class ItemType
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
-    #[Groups(['itemType:read', 'itemType:create', 'itemType:update'])]
+    #[Groups(['itemType:read', 'itemType:create', 'itemType:update', "productInfo:read", 'enovaProduct:read'])]
     private ?string $name = null;
 
     #[ORM\Column(nullable: true)]

@@ -31,7 +31,7 @@ class Subcategory
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
-    #[Groups(['subcategory:read', 'subcategory:create', 'subcategory:update', 'itemType:read', 'itemType:create', 'itemType:update'])]
+    #[Groups(['subcategory:read', 'subcategory:create', 'subcategory:update', 'itemType:read', 'itemType:create', 'itemType:update', "productInfo:read", 'enovaProduct:read'])]
     private ?string $subCatName = null;
 
     #[ORM\Column(nullable: true)]

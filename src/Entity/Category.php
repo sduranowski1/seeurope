@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use App\Entity\Traits\Timestampable;
@@ -16,6 +18,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
     normalizationContext: ['groups' => ['category:read']],
     denormalizationContext: ['groups' => ['category:create']]
 )]
+#[ApiFilter(SearchFilter::class, properties: ['name' => 'partial'])]
 class Category
 {
     use Timestampable;

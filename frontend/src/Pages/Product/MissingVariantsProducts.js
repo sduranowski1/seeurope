@@ -158,22 +158,22 @@ export const MissingVariantsProducts = ({lastPart, slug}) => {
 
             // Map product data with brand and variant names
             const productsData = data.map((product) => {
-                const dealerDetalPrice = product.listaCen?.find((price) => price.nazwa === 'Dealer Detal');
-                const netto = dealerDetalPrice ? dealerDetalPrice.netto : null;
+                // const dealerDetalPrice = product.listaCen?.find((price) => price.nazwa === 'Dealer Detal');
+                // const netto = dealerDetalPrice ? dealerDetalPrice.netto : null;
 
-                const wzrostu = product.listaCechy?.find((value) => value.nazwa === '% wzrostu');
+                const wzrostu = product.features?.find((value) => value.nazwa === '% wzrostu');
                 const procWzrostu = wzrostu ? wzrostu.wartosc : null;
 
-                const replacement = product.listaCechy?.find((value) => value.nazwa === 'Części zamienne');
+                const replacement = product.features?.find((value) => value.nazwa === 'Części zamienne');
                 const replacementParts = replacement ? replacement.wartosc : null;
 
-                const capacity = product.listaCechy?.find((value) => value.nazwa === 'Capacity');
+                const capacity = product.features?.find((value) => value.nazwa === 'Capacity');
                 const capacityFeat = capacity ? capacity.wartosc : null;
 
                 // const brandName = brands.find((brand) => brand.id === product.productInfo?.braid)?.name || 'N/A';
                 const variantName = variants.find((variant) => variant.id === product.productInfo?.varid)?.variantname || 'N/A';
 
-                return { ...product, netto, procWzrostu, replacementParts, capacityFeat,  variantName};
+                return { ...product, procWzrostu, replacementParts, capacityFeat,  variantName};
             });
 
             console.log(productsData)
@@ -211,6 +211,15 @@ export const MissingVariantsProducts = ({lastPart, slug}) => {
         setSelectedProduct(product);
     };
 
+    // Filter products based on weight range
+    useEffect(() => {
+        const filtered = products.filter((product) => {
+            const capacity = parseFloat(product.capacityFeat?.replace(/[^\d.-]/g, "") || 0);
+            return capacity >= weightRange[0] && capacity <= weightRange[1];
+        });
+        setFilteredProducts(filtered);
+    }, [products, weightRange]);
+
     // Handle weight range change
     const handleWeightRangeChange = (event, newValue) => {
         setWeightRange(newValue);
@@ -218,16 +227,16 @@ export const MissingVariantsProducts = ({lastPart, slug}) => {
 
     // Find the maximum weight in the filtered products
     const maxWeight = Math.max(
-        ...filteredProducts.map(product => parseFloat(product.capacityFeat.replace(/[^\d.-]/g, "")) || 0),
+        ...products.map(product => parseFloat(product.capacityFeat.replace(/[^\d.-]/g, "")) || 0),
         30000 // Default fallback value for the max weight if no valid products are found
     );
 
     console.log(maxWeight)
 
     function findCheckboxes() {
-        return Object.values(filteredProducts).flat().reduce((acc, product) => {
-            if (!acc.hasOwnProperty(product.brandName)) {
-                acc[product.brandName] = false;
+        return Object.values(products).flat().reduce((acc, product) => {
+            if (!acc.hasOwnProperty(product.productInfo.brand.name)) {
+                acc[product.productInfo.brand.name] = false;
             }
             return acc;
         }, {});
@@ -236,7 +245,7 @@ export const MissingVariantsProducts = ({lastPart, slug}) => {
     useEffect(() => {
         const uniqueCheckboxes = findCheckboxes();
         setCheckboxes(uniqueCheckboxes);
-    }, [filteredProducts]);
+    }, [products]);
 
     console.log(products)
 
@@ -317,7 +326,7 @@ export const MissingVariantsProducts = ({lastPart, slug}) => {
                     {/*<SubcategoryTable productsData={productsData} displayedItems={displayedItems}/>*/}
                     {/*<SubcategoryTable productsData={productsData} displayedItems={displayedItems} checkboxes={checkboxes}/>*/}
                     <SubcategoryTableBrands
-                        productsData={products}
+                        productsData={filteredProducts}
                         onProductClick={handleProductClick}
                         lastPartToCollapse={lastPart}
                     />

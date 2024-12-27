@@ -71,7 +71,7 @@ export const SubcategoryTableBrands = ({ productsData, onProductClick, lastPartT
                     <th>Kod</th>
                     <th>Product Name</th>
                     <th>Capacity</th>
-                    <th>Netto</th>
+                    {/*<th>Netto</th>*/}
                     <th>Brand</th>
                     <th>Variant</th>
                     {/*<th>Category</th>*/}
@@ -106,7 +106,7 @@ export const SubcategoryTableBrands = ({ productsData, onProductClick, lastPartT
                             <td>{product.code || "N/A"}</td>
                             <td>{product.name || "N/A"}</td>
                             <td>{product.capacityFeat || "N/A"}</td>
-                            <td>{product.netto || "N/A"}</td>
+                            {/*<td>{product.netto || "N/A"}</td>*/}
                             <td>{product.productInfo?.brand?.name  || "N/A"}</td>
                             <td>{product.variantName || "N/A"}</td>
                             {/*<td>{product.categoryName || "N/A"}</td>*/}

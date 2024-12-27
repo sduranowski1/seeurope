@@ -144,22 +144,34 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
     const fetchProductData = useCallback(async () => {
         setLoading(true); // Set loading true at the start of the request
         try {
-            const token = await fetchToken();
-            setToken(token);
+            // const token = await fetchToken();
+            // setToken(token);
+            let apiUrl;
 
-            const response = await fetch('https://se-europe-test.pl/api/PanelWWW_API/DajTowary?nazwa=Koszt', {
-                method: 'POST',
+            if (parts.length === 2) {
+                apiUrl = `https://se-europe-test.pl/api/enova_products?productInfo.category.name=${lastPart}`;
+            } else if (parts.length === 3) {
+                apiUrl = `https://se-europe-test.pl/api/enova_products?productInfo.subcategory.subCatnName=${lastPart}`;
+            } else if (parts.length === 4) {
+                apiUrl = `https://se-europe-test.pl/api/enova_products?productInfo.itemType.name=${lastPart}`;
+            } else {
+                throw new Error("Unsupported URL structure");
+            }
+
+            // const response = await fetch('https://se-europe-test.pl/api/PanelWWW_API/DajTowary?nazwa=Koszt', {
+            const response = await fetch(apiUrl, {
+                method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
                 },
-                body: JSON.stringify({
-                    strona: currentPage,
-                    limit: limit,
-                    pokazCeny: true,
-                    poleSortowane: "ID",
-                    czyRosnaco: 1,
-                }),
+                // body: JSON.stringify({
+                //     strona: currentPage,
+                //     limit: limit,
+                //     pokazCeny: true,
+                //     poleSortowane: "ID",
+                //     czyRosnaco: 1,
+                // }),
             });
 
             if (!response.ok) {
@@ -169,17 +181,18 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
             const data = await response.json();
 
             // Map product data with brand and variant names
-            const productsData = data.elementy.map((product) => {
-                const dealerDetalPrice = product.listaCen.find((price) => price.nazwa === 'Dealer Detal');
-                const netto = dealerDetalPrice ? dealerDetalPrice.netto : null;
+            // const productsData = data.elementy.map((product) => {
+            const productsData = data.map((product) => {
+                // const dealerDetalPrice = product.listaCen.find((price) => price.nazwa === 'Dealer Detal');
+                // const netto = dealerDetalPrice ? dealerDetalPrice.netto : null;
 
-                const wzrostu = product.listaCechy.find((value) => value.nazwa === '% wzrostu');
+                const wzrostu = product.features.find((value) => value.nazwa === '% wzrostu');
                 const procWzrostu = wzrostu ? wzrostu.wartosc : null;
 
-                const replacement = product.listaCechy.find((value) => value.nazwa === 'Części zamienne');
+                const replacement = product.features.find((value) => value.nazwa === 'Części zamienne');
                 const replacementParts = replacement ? replacement.wartosc : null;
 
-                const capacity = product.listaCechy.find((value) => value.nazwa === 'Capacity');
+                const capacity = product.features.find((value) => value.nazwa === 'Capacity');
                 const capacityFeat = capacity ? capacity.wartosc : null;
 
                 const brandName = brands.find((brand) => brand.id === product.productInfo?.braid)?.name || 'N/A';
@@ -188,13 +201,13 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
                 const subcategoryName = subcategories.find((subcategory) => subcategory.id === product.productInfo?.scatid)?.subCatName || 'N/A';
                 const itemTypeName = itemTypes.find((itemType) => itemType.id === product.productInfo?.itypeid)?.name || 'N/A';
 
-                return { ...product, netto, procWzrostu, replacementParts, capacityFeat,  brandName, variantName, categoryName, subcategoryName, itemTypeName };
+                return { ...product, procWzrostu, replacementParts, capacityFeat,  brandName, variantName, categoryName, subcategoryName, itemTypeName };
             });
 
             console.log(productsData)
 
             setProducts(productsData);
-            setTotalItems(data.liczbaWszystkich);
+            // setTotalItems(data.liczbaWszystkich);
         } catch (error) {
             setError(error.message);
         } finally {

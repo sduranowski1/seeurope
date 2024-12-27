@@ -24,19 +24,20 @@ export const ProductDescription = ({ product }) => {
         const fetchData = async () => {
             try {
                 // Fetch the token first
-                const token = await fetchToken();
-                setToken(token);
+                // const token = await fetchToken();
+                // setToken(token);
 
                 // Use the token to fetch the actual data
-                const response = await fetch('https://se-europe-test.pl/api/PanelWWW_API/DajTowarWgKod', {
-                    method: 'POST',
+                // const response = await fetch('https://se-europe-test.pl/api/PanelWWW_API/DajTowarWgKod', {
+                const response = await fetch(`https://se-europe-test.pl/api/enova_products?code=${product.code}`, {
+                    method: 'GET',
                     headers: {
                         'accept': 'application/json',
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({
-                        parametr: product.kod,
-                    }),
+                    // body: JSON.stringify({
+                    //     parametr: product.code,
+                    // }),
                 });
 
 
@@ -45,8 +46,8 @@ export const ProductDescription = ({ product }) => {
                 }
 
                 const result = await response.json();
-                console.log(result)
-                setData(result);
+                console.log(result[0])
+                setData(result[0]);
                 setLoading(false); // Set loading to false after data is fetched
             } catch (error) {
                 setError(error.message);
@@ -55,7 +56,7 @@ export const ProductDescription = ({ product }) => {
         };
 
         fetchData();
-    }, [product.kod]); // Empty dependency array to run only once on mount
+    }, []); // Empty dependency array to run only once on mount
 
     const renderDetails = (data) => {
         const details = {
@@ -142,8 +143,8 @@ export const ProductDescription = ({ product }) => {
         ];
 
         // Map through desiredPrices and fetch matching price objects
-        const features = featuresList.map((featureName) => {
-            const matchedFeature = product.listaCechy.find((feature) => feature.nazwa === featureName);
+        const featuress = featuresList.map((featureName) => {
+            const matchedFeature = product.features.find((feature) => feature.nazwa === featureName);
             return {
                 nazwa: featureName,
                 wartosc: matchedFeature ? matchedFeature.wartosc : null,
@@ -151,8 +152,10 @@ export const ProductDescription = ({ product }) => {
             };
         });
 
+        console.log(featuress)
+
         // Render table rows dynamically
-        return features.map((feature, index) => (
+        return featuress.map((feature, index) => (
 
             <ul className='price-container' key={index}>
                 <li>{feature.nazwa}: {feature.wartosc ? `${feature.wartosc}` : 'N/A'} </li>
@@ -215,9 +218,9 @@ export const ProductDescription = ({ product }) => {
                     <div>
                         <section className={'section-contrains tables-page item-page'}>
                             <div>
-                                <h1 className={"description-header"}>{data.nazwa || "'N/A"}</h1>
+                                <h1 className={"description-header"}>{data.name || "N/A"}</h1>
                                 <hr></hr>
-                                <p>{data.kod}</p>
+                                <p>{data.code}</p>
                                 <br/>
                                 {/*<p>{String(data.productInfo?.description || 'No description')}</p>*/}
                                 <div className={"description"}>
@@ -284,17 +287,17 @@ export const ProductDescription = ({ product }) => {
                                 <div className={"hr-price"}></div>
                                 <br/>
                                 <div className={"in-stock"}>
-                                    {data.stanMagazynowy === "instock" ? (
+                                    {data.stockStatus === "instock" ? (
                                         <Tooltip title="In Stock: This product is available.">
                                             <CheckCircleIcon style={{color: "green", cursor: "pointer", paddingTop: "9px"}}/>
                                         </Tooltip>
-                                    ) : data.stanMagazynowy === "onbackorder" ? (
+                                    ) : data.stockStatus === "onbackorder" ? (
                                         <Tooltip title="On Backorder: This product is not currently available.">
                                             <ErrorIcon style={{color: "orange", cursor: "pointer", paddingTop: "9px"}}/>
                                         </Tooltip>
                                     ) : (
-                                        data.stanMagazynowy || "N/A"
-                                    )} {data.stanMagazynowy}
+                                        data.stockStatus || "N/A"
+                                    )} {data.stockStatus}
                                 </div>
                                 <br/>
                                 <div className='price-container'>

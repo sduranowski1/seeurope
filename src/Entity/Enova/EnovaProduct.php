@@ -127,7 +127,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
     'productInfo.brand.name' => 'partial',
     'productInfo.variant.variantname' => 'partial',
     'productInfo.category.name' => 'partial',
-    'productInfo.subacategory.subCatName' => 'partial',
+    'productInfo.subcategory.subCatName' => 'partial',
     'productInfo.itemType.name' => 'partial'])]
 #[ORM\Entity]
 class EnovaProduct

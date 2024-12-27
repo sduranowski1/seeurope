@@ -5,7 +5,10 @@ namespace App\Entity\Enova;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use App\Entity\Brand;
+use App\Entity\Category;
+use App\Entity\ItemType;
 use App\Entity\ProductsMediaObject;
+use App\Entity\Subcategory;
 use App\Entity\Variant;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -42,13 +45,28 @@ class ProductInfo
     #[Groups(['enovaProduct:read', "productInfo:read"])]
     private int $varid;
 
+    #[ORM\ManyToOne(targetEntity: Category::class)]
+    #[ORM\JoinColumn(name: 'catid', referencedColumnName: 'id', options: ["default" => 0])]
+    #[Groups(['enovaProduct:read', "productInfo:read"])]
+    private ?Category $category;
+
     #[ORM\Column(type: "integer", options: ["default" => 0])]
     #[Groups(['enovaProduct:read', "productInfo:read"])]
     private int $catid;
 
+    #[ORM\ManyToOne(targetEntity: Subcategory::class)]
+    #[ORM\JoinColumn(name: 'scatid', referencedColumnName: 'id', options: ["default" => 0])]
+    #[Groups(['enovaProduct:read', "productInfo:read"])]
+    private ?Subcategory $subcategory;
+
     #[ORM\Column(type: "integer", options: ["default" => 0])]
     #[Groups(['enovaProduct:read', "productInfo:read"])]
     private int $scatid;
+
+    #[ORM\ManyToOne(targetEntity: ItemType::class)]
+    #[ORM\JoinColumn(name: 'itypeid', referencedColumnName: 'id', options: ["default" => 0])]
+    #[Groups(['enovaProduct:read', "productInfo:read"])]
+    private ?ItemType $itemType;
 
     #[ORM\Column(type: "integer", options: ["default" => 0])]
     #[Groups(['enovaProduct:read', "productInfo:read"])]
@@ -131,6 +149,11 @@ class ProductInfo
         return $this;
     }
 
+    public function getSubcategory(): ?Subcategory
+    {
+        return $this->subcategory;
+    }
+
     public function getScatid(): int
     {
         return $this->scatid;
@@ -139,6 +162,11 @@ class ProductInfo
     public function setScatid(int $scatid): void
     {
         $this->scatid = $scatid;
+    }
+
+    public function getCategory(): ?Category
+    {
+        return $this->category;
     }
 
     public function getCatid(): int
@@ -150,6 +178,11 @@ class ProductInfo
     {
         $this->catid = $catid;
         return $this;
+    }
+
+    public function getItemType(): ?ItemType
+    {
+        return $this->itemType;
     }
 
     public function getItypeid(): int

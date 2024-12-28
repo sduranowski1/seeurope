@@ -23,30 +23,21 @@ export const ProductDescription = ({ product }) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                // Fetch the token first
-                // const token = await fetchToken();
-                // setToken(token);
-
                 // Use the token to fetch the actual data
-                // const response = await fetch('https://se-europe-test.pl/api/PanelWWW_API/DajTowarWgKod', {
                 const response = await fetch(`https://se-europe-test.pl/api/enova_products?code=${product.code}`, {
                     method: 'GET',
                     headers: {
                         'accept': 'application/json',
                         'Content-Type': 'application/json',
                     },
-                    // body: JSON.stringify({
-                    //     parametr: product.code,
-                    // }),
                 });
-
 
                 if (!response.ok) {
                     throw new Error('Failed to fetch product data');
                 }
 
                 const result = await response.json();
-                console.log(result[0])
+                console.log(result[0]);
                 setData(result[0]);
                 setLoading(false); // Set loading to false after data is fetched
             } catch (error) {
@@ -55,8 +46,10 @@ export const ProductDescription = ({ product }) => {
             }
         };
 
-        fetchData();
-    }, []); // Empty dependency array to run only once on mount
+        if (product.code) { // Ensure product.code is defined before making the request
+            fetchData();
+        }
+    }, [product.code]); // Run the effect whenever product.code changes
 
     const renderDetails = (data) => {
         const details = {
@@ -71,7 +64,7 @@ export const ProductDescription = ({ product }) => {
         return Object.entries(details).map(([key, value]) => (
             <TableRow key={key}>
                 <TableCell sx={{ fontWeight: 'bold' }}>{key}</TableCell>
-                <TableCell>{value || 'N/A'}</TableCell>
+                <TableCell>{value || ''}</TableCell>
             </TableRow>
         ));
     };
@@ -97,7 +90,7 @@ export const ProductDescription = ({ product }) => {
             return {
                 nazwa: priceName,
                 netto: matchedPrice ? matchedPrice.netto : null,
-                waluta: matchedPrice ? matchedPrice.waluta : 'N/A',
+                waluta: matchedPrice ? matchedPrice.waluta : '',
             };
         });
 
@@ -105,15 +98,15 @@ export const ProductDescription = ({ product }) => {
         return prices.map((price, index) => (
 
             <ul className='price-container' key={index}>
-                <li>{price.waluta} {price.netto ? `${price.netto}` : 'N/A'} {price.nazwa}</li>
-                {/*<li>{price.netto ? `${price.netto}` : 'N/A'}</li>*/}
+                <li>{price.waluta} {price.netto ? `${price.netto}` : ''} {price.nazwa}</li>
+                {/*<li>{price.netto ? `${price.netto}` : 'made to order'}</li>*/}
                 {/*<li>{price.nazwa}</li>*/}
             </ul>
     ));
     };
 
     const renderFeatures = (product) => {
-        // Define the desired price names
+        // Define the desired feature names
         const featuresList = [
             'Capacity',
             'Depth',
@@ -142,28 +135,26 @@ export const ProductDescription = ({ product }) => {
             "Width"
         ];
 
-        // Map through desiredPrices and fetch matching price objects
-        const featuress = featuresList.map((featureName) => {
+        // Map through featuresList and fetch matching feature objects
+        const features = featuresList.map((featureName) => {
             const matchedFeature = product.features.find((feature) => feature.nazwa === featureName);
             return {
                 nazwa: featureName,
                 wartosc: matchedFeature ? matchedFeature.wartosc : null,
-                // waluta: matchedPrice ? matchedPrice.waluta : 'N/A',
             };
         });
 
-        console.log(featuress)
+        // Filter out features with null or empty string for wartosc
+        const filteredFeatures = features.filter((feature) => feature.wartosc);
 
         // Render table rows dynamically
-        return featuress.map((feature, index) => (
-
-            <ul className='price-container' key={index}>
-                <li>{feature.nazwa}: {feature.wartosc ? `${feature.wartosc}` : 'N/A'} </li>
-                {/*<li>{price.netto ? `${price.netto}` : 'N/A'}</li>*/}
-                {/*<li>{price.nazwa}</li>*/}
+        return filteredFeatures.map((feature, index) => (
+            <ul className="price-container" key={index}>
+                <li>{feature.nazwa}: {feature.wartosc}</li>
             </ul>
         ));
     };
+
 
 
     if (!data) {
@@ -218,7 +209,7 @@ export const ProductDescription = ({ product }) => {
                     <div>
                         <section className={'section-contrains tables-page item-page'}>
                             <div>
-                                <h1 className={"description-header"}>{data.name || "N/A"}</h1>
+                                <h1 className={"description-header"}>{data.name || ""}</h1>
                                 <hr></hr>
                                 <p>{data.code}</p>
                                 <br/>
@@ -271,7 +262,7 @@ export const ProductDescription = ({ product }) => {
                                 <br></br>
                                 <h3 className={"description-header tech-data-header"}>DANE TECHNICZNE</h3>
                                 {/*<ul>*/}
-                                {/*    <li>Capacity: {data.capacityFeat || "N/A"}</li>*/}
+                                {/*    <li>Capacity: {data.capacityFeat || "made to order"}</li>*/}
                                 {/*    <li>Szerokość: 1134 mm</li>*/}
                                 {/*    <li>Wysokość: 781 mm</li>*/}
                                 {/*    <li>Waga: 87 kg</li>*/}
@@ -296,7 +287,7 @@ export const ProductDescription = ({ product }) => {
                                             <ErrorIcon style={{color: "orange", cursor: "pointer", paddingTop: "9px"}}/>
                                         </Tooltip>
                                     ) : (
-                                        data.stockStatus || "N/A"
+                                        data.stockStatus || "made to order"
                                     )} {data.stockStatus}
                                 </div>
                                 <br/>

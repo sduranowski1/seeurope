@@ -181,10 +181,10 @@ export const VariantProducts = ({lastPart, slug}) => {
                 const capacity = product.features.find((value) => value.nazwa === 'Capacity');
                 const capacityFeat = capacity ? capacity.wartosc : null;
 
-                const brandName = brands.find((brand) => brand.id === product.productInfo?.braid)?.name || 'N/A';
-                const variantName = variants.find((variant) => variant.id === product.productInfo?.varid)?.variantname || 'N/A';
-                const categoryName = categories.find((category) => category.id === product.productInfo?.catid)?.name || 'N/A';
-                const subcategoryName = subcategories.find((subcategory) => subcategory.id === product.productInfo?.scatid)?.subCatName || 'N/A';
+                const brandName = brands.find((brand) => brand.id === product.productInfo?.braid)?.name || '';
+                const variantName = variants.find((variant) => variant.id === product.productInfo?.varid)?.variantname || '';
+                const categoryName = categories.find((category) => category.id === product.productInfo?.catid)?.name || '';
+                const subcategoryName = subcategories.find((subcategory) => subcategory.id === product.productInfo?.scatid)?.subCatName || '';
 
                 return { ...product, procWzrostu, replacementParts, capacityFeat,  brandName, variantName, categoryName, subcategoryName };
             });

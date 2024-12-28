@@ -51,7 +51,7 @@ export const SubcategoryTable = ({ productsData, onProductClick, lastPartToColla
     // Get unique capacityFeat values for tabs
     const uniqueCapacities = [
         "All",
-        ...new Set(productsData.map((product) => product.capacityFeat || "N/A"))
+        ...new Set(productsData.map((product) => product.capacityFeat || "Other"))
     ];
 
     // Filter products based on the active filter
@@ -103,11 +103,11 @@ export const SubcategoryTable = ({ productsData, onProductClick, lastPartToColla
                     <th>Kod</th>
                     <th>Product Name</th>
                     <th>Capacity</th>
-                    <th>Netto</th>
+                    {/*<th>Netto</th>*/}
                     <th>Brand</th>
                     <th>Variant</th>
-                    <th>Category</th>
-                    <th>Subcategory</th>
+                    {/*<th>Category</th>*/}
+                    {/*<th>Subcategory</th>*/}
                     <th>Status</th>
                 </tr>
                 </thead>
@@ -135,25 +135,25 @@ export const SubcategoryTable = ({ productsData, onProductClick, lastPartToColla
                                 }
                             }}
                         >
-                            <td>{product.kod || "N/A"}</td>
-                            <td>{product.nazwa || "N/A"}</td>
-                            <td>{product.capacityFeat || "N/A"}</td>
-                            <td>{product.netto || "N/A"}</td>
-                            <td>{product.brandName || "N/A"}</td>
-                            <td>{product.variantName || "N/A"}</td>
-                            <td>{product.categoryName || "N/A"}</td>
-                            <td>{product.subcategoryName || "N/A"}</td>
+                            <td>{product.code || ""}</td>
+                            <td>{product.name || ""}</td>
+                            <td>{product.capacityFeat || ""}</td>
+                            {/*<td>{product.netto || ""}</td>*/}
+                            <td>{product.brandName === "Other" ? ("") : ("")}</td>
+                            <td>{product.variantName || ""}</td>
+                            {/*<td>{product.categoryName || ""}</td>*/}
+                            {/*<td>{product.subcategoryName || ""}</td>*/}
                             <td>
-                                {product.stanMagazynowy === "instock" ? (
+                                {product.stockStatus === "instock" ? (
                                     <Tooltip title="In Stock: This product is available.">
                                         <CheckCircleIcon style={{color: "green", cursor: "pointer", paddingTop: "9px"}}/>
                                     </Tooltip>
-                                ) : product.stanMagazynowy === "onbackorder" ? (
+                                ) : product.stockStatus === "onbackorder" ? (
                                     <Tooltip title="On Backorder: This product is not currently available.">
                                         <ErrorIcon style={{color: "orange", cursor: "pointer", paddingTop: "9px"}}/>
                                     </Tooltip>
                                 ) : (
-                                    product.stanMagazynowy || "N/A"
+                                    product.stockStatus || "made to order"
                                 )}
                             </td>
                         </tr>

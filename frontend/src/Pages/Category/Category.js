@@ -116,7 +116,7 @@ export const Category = () => {
                     <LinksListWithImages data={products} />
                 </section>
             ) : (
-                <ProductDetails />
+                <ProductDetails currentSlug={currentSlug}/>
             )}
         </main>
     );

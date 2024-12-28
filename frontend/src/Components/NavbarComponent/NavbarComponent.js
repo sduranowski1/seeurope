@@ -167,9 +167,13 @@ export const NavbarComponent = (props) => {
 
     const renderCategoryMenuItems = () => {
         return categories.map(category => {
+
+            const categorySlug = category.name.replace(/\s+/g, '_'); // Convert spaces to dashes
+
             return (
                 <li key={category.id} className={`nav__submenu-item 'nav__submenu-item--list' : ''}`}>
-                    <Link to={`/my-machine/${category.name}`}>
+                    <Link
+                        to={`/my-machine/${categorySlug}`}>
                         {category.name}
                     </Link>
                 </li>

@@ -19,7 +19,7 @@ export const SubcategoryTableBrands = ({ productsData, onProductClick, lastPartT
     // Get unique capacityFeat values for tabs
     const uniqueCapacities = [
         "All",
-        ...new Set(productsData.map((product) => product.categoryName || "N/A"))
+        ...new Set(productsData.map((product) => product.categoryName || "Other"))
     ];
 
     // Filter products based on the active filter
@@ -103,12 +103,17 @@ export const SubcategoryTableBrands = ({ productsData, onProductClick, lastPartT
                                 }
                             }}
                         >
-                            <td>{product.code || "N/A"}</td>
-                            <td>{product.name || "N/A"}</td>
-                            <td>{product.capacityFeat || "N/A"}</td>
+                            <td>{product.code || "" +
+                                "" +
+                                "" +
+                                "" +
+                                "" +
+                                ""}</td>
+                            <td>{product.name || ""}</td>
+                            <td>{product.capacityFeat || ""}</td>
                             {/*<td>{product.netto || "N/A"}</td>*/}
-                            <td>{product.productInfo?.brand?.name  || "N/A"}</td>
-                            <td>{product.variantName || "N/A"}</td>
+                            <td>{product.productInfo?.brand?.name  || ""}</td>
+                            <td>{product.variantName || ""}</td>
                             {/*<td>{product.categoryName || "N/A"}</td>*/}
                             {/*<td>{product.subcategoryName || "N/A"}</td>*/}
                             <td>

@@ -7,7 +7,7 @@ import LoadingComponent from "../../Components/LoadingComponent/LoadingComponent
 import {Subcategory} from "../Subcategory/Subcategory";
 import {Category} from "../Category/Category";
 
-export const ProductDetails = () => {
+export const ProductDetails = ({currentSlug}) => {
     const { slug } = useParams();
     const [itemsToOrder, setItemsToOrder] = useState(1);
     const [hasSubcategoryValues, setHasSubcategoryValues] = useState(false);
@@ -18,7 +18,8 @@ export const ProductDetails = () => {
     }
 
     // Get the last part of the slug
-    const lastPartOfSlug = slug?.split("/").pop();
+    // const lastPartOfSlug = slug?.split("/").pop();
+    const lastPartOfSlug = currentSlug;
     const capitalizedLastPart = lastPartOfSlug
         ? lastPartOfSlug.charAt(0).toUpperCase() + lastPartOfSlug.slice(1)
         : null;

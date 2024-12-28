@@ -144,6 +144,12 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
     const fetchProductData = useCallback(async () => {
         setLoading(true); // Set loading true at the start of the request
         try {
+            // Derive parts from URL path
+            const urlPath = window.location.pathname;
+            const parts = urlPath.split('/').filter(part => part !== '');
+            // const lastPart = parts[parts.length - 1];
+            console.log('URL parts:', parts);
+            console.log('Last part:', lastPart);
             // const token = await fetchToken();
             // setToken(token);
             let apiUrl;
@@ -151,27 +157,22 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
             if (parts.length === 2) {
                 apiUrl = `https://se-europe-test.pl/api/enova_products?productInfo.category.name=${lastPart}`;
             } else if (parts.length === 3) {
-                apiUrl = `https://se-europe-test.pl/api/enova_products?productInfo.subcategory.subCatnName=${lastPart}`;
+                apiUrl = `https://se-europe-test.pl/api/enova_products?productInfo.subcategory.subCatName=${lastPart}`;
             } else if (parts.length === 4) {
                 apiUrl = `https://se-europe-test.pl/api/enova_products?productInfo.itemType.name=${lastPart}`;
             } else {
                 throw new Error("Unsupported URL structure");
             }
 
-            // const response = await fetch('https://se-europe-test.pl/api/PanelWWW_API/DajTowary?nazwa=Koszt', {
+            console.log(apiUrl)
+
+            // const response = await fetch(`https://se-europe-test.pl/api/enova_products?productInfo.subcategory.subCatName=${lastPart}`, {
             const response = await fetch(apiUrl, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
                 },
-                // body: JSON.stringify({
-                //     strona: currentPage,
-                //     limit: limit,
-                //     pokazCeny: true,
-                //     poleSortowane: "ID",
-                //     czyRosnaco: 1,
-                // }),
             });
 
             if (!response.ok) {
@@ -195,14 +196,15 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
                 const capacity = product.features.find((value) => value.nazwa === 'Capacity');
                 const capacityFeat = capacity ? capacity.wartosc : null;
 
-                const brandName = brands.find((brand) => brand.id === product.productInfo?.braid)?.name || 'N/A';
-                const variantName = variants.find((variant) => variant.id === product.productInfo?.varid)?.variantname || 'N/A';
-                const categoryName = categories.find((category) => category.id === product.productInfo?.catid)?.name || 'N/A';
-                const subcategoryName = subcategories.find((subcategory) => subcategory.id === product.productInfo?.scatid)?.subCatName || 'N/A';
-                const itemTypeName = itemTypes.find((itemType) => itemType.id === product.productInfo?.itypeid)?.name || 'N/A';
+                const brandName = brands.find((brand) => brand.id === product.productInfo?.braid)?.name || 'Other';
+                const variantName = variants.find((variant) => variant.id === product.productInfo?.varid)?.variantname || '';
+                const categoryName = categories.find((category) => category.id === product.productInfo?.catid)?.name || '';
+                const subcategoryName = subcategories.find((subcategory) => subcategory.id === product.productInfo?.scatid)?.subCatName || '';
+                const itemTypeName = itemTypes.find((itemType) => itemType.id === product.productInfo?.itypeid)?.name || '';
 
                 return { ...product, procWzrostu, replacementParts, capacityFeat,  brandName, variantName, categoryName, subcategoryName, itemTypeName };
             });
+            console.log("hi:", data)
 
             console.log(productsData)
 
@@ -313,6 +315,7 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
     );
 
     console.log(maxWeight)
+    console.log(products)
 
     function findCheckboxes() {
         return Object.values(filteredProducts).flat().reduce((acc, product) => {
@@ -372,6 +375,7 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
                 </Breadcrumbs>
                 <div className={'heading-container'}>
                     <h1 className={'page-title'}>{lastPart ? lastPart : t("my_machine")}</h1>
+                    {/*<h1 className={'page-title'}>{lastPart ? lastPart : t("my_machine")}</h1>*/}
                     <p className={'paragraph paragraph--medium'}>{t("tractor_equipment")}</p>
                 </div>
                 {loading ? (

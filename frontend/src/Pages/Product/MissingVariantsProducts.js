@@ -170,8 +170,8 @@ export const MissingVariantsProducts = ({lastPart, slug}) => {
                 const capacity = product.features?.find((value) => value.nazwa === 'Capacity');
                 const capacityFeat = capacity ? capacity.wartosc : null;
 
-                // const brandName = brands.find((brand) => brand.id === product.productInfo?.braid)?.name || 'N/A';
-                const variantName = variants.find((variant) => variant.id === product.productInfo?.varid)?.variantname || 'N/A';
+                // const brandName = brands.find((brand) => brand.id === product.productInfo?.braid)?.name || '';
+                const variantName = variants.find((variant) => variant.id === product.productInfo?.varid)?.variantname || '';
 
                 return { ...product, procWzrostu, replacementParts, capacityFeat,  variantName};
             });

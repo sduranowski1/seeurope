@@ -33,6 +33,14 @@ class ItemType
     #[Groups(['itemType:read', 'itemType:create', 'itemType:update', "productInfo:read", 'enovaProduct:read'])]
     private ?string $name = null;
 
+    #[ORM\Column(length: 50)]
+    #[Groups(['itemType:read', 'itemType:create', 'itemType:update', "productInfo:read", 'enovaProduct:read'])]
+    private ?string $polishName = null;
+
+    #[ORM\Column(length: 50)]
+    #[Groups(['itemType:read', 'itemType:create', 'itemType:update', "productInfo:read", 'enovaProduct:read'])]
+    private ?string $germanName = null;
+
     #[ORM\Column(nullable: true)]
     #[Groups(['itemType:read', 'itemType:create'])]
     private ?int $scid = null;
@@ -92,6 +100,28 @@ class ItemType
 
         return $this;
     }
+
+    public function getPolishName(): ?string
+    {
+        return $this->polishName;
+    }
+
+    public function setPolishName(?string $polishName): void
+    {
+        $this->polishName = $polishName;
+    }
+
+    public function getGermanName(): ?string
+    {
+        return $this->germanName;
+    }
+
+    public function setGermanName(?string $germanName): void
+    {
+        $this->germanName = $germanName;
+    }
+
+
 
     public function getSubcategory(): ?Subcategory
     {

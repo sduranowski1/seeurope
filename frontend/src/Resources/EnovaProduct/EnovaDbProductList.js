@@ -8,7 +8,7 @@ import TableBody from "@mui/material/TableBody";
 import Paper from "@mui/material/Paper";
 import { styled } from '@mui/material/styles';
 import Checkbox from "@mui/material/Checkbox";
-import {Button, CircularProgress, InputAdornment} from "@mui/material";
+import {Button, CircularProgress, IconButton, InputAdornment} from "@mui/material";
 import Box from "@mui/material/Box";
 import ExportButton from "../../Components/AdminExportButton/ExportButton";
 import CustomTableHead from "../../Components/AdminTableHead/CustomTableHead";
@@ -17,6 +17,7 @@ import { fetchToken } from "../../utils/fetchToken";
 import { Link, useNavigate } from "react-router-dom";
 import {TextField} from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
+import SearchOffIcon from '@mui/icons-material/SearchOff';
 import debounce from 'lodash.debounce';
 
 
@@ -46,36 +47,36 @@ const EnovaDbProductList = () => {
     // Memoize the totalPages calculation to prevent unnecessary re-calculation
     const totalPages = useMemo(() => Math.ceil(totalItems / limit), [totalItems, limit]);
 
-    const fetchAdditionalData = async () => {
-        try {
-            const [brandsResponse, variantsResponse, categoriesResponse, subcategoriesResponse, itemTypesResponse] = await Promise.all([
-                fetch('https://se-europe-test.pl/api/brands'),
-                fetch('https://se-europe-test.pl/api/variants'),
-                fetch('https://se-europe-test.pl/api/categories'),
-                fetch('https://se-europe-test.pl/api/subcategories'),
-                fetch('https://se-europe-test.pl/api/item_types'),
-            ]);
-
-            if (!brandsResponse.ok || !variantsResponse.ok || !categoriesResponse.ok ) {
-                throw new Error('Failed to fetch additional data');
-            }
-
-            const brandsData = await brandsResponse.json();
-            const variantsData = await variantsResponse.json();
-            const categoriesData = await categoriesResponse.json();
-            const subcategoriesData = await subcategoriesResponse.json();
-            const itemTypesData = await itemTypesResponse.json();
-
-            setBrands(brandsData);
-            setVariants(variantsData);
-            setCategories(categoriesData);
-            setSubcategories(subcategoriesData);
-            setItemTypes(itemTypesData);
-        } catch (error) {
-            console.error('Error fetching brands, categories or variants:', error);
-            setError('Failed to load brands, categories or variants');
-        }
-    };
+    // const fetchAdditionalData = async () => {
+    //     try {
+    //         const [brandsResponse, variantsResponse, categoriesResponse, subcategoriesResponse, itemTypesResponse] = await Promise.all([
+    //             fetch('https://se-europe-test.pl/api/brands'),
+    //             fetch('https://se-europe-test.pl/api/variants'),
+    //             fetch('https://se-europe-test.pl/api/categories'),
+    //             fetch('https://se-europe-test.pl/api/subcategories'),
+    //             fetch('https://se-europe-test.pl/api/item_types'),
+    //         ]);
+    //
+    //         if (!brandsResponse.ok || !variantsResponse.ok || !categoriesResponse.ok ) {
+    //             throw new Error('Failed to fetch additional data');
+    //         }
+    //
+    //         const brandsData = await brandsResponse.json();
+    //         const variantsData = await variantsResponse.json();
+    //         const categoriesData = await categoriesResponse.json();
+    //         const subcategoriesData = await subcategoriesResponse.json();
+    //         const itemTypesData = await itemTypesResponse.json();
+    //
+    //         setBrands(brandsData);
+    //         setVariants(variantsData);
+    //         setCategories(categoriesData);
+    //         setSubcategories(subcategoriesData);
+    //         setItemTypes(itemTypesData);
+    //     } catch (error) {
+    //         console.error('Error fetching brands, categories or variants:', error);
+    //         setError('Failed to load brands, categories or variants');
+    //     }
+    // };
 
     // Function to fetch product data from both API endpoints
     const fetchProductData = useCallback(async () => {
@@ -117,13 +118,13 @@ const EnovaDbProductList = () => {
                 const replacement = product.features.find((value) => value.nazwa === 'Dimension');
                 const replacementParts = replacement ? replacement.wartosc : null;
 
-                const brandName = brands.find((brand) => brand.id === product.productInfo?.braid)?.name || 'N/A';
-                const variantName = variants.find((variant) => variant.id === product.productInfo?.varid)?.variantname || 'N/A';
-                const categoryName = categories.find((category) => category.id === product.productInfo?.catid)?.name || 'N/A';
-                const subcategoryName = subcategories.find((subcategory) => subcategory.id === product.productInfo?.scatid)?.subCatName || 'N/A';
-                const itemTypeName = itemTypes.find((itemType) => itemType.id === product.productInfo?.itypeid)?.name || 'N/A';
+                // const brandName = brands.find((brand) => brand.id === product.productInfo?.braid)?.name || 'N/A';
+                // const variantName = variants.find((variant) => variant.id === product.productInfo?.varid)?.variantname || 'N/A';
+                // const categoryName = categories.find((category) => category.id === product.productInfo?.catid)?.name || 'N/A';
+                // const subcategoryName = subcategories.find((subcategory) => subcategory.id === product.productInfo?.scatid)?.subCatName || 'N/A';
+                // const itemTypeName = itemTypes.find((itemType) => itemType.id === product.productInfo?.itypeid)?.name || 'N/A';
 
-                return { ...product, netto, procWzrostu, replacementParts,  brandName, variantName, categoryName, subcategoryName, itemTypeName };
+                return { ...product, netto, procWzrostu, replacementParts };
             });
 
             setProducts(productsData);
@@ -134,17 +135,17 @@ const EnovaDbProductList = () => {
         } finally {
             setLoading(false); // Set loading to false when done
         }
-    }, [currentPage, limit, searchName, searchCode, brands, variants, categories, subcategories, itemTypes]);
+    }, [currentPage, limit, searchName, searchCode]);
+
+    // useEffect(() => {
+    //     fetchAdditionalData();
+    // }, []); // Only fetch brands and variants once on mount
 
     useEffect(() => {
-        fetchAdditionalData();
-    }, []); // Only fetch brands and variants once on mount
-
-    useEffect(() => {
-        if (brands.length > 0 && variants.length > 0) {
+        // if (brands.length > 0 && variants.length > 0) {
             fetchProductData();
-        }
-    }, [brands, variants, searchQuery, currentPage, limit]); // Fetch product data after brands and variants are loaded
+        // }
+    }, [searchQuery, currentPage, limit]); // Fetch product data after brands and variants are loaded
 
     const handlePageChange = useCallback((page) => {
         if (page >= 1 && page <= totalPages && !loading) {
@@ -159,22 +160,32 @@ const EnovaDbProductList = () => {
     // Debounced function to handle the input change
 
 // debounced search
-    const handleSearchChange = useCallback(
-        debounce((value) => {
-            const [name, code] = value.split(' ');
-            setSearchName(name || '');
-            setSearchCode(code || '');
-        }, 300), // 500ms debounce delay
-        []
-    );
-
-    // On change handler for search input
-    const handleSearchQueryChange = (e) => {
-        const value = e.target.value;
-        setSearchQuery(value); // Update query immediately as user types
-        handleSearchChange(value); // Trigger the debounced function to perform the search
-        console.log(value)
+    // Handle search query changes for searchName
+    const handleSearchNameChange = (event) => {
+        setSearchName(event.target.value);
     };
+
+    // Handle search query changes for searchCode
+    const handleSearchCodeChange = (event) => {
+        setSearchCode(event.target.value);
+    };
+
+    // Clear both searchName and searchCode
+    const clearSearchFields = () => {
+        setSearchName('');
+        setSearchCode('');
+        // Delay fetchProductData to ensure state is updated first
+        setTimeout(() => {
+            fetchProductData(); // Refetch the data when clearing the fields
+        }, 0);
+    };
+
+    // Trigger fetch when either searchName or searchCode changes
+    useEffect(() => {
+        if (searchName || searchCode) {
+            fetchProductData(); // Fetch data on search query change
+        }
+    }, [searchName, searchCode, fetchProductData]);
 
     return (
         <div>
@@ -189,12 +200,32 @@ const EnovaDbProductList = () => {
                         ),
                     }}
                     size="small"
-                    placeholder="Search..."
+                    placeholder="Search by name..."
                     sx={{ width: '300px' }}
-                    value={searchQuery}
-                    onChange={handleSearchQueryChange} // Use the updated function
+                    value={searchName}
+                    onChange={handleSearchNameChange} // Use the updated function
 
                 />
+                <TextField
+                    variant="outlined"
+                    InputProps={{
+                        startAdornment: (
+                            <InputAdornment position="start">
+                                <SearchIcon />
+                            </InputAdornment>
+                        ),
+                    }}
+                    size="small"
+                    placeholder="Search by code..."
+                    sx={{ marginLeft: "15px", width: '300px' }}
+                    value={searchCode}
+                    onChange={handleSearchCodeChange} // Use the updated function
+
+                />
+                {/* Single Clear button for both searchName and searchCode */}
+                <IconButton onClick={clearSearchFields} size="small" sx={{ marginLeft: '8px' }}>
+                    <SearchOffIcon />
+                </IconButton>
                 <ExportButton />
             </Box>
 
@@ -229,7 +260,7 @@ const EnovaDbProductList = () => {
                                 <TableCell>Dimension</TableCell>
                                 <TableCell>Unit</TableCell>
                                 <TableCell>Quantity</TableCell>
-                                <TableCell align="right">Price (Netto)</TableCell>
+                                {/*<TableCell align="right">Price (Netto)</TableCell>*/}
                                 <TableCell>Brand</TableCell>
                                 <TableCell>Variant</TableCell>
                                 <TableCell>Category</TableCell>
@@ -258,11 +289,11 @@ const EnovaDbProductList = () => {
                                     <TableCell>{product.replacementParts}</TableCell>
                                     <TableCell>{product.unit}</TableCell>
                                     <TableCell>{product.quantity}</TableCell>
-                                    <TableCell align="right">{product.netto}</TableCell>
+                                    {/*<TableCell align="right">{product.netto}</TableCell>*/}
                                     <TableCell>
                                         {product.brandName !== 'N/A' ? (
                                             <Link to={`/admin/brands/${product.productInfo?.braid}`}>
-                                                {product.brandName}
+                                                {product.productInfo?.brand?.name}
                                             </Link>
                                         ) : (
                                             'N/A'
@@ -271,7 +302,7 @@ const EnovaDbProductList = () => {
                                     <TableCell>
                                         {product.variantName !== 'N/A' ? (
                                             <Link to={`/admin/variants/${product.productInfo?.varid}`}>
-                                                {product.variantName}
+                                                {product.productInfo?.variant?.variantname}
                                             </Link>
                                         ) : (
                                             'N/A'
@@ -280,7 +311,7 @@ const EnovaDbProductList = () => {
                                     <TableCell>
                                         {product.categoryName !== 'N/A' ? (
                                             <Link to={`/admin/categories/${product.productInfo?.catid}`}>
-                                                {product.categoryName}
+                                                {product.productInfo?.category?.name}
                                             </Link>
                                         ) : (
                                             'N/A'
@@ -289,7 +320,7 @@ const EnovaDbProductList = () => {
                                     <TableCell>
                                         {product.subcategoryName !== 'N/A' ? (
                                             <Link to={`/admin/subcategories/${product.productInfo?.scatid}`}>
-                                                {product.subcategoryName}
+                                                {product.productInfo?.subcategory?.subCatName}
                                             </Link>
                                         ) : (
                                             'N/A'
@@ -298,7 +329,7 @@ const EnovaDbProductList = () => {
                                     <TableCell>
                                         {product.itemTypeName !== 'N/A' ? (
                                             <Link to={`/admin/item_types/${product.productInfo?.itypeid}`}>
-                                                {product.itemTypeName}
+                                                {product.productInfo?.itemType?.name}
                                             </Link>
                                         ) : (
                                             'N/A'

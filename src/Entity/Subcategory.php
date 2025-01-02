@@ -34,6 +34,14 @@ class Subcategory
     #[Groups(['subcategory:read', 'subcategory:create', 'subcategory:update', 'itemType:read', 'itemType:create', 'itemType:update', "productInfo:read", 'enovaProduct:read'])]
     private ?string $subCatName = null;
 
+    #[ORM\Column(length: 50)]
+    #[Groups(['subcategory:read', 'subcategory:create', 'subcategory:update', 'itemType:read', 'itemType:create', 'itemType:update', "productInfo:read", 'enovaProduct:read'])]
+    private ?string $polishSubCatName = null;
+
+    #[ORM\Column(length: 50)]
+    #[Groups(['subcategory:read', 'subcategory:create', 'subcategory:update', 'itemType:read', 'itemType:create', 'itemType:update', "productInfo:read", 'enovaProduct:read'])]
+    private ?string $germanSubCatName = null;
+
     #[ORM\Column(nullable: true)]
     #[Groups(['subcategory:read', 'subcategory:create'])]
     private ?int $cid = null;
@@ -93,6 +101,28 @@ class Subcategory
 
         return $this;
     }
+
+    public function getPolishSubCatName(): ?string
+    {
+        return $this->polishSubCatName;
+    }
+
+    public function setPolishSubCatName(?string $polishSubCatName): void
+    {
+        $this->polishSubCatName = $polishSubCatName;
+    }
+
+    public function getGermanSubCatName(): ?string
+    {
+        return $this->germanSubCatName;
+    }
+
+    public function setGermanSubCatName(?string $germanSubCatName): void
+    {
+        $this->germanSubCatName = $germanSubCatName;
+    }
+
+
 
     public function getCid(): ?int
     {

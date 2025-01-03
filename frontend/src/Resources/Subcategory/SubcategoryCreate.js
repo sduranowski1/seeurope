@@ -16,6 +16,8 @@ const SubcategoryCreate = (props) => (
     <Create {...props}>
         <SimpleForm>
             <TextInput source="subCatName" />
+            <TextInput source="polishSubCatName" />
+            <TextInput source="germanSubCatName" />
             <ReferenceInput source="cid" reference="categories">
                 <SelectInput optionText="name" />
             </ReferenceInput>

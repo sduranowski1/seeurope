@@ -49,7 +49,7 @@ class Category
 
     #[ORM\Column(type: "string")]
     #[Groups(['category:read', 'category:create', 'category:update'])]
-    private string $imagePath;
+    private string $imagePath = 'landscape-placeholder.svg';
 
     #[ORM\Column(type: "string")]
     #[Groups(['category:read', 'category:create', 'category:update'])]

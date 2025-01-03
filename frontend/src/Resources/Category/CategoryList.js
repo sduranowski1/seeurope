@@ -6,6 +6,8 @@ const CategoryList = () => (
         <Datagrid>
             <TextField source="id" />
             <TextField source="name" />
+            <TextField source="polishName" />
+            <TextField source="germanName" />
             <TextField source="createdAt" />
             <TextField source="updatedAt" />
         </Datagrid>

@@ -16,6 +16,8 @@ const CategoryCreate = (props) => (
   <Create {...props}>
     <SimpleForm>
       <TextInput source="name" />
+      <TextInput source="polishName" />
+      <TextInput source="germanName" />
       {/*<ReferenceInput source="bid" reference="brands">*/}
       {/*  <SelectInput optionText="name" />*/}
       {/*</ReferenceInput>*/}

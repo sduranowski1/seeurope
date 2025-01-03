@@ -1,7 +1,7 @@
 // src/BookList.js
 
 import * as React from 'react';
-import {List, Datagrid, TextField, ReferenceField} from 'react-admin';
+import {List, Datagrid, TextField, ReferenceField, TextInput} from 'react-admin';
 import customDataProvider from '../../dataProvider';
 
 // const BookList = (props) => (
@@ -20,6 +20,8 @@ const SubcategoryList = () => (
     <Datagrid>
       <TextField source="id" />
       <TextField source="subCatName" />
+        <TextField source="polishSubCatName" />
+        <TextField source="germanSubCatName" />
       <ReferenceField reference="categories" source="cid" label="Category" >
         <TextField source="name" />
       </ReferenceField>

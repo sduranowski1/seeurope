@@ -18,6 +18,8 @@ const ItemTypeEdit = (props) => (
     <Edit {...props}>
         <SimpleForm>
           <TextInput source="name" />
+            <TextInput source="polishName" />
+            <TextInput source="germanName" />
             <ReferenceInput reference="subcategories" source="scid">
                 <SelectInput
                     label="Subcategory"

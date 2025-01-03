@@ -32,25 +32,7 @@ const dataProvider = {
       data: json,
     }));
   },
-  // update: (resource, params) => {
-  //   console.log('Updating user with data:', params.data);
-  //
-  //   const url = `${apiUrl}/${resource}/${params.id}`;
-  //   const options = {
-  //     method: 'PUT',
-  //     body: JSON.stringify(params.data),
-  //     headers: new Headers({
-  //       'Content-Type': 'application/json',
-  //     }),
-  //   };
-  //
-  //   return httpClient(url, options).then(({ json }) => ({
-  //     data: json,
-  //   })).catch(error => {
-  //     console.error('Update error', error);
-  //     throw error;
-  //   });
-  // },
+
     update: async (resource, params) => {
         try {
             // Simplified logic for "users" resource
@@ -132,6 +114,8 @@ const dataProvider = {
                     : resource === "subcategories"
                         ? {
                             subCatName: nameField, // Include `subCatName` for `subcategories`
+                            polishSubCatName: data.polishSubCatName, // Include `subCatName` for `subcategories`
+                            germanSubCatName: data.germanSubCatName, // Include `subCatName` for `subcategories`
                             category: {
                                 id: data.cid // Include `cid` only for `categories`
                             }
@@ -139,15 +123,26 @@ const dataProvider = {
                     : resource === "item_types"
                         ? {
                             name: nameField, // Include `subCatName` for `subcategories`
+                            polishName: data.polishName, // Include `subCatName` for `subcategories`
+                            germanName: data.germanName, // Include `subCatName` for `subcategories`
                             subcategory: {
                                 id: data.scid // Include `cid` only for `categories`
+                            }
+                        }
+                    : resource === "categories"
+                        ? {
+                            name: nameField, // Include `subCatName` for `subcategories`
+                            polishName: data.polishName, // Include `subCatName` for `subcategories`
+                            germanName: data.germanName, // Include `subCatName` for `subcategories`
+                            category: {
+                                id: data.cid // Include `cid` only for `categories`
                             }
                         }
                     : {
                         name: nameField
                     }),
-                imagePath: data.imagePath,
-                domainImagePath: `${domainUrl}/media/${resource}/${data.imagePath}`, // Full URL with domain
+                imagePath: data.imagePath || "landscape-placeholder.svg", // Fallback for `imagePath`
+                domainImagePath: `${domainUrl}/media/${resource}/${data.imagePath || "landscape-placeholder.svg"}`, // Full UR
                 // Add any other fields required by the resource
             };
 

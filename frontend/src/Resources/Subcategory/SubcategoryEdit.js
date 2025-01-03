@@ -17,6 +17,8 @@ const SubcategoryEdit = (props) => (
     <Edit {...props}>
         <SimpleForm>
             <TextInput source="subCatName" />
+            <TextInput source="polishSubCatName" />
+            <TextInput source="germanSubCatName" />
             <ReferenceInput reference="categories" source="cid">
                 <SelectInput
                     label="Category"

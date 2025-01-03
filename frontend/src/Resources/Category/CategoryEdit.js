@@ -8,6 +8,8 @@ const CategoryEdit = (props) => (
     <Edit {...props}>
         <SimpleForm>
           <TextInput source="name" />
+            <TextInput source="polishName" />
+            <TextInput source="germanName" />
             <ImageInput source="pictures" label="Related pictures">
                 <ImageField source="domainImagePath"/>
             </ImageInput>

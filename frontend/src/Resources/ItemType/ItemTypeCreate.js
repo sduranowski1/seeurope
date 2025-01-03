@@ -16,6 +16,8 @@ const ItemTypeCreate = (props) => (
   <Create {...props}>
     <SimpleForm>
       <TextInput source="name" />
+        <TextInput source="polishName" />
+        <TextInput source="germanName" />
       <ReferenceInput source="scid" reference="subcategories">
         <SelectInput optionText="subCatName" />
       </ReferenceInput>

@@ -49,18 +49,18 @@ class Category
 
     #[ORM\Column(type: "string")]
     #[Groups(['category:read', 'category:create', 'category:update'])]
-    private string $imagePath;
+    private ?string $imagePath = null;
 
     #[ORM\Column(type: "string")]
     #[Groups(['category:read', 'category:create', 'category:update'])]
     private string $domainImagePath;
 
-    public function getImagePath(): string
+    public function getImagePath(): ?string
     {
         return $this->imagePath;
     }
 
-    public function setImagePath(string $imagePath): void
+    public function setImagePath(?string $imagePath): void
     {
         $this->imagePath = $imagePath;
     }

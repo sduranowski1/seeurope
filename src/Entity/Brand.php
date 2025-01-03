@@ -49,18 +49,18 @@ class Brand
 
     #[ORM\Column(type: "string")]
     #[Groups(['brand:read', 'brand:create', 'brand:update'])]
-    private string $imagePath;
+    private ?string $imagePath = null;
 
     #[ORM\Column(type: "string")]
     #[Groups(['brand:read', 'brand:create', 'brand:update'])]
     private string $domainImagePath;
 
-    public function getImagePath(): string
+    public function getImagePath(): ?string
     {
         return $this->imagePath;
     }
 
-    public function setImagePath(string $imagePath): void
+    public function setImagePath(?string $imagePath): void
     {
         $this->imagePath = $imagePath;
     }

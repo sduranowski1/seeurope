@@ -58,7 +58,7 @@ class ItemType
 
     #[ORM\Column(type: "string")]
     #[Groups(['itemType:read', 'itemType:create', 'itemType:update'])]
-    private string $imagePath;
+    private string $imagePath = 'landscape-placeholder.svg';
 
     #[ORM\Column(type: "string")]
     #[Groups(['itemType:read', 'itemType:create', 'itemType:update'])]

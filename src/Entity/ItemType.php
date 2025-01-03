@@ -58,18 +58,18 @@ class ItemType
 
     #[ORM\Column(type: "string")]
     #[Groups(['itemType:read', 'itemType:create', 'itemType:update'])]
-    private string $imagePath = 'landscape-placeholder.svg';
+    private ?string $imagePath = null;
 
     #[ORM\Column(type: "string")]
     #[Groups(['itemType:read', 'itemType:create', 'itemType:update'])]
     private string $domainImagePath;
 
-    public function getImagePath(): string
+    public function getImagePath(): ?string
     {
         return $this->imagePath;
     }
 
-    public function setImagePath(string $imagePath): void
+    public function setImagePath(?string $imagePath): void
     {
         $this->imagePath = $imagePath;
     }

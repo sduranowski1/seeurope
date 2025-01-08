@@ -2,8 +2,19 @@
 
 namespace App\Entity\Enova;
 
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 
+#[ApiResource(
+//    normalizationContext: ['groups' => ['enovaPerson:read']],
+//    denormalizationContext: ['groups' => ['enovaPerson:create']]
+
+)]
+#[ApiFilter(SearchFilter::class, properties: [
+    'imie' => 'partial',
+    'nazwisko' => 'partial'])]
 #[ORM\Entity]
 class EnovaPerson
 {

@@ -2,10 +2,20 @@
 
 namespace App\Entity\Enova;
 
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+#[ApiResource(
+//    normalizationContext: ['groups' => ['enovaProduct:read']],
+//    denormalizationContext: ['groups' => ['enovaProduct:create']]
+
+)]
+#[ApiFilter(SearchFilter::class, properties: [
+    'nazwa' => 'partial'])]
 #[ORM\Entity]
 class EnovaContractor
 {

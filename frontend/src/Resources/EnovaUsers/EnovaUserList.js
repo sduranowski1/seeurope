@@ -23,6 +23,8 @@ const EnovaUserList = () => {
   const [limit, setLimit] = useState(10); // Number of items per page
   const [debounceTimeout, setDebounceTimeout] = useState(null);
   const navigate = useNavigate();
+  const [searchImie, setSearchImie] = useState('');
+  // const [searchNazwisko, setSearchNazwisko] = useState('');
 
   // Fetch data with API call
   const fetchProductData = useCallback(async () => {
@@ -32,6 +34,8 @@ const EnovaUserList = () => {
       const queryParams = new URLSearchParams({
         strona: currentPage,
         limit: limit,
+        imie: searchImie,
+        // nazwisko: searchNazwisko,
       });
 
       // Fetch the second set of data (products) using query parameters
@@ -52,32 +56,32 @@ const EnovaUserList = () => {
 
       const productsData = data2["hydra:member"];
 
-      // Flatten the data to include people with contrahent name
-      const flattenedData = productsData.flatMap((contrahent) =>
-          (contrahent.listaOsobyKontrahenta || []).map((person) => ({
-            contrahentName: contrahent.nazwa,
-            contrahentId: contrahent.idEnova,
-            ...person,
-          }))
-      );
+      // // Flatten the data to include people with contrahent name
+      // const flattenedData = productsData.flatMap((contrahent) =>
+      //     (contrahent.listaOsobyKontrahenta || []).map((person) => ({
+      //       contrahentName: contrahent.nazwa,
+      //       contrahentId: contrahent.idEnova,
+      //       ...person,
+      //     }))
+      // );
 
       // Extract the relevant product data
-      setPeople(flattenedData);
+      setPeople(productsData);
       setTotalItems(data2["hydra:totalItems"]);
     } catch (error) {
       setError(error.message);
     } finally {
       setLoading(false); // Set loading to false when done
     }
-  }, [currentPage, limit]);
+  }, [currentPage, limit, searchImie]);
 
 
   useEffect(() => {
     if (debounceTimeout) clearTimeout(debounceTimeout);
-    const timeout = setTimeout(() => fetchProductData(), 500); // Debounce delay
+    const timeout = setTimeout(() => fetchProductData(), 500);
     setDebounceTimeout(timeout);
     return () => clearTimeout(timeout);
-  }, [fetchProductData, currentPage, limit]);
+  }, [fetchProductData, currentPage, limit, searchImie]);
 
   const totalPages = Math.ceil(totalItems / limit);
 
@@ -85,13 +89,17 @@ const EnovaUserList = () => {
     if (page >= 1 && page <= totalPages && !loading) setCurrentPage(page);
   };
 
-  const handleSearch = useCallback((query) => {
-    const filteredPeople = people.filter(person =>
-        person.imie.toLowerCase().includes(query.toLowerCase()) ||
-        person.nazwisko.toLowerCase().includes(query.toLowerCase())
-    );
-    setPeople(filteredPeople);
-  }, [people]);
+  console.log(people)
+  // const handleSearch = useCallback((query) => {
+  //   const filteredPeople = people.filter(person =>
+  //       person.imie.toLowerCase().includes(query.toLowerCase()) ||
+  //       person.nazwisko.toLowerCase().includes(query.toLowerCase())
+  //   );
+  //   setPeople(filteredPeople);
+  // }, [people]);
+  const handleSearchNameChange = (event) => {
+    setSearchImie(event.target.value);
+  };
 
   return (
       <div>
@@ -99,9 +107,10 @@ const EnovaUserList = () => {
           <TextField
               variant="outlined"
               size="small"
-              placeholder="Search..."
+              placeholder="Search by name..."
               sx={{ width: '300px' }}
-              onChange={(e) => handleSearch(e.target.value)}
+              onChange={handleSearchNameChange} // Debounce in useEffect
+
           />
           <ExportButton />
         </Box>
@@ -127,10 +136,10 @@ const EnovaUserList = () => {
                 <TableHead>
                   <TableRow>
                     <TableCell>User ID</TableCell>
-                    {/*<TableCell>Contrahent ID</TableCell>*/}
+                    <TableCell>Contractor ID</TableCell>
                     <TableCell>Person Name</TableCell>
-                    {/*<TableCell>Person Last Name</TableCell>*/}
-                    {/*<TableCell>Contrahent Name</TableCell>*/}
+                    <TableCell>Person Last Name</TableCell>
+                    <TableCell>Contractor Name</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -141,10 +150,10 @@ const EnovaUserList = () => {
                           sx={{ cursor: 'pointer', '&:hover': { backgroundColor: '#f0f0f0' }}}
                       >
                         <TableCell>{person.id}</TableCell>
-                        {/*<TableCell>{person.contrahentId}</TableCell>*/}
+                        <TableCell>{person.contractor?.idEnova}</TableCell>
                         <TableCell>{person.imie}</TableCell>
-                        {/*<TableCell>{person.nazwisko}</TableCell>*/}
-                        {/*<TableCell>{person.contrahentName}</TableCell>*/}
+                        <TableCell>{person.nazwisko}</TableCell>
+                        <TableCell>{person.contractor?.nazwa}</TableCell>
                       </TableRow>
                   ))}
                 </TableBody>

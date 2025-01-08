@@ -88,6 +88,7 @@ class EnovaContractorsController extends AbstractController
                 foreach ($contractor['listaOsobyKontrahenta'] as $personData) {
                     $person = new EnovaPerson();
                     $person->setImie($personData['imie']);
+                    $person->setNazwisko($personData['nazwisko']);
                     $person->setId($personData['id']); // Use id for person
                     $newContractor->addListaOsobyKontrahenta($person);
                 }
@@ -105,11 +106,13 @@ class EnovaContractorsController extends AbstractController
                         // Create a new person if not found
                         $person = new EnovaPerson();
                         $person->setImie($personData['imie']);
+                        $person->setNazwisko($personData['nazwisko']);
                         $person->setId($personData['id']); // Use id for person
                         $existingContractor->addListaOsobyKontrahenta($person);
                     } else {
                         // Update the existing person
                         $person->setImie($personData['imie']);
+                        $person->setImie($personData['nazwisko']);
                     }
                 }
 

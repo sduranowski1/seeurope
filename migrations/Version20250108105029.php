@@ -60,7 +60,7 @@ final class Version20250108105029 extends AbstractMigration
         $this->addSql('ALTER TABLE variant ADD CONSTRAINT FK_F143BFAD4AF2B3F3 FOREIGN KEY (bid) REFERENCES brand (id)');
         $this->addSql('ALTER TABLE variant ADD CONSTRAINT FK_F143BFAD3DA5256D FOREIGN KEY (image_id) REFERENCES variants_media_object (id)');
     }
-
+ 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs

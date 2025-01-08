@@ -6,7 +6,7 @@ import germany from '../../assets/icons/germany.png';
 import england from '../../assets/icons/england.png';
 import {Link} from "react-router-dom";
 import HomePage from "../../Pages/HomePage/HomePage";
-import {useContext, useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {Context} from "../../App";
 import {ThreePoint} from "../../Pages/ThreePoint/ThreePoint";
 import {Excavator} from "../../Pages/Excavator/Excavator";
@@ -33,6 +33,7 @@ import {useTranslation} from "react-i18next";
 import {useTranslationContext} from "../../TranslationContext";
 import dataProvider from "../../dataProvider";
 import {useProducts} from "../../ProductProvider";
+import i18n from "i18next";
 
 export const NavbarComponent = (props) => {
     const [toggleSidebar, setToggleSidebar] = useContext(Context);
@@ -64,7 +65,7 @@ export const NavbarComponent = (props) => {
         {linkName: 'Znajdź pośrednika', url: '/o-nas/znajdz-posrednika'},
     ];
 
-    const { t, changeLanguage } = useTranslationContext();
+    const { t, changeLanguage, language } = useTranslationContext();
 
 
 
@@ -174,7 +175,13 @@ export const NavbarComponent = (props) => {
                 <li key={category.id} className={`nav__submenu-item 'nav__submenu-item--list' : ''}`}>
                     <Link
                         to={`/my-machine/${categorySlug}`}>
-                        {category.name}
+                        {i18n.language === 'en' ? (
+                            category.name
+                        ) : i18n.language === 'pl' ? (
+                            category.polishName
+                        ) : (
+                            category.germanName
+                        )}
                     </Link>
                 </li>
             );

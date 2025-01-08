@@ -6,6 +6,7 @@ import {ProductDetailsMissingVariants} from "../Product/ProductDetailsMissingVar
 import {CircularProgress} from "@mui/material";
 import Box from "@mui/material/Box";
 import {SubcategoryProducts} from "../Product/SubcategoryProducts";
+import i18n from "i18next";
 
 export const Subcategory = () => {
     const [products, setProducts] = useState([]);
@@ -14,6 +15,7 @@ export const Subcategory = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const [isLoadingContent, setIsLoadingContent] = useState(true); // State to track loading
+    const [language, setLanguage] = useState(i18n.language); // Track current language
 
 
     // Function to convert string to a URL-safe slug
@@ -47,6 +49,9 @@ export const Subcategory = () => {
                         name: item.name,
                         imgUrl: item.domainImagePath, // Images not handled yet
                         slug: slugify(item.name),
+                        subcategoryTitle: item.subcategory.subCatName,
+                        subcategoryTitlePl: item.subcategory.polishSubCatName,
+                        subcategoryTitleDe: item.subcategory.germanSubCatName,
                     }));
 
                 setProducts(filteredData);
@@ -60,6 +65,18 @@ export const Subcategory = () => {
         fetchProducts();
     }, [currentSlug]); // Refetch when currentSlug changes
 
+    // Handle language change
+    useEffect(() => {
+        const handleLanguageChange = () => {
+            setLanguage(i18n.language); // Update state when language changes
+        };
+
+        i18n.on('languageChanged', handleLanguageChange); // Listen for language changes
+
+        return () => {
+            i18n.off('languageChanged', handleLanguageChange); // Clean up listener
+        };
+    }, []); // Only run once when component mounts
 
     const handleClick = (slug) => {
         navigate(`/${slug}`);
@@ -75,6 +92,7 @@ export const Subcategory = () => {
         : null;
 
     console.log(lastPartOfSlug)
+    // console.log(products[0].subcategoryTitle)
 
     if (isLoading) {
         return (
@@ -114,7 +132,14 @@ export const Subcategory = () => {
                 <section className={'section-contrains tables-page'}>
                     <div className={'heading-container'}>
                         <h1 className={'page-title'}>
-                            {pathParts[pathParts.length - 1]}
+                            {/*{pathParts[pathParts.length - 1]}*/}
+                            {i18n.language === 'en' ? (
+                                products[0].subcategoryTitle
+                            ) : i18n.language === 'pl' ? (
+                                products[0].subcategoryTitlePl
+                            ) : (
+                                products[0].subcategoryTitleDe
+                            )}
                         </h1>
                         <p className={'paragraph paragraph--medium'}>
                             Tutaj znajdziesz pełną standardową gamę sprzętu SE Equipment do wózków widłowych.

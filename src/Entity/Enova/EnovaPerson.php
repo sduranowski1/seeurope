@@ -1,0 +1,67 @@
+<?php
+
+namespace App\Entity\Enova;
+
+use Doctrine\ORM\Mapping as ORM;
+
+#[ORM\Entity]
+class EnovaPerson
+{
+    #[ORM\Id]
+//    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    private ?int $id = null;
+
+    #[ORM\Column(type: 'string')]
+    private ?string $imie = null;
+
+    #[ORM\Column(type: 'string')]
+    private ?string $nazwisko = null;
+
+    #[ORM\ManyToOne(targetEntity: EnovaContractor::class, inversedBy: 'listaOsobyKontrahenta')]
+    #[ORM\JoinColumn(referencedColumnName: 'id_enova', nullable: false)]
+    private ?EnovaContractor $contractor = null;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function setId(?int $id): void
+    {
+        $this->id = $id;
+    }
+
+
+
+    public function getImie(): ?string
+    {
+        return $this->imie;
+    }
+
+    public function setImie(?string $imie): void
+    {
+        $this->imie = $imie;
+    }
+
+    public function getNazwisko(): ?string
+    {
+        return $this->nazwisko;
+    }
+
+    public function setNazwisko(?string $nazwisko): void
+    {
+        $this->nazwisko = $nazwisko;
+    }
+
+    public function getContractor(): ?EnovaContractor
+    {
+        return $this->contractor;
+    }
+
+    public function setContractor(?EnovaContractor $contractor): self
+    {
+        $this->contractor = $contractor;
+        return $this;
+    }
+}

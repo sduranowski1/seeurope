@@ -6,18 +6,11 @@ import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import TableBody from "@mui/material/TableBody";
 import Paper from "@mui/material/Paper";
-import { styled } from '@mui/material/styles';
-import Checkbox from "@mui/material/Checkbox";
-import { Button, CircularProgress } from "@mui/material";
-import Box from "@mui/material/Box";
+import { Box, Button, CircularProgress } from "@mui/material";
 import ExportButton from "../../Components/AdminExportButton/ExportButton";
-import CustomTableHead from "../../Components/AdminTableHead/CustomTableHead";
-import CustomCheckbox from "../../Components/AdminCheckbox/CustomCheckbox";
-
 
 const EnovaContractorList = () => {
   const [products, setProducts] = useState([]);
-  const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -27,54 +20,31 @@ const EnovaContractorList = () => {
   // Debounce timeout variable
   const [debounceTimeout, setDebounceTimeout] = useState(null);
 
-  // Function to fetch product data from both API endpoints
+  // Function to fetch product data from the API
   const fetchProductData = useCallback(async () => {
     setLoading(true); // Set loading true at the start of the request
     try {
-      // Fetch the token first
-      const response1 = await fetch('https://se-europe-test.pl/api/fetch-enova-token', {
+      // Construct the URL with query parameters for pagination
+      const url = `https://se-europe-test.pl/api/enova_contractors?strona=${currentPage}&limit=${limit}`;
+
+      const response = await fetch(url, {
         method: 'GET',
         headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
+          'Content-Type': 'application/ld+json',
+          'Accept': 'application/ld+json',
         },
       });
 
-      if (!response1.ok) {
-        throw new Error(`Error in first request: ${response1.statusText}`);
+      if (!response.ok) {
+        throw new Error(`Error fetching contractors: ${response.statusText}`);
       }
 
-      const data1 = await response1.json();
-      console.log('First response:', data1);
+      const data = await response.json();
+      console.log('Fetched contractors:', data);
 
-      // Store the token (or other required data from the first response)
-      setToken(data1.token); // Adjust as needed based on response structure
-
-      // Fetch the second set of data (products)
-      const response2 = await fetch('https://se-europe-test.pl/api/PanelWWW_API/DajKontrahentow', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
-        body: JSON.stringify({
-          strona: currentPage,
-          limit: limit,
-        }),
-      });
-
-      if (!response2.ok) {
-        throw new Error(`Error in second request: ${response2.statusText}`);
-      }
-
-      const data2 = await response2.json();
-      console.log('Second response:', data2);
-
-      // Extract the relevant product data
-      const productsData = data2.elementy || []; // Fallback to an empty array if `elementy` is null or undefined
-
-      setProducts(productsData);
-      setTotalItems(data2.liczbaWszystkich); // Use 'liczbaWszystkich' for total items
+      // Extract relevant data
+      setProducts(data["hydra:member"]);
+      setTotalItems(data["hydra:totalItems"]);
     } catch (error) {
       setError(error.message);
     } finally {
@@ -84,7 +54,6 @@ const EnovaContractorList = () => {
 
   // Call fetchProductData when the component mounts or when the page changes
   useEffect(() => {
-    // Clear any existing debounce timeout to prevent multiple requests
     if (debounceTimeout) {
       clearTimeout(debounceTimeout);
     }
@@ -137,23 +106,15 @@ const EnovaContractorList = () => {
               <Table>
                 <TableHead>
                   <TableRow>
-                    {/*<TableCell padding="checkbox">*/}
-                    {/*  <CustomCheckbox inputProps={{ 'aria-label': 'select all' }} />*/}
-                    {/*</TableCell>*/}
                     <TableCell>Id</TableCell>
                     <TableCell>Contrahent Name</TableCell>
-                    {/*<TableCell align="right">Price (Netto)</TableCell>*/}
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {products.map((product, index) => (
                       <TableRow key={index}>
-                        {/*<TableCell padding="checkbox">*/}
-                        {/*  <CustomCheckbox />*/}
-                        {/*</TableCell>*/}
                         <TableCell>{product.idEnova}</TableCell>
                         <TableCell>{product.nazwa}</TableCell>
-                        {/*<TableCell align="right">{product.netto}</TableCell>*/}
                       </TableRow>
                   ))}
                 </TableBody>

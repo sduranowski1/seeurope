@@ -6,10 +6,11 @@ use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ApiResource(
-//    normalizationContext: ['groups' => ['enovaPerson:read']],
-//    denormalizationContext: ['groups' => ['enovaPerson:create']]
+    normalizationContext: ['groups' => ['enovaPerson:read']],
+    denormalizationContext: ['groups' => ['enovaPerson:create']]
 
 )]
 #[ApiFilter(SearchFilter::class, properties: [
@@ -21,16 +22,20 @@ class EnovaPerson
     #[ORM\Id]
 //    #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(['enovaPerson:read'])]
     private ?int $id = null;
 
     #[ORM\Column(type: 'string')]
+    #[Groups(['enovaPerson:read', 'enovaPerson:create', 'enovaPerson:update'])]
     private ?string $imie = null;
 
     #[ORM\Column(type: 'string')]
+    #[Groups(['enovaPerson:read', 'enovaPerson:create', 'enovaPerson:update'])]
     private ?string $nazwisko = null;
 
     #[ORM\ManyToOne(targetEntity: EnovaContractor::class, inversedBy: 'listaOsobyKontrahenta')]
     #[ORM\JoinColumn(referencedColumnName: 'id_enova', nullable: false)]
+    #[Groups(['enovaPerson:read', 'enovaPerson:create'])]
     private ?EnovaContractor $contractor = null;
 
     public function getId(): ?int

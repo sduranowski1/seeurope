@@ -8,6 +8,7 @@ use ApiPlatform\Metadata\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ApiResource(
 //    normalizationContext: ['groups' => ['enovaProduct:read']],
@@ -21,9 +22,11 @@ class EnovaContractor
 {
     #[ORM\Id]
     #[ORM\Column(name: 'id_enova', type: 'integer', unique: true)]
+    #[Groups(["enovaContractor:read", 'enovaPerson:read'])]
     private ?int $idEnova = null;
 
     #[ORM\Column(type: 'string')]
+    #[Groups(['enovaContractor:read', 'enovaContractor:create', 'enovaContractor:update', 'enovaPerson:read', 'enovaPerson:create', 'enovaPerson:update'])]
     private ?string $nazwa = null;
 
     #[ORM\OneToMany(mappedBy: 'contractor', targetEntity: EnovaPerson::class, cascade: ['persist', 'remove'])]

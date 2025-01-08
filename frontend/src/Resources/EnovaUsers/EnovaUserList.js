@@ -11,59 +11,36 @@ import Checkbox from "@mui/material/Checkbox";
 import { Button, CircularProgress } from "@mui/material";
 import Box from "@mui/material/Box";
 import ExportButton from "../../Components/AdminExportButton/ExportButton";
-import CustomTableHead from "../../Components/AdminTableHead/CustomTableHead";
-import CustomCheckbox from "../../Components/AdminCheckbox/CustomCheckbox";
-import {useNavigate} from "react-router-dom";
-import {TextField} from "@mui/material";
-
+import { useNavigate } from "react-router-dom";
+import { TextField } from "@mui/material";
 
 const EnovaUserList = () => {
   const [people, setPeople] = useState([]);
-  const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalItems, setTotalItems] = useState(0);
   const [limit, setLimit] = useState(10); // Number of items per page
+  const [debounceTimeout, setDebounceTimeout] = useState(null);
   const navigate = useNavigate();
 
-  // Debounce timeout variable
-  const [debounceTimeout, setDebounceTimeout] = useState(null);
-
-  // Function to fetch product data from both API endpoints
+  // Fetch data with API call
   const fetchProductData = useCallback(async () => {
     setLoading(true); // Set loading true at the start of the request
     try {
-      // Fetch the token first
-      const response1 = await fetch('https://se-europe-test.pl/api/fetch-enova-token', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
+      // Construct the query string with current page and limit
+      const queryParams = new URLSearchParams({
+        strona: currentPage,
+        limit: limit,
       });
 
-      if (!response1.ok) {
-        throw new Error(`Error in first request: ${response1.statusText}`);
-      }
-
-      const data1 = await response1.json();
-      console.log('First response:', data1);
-
-      // Store the token (or other required data from the first response)
-      setToken(data1.token); // Adjust as needed based on response structure
-
-      // Fetch the second set of data (products)
-      const response2 = await fetch('https://se-europe-test.pl/api/PanelWWW_API/DajLudziKontrahentow', {
-        method: 'POST',
+      // Fetch the second set of data (products) using query parameters
+      const response2 = await fetch(`https://se-europe-test.pl/api/enova_people?${queryParams}`, {
+        method: 'GET',
         headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
+          'Content-Type': 'application/ld+json',
+          'Accept': 'application/ld+json',
         },
-        body: JSON.stringify({
-          strona: currentPage,
-          limit: limit,
-        }),
       });
 
       if (!response2.ok) {
@@ -73,7 +50,7 @@ const EnovaUserList = () => {
       const data2 = await response2.json();
       console.log('Second response:', data2);
 
-      const productsData = data2.elementy || [];
+      const productsData = data2["hydra:member"];
 
       // Flatten the data to include people with contrahent name
       const flattenedData = productsData.flatMap((contrahent) =>
@@ -86,8 +63,7 @@ const EnovaUserList = () => {
 
       // Extract the relevant product data
       setPeople(flattenedData);
-
-      setTotalItems(data2.liczbaWszystkich || 0);
+      setTotalItems(data2["hydra:totalItems"]);
     } catch (error) {
       setError(error.message);
     } finally {
@@ -95,41 +71,27 @@ const EnovaUserList = () => {
     }
   }, [currentPage, limit]);
 
-  // Call fetchProductData when the component mounts or when the page changes
+
   useEffect(() => {
-    // Clear any existing debounce timeout to prevent multiple requests
-    if (debounceTimeout) {
-      clearTimeout(debounceTimeout);
-    }
-
-    // Set a new debounce timeout
-    const timeout = setTimeout(() => {
-      fetchProductData();
-    }, 500); // 500ms debounce delay
-
+    if (debounceTimeout) clearTimeout(debounceTimeout);
+    const timeout = setTimeout(() => fetchProductData(), 500); // Debounce delay
     setDebounceTimeout(timeout);
-
-    return () => {
-      clearTimeout(timeout); // Clean up on component unmount or dependency change
-    };
+    return () => clearTimeout(timeout);
   }, [fetchProductData, currentPage, limit]);
 
   const totalPages = Math.ceil(totalItems / limit);
 
   const handlePageChange = (page) => {
-    if (page >= 1 && page <= totalPages && !loading) {
-      setCurrentPage(page);
-    }
+    if (page >= 1 && page <= totalPages && !loading) setCurrentPage(page);
   };
 
-  const handleRowClick = useCallback((userId) => {
-    navigate(`/admin/enova-users/${userId}`);
-  }, [navigate]);
-
-  const handleSearch = (query) => {
-    console.log('Search query:', query);
-    // Add logic to filter data or trigger a search API call
-  };
+  const handleSearch = useCallback((query) => {
+    const filteredPeople = people.filter(person =>
+        person.imie.toLowerCase().includes(query.toLowerCase()) ||
+        person.nazwisko.toLowerCase().includes(query.toLowerCase())
+    );
+    setPeople(filteredPeople);
+  }, [people]);
 
   return (
       <div>
@@ -140,58 +102,49 @@ const EnovaUserList = () => {
               placeholder="Search..."
               sx={{ width: '300px' }}
               onChange={(e) => handleSearch(e.target.value)}
-           />
+          />
           <ExportButton />
         </Box>
 
-
-
-
         <TableContainer component={Paper} sx={{ height: 583, position: 'relative' }}>
-          {/* Add a fixed height to ensure space is reserved for the spinner */}
           {loading && (
-              <Box
-                  display="flex"
-                  justifyContent="center"
-                  alignItems="center"
-                  height="100%"
-                  position="absolute"
-                  top={0}
-                  left={0}
-                  right={0}
-                  bottom={0}
-                  bgcolor="rgba(255, 255, 255, 0.7)" // Slight overlay to make spinner visible
-              >
+              <Box display="flex" justifyContent="center" alignItems="center" height="100%" position="absolute" top={0} left={0} right={0} bottom={0} bgcolor="rgba(255, 255, 255, 0.7)">
                 <CircularProgress />
               </Box>
           )}
-          {!loading && !error && (
+          {error && (
+              <Box sx={{ color: 'red', textAlign: 'center', marginBottom: 2 }}>
+                Error: {error}
+              </Box>
+          )}
+          {!loading && !error && people.length === 0 && (
+              <Box sx={{ textAlign: 'center', marginTop: 3 }}>
+                No records found.
+              </Box>
+          )}
+          {!loading && !error && people.length > 0 && (
               <Table>
                 <TableHead>
                   <TableRow>
                     <TableCell>User ID</TableCell>
-                    <TableCell>Contrahent ID</TableCell>
+                    {/*<TableCell>Contrahent ID</TableCell>*/}
                     <TableCell>Person Name</TableCell>
-                    <TableCell>Person Last Name</TableCell>
-                    <TableCell>Contrahent Name</TableCell>
+                    {/*<TableCell>Person Last Name</TableCell>*/}
+                    {/*<TableCell>Contrahent Name</TableCell>*/}
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {people.map((person, index) => (
                       <TableRow
                           key={index}
-                          onClick={() => handleRowClick(person.id)}
-                          sx={{
-                                cursor: 'pointer',
-                                '&:hover': {
-                                  backgroundColor: '#f0f0f0',
-                                }
-                          }}>
+                          onClick={() => navigate(`/admin/enova-users/${person.id}`)}
+                          sx={{ cursor: 'pointer', '&:hover': { backgroundColor: '#f0f0f0' }}}
+                      >
                         <TableCell>{person.id}</TableCell>
-                        <TableCell>{person.contrahentId}</TableCell>
+                        {/*<TableCell>{person.contrahentId}</TableCell>*/}
                         <TableCell>{person.imie}</TableCell>
-                        <TableCell>{person.nazwisko}</TableCell>
-                        <TableCell>{person.contrahentName}</TableCell>
+                        {/*<TableCell>{person.nazwisko}</TableCell>*/}
+                        {/*<TableCell>{person.contrahentName}</TableCell>*/}
                       </TableRow>
                   ))}
                 </TableBody>
@@ -199,7 +152,6 @@ const EnovaUserList = () => {
           )}
         </TableContainer>
 
-        {/* Pagination Controls */}
         <Box display="flex" justifyContent="center" marginTop={2}>
           <Button
               onClick={() => handlePageChange(currentPage - 1)}

@@ -112,7 +112,7 @@ class EnovaContractorsController extends AbstractController
                     } else {
                         // Update the existing person
                         $person->setImie($personData['imie']);
-                        $person->setImie($personData['nazwisko']);
+                        $person->seNazwisko($personData['nazwisko']);
                     }
                 }
 

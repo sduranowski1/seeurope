@@ -33,13 +33,6 @@ class Brand
     #[Groups(['brand:read', 'brand:create', 'brand:update', 'variant:read', 'variant:create', 'variant:update', "productInfo:read", 'enovaProduct:read'])]
     private ?string $name = null;
 
-    #[ORM\Column(length: 50)]
-    #[Groups(['brand:read', 'brand:create', 'brand:update', 'variant:read', 'variant:create', 'variant:update', "productInfo:read", 'enovaProduct:read'])]
-    private ?string $polishName = null;
-
-    #[ORM\Column(length: 50)]
-    #[Groups(['brand:read', 'brand:create', 'brand:update', 'variant:read', 'variant:create', 'variant:update', "productInfo:read", 'enovaProduct:read'])]
-    private ?string $germanName = null;
 
     #[ORM\ManyToOne(targetEntity: BrandsMediaObject::class)]
     #[ORM\JoinColumn(nullable: true)]
@@ -90,26 +83,6 @@ class Brand
         $this->name = $name;
 
         return $this;
-    }
-
-    public function getPolishName(): ?string
-    {
-        return $this->polishName;
-    }
-
-    public function setPolishName(?string $polishName): void
-    {
-        $this->polishName = $polishName;
-    }
-
-    public function getGermanName(): ?string
-    {
-        return $this->germanName;
-    }
-
-    public function setGermanName(?string $germanName): void
-    {
-        $this->germanName = $germanName;
     }
 
 

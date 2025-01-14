@@ -106,8 +106,9 @@ export const Category = () => {
     ;
     }
 
-    console.log(products[0].categoryTitle);
-    console.log(products[0].categoryTitlePl);
+    console.log(products);
+    // console.log(products[0].categoryTitle);
+    // console.log(products[0].categoryTitlePl);
 
     return (
         <main className={'my-machine'}>

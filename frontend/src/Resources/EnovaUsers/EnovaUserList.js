@@ -8,11 +8,13 @@ import TableBody from "@mui/material/TableBody";
 import Paper from "@mui/material/Paper";
 import { styled } from '@mui/material/styles';
 import Checkbox from "@mui/material/Checkbox";
-import { Button, CircularProgress } from "@mui/material";
+import {Button, CircularProgress, IconButton, InputAdornment} from "@mui/material";
 import Box from "@mui/material/Box";
 import ExportButton from "../../Components/AdminExportButton/ExportButton";
 import { useNavigate } from "react-router-dom";
 import { TextField } from "@mui/material";
+import SearchOffIcon from "@mui/icons-material/SearchOff";
+import SearchIcon from "@mui/icons-material/Search";
 
 const EnovaUserList = () => {
   const [people, setPeople] = useState([]);
@@ -24,7 +26,7 @@ const EnovaUserList = () => {
   const [debounceTimeout, setDebounceTimeout] = useState(null);
   const navigate = useNavigate();
   const [searchImie, setSearchImie] = useState('');
-  // const [searchNazwisko, setSearchNazwisko] = useState('');
+  const [searchNazwisko, setSearchNazwisko] = useState('');
 
   // Fetch data with API call
   const fetchProductData = useCallback(async () => {
@@ -32,10 +34,10 @@ const EnovaUserList = () => {
     try {
       // Construct the query string with current page and limit
       const queryParams = new URLSearchParams({
-        strona: currentPage,
+        page: currentPage,
         limit: limit,
         imie: searchImie,
-        // nazwisko: searchNazwisko,
+        nazwisko: searchNazwisko,
       });
 
       // Fetch the second set of data (products) using query parameters
@@ -73,7 +75,7 @@ const EnovaUserList = () => {
     } finally {
       setLoading(false); // Set loading to false when done
     }
-  }, [currentPage, limit, searchImie]);
+  }, [currentPage, limit, searchImie, searchNazwisko]);
 
 
   useEffect(() => {
@@ -101,6 +103,20 @@ const EnovaUserList = () => {
     setSearchImie(event.target.value);
   };
 
+  // Handle search query changes for searchCode
+  const handleSearchSurnameChange = (event) => {
+    setSearchNazwisko(event.target.value);
+  };
+
+  const clearSearchFields = () => {
+    setSearchImie('');
+    setSearchNazwisko('');
+    // Delay fetchProductData to ensure state is updated first
+    setTimeout(() => {
+      fetchProductData(); // Refetch the data when clearing the fields
+    }, 0);
+  };
+
   return (
       <div>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
@@ -108,10 +124,37 @@ const EnovaUserList = () => {
               variant="outlined"
               size="small"
               placeholder="Search by name..."
+              value={searchImie}
+              InputProps={{
+                startAdornment: (
+                    <InputAdornment position="start">
+                      <SearchIcon />
+                    </InputAdornment>
+                ),
+              }}
               sx={{ width: '300px' }}
               onChange={handleSearchNameChange} // Debounce in useEffect
 
           />
+          <TextField
+              variant="outlined"
+              size="small"
+              placeholder="Search by surname..."
+              value={searchNazwisko}
+              InputProps={{
+                startAdornment: (
+                    <InputAdornment position="start">
+                      <SearchIcon />
+                    </InputAdornment>
+                ),
+              }}
+              sx={{  marginLeft: "15px", width: '300px' }}
+              onChange={handleSearchSurnameChange} // Debounce in useEffect
+
+          />
+          <IconButton onClick={clearSearchFields} size="small" sx={{ marginLeft: '8px' }}>
+            <SearchOffIcon />
+          </IconButton>
           <ExportButton />
         </Box>
 
@@ -128,7 +171,7 @@ const EnovaUserList = () => {
           )}
           {!loading && !error && people.length === 0 && (
               <Box sx={{ textAlign: 'center', marginTop: 3 }}>
-                No records found.
+                {/*No records found.*/}
               </Box>
           )}
           {!loading && !error && people.length > 0 && (
@@ -161,18 +204,37 @@ const EnovaUserList = () => {
           )}
         </TableContainer>
 
-        <Box display="flex" justifyContent="center" marginTop={2}>
+        <Box display="flex" justifyContent="center" alignItems="center" marginTop={2} gap={2}>
           <Button
               onClick={() => handlePageChange(currentPage - 1)}
               disabled={currentPage === 1 || loading}
           >
             Previous
           </Button>
-          <Box display="flex" alignItems="center" marginX={2}>
-          <span>
-            Page {currentPage} of {totalPages}
-          </span>
+
+          <Box display="flex" alignItems="center" gap={1}>
+            <span>Page</span>
+            <TextField
+                size="small"
+                type="number"
+                value={currentPage}
+                onChange={(e) => {
+                  const page = Math.max(1, Math.min(totalPages, Number(e.target.value))); // Ensure page is within range
+                  setCurrentPage(page);
+                }}
+                onBlur={() => handlePageChange(currentPage)} // Trigger page change on blur
+                InputProps={{
+                  inputProps: {
+                    min: 1,
+                    max: totalPages,
+                    style: { textAlign: 'center', width: '60px' }, // Inner input styles
+                  },
+                }}
+            />
+
+            <span>of {totalPages}</span>
           </Box>
+
           <Button
               onClick={() => handlePageChange(currentPage + 1)}
               disabled={currentPage === totalPages || loading}

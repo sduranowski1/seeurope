@@ -101,6 +101,7 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
     const navigate = useNavigate();
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [weightRange, setWeightRange] = useState([0, 30000]);
+    let [title, setTitle] = useState("");
 
 
     // Debounce timeout variable
@@ -339,7 +340,35 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
     const categoriesSlug = parts[4]; // First part of the slug
     const subcategoriesSlug = parts.slice(5, -1).join("/");
 
+    console.log(parts.length)
     console.log("categories slug:", categoriesSlug); // Outputs the desired middle part of the URL
+    console.log(filteredProducts)
+    console.log(categories)
+    console.log(products[0]?.categoryName)
+    // console.log(products[0].subcategoryName)
+    // console.log(products[0].itemTypeName)
+    console.log(products)
+
+    const filteredCategoriesTitle = categories.filter(category => category.name === lastPart);
+    console.log(filteredCategoriesTitle[0]);
+
+    const filteredSubcategoriesTitle = subcategories.filter(subcategory => subcategory.subCatName === lastPart);
+    console.log(filteredSubcategoriesTitle[0].subCatName);
+
+    const filteredItemTypeTitle = itemTypes.filter(itemType => itemType.name === lastPart);
+    console.log(filteredItemTypeTitle[0].name);
+
+    if (parts.length === 5) {
+        title = products[0]?.categoryName;
+    } else if (parts.length === 6) {
+        title = products[0]?.subcategoryName;
+    } else if (parts.length === 7) {
+        title = products[0]?.itemTypeName;
+    } else {
+        title = "my_machine";
+    }
+
+
 
     return (
         <main>
@@ -374,7 +403,8 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
                     <Typography sx={{ color: 'text.primary' }}>{lastPart ? lastPart : t("my_coupling")}</Typography>
                 </Breadcrumbs>
                 <div className={'heading-container'}>
-                    <h1 className={'page-title'}>{lastPart ? lastPart : t("my_machine")}</h1>
+                    {/*<h1 className={'page-title'}>{lastPart ? lastPart : t("my_machine")}</h1>*/}
+                    <h1 className={'page-title'}>{title ? title : t("my_machine")}</h1>
                     {/*<h1 className={'page-title'}>{lastPart ? lastPart : t("my_machine")}</h1>*/}
                     <p className={'paragraph paragraph--medium'}>{t("tractor_equipment")}</p>
                 </div>

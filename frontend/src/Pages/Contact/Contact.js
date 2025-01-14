@@ -7,6 +7,9 @@ import joanna from '../../assets/contact/joanna-waniolka.jpg';
 import marcin from '../../assets/contact/marcin-waniolka.jpg';
 import radoslaw from '../../assets/contact/radoslaw-stawowy.jpg';
 import zuzanna from '../../assets/contact/zuzanna-b.jpg';
+import p_rychta from '../../assets/contact/p_rychta.jpg';
+import n_kaczmarek from '../../assets/contact/n_kaczmarek.jpg';
+import j_waniolka from '../../assets/contact/j_waniolka.jpg';
 
 export const Contact = () => {
     return (
@@ -18,90 +21,121 @@ export const Contact = () => {
                 <div className={'person-cards-container'}>
                     <div className={'person-card'}>
                         <picture>
-                            <img src={marcin} />
+                            <img src={marcin}/>
                         </picture>
                         <div className={'person-card__text-container'}>
                             <h3 className={'paragraph'}>CEO</h3>
                             <p className={'link-title'}>Marcin Waniołka</p>
-                            <a href={'mailto:marcin.waniolka@se-europe.com'} >marcin.waniolka@se-europe.com</a>
+                            <a href={'mailto:marcin.waniolka@se-europe.com'}>marcin.waniolka@se-europe.com</a>
                             <p className={'paragraph'}>+48 606 424 443</p>
                         </div>
                     </div>
                     <div className={'person-card'}>
                         <picture>
-                            <img src={joanna} />
+                            {/*<img src={joanna}/>*/}
+                            <img src={j_waniolka}/>
                         </picture>
                         <div className={'person-card__text-container'}>
                             <h3 className={'paragraph'}>Co-Owner / Main Accountant</h3>
                             <p className={'link-title'}>Joanna Waniołka</p>
-                            <a className={'paragraph'} href={'mailto:joanna.waniolka@se-europe.com'} >joanna.waniolka@se-europe.com</a>
+                            <a className={'paragraph'}
+                               href={'mailto:joanna.waniolka@se-europe.com'}>joanna.waniolka@se-europe.com</a>
                             <p className={'paragraph'}>+48 696 382 192</p>
                         </div>
                     </div>
                     <div className={'person-card'}>
                         <picture>
-                            <img src={anton} />
+                            <img src={anton}/>
                         </picture>
                         <div className={'person-card__text-container'}>
                             <h3 className={'paragraph'}>Sales Manager</h3>
                             <p className={'link-title'}>Antoni Jabłoński</p>
-                            <a className={'paragraph'} href={'mailto:antoni.jablonski@se-europe.com'} >antoni.jablonski@se-europe.com</a>
+                            <a className={'paragraph'}
+                               href={'mailto:antoni.jablonski@se-europe.com'}>antoni.jablonski@se-europe.com</a>
                             <p className={'paragraph'}>+48 696 131 009</p>
                         </div>
                     </div>
                     <div className={'person-card'}>
                         <picture>
-                            <img src={radoslaw} />
+                            <img src={radoslaw}/>
                         </picture>
                         <div className={'person-card__text-container'}>
                             <h3 className={'paragraph'}>Sales</h3>
                             <p className={'link-title'}>Radosław Stawowy</p>
-                            <a className={'paragraph'} href={'mailto:radoslaw.stawowy@se-europe.com'} >radoslaw.stawowy@se-europe.com</a>
+                            <a className={'paragraph'}
+                               href={'mailto:radoslaw.stawowy@se-europe.com'}>radoslaw.stawowy@se-europe.com</a>
                             <p className={'paragraph'}>+48 696 103 140</p>
                         </div>
                     </div>
                     <div className={'person-card'}>
                         <picture>
-                            <img src={anna} />
+                            <img src={anna}/>
                         </picture>
                         <div className={'person-card__text-container'}>
                             <h3 className={'paragraph'}>Sales support</h3>
                             <p className={'link-title'}>Anna Chęczkiewicz</p>
-                            <a className={'paragraph'} href={'mailto:anna.checzkiewicz@se-europe.com'} >anna.checzkiewicz@se-europe.com</a>
+                            <a className={'paragraph'}
+                               href={'mailto:anna.checzkiewicz@se-europe.com'}>anna.checzkiewicz@se-europe.com</a>
                             <p className={'paragraph'}>+48 600 779 335</p>
                         </div>
                     </div>
                     <div className={'person-card'}>
                         <picture>
-                            <img src={andrzej} />
+                            <img src={andrzej}/>
                         </picture>
                         <div className={'person-card__text-container'}>
                             <h3 className={'paragraph'}>Sales support</h3>
                             <p className={'link-title'}>Andrzej Adamski</p>
-                            <a className={'paragraph'} href={'mailto:andrzej.adamski@se-europe.com'} >andrzej.adamski@se-europe.com</a>
+                            <a className={'paragraph'}
+                               href={'mailto:andrzej.adamski@se-europe.com'}>andrzej.adamski@se-europe.com</a>
                             <p className={'paragraph'}>+48 696 577 001</p>
                         </div>
                     </div>
+                    {/*<div className={'person-card'}>*/}
+                    {/*    <picture>*/}
+                    {/*        <img src={zuzanna} />*/}
+                    {/*    </picture>*/}
+                    {/*    <div className={'person-card__text-container'}>*/}
+                    {/*        <h3 className={'paragraph'}>Purchasing manager</h3>*/}
+                    {/*        <p className={'link-title'}>Zuzanna Bednarek</p>*/}
+                    {/*        <a className={'paragraph'} href={'mailto:zuzanna.bednarek@se-europe.com'} >zuzanna.bednarek@se-europe.com</a>*/}
+                    {/*        <p className={'paragraph'}>+48 664 154 787</p>*/}
+                    {/*    </div>*/}
+                    {/*</div>*/}
                     <div className={'person-card'}>
                         <picture>
-                            <img src={zuzanna} />
+                            <img src={p_rychta}/>
                         </picture>
                         <div className={'person-card__text-container'}>
                             <h3 className={'paragraph'}>Purchasing manager</h3>
-                            <p className={'link-title'}>Zuzanna Bednarek</p>
-                            <a className={'paragraph'} href={'mailto:zuzanna.bednarek@se-europe.com'} >zuzanna.bednarek@se-europe.com</a>
+                            <p className={'link-title'}>Paulina Rychta</p>
+                            <a className={'paragraph'}
+                               href={'mailto:paulina.rychta@se-europe.com'}>paulina.rychta@se-europe.com</a>
                             <p className={'paragraph'}>+48 664 154 787</p>
                         </div>
                     </div>
                     <div className={'person-card'}>
                         <picture>
-                            <img src={arkadiusz} />
+                            <img src={arkadiusz}/>
                         </picture>
                         <div className={'person-card__text-container'}>
                             <h3 className={'paragraph'}>Warehouse</h3>
                             <p className={'link-title'}>Arkadiusz Grzywacz</p>
-                            <a className={'paragraph'} href={'mailto:arkadiusz.grzywacz@se-europe.com'}>arkadiusz.grzywacz@se-europe.com</a>
+                            <a className={'paragraph'}
+                               href={'mailto:arkadiusz.grzywacz@se-europe.com'}>arkadiusz.grzywacz@se-europe.com</a>
                             <p className={'paragraph'}>+48 662 890 029</p>
+                        </div>
+                    </div>
+                    <div className={'person-card'}>
+                        <picture>
+                            <img src={n_kaczmarek}/>
+                        </picture>
+                        <div className={'person-card__text-container'}>
+                            <h3 className={'paragraph'}>Sales</h3>
+                            <p className={'link-title'}>Natalia Kaczmarek</p>
+                            <a className={'paragraph'}
+                               href={'mailto:natalia.kaczmarek@se-europe.com'}>natalia.kaczmarek@se-europe.com</a>
+                            <p className={'paragraph'}>+48 664 779 558</p>
                         </div>
                     </div>
                 </div>

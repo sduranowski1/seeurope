@@ -11,12 +11,10 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ApiResource(
-//    normalizationContext: ['groups' => ['enovaProduct:read']],
-//    denormalizationContext: ['groups' => ['enovaProduct:create']]
-
+    normalizationContext: ['groups' => ['enovaContractor:read']],
+    denormalizationContext: ['groups' => ['enovaContractor:create']]
 )]
-#[ApiFilter(SearchFilter::class, properties: [
-    'nazwa' => 'partial'])]
+#[ApiFilter(SearchFilter::class, properties: ['nazwa' => 'partial'])]
 #[ORM\Entity]
 class EnovaContractor
 {
@@ -26,15 +24,39 @@ class EnovaContractor
     private ?int $idEnova = null;
 
     #[ORM\Column(type: 'string')]
+    #[Groups(["enovaContractor:read", 'enovaLocation:read'])]
+    private ?string $kod = null;
+
+    #[ORM\Column(type: 'string')]
     #[Groups(['enovaContractor:read', 'enovaContractor:create', 'enovaContractor:update', 'enovaPerson:read', 'enovaPerson:create', 'enovaPerson:update'])]
     private ?string $nazwa = null;
 
-    #[ORM\OneToMany(mappedBy: 'contractor', targetEntity: EnovaPerson::class, cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: true)]
+    #[Groups(['enovaContractor:read', 'enovaContractor:create', 'enovaContractor:update'])]
+    private ?EnovaAddress $adres = null;
+
+    #[ORM\ManyToOne(cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: true)]
+    #[Groups(['enovaContractor:read', 'enovaContractor:create', 'enovaContractor:update'])]
+    private ?EnovaAddress $adresKorespondencyjny = null;
+
+    #[ORM\OneToMany(mappedBy: 'contractor', targetEntity: EnovaLocation::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[Groups(['enovaContractor:read', 'enovaContractor:write'])]
+    private Collection $locations;
+
+    #[ORM\OneToMany(targetEntity: EnovaPerson::class, mappedBy: 'contractor', cascade: ['persist', 'remove'])]
+    #[Groups(['enovaContractor:read', 'enovaContractor:create', 'enovaContractor:update'])]
     private Collection $listaOsobyKontrahenta;
+
+//    #[ORM\OneToMany(targetEntity: EnovaLocation::class, mappedBy: 'contractor', cascade: ['persist', 'remove'])]
+//    #[Groups(['enovaContractor:read', 'enovaContractor:create', 'enovaContractor:update'])]
+//    private Collection $listaLokalizacje;
 
     public function __construct()
     {
         $this->listaOsobyKontrahenta = new ArrayCollection();
+        $this->locations = new ArrayCollection();
     }
 
     public function getIdEnova(): ?int
@@ -48,6 +70,18 @@ class EnovaContractor
         return $this;
     }
 
+    public function getKod(): ?string
+    {
+        return $this->kod;
+    }
+
+    public function setKod(?string $kod): void
+    {
+        $this->kod = $kod;
+    }
+
+
+
     public function getNazwa(): ?string
     {
         return $this->nazwa;
@@ -57,6 +91,55 @@ class EnovaContractor
     {
         $this->nazwa = $nazwa;
     }
+
+    public function getAdres(): ?EnovaAddress
+    {
+        return $this->adres;
+    }
+
+    public function setAdres(?EnovaAddress $adres): void
+    {
+        $this->adres = $adres;
+    }
+
+    public function getAdresKorespondencyjny(): ?EnovaAddress
+    {
+        return $this->adresKorespondencyjny;
+    }
+
+    public function setAdresKorespondencyjny(?EnovaAddress $adresKorespondencyjny): void
+    {
+        $this->adresKorespondencyjny = $adresKorespondencyjny;
+    }
+
+    public function getLocations(): Collection
+    {
+        return $this->locations;
+    }
+
+    public function addLocation(EnovaLocation $location): self
+    {
+        if (!$this->locations->contains($location)) {
+            $this->locations[] = $location;
+            $location->setContractor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLocation(EnovaLocation $location): self
+    {
+        if ($this->locations->removeElement($location)) {
+            // Set the owning side to null (unless already changed)
+            if ($location->getContractor() === $this) {
+                $location->setContractor(null);
+            }
+        }
+
+        return $this;
+    }
+
+
 
     public function getListaOsobyKontrahenta(): Collection
     {
@@ -81,4 +164,28 @@ class EnovaContractor
         }
         return $this;
     }
+
+//    public function getListaLokalizacje(): Collection
+//    {
+//        return $this->listaLokalizacje;
+//    }
+//
+//    public function addListaLokalizacje(EnovaLocation $location): self
+//    {
+//        if (!$this->listaLokalizacje->contains($location)) {
+//            $this->listaLokalizacje->add($location);
+//            $location->setContractor($this);
+//        }
+//        return $this;
+//    }
+//
+//    public function removeListaLokalizacje(EnovaLocation $location): self
+//    {
+//        if ($this->listaLokalizacje->removeElement($location)) {
+//            if ($location->getContractor() === $this) {
+//                $location->setContractor(null);
+//            }
+//        }
+//        return $this;
+//    }
 }

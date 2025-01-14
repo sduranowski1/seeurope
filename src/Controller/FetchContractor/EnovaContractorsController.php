@@ -2,16 +2,16 @@
 
 namespace App\Controller\FetchContractor;
 
+use App\Entity\Enova\EnovaAddress;
 use App\Entity\Enova\EnovaContractor;
+use App\Entity\Enova\EnovaLocation;
 use App\Entity\Enova\EnovaPerson;
-use App\Entity\Enova\EnovaProduct;
 use App\Repository\EnovaContractorRepository;
+use App\Repository\EnovaLocationRepository;
 use App\Repository\EnovaPersonRepository;
-use App\Repository\EnovaProductRepository;
-use App\Repository\ProductInfoRepository;
+use App\Repository\EnovaAddressRepository;  // Added repository for EnovaAddress
 use App\Repository\TokenRepository;
 use App\Service\TokenService;
-use GuzzleHttp\Client;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -20,23 +20,29 @@ class EnovaContractorsController extends AbstractController
 {
     private HttpClientInterface $client;
     private TokenRepository $tokenRepository;
-    private TokenService $tokenService;  // TokenService injected
+    private TokenService $tokenService;
     private EnovaContractorRepository $enovaContractorRepository;
     private EnovaPersonRepository $enovaPersonRepository;
+    private EnovaLocationRepository $enovaLocationRepository;
+    private EnovaAddressRepository $enovaAddressRepository;  // Added property for EnovaAddressRepository
 
     public function __construct(
-        HttpClientInterface    $client,
-        TokenRepository        $tokenRepository,
-        TokenService           $tokenService,  // Inject TokenService
+        HttpClientInterface $client,
+        TokenRepository $tokenRepository,
+        TokenService $tokenService,
         EnovaContractorRepository $enovaContractorRepository,
         EnovaPersonRepository $enovaPersonRepository,
+        EnovaLocationRepository $enovaLocationRepository,
+        EnovaAddressRepository $enovaAddressRepository  // Inject EnovaAddressRepository
     )
     {
         $this->client = $client;
         $this->tokenRepository = $tokenRepository;
-        $this->tokenService = $tokenService;  // Assign service to property
+        $this->tokenService = $tokenService;
         $this->enovaContractorRepository = $enovaContractorRepository;
         $this->enovaPersonRepository = $enovaPersonRepository;
+        $this->enovaLocationRepository = $enovaLocationRepository;
+        $this->enovaAddressRepository = $enovaAddressRepository;  // Assign to the property
     }
 
     public function fetchAndSaveContractors(): JsonResponse
@@ -57,8 +63,6 @@ class EnovaContractorsController extends AbstractController
         $contractorsUrl = 'http://extranet.seequipment.pl:9010/api/PanelWWW_API/DajKontrahentow';
         $response = $this->client->request('POST', $contractorsUrl, [
             'json' => [
-//                'strona' => 1,
-//                'limit' => 50,
                 'pokazOsoby' => true
             ],
             'headers' => [
@@ -79,17 +83,33 @@ class EnovaContractorsController extends AbstractController
             // Find contractor by idEnova
             $existingContractor = $this->enovaContractorRepository->findOneBy(['idEnova' => $contractor['idEnova']]);
 
+            // Process primary address
+            $adres = $this->processAddress($contractor['adres']);
+            if ($existingContractor) {
+                $existingContractor->setAdres($adres);
+            }
+
+            // Process mailing address
+            $adresKorespondencyjny = $this->processAddress($contractor['adresKorespondencyjny']);
+            if ($existingContractor) {
+                $existingContractor->setAdresKorespondencyjny($adresKorespondencyjny);
+            }
+
             if (!$existingContractor) {
                 // Create a new contractor if not found
                 $newContractor = new EnovaContractor();
-                $newContractor->setIdEnova($contractor['idEnova']); // Use idEnova for the contractor
+                $newContractor->setIdEnova($contractor['idEnova']);
                 $newContractor->setNazwa($contractor['nazwa']);
+                $newContractor->setAdres($adres);
+                $newContractor->setAdresKorespondencyjny($adresKorespondencyjny);
+
+                foreach ($contractor['listaLokalizacje'] as $locationData) {
+                    $location = $this->processLocation($locationData);
+                    $newContractor->addLocation($location);
+                }
 
                 foreach ($contractor['listaOsobyKontrahenta'] as $personData) {
-                    $person = new EnovaPerson();
-                    $person->setImie($personData['imie']);
-                    $person->setNazwisko($personData['nazwisko']);
-                    $person->setId($personData['id']); // Use id for person
+                    $person = $this->processPerson($personData);
                     $newContractor->addListaOsobyKontrahenta($person);
                 }
 
@@ -97,23 +117,19 @@ class EnovaContractorsController extends AbstractController
             } else {
                 // Update the existing contractor
                 $existingContractor->setNazwa($contractor['nazwa']);
+                $existingContractor->setAdres($adres);  // Update address
+                $existingContractor->setAdresKorespondencyjny($adresKorespondencyjny);  // Update mailing address
 
+                // Update or add locations
+                foreach ($contractor['listaLokalizacje'] as $locationData) {
+                    $location = $this->processLocation($locationData);
+                    $existingContractor->addLocation($location);
+                }
+
+                // Update or add persons
                 foreach ($contractor['listaOsobyKontrahenta'] as $personData) {
-                    // Find the person by id
-                    $person = $this->enovaPersonRepository->findOneBy(['id' => $personData['id']]);
-
-                    if (!$person) {
-                        // Create a new person if not found
-                        $person = new EnovaPerson();
-                        $person->setImie($personData['imie']);
-                        $person->setNazwisko($personData['nazwisko']);
-                        $person->setId($personData['id']); // Use id for person
-                        $existingContractor->addListaOsobyKontrahenta($person);
-                    } else {
-                        // Update the existing person
-                        $person->setImie($personData['imie']);
-                        $person->setNazwisko($personData['nazwisko']);
-                    }
+                    $person = $this->processPerson($personData);
+                    $existingContractor->addListaOsobyKontrahenta($person);
                 }
 
                 $this->enovaContractorRepository->save($existingContractor, true);
@@ -121,5 +137,56 @@ class EnovaContractorsController extends AbstractController
         }
 
         return new JsonResponse(['status' => 'success', 'message' => 'Contractors fetched and saved successfully']);
+    }
+
+    private function processAddress(array $addressData): EnovaAddress
+    {
+        // Always create a new EnovaAddress without checking for uniqueness
+        $adres = new EnovaAddress();
+
+        $adres->setWojewodztwo($addressData['wojewodztwo']);
+        $adres->setGmina($addressData['gmina']);
+        $adres->setNrDomu($addressData['nrDomu']);
+        $adres->setNrLokalu($addressData['nrLokalu']);
+        $adres->setPoczta($addressData['poczta']);
+        $adres->setPowiat($addressData['powiat']);
+        $adres->setUlica($addressData['ulica']);
+        $adres->setMiejscowosc($addressData['miejscowosc']);
+        $adres->setKodPocztowy($addressData['kodPocztowy']);
+        $adres->setKraj($addressData['kraj']);
+
+        return $adres;
+    }
+
+
+    private function processLocation(array $locationData): EnovaLocation
+    {
+        // Try to find the existing location by the id from the API
+        $location = $this->enovaLocationRepository->findOneBy(['id' => $locationData['id']]) ?: new EnovaLocation();
+
+        // Explicitly set the ID from the API
+        $location->setId($locationData['id']);  // Manually set the ID from the API response
+
+        $location->setKod($locationData['kod'] ?? '');
+        $location->setNazwa($locationData['nazwa'] ?? '');
+        $location->setEMail($locationData['eMail'] ?? '');
+
+        if (isset($locationData['adres'])) {
+            $adresLocation = $this->processAddress($locationData['adres']);
+            $location->setAdresLocation($adresLocation);
+        }
+
+        return $location;
+    }
+
+
+    private function processPerson(array $personData): EnovaPerson
+    {
+        $person = $this->enovaPersonRepository->findOneBy(['id' => $personData['id']]) ?: new EnovaPerson();
+        $person->setImie($personData['imie']);
+        $person->setNazwisko($personData['nazwisko']);
+        $person->setId($personData['id']);
+
+        return $person;
     }
 }

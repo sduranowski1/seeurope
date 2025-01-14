@@ -22,15 +22,15 @@ class EnovaPerson
     #[ORM\Id]
 //    #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(['enovaPerson:read'])]
+    #[Groups(['enovaPerson:read', 'enovaContractor:read'])]
     private ?int $id = null;
 
     #[ORM\Column(type: 'string')]
-    #[Groups(['enovaPerson:read', 'enovaPerson:create', 'enovaPerson:update'])]
+    #[Groups(['enovaPerson:read', 'enovaPerson:create', 'enovaPerson:update', 'enovaContractor:read', 'enovaContractor:create', 'enovaContractor:update'])]
     private ?string $imie = null;
 
     #[ORM\Column(type: 'string')]
-    #[Groups(['enovaPerson:read', 'enovaPerson:create', 'enovaPerson:update'])]
+    #[Groups(['enovaPerson:read', 'enovaPerson:create', 'enovaPerson:update', 'enovaContractor:read', 'enovaContractor:create', 'enovaContractor:update'])]
     private ?string $nazwisko = null;
 
     #[ORM\ManyToOne(targetEntity: EnovaContractor::class, inversedBy: 'listaOsobyKontrahenta')]

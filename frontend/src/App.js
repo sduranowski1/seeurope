@@ -85,6 +85,8 @@ import AdminLayout from "./Components/Layouts/AdminLayout";
 import {Subcategory} from "./Pages/Subcategory/Subcategory";
 import Box from "@mui/material/Box";
 import {CircularProgress} from "@mui/material";
+import Cart from "./Pages/Order/Cart";
+import Checkout from "./Pages/Order/Checkout";
 // import BrandEdit from "./Resources/Product/BrandEdit";
 // import {SidebarComponent} from "./Components/SidebarComponent/SidebarComponent";
 // import {FooterComponent} from "./Components/FooterComponent/FooterComponent";
@@ -130,6 +132,9 @@ const App = () => {
           } />          <Route path="/logout" element={<Logout />} />
                       <Route path="dashboard" element={<PrivateRoute />}>
                           <Route path="" element={<Layout><Dashboard /></Layout>} />
+                          <Route path="my-details" element={<Layout><MyDetails /></Layout>} />
+                          <Route path="cart" element={<Layout><Cart /></Layout>} />
+                          <Route path="checkout" element={<Layout><Checkout /></Layout>} />
             </Route>
             <Route path="/admin/*" element={<AdminLayout />} >
                 <Route path="enova-product/:id" element={<EnovaProductEdit />} />

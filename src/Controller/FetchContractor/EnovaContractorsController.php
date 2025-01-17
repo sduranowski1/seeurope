@@ -141,22 +141,30 @@ class EnovaContractorsController extends AbstractController
 
     private function processAddress(array $addressData): EnovaAddress
     {
-        // Always create a new EnovaAddress without checking for uniqueness
-        $adres = new EnovaAddress();
+        // Check if an existing entity with the same ID already exists
+        $adres = $this->enovaAddressRepository->find($addressData['id']);
 
-        $adres->setWojewodztwo($addressData['wojewodztwo']);
-        $adres->setGmina($addressData['gmina']);
-        $adres->setNrDomu($addressData['nrDomu']);
-        $adres->setNrLokalu($addressData['nrLokalu']);
-        $adres->setPoczta($addressData['poczta']);
-        $adres->setPowiat($addressData['powiat']);
-        $adres->setUlica($addressData['ulica']);
-        $adres->setMiejscowosc($addressData['miejscowosc']);
-        $adres->setKodPocztowy($addressData['kodPocztowy']);
-        $adres->setKraj($addressData['kraj']);
+        if (!$adres) {
+            // Create a new entity only if it doesn't exist
+            $adres = new EnovaAddress();
+            $adres->setId($addressData['id']);
+        }
+
+        // Update the entity's fields
+        $adres->setWojewodztwo($addressData['wojewodztwo'] ?? null);
+        $adres->setGmina($addressData['gmina'] ?? null);
+        $adres->setNrDomu($addressData['nrDomu'] ?? null);
+        $adres->setNrLokalu($addressData['nrLokalu'] ?? null);
+        $adres->setPoczta($addressData['poczta'] ?? null);
+        $adres->setPowiat($addressData['powiat'] ?? null);
+        $adres->setUlica($addressData['ulica'] ?? null);
+        $adres->setMiejscowosc($addressData['miejscowosc'] ?? null);
+        $adres->setKodPocztowy($addressData['kodPocztowy'] ?? null);
+        $adres->setKraj($addressData['kraj'] ?? null);
 
         return $adres;
     }
+
 
 
     private function processLocation(array $locationData): EnovaLocation

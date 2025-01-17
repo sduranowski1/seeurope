@@ -39,6 +39,30 @@ export const Dashboard = () => {
                         aria-controls="panel1-content"
                         id="panel1-header"
                     >
+                        <Link className={'aside__line aside__line--narrow'} >Purchases</Link>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                        <div className={'infoData'}>
+                            <p>Nr produktu</p>
+                            <p>Produkt</p>
+                            <p>Data zmiany</p>
+                            <p>Informacje</p>
+                        </div>
+                        <div className={'productData'}>
+                            <p className={'itemNo'}></p>
+                            <p className={'product'}></p>
+                            <p className={'dateChange'}></p>
+                            <p className={'info'}></p>
+                        </div>
+
+                    </AccordionDetails>
+                </Accordion>
+                <Accordion className={'aside__line aside__line--accordion'}>
+                    <AccordionSummary
+                        expandIcon={<FontAwesomeIcon className={'angle-up'} icon={faAngleUp} />}
+                        aria-controls="panel1-content"
+                        id="panel1-header"
+                    >
                         <Link className={'aside__line aside__line--narrow'} >Lista cen</Link>
                     </AccordionSummary>
                     <AccordionDetails>
@@ -130,7 +154,7 @@ export const Dashboard = () => {
                     <AccordionDetails>
                         <ul >
                             <li>
-                                <a href='/moje-konto/moje-dane'>Zmień swoje dane</a>
+                                <a href='/dashboard/my-details'>Zmień swoje dane</a>
                             </li>
                         </ul>
 

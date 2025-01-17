@@ -4,7 +4,7 @@ import seLogo from '../../assets/logos/se-logo.png';
 import poland from '../../assets/icons/poland.png';
 import germany from '../../assets/icons/germany.png';
 import england from '../../assets/icons/england.png';
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import HomePage from "../../Pages/HomePage/HomePage";
 import React, {useContext, useEffect, useState} from "react";
 import {Context} from "../../App";
@@ -34,6 +34,7 @@ import {useTranslationContext} from "../../TranslationContext";
 import dataProvider from "../../dataProvider";
 import {useProducts} from "../../ProductProvider";
 import i18n from "i18next";
+import AuthContext from "../../AuthContext";
 
 export const NavbarComponent = (props) => {
     const [toggleSidebar, setToggleSidebar] = useContext(Context);
@@ -74,6 +75,8 @@ export const NavbarComponent = (props) => {
     const [categories, setCategories] = useState([]);
     const [loadingCoupling, setLoadingCoupling] = useState(true);
     const [loadingMachine, setLoadingMachine] = useState(true);
+    const navigate = useNavigate(); // Use useNavigate instead of useHistory
+    const { token } = useContext(AuthContext);
 
 
 
@@ -188,7 +191,17 @@ export const NavbarComponent = (props) => {
         });
     };
 
+    const handleCartClick = () => {
+        navigate('/dashboard/cart'); // Navigate to the cart page
+    };
 
+    const handleLoginClick = () => {
+        navigate('/login'); // Navigate to the cart page
+    };
+
+    const handleDashboardClick = () => {
+        navigate('/dashboard'); // Navigate to the cart page
+    };
 
 
     return (
@@ -334,12 +347,23 @@ export const NavbarComponent = (props) => {
                             </ul>
                         </li>
                         <li className={'icon-item'}>
-                            <FontAwesomeIcon className={'sidebar-icon'} icon={faUser}
-                                             onClick={() => setToggleSidebar({sidebar: true})}/>
+                            {/*<FontAwesomeIcon className={'sidebar-icon'} icon={faUser}*/}
+                            {/*                 onClick={() => setToggleSidebar({sidebar: true})}/>*/}
+                            {token ? (
+                                <FontAwesomeIcon className={'sidebar-icon'} icon={faUser}
+                                                 onClick={handleDashboardClick}/>
+                            ) : (
+                                <FontAwesomeIcon className={'sidebar-icon'} icon={faUser}
+                                                 onClick={handleLoginClick}/>
+                            )}
                         </li>
                         <li className={'icon-item'}>
-                            <FontAwesomeIcon className={'sidebar-icon'} icon={faCartShopping}
-                                             onClick={() => setToggleSidebar({cartSidebar: true})}/>
+                            {token ? (
+                                <FontAwesomeIcon className={'sidebar-icon'} icon={faCartShopping}
+                                                 onClick={handleCartClick}/>
+                            ) : (
+                                <a/>
+                            )}
                         </li>
                     </ul>
                 </div>

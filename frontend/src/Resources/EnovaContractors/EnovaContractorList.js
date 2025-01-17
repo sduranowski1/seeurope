@@ -11,6 +11,7 @@ import ExportButton from "../../Components/AdminExportButton/ExportButton";
 import { TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import SearchOffIcon from "@mui/icons-material/SearchOff";
+import {useNavigate} from "react-router-dom";
 
 const EnovaContractorList = () => {
   const [products, setProducts] = useState([]);
@@ -21,6 +22,8 @@ const EnovaContractorList = () => {
   const [limit, setLimit] = useState(10); // Number of items per page
   const [searchQuery, setSearchQuery] = useState(""); // Search query state
   const [searchNazwa, setSearchNazwa] = useState(""); // Search query state
+  const navigate = useNavigate();
+
 
 
   // Debounce timeout variable
@@ -89,6 +92,10 @@ const EnovaContractorList = () => {
     }, 0);
   };
 
+  const handleRowClick = useCallback((productId) => {
+    navigate(`/admin/enova-contractors/${productId}`);
+  }, [navigate]);
+
   return (
       <div>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
@@ -141,7 +148,14 @@ const EnovaContractorList = () => {
                 </TableHead>
                 <TableBody>
                   {products.map((product, index) => (
-                      <TableRow key={index}>
+                      <TableRow key={index}
+                                onClick={() => handleRowClick(product.idEnova)}
+                                sx={{
+                                  cursor: 'pointer',
+                                  '&:hover': {
+                                    backgroundColor: '#f0f0f0',
+                                  },
+                                }}>
                         <TableCell>{product.idEnova}</TableCell>
                         <TableCell>{product.nazwa}</TableCell>
                       </TableRow>

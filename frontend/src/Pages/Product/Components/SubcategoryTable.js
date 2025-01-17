@@ -6,11 +6,15 @@ import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import {TableComponent} from "../../../Components/TableComponent/TableComponent";
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {ProductDescription} from "./ProductDescription";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ErrorIcon from "@mui/icons-material/Error";
-import {Tooltip} from "@mui/material";
+import {Button, IconButton, Tooltip} from "@mui/material";
+import AuthContext from "../../../AuthContext";
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import {useNavigate} from "react-router-dom";
+
 
 // export const SubcategoryTable = (props) => {
 //     const [value, setValue] = React.useState('1');
@@ -47,6 +51,14 @@ import {Tooltip} from "@mui/material";
 export const SubcategoryTable = ({ productsData, onProductClick, lastPartToCollapse, displayedItems, checkboxes }) => {
     const [activeFilter, setActiveFilter] = useState("All");
     const [selectedProduct, setSelectedProduct] = useState(null);
+    const [filteredProducts, setFilteredProducts] = useState(productsData);  // Manage the filtered products state
+    const { token } = useContext(AuthContext);
+    const [cart, setCart] = useState([]);
+    const navigate = useNavigate();
+    const [quantity, setQuantity] = useState(1);
+
+
+
 
     // Get unique capacityFeat values for tabs
     const uniqueCapacities = [
@@ -55,10 +67,13 @@ export const SubcategoryTable = ({ productsData, onProductClick, lastPartToColla
     ];
 
     // Filter products based on the active filter
-    const filteredProducts =
-        activeFilter === "All"
-            ? productsData
-            : productsData.filter((product) => product.capacityFeat === activeFilter);
+    useEffect(() => {
+        if (activeFilter === "All") {
+            setFilteredProducts(productsData);
+        } else {
+            setFilteredProducts(productsData.filter((product) => product.capacityFeat === activeFilter));
+        }
+    }, [activeFilter, productsData]);
 
     const handleRowClick = (product) => {
         setSelectedProduct(product); // Highlight selected product
@@ -69,6 +84,50 @@ export const SubcategoryTable = ({ productsData, onProductClick, lastPartToColla
     useEffect(() => {
         setSelectedProduct(null); // Reset selected product when lastPartToCollapse changes
     }, [lastPartToCollapse]);
+
+    const handleQuantityChange = (productId, change) => {
+        setFilteredProducts((prevProducts) =>
+            prevProducts.map((product) =>
+                product.id === productId
+                    ? {
+                        ...product,
+                        quantity: Math.max(0, (product.quantity || 0) + change), // Ensure quantity doesn't go below 0
+                    }
+                    : product
+            )
+        );
+    };
+
+
+
+
+    const handleAddToCart = (product, quantity) => {
+        // Get the current cart from localStorage, or an empty array if it's not there
+        const existingCart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        // Check if the product is already in the cart
+        const productIndex = existingCart.findIndex((item) => item.id === product.id);
+
+        if (productIndex === -1) {
+            // If product is not in the cart, add it with the given quantity
+            existingCart.push({ ...product, quantity });
+        } else {
+            // If product is already in the cart, increase its quantity by the specified value
+            existingCart[productIndex].quantity += quantity;
+        }
+
+        // Save the updated cart back to localStorage
+        localStorage.setItem('cart', JSON.stringify(existingCart));
+
+        console.log("Updated Cart:", existingCart); // Optional: to see the updated cart in the console
+
+        navigate('/dashboard/cart');
+    };
+
+
+
+
+
 
     return (
         <div>
@@ -109,6 +168,14 @@ export const SubcategoryTable = ({ productsData, onProductClick, lastPartToColla
                     {/*<th>Category</th>*/}
                     {/*<th>Subcategory</th>*/}
                     <th>Status</th>
+                    {token ? (
+                        <>
+                            <th>Quantity</th>
+                            <th>Add to cart</th>
+                        </>
+                    ) : (
+                        <a/>
+                        )}
                 </tr>
                 </thead>
                 <tbody>
@@ -156,6 +223,32 @@ export const SubcategoryTable = ({ productsData, onProductClick, lastPartToColla
                                     product.stockStatus || "made to order"
                                 )}
                             </td>
+                            {token ? (
+                                <>
+                                    <td>
+                                        <button onClick={() => handleQuantityChange(product.id, -1)}>-</button>
+                                        <input
+                                            type="number"
+                                            value={product.quantity || 0}
+                                            onChange={(e) => handleQuantityChange(product.id, Number(e.target.value) - product.quantity)} // Allow manual input
+                                            style={{width: "60px", textAlign: "center", margin: "0 5px"}}
+                                        />
+                                        <button onClick={() => handleQuantityChange(product.id, 1)}>+</button>
+                                    </td>
+                                    <td>
+                                        <IconButton
+                                            color="primary"
+                                            size="large"
+                                            sx={{mt: 2, padding: 0, margin: 0}}
+                                            onClick={() => handleAddToCart(product, product.quantity)} // Pass the updated quantity
+                                        >
+                                            <ShoppingCartIcon/>
+                                        </IconButton>
+                                    </td>
+                                </>
+                            ) : (
+                                <a/>
+                            )}
                         </tr>
                     ))
                 ) : (

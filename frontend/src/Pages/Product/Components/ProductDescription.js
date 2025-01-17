@@ -1,9 +1,9 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import sketch from "../../../assets/100838.png";
 import {fetchToken} from "../../../utils/fetchToken";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
-import {Box, CircularProgress, Tooltip, Typography} from "@mui/material";
+import {Box, Button, CircularProgress, Tooltip, Typography} from "@mui/material";
 import TableContainer from "@mui/material/TableContainer";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
@@ -13,12 +13,20 @@ import DOMPurify from 'dompurify';
 import i18n from "i18next";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import ErrorIcon from "@mui/icons-material/Error";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faCartShopping} from "@fortawesome/free-solid-svg-icons";
+import {useNavigate} from "react-router-dom";
+import AuthContext from "../../../AuthContext";
 
 export const ProductDescription = ({ product }) => {
-    const [token, setToken] = useState(null);
+    // const [token, setToken] = useState(null);
+    const { token } = useContext(AuthContext);
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const navigate = useNavigate();
+    const [cart, setCart] = useState([]);
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -50,6 +58,12 @@ export const ProductDescription = ({ product }) => {
             fetchData();
         }
     }, [product.code]); // Run the effect whenever product.code changes
+
+    // Load cart from localStorage on component mount
+    useEffect(() => {
+        const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
+        setCart(storedCart);
+    }, []);
 
     const renderDetails = (data) => {
         const details = {
@@ -180,6 +194,45 @@ export const ProductDescription = ({ product }) => {
     const germanDescription = data.productInfo?.germanDescription;
     const sanitizedGermanDescription = DOMPurify.sanitize(germanDescription);
 
+
+
+    // Function to add product to cart
+    const handleAddToCart = () => {
+        // Check if the product already exists in the cart
+        const existingProduct = cart.find((item) => item.id === product.id);
+
+        let updatedCart;
+        if (existingProduct) {
+            // Update quantity if product exists
+            updatedCart = cart.map((item) =>
+                item.id === product.id
+                    ? { ...item, quantity: item.quantity + 1 }
+                    : item
+            );
+        } else {
+            // Add new product to cart
+            updatedCart = [...cart, { ...product, quantity: 1 }];
+        }
+
+        // Check if any product has a quantity of 0
+        const hasZeroQuantity = updatedCart.some(item => item.quantity <= 0);
+
+        // If any product has 0 or negative quantity, show an alert and do not redirect
+        if (hasZeroQuantity) {
+            alert("You cannot proceed with products having zero or negative quantity.");
+            return;
+        }
+
+        // Update cart in state and localStorage
+        setCart(updatedCart);
+        localStorage.setItem("cart", JSON.stringify(updatedCart));
+
+        // Redirect to the cart page if the product was successfully added
+        navigate('/dashboard/cart');
+    };
+
+
+
     return (
         <div>
             {loading && (
@@ -290,6 +343,20 @@ export const ProductDescription = ({ product }) => {
                                         data.stockStatus || "made to order"
                                     )} {data.stockStatus}
                                 </div>
+                                {token ? (
+                                    <Button
+                                        variant="contained"
+                                        color="primary"
+                                        size="large"
+                                        sx={{ mt: 2 }}
+                                        onClick={handleAddToCart}
+                                    >
+                                        Add to Cart
+                                    </Button>
+                                ) : (
+                                    <a/>
+                                )}
+
                                 <br/>
                                 <div className='price-container'>
                                     {/*<h2>899.99$</h2>*/}

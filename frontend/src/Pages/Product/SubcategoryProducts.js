@@ -350,13 +350,13 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
     console.log(products)
 
     const filteredCategoriesTitle = categories.filter(category => category.name === lastPart);
-    console.log(filteredCategoriesTitle[0]);
+    // console.log(filteredCategoriesTitle[0]);
 
     const filteredSubcategoriesTitle = subcategories.filter(subcategory => subcategory.subCatName === lastPart);
-    console.log(filteredSubcategoriesTitle[0].subCatName);
+    // console.log(filteredSubcategoriesTitle[0].subCatName);
 
     const filteredItemTypeTitle = itemTypes.filter(itemType => itemType.name === lastPart);
-    console.log(filteredItemTypeTitle[0].name);
+    // console.log(filteredItemTypeTitle[0].name);
 
     if (parts.length === 5) {
         title = products[0]?.categoryName;

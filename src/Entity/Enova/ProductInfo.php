@@ -31,42 +31,42 @@ class ProductInfo
     #[Groups(['enovaProduct:read', "productInfo:read"])]
     private int $braid;
 
-//    #[ORM\ManyToOne(targetEntity: Brand::class)]
-//    #[ORM\JoinColumn(name: 'braid', referencedColumnName: 'id', options: ["default" => 0])]
-//    #[Groups(['enovaProduct:read', "productInfo:read"])]
-//    private ?Brand $brand;
+    #[ORM\ManyToOne(targetEntity: Brand::class)]
+    #[ORM\JoinColumn(name: 'braid', referencedColumnName: 'id', options: ["default" => 0])]
+    #[Groups(['enovaProduct:read'])]
+    private ?Brand $brand;
 
-//    #[ORM\ManyToOne(targetEntity: Variant::class)]
-//    #[ORM\JoinColumn(name: 'varid', referencedColumnName: 'id', options: ["default" => 0])]
-//    #[Groups(['enovaProduct:read', "productInfo:read"])]
-//    private ?Variant $variant;
+    #[ORM\ManyToOne(targetEntity: Variant::class)]
+    #[ORM\JoinColumn(name: 'varid', referencedColumnName: 'id', options: ["default" => 0])]
+    #[Groups(['enovaProduct:read'])]
+    private ?Variant $variant;
 
     #[ORM\Column(type: "integer", options: ["default" => 0])]
     #[Groups(['enovaProduct:read', "productInfo:read"])]
     private int $varid;
 
-//    #[ORM\ManyToOne(targetEntity: Category::class)]
-//    #[ORM\JoinColumn(name: 'catid', referencedColumnName: 'id', options: ["default" => 0])]
-//    #[Groups(['enovaProduct:read', "productInfo:read"])]
-//    private ?Category $category;
+    #[ORM\ManyToOne(targetEntity: Category::class)]
+    #[ORM\JoinColumn(name: 'catid', referencedColumnName: 'id', options: ["default" => 0])]
+    #[Groups(['enovaProduct:read'])]
+    private ?Category $category;
 
     #[ORM\Column(type: "integer", options: ["default" => 0])]
     #[Groups(['enovaProduct:read', "productInfo:read"])]
     private int $catid;
 
-//    #[ORM\ManyToOne(targetEntity: Subcategory::class)]
-//    #[ORM\JoinColumn(name: 'scatid', referencedColumnName: 'id', options: ["default" => 0])]
-//    #[Groups(['enovaProduct:read', "productInfo:read"])]
-//    private ?Subcategory $subcategory;
+    #[ORM\ManyToOne(targetEntity: Subcategory::class)]
+    #[ORM\JoinColumn(name: 'scatid', referencedColumnName: 'id', options: ["default" => 0])]
+    #[Groups(['enovaProduct:read'])]
+    private ?Subcategory $subcategory;
 
     #[ORM\Column(type: "integer", options: ["default" => 0])]
     #[Groups(['enovaProduct:read', "productInfo:read"])]
     private int $scatid;
 
-//    #[ORM\ManyToOne(targetEntity: ItemType::class)]
-//    #[ORM\JoinColumn(name: 'itypeid', referencedColumnName: 'id', options: ["default" => 0])]
-//    #[Groups(['enovaProduct:read', "productInfo:read"])]
-//    private ?ItemType $itemType;
+    #[ORM\ManyToOne(targetEntity: ItemType::class)]
+    #[ORM\JoinColumn(name: 'itypeid', referencedColumnName: 'id', options: ["default" => 0])]
+    #[Groups(['enovaProduct:read'])]
+    private ?ItemType $itemType;
 
     #[ORM\Column(type: "integer", options: ["default" => 0])]
     #[Groups(['enovaProduct:read', "productInfo:read"])]
@@ -117,10 +117,10 @@ class ProductInfo
         return $this;
     }
 
-//    public function getBrand(): ?Brand
-//    {
-//        return $this->brand;
-//    }
+    public function getBrand(): ?Brand
+    {
+        return $this->brand;
+    }
 
     public function getBraid(): int
     {
@@ -133,10 +133,10 @@ class ProductInfo
         return $this;
     }
 
-//    public function getVariant(): ?Variant
-//    {
-//        return $this->variant;
-//    }
+    public function getVariant(): ?Variant
+    {
+        return $this->variant;
+    }
 
     public function getVarid(): int
     {
@@ -149,10 +149,10 @@ class ProductInfo
         return $this;
     }
 
-//    public function getSubcategory(): ?Subcategory
-//    {
-//        return $this->subcategory;
-//    }
+    public function getSubcategory(): ?Subcategory
+    {
+        return $this->subcategory;
+    }
 
     public function getScatid(): int
     {
@@ -164,10 +164,10 @@ class ProductInfo
         $this->scatid = $scatid;
     }
 
-//    public function getCategory(): ?Category
-//    {
-//        return $this->category;
-//    }
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
 
     public function getCatid(): int
     {
@@ -180,10 +180,10 @@ class ProductInfo
         return $this;
     }
 
-//    public function getItemType(): ?ItemType
-//    {
-//        return $this->itemType;
-//    }
+    public function getItemType(): ?ItemType
+    {
+        return $this->itemType;
+    }
 
     public function getItypeid(): int
     {

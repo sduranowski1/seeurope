@@ -26,7 +26,7 @@ class Brand
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['brand:read', 'variant:read', "productInfo:read", 'enovaProduct:read'])]
+    #[Groups(['brand:read', 'variant:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]

@@ -136,6 +136,8 @@ const EnovaProductEdit = () => {
                 body: JSON.stringify(updatedProduct),
             });
 
+            console.log(updatedProduct)
+
             if (!productUpdateResponse.ok) {
                 throw new Error('Product update failed');
             }

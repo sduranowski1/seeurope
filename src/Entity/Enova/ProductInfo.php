@@ -27,14 +27,14 @@ class ProductInfo
     #[Groups(['enovaProduct:read', "productInfo:read"])]
     private int $id;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    #[Groups(['enovaProduct:read', "productInfo:read"])]
-    private int $braid;
-
     #[ORM\ManyToOne(targetEntity: Brand::class)]
     #[ORM\JoinColumn(name: 'braid', referencedColumnName: 'id', options: ["default" => 0])]
     #[Groups(['enovaProduct:read', "productInfo:read"])]
     private ?Brand $brand;
+
+    #[ORM\Column(type: "integer", options: ["default" => 0])]
+    #[Groups(['enovaProduct:read', "productInfo:read"])]
+    private int $braid;
 
     #[ORM\ManyToOne(targetEntity: Variant::class)]
     #[ORM\JoinColumn(name: 'varid', referencedColumnName: 'id', options: ["default" => 0])]

@@ -191,6 +191,9 @@ const EnovaProductEdit = () => {
                                 onChange={handleChange}
                                 label="Brand"
                             >
+                                <MenuItem value={0}>
+                                    <em></em>
+                                </MenuItem>
                                 {brands.map((brand) => (
                                     <MenuItem key={brand.id} value={brand.id}>
                                         {brand.name}
@@ -228,6 +231,9 @@ const EnovaProductEdit = () => {
                                 onChange={handleChange}
                                 label="Category"
                             >
+                                <MenuItem value={0}>
+                                    <em></em>
+                                </MenuItem>
                                 {categories.map((category) => (
                                     <MenuItem key={category.id} value={category.id}>
                                         {category.name}
@@ -245,6 +251,9 @@ const EnovaProductEdit = () => {
                                 onChange={handleChange}
                                 label="Subcategory"
                             >
+                                <MenuItem value={0}>
+                                    <em></em>
+                                </MenuItem>
                                 {subcategories.map((subcategory) => (
                                     <MenuItem key={subcategory.id} value={subcategory.id}>
                                         {subcategory.subCatName}
@@ -262,6 +271,9 @@ const EnovaProductEdit = () => {
                                 onChange={handleChange}
                                 label="Item Type"
                             >
+                                <MenuItem value={0}>
+                                    <em></em>
+                                </MenuItem>
                                 {itemTypes.map((itemType) => (
                                     <MenuItem key={itemType.id} value={itemType.id}>
                                         {itemType.name}

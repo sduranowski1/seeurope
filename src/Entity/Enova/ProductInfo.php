@@ -33,12 +33,12 @@ class ProductInfo
 
     #[ORM\ManyToOne(targetEntity: Brand::class)]
     #[ORM\JoinColumn(name: 'braid', referencedColumnName: 'id', options: ["default" => 0])]
-    #[Groups(['enovaProduct:read'])]
+    #[Groups(['enovaProduct:read', "productInfo:read"])]
     private ?Brand $brand;
 
     #[ORM\ManyToOne(targetEntity: Variant::class)]
     #[ORM\JoinColumn(name: 'varid', referencedColumnName: 'id', options: ["default" => 0])]
-    #[Groups(['enovaProduct:read'])]
+    #[Groups(['enovaProduct:read', "productInfo:read"])]
     private ?Variant $variant;
 
     #[ORM\Column(type: "integer", options: ["default" => 0])]
@@ -47,7 +47,7 @@ class ProductInfo
 
     #[ORM\ManyToOne(targetEntity: Category::class)]
     #[ORM\JoinColumn(name: 'catid', referencedColumnName: 'id', options: ["default" => 0])]
-    #[Groups(['enovaProduct:read'])]
+    #[Groups(['enovaProduct:read', "productInfo:read"])]
     private ?Category $category;
 
     #[ORM\Column(type: "integer", options: ["default" => 0])]
@@ -56,7 +56,7 @@ class ProductInfo
 
     #[ORM\ManyToOne(targetEntity: Subcategory::class)]
     #[ORM\JoinColumn(name: 'scatid', referencedColumnName: 'id', options: ["default" => 0])]
-    #[Groups(['enovaProduct:read'])]
+    #[Groups(['enovaProduct:read', "productInfo:read"])]
     private ?Subcategory $subcategory;
 
     #[ORM\Column(type: "integer", options: ["default" => 0])]
@@ -65,7 +65,7 @@ class ProductInfo
 
     #[ORM\ManyToOne(targetEntity: ItemType::class)]
     #[ORM\JoinColumn(name: 'itypeid', referencedColumnName: 'id', options: ["default" => 0])]
-    #[Groups(['enovaProduct:read'])]
+    #[Groups(['enovaProduct:read', "productInfo:read"])]
     private ?ItemType $itemType;
 
     #[ORM\Column(type: "integer", options: ["default" => 0])]

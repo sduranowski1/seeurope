@@ -17,7 +17,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ORM\Table(name: 'product_info')]  // Optional: define the table name if it's different from the class nam
 #[ApiResource(
     normalizationContext: ['groups' => ['productInfo:read']],
-//    denormalizationContext: ['groups' => ['productInfo:create']]
+    denormalizationContext: ['groups' => ['productInfo:create']]
 )]
 class ProductInfo
 {
@@ -27,61 +27,61 @@ class ProductInfo
     #[Groups(['enovaProduct:read', "productInfo:read"])]
     private int $id;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    #[Groups(['enovaProduct:read', "productInfo:read"])]
-    private int $braid;
+//    #[ORM\Column(type: "integer", options: ["default" => 0])]
+//    #[Groups(['enovaProduct:read', "productInfo:read"])]
+//    private int $braid;
 
     #[ORM\ManyToOne(targetEntity: Brand::class)]
     #[ORM\JoinColumn(name: 'braid', referencedColumnName: 'id', options: ["default" => 0])]
-    #[Groups(['enovaProduct:read', "productInfo:read"])]
+    #[Groups(['enovaProduct:read', "productInfo:read", 'productInfo:create'])]
     private ?Brand $brand;
 
     #[ORM\ManyToOne(targetEntity: Variant::class)]
     #[ORM\JoinColumn(name: 'varid', referencedColumnName: 'id', options: ["default" => 0])]
-    #[Groups(['enovaProduct:read', "productInfo:read"])]
+    #[Groups(['enovaProduct:read', "productInfo:read", 'productInfo:create'])]
     private ?Variant $variant;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    #[Groups(['enovaProduct:read', "productInfo:read"])]
-    private int $varid;
+//    #[ORM\Column(type: "integer", options: ["default" => 0])]
+//    #[Groups(['enovaProduct:read', "productInfo:read"])]
+//    private int $varid;
 
     #[ORM\ManyToOne(targetEntity: Category::class)]
     #[ORM\JoinColumn(name: 'catid', referencedColumnName: 'id', options: ["default" => 0])]
-    #[Groups(['enovaProduct:read', "productInfo:read"])]
+    #[Groups(['enovaProduct:read', "productInfo:read", 'productInfo:create'])]
     private ?Category $category;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    #[Groups(['enovaProduct:read', "productInfo:read"])]
-    private int $catid;
+//    #[ORM\Column(type: "integer", options: ["default" => 0])]
+//    #[Groups(['enovaProduct:read', "productInfo:read"])]
+//    private int $catid;
 
     #[ORM\ManyToOne(targetEntity: Subcategory::class)]
     #[ORM\JoinColumn(name: 'scatid', referencedColumnName: 'id', options: ["default" => 0])]
-    #[Groups(['enovaProduct:read', "productInfo:read"])]
+    #[Groups(['enovaProduct:read', "productInfo:read", 'productInfo:create'])]
     private ?Subcategory $subcategory;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    #[Groups(['enovaProduct:read', "productInfo:read"])]
-    private int $scatid;
+//    #[ORM\Column(type: "integer", options: ["default" => 0])]
+//    #[Groups(['enovaProduct:read', "productInfo:read"])]
+//    private int $scatid;
 
     #[ORM\ManyToOne(targetEntity: ItemType::class)]
     #[ORM\JoinColumn(name: 'itypeid', referencedColumnName: 'id', options: ["default" => 0])]
-    #[Groups(['enovaProduct:read', "productInfo:read"])]
+    #[Groups(['enovaProduct:read', "productInfo:read", 'productInfo:create'])]
     private ?ItemType $itemType;
 
-    #[ORM\Column(type: "integer", options: ["default" => 0])]
-    #[Groups(['enovaProduct:read', "productInfo:read"])]
-    private int $itypeid;
+//    #[ORM\Column(type: "integer", options: ["default" => 0])]
+//    #[Groups(['enovaProduct:read', "productInfo:read"])]
+//    private int $itypeid;
 
     #[ORM\Column(type: "text", nullable: true)]
-    #[Groups(['enovaProduct:read', "productInfo:read"])]
+    #[Groups(['enovaProduct:read', "productInfo:read", 'productInfo:create'])]
     private ?string $description = null;
 
     #[ORM\Column(type: "text", nullable: true)]
-    #[Groups(['enovaProduct:read', "productInfo:read"])]
+    #[Groups(['enovaProduct:read', "productInfo:read", 'productInfo:create'])]
     private ?string $polishDescription = null;
 
     #[ORM\Column(type: "text", nullable: true)]
-    #[Groups(['enovaProduct:read', "productInfo:read"])]
+    #[Groups(['enovaProduct:read', "productInfo:read", 'productInfo:create'])]
     private ?string $germanDescription = null;
 
     #[ORM\ManyToOne(targetEntity: ProductsMediaObject::class)]
@@ -90,7 +90,7 @@ class ProductInfo
     public ?ProductsMediaObject $image = null;
 
     #[ORM\Column(type: "string")]
-    #[Groups(['enovaProduct:read', "productInfo:read"])]
+    #[Groups(['enovaProduct:read', "productInfo:read", 'productInfo:create'])]
     private string $imagePath;
 
     public function getImagePath(): string
@@ -122,78 +122,107 @@ class ProductInfo
         return $this->brand;
     }
 
-    public function getBraid(): int
+    public function setBrand(?Brand $brand): void
     {
-        return $this->braid;
+        $this->brand = $brand;
     }
 
-    public function setBraid(int $braid): self
-    {
-        $this->braid = $braid;
-        return $this;
-    }
+
+
+//    public function getBraid(): int
+//    {
+//        return $this->braid;
+//    }
+//
+//    public function setBraid(int $braid): self
+//    {
+//        $this->braid = $braid;
+//        return $this;
+//    }
 
     public function getVariant(): ?Variant
     {
         return $this->variant;
     }
 
-    public function getVarid(): int
+    public function setVariant(?Variant $variant): void
     {
-        return $this->varid;
+        $this->variant = $variant;
     }
 
-    public function setVarid(int $varid): self
-    {
-        $this->varid = $varid;
-        return $this;
-    }
+
+
+//    public function getVarid(): int
+//    {
+//        return $this->varid;
+//    }
+//
+//    public function setVarid(int $varid): self
+//    {
+//        $this->varid = $varid;
+//        return $this;
+//    }
 
     public function getSubcategory(): ?Subcategory
     {
         return $this->subcategory;
     }
 
-    public function getScatid(): int
+    public function setSubcategory(?Subcategory $subcategory): void
     {
-        return $this->scatid;
+        $this->subcategory = $subcategory;
     }
 
-    public function setScatid(int $scatid): void
-    {
-        $this->scatid = $scatid;
-    }
+//    public function getScatid(): int
+//    {
+//        return $this->scatid;
+//    }
+//
+//    public function setScatid(int $scatid): void
+//    {
+//        $this->scatid = $scatid;
+//    }
 
     public function getCategory(): ?Category
     {
         return $this->category;
     }
 
-    public function getCatid(): int
+    public function setCategory(?Category $category): void
     {
-        return $this->catid;
+        $this->category = $category;
     }
 
-    public function setCatid(int $catid): self
-    {
-        $this->catid = $catid;
-        return $this;
-    }
+
+//    public function getCatid(): int
+//    {
+//        return $this->catid;
+//    }
+//
+//    public function setCatid(int $catid): self
+//    {
+//        $this->catid = $catid;
+//        return $this;
+//    }
 
     public function getItemType(): ?ItemType
     {
         return $this->itemType;
     }
 
-    public function getItypeid(): int
+    public function setItemType(?ItemType $itemType): void
     {
-        return $this->itypeid;
+        $this->itemType = $itemType;
     }
-
-    public function setItypeid(int $itypeid): void
-    {
-        $this->itypeid = $itypeid;
-    }
+//    public function getItypeid(): int
+//    {
+//        return $this->itypeid;
+//    }
+//
+//    public function setItypeid(int $itypeid): void
+//    {
+//        $this->itypeid = $itypeid;
+//    }
 
     public function getDescription(): ?string
     {

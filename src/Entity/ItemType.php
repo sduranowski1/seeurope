@@ -26,11 +26,11 @@ class ItemType
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(['itemType:read'])]
+    #[Groups(['itemType:read', "productInfo:read", 'productInfo:create'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
-    #[Groups(['itemType:read', 'itemType:create', 'itemType:update', "productInfo:read", 'enovaProduct:read'])]
+    #[Groups(['itemType:read', 'itemType:create', 'itemType:update', "productInfo:read", 'productInfo:create', 'enovaProduct:read'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 50)]

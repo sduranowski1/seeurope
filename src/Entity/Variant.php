@@ -24,11 +24,11 @@ class Variant
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['variant:read'])]
+    #[Groups(['variant:read', "productInfo:read", 'productInfo:create'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
-    #[Groups(['variant:read', 'variant:create', 'variant:update', "productInfo:read", 'enovaProduct:read'])]
+    #[Groups(['variant:read', 'variant:create', 'variant:update', "productInfo:read", 'productInfo:create', 'enovaProduct:read'])]
     private ?string $variantname = null;
 
 

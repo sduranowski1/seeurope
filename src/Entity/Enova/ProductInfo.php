@@ -34,12 +34,12 @@ class ProductInfo
     #[ORM\ManyToOne(targetEntity: Brand::class)]
     #[ORM\JoinColumn(name: 'braid', referencedColumnName: 'id', options: ["default" => 0])]
     #[Groups(['enovaProduct:read', "productInfo:read", 'productInfo:create'])]
-    private ?Brand $brand;
+    private ?Brand $brand = null;
 
     #[ORM\ManyToOne(targetEntity: Variant::class)]
     #[ORM\JoinColumn(name: 'varid', referencedColumnName: 'id', options: ["default" => 0])]
     #[Groups(['enovaProduct:read', "productInfo:read", 'productInfo:create'])]
-    private ?Variant $variant;
+    private ?Variant $variant = null;
 
 //    #[ORM\Column(type: "integer", options: ["default" => 0])]
 //    #[Groups(['enovaProduct:read', "productInfo:read"])]
@@ -48,7 +48,7 @@ class ProductInfo
     #[ORM\ManyToOne(targetEntity: Category::class)]
     #[ORM\JoinColumn(name: 'catid', referencedColumnName: 'id', options: ["default" => 0])]
     #[Groups(['enovaProduct:read', "productInfo:read", 'productInfo:create'])]
-    private ?Category $category;
+    private ?Category $category = null;
 
 //    #[ORM\Column(type: "integer", options: ["default" => 0])]
 //    #[Groups(['enovaProduct:read', "productInfo:read"])]
@@ -57,7 +57,7 @@ class ProductInfo
     #[ORM\ManyToOne(targetEntity: Subcategory::class)]
     #[ORM\JoinColumn(name: 'scatid', referencedColumnName: 'id', options: ["default" => 0])]
     #[Groups(['enovaProduct:read', "productInfo:read", 'productInfo:create'])]
-    private ?Subcategory $subcategory;
+    private ?Subcategory $subcategory = null;
 
 //    #[ORM\Column(type: "integer", options: ["default" => 0])]
 //    #[Groups(['enovaProduct:read', "productInfo:read"])]
@@ -66,7 +66,7 @@ class ProductInfo
     #[ORM\ManyToOne(targetEntity: ItemType::class)]
     #[ORM\JoinColumn(name: 'itypeid', referencedColumnName: 'id', options: ["default" => 0])]
     #[Groups(['enovaProduct:read', "productInfo:read", 'productInfo:create'])]
-    private ?ItemType $itemType;
+    private ?ItemType $itemType = null;
 
 //    #[ORM\Column(type: "integer", options: ["default" => 0])]
 //    #[Groups(['enovaProduct:read', "productInfo:read"])]

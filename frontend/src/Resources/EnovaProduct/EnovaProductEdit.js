@@ -77,8 +77,41 @@ const EnovaProductEdit = () => {
     }, [id]);
 
     const handleChange = (event) => {
-        setProduct({...product, [event.target.name]: event.target.value});
+        const { name, value } = event.target;
+
+        if (name === 'brand') {
+            setProduct((prevProduct) => ({
+                ...prevProduct,
+                brand: value === 0 ? null : { id: value },  // If value is 0, set brand to null
+            }));
+        } else if (name === 'variant') {
+            setProduct((prevProduct) => ({
+                ...prevProduct,
+                variant: { id: value },  // Update the variant by id
+            }));
+        } else if (name === 'category') {
+            setProduct((prevProduct) => ({
+                ...prevProduct,
+                category: { id: value },  // Update the category by id
+            }));
+        } else if (name === 'subcategory') {
+            setProduct((prevProduct) => ({
+                ...prevProduct,
+                subcategory: { id: value },  // Update the subcategory by id
+            }));
+        } else if (name === 'itemType') {
+            setProduct((prevProduct) => ({
+                ...prevProduct,
+                itemType: { id: value },  // Update the itemType by id
+            }));
+        } else {
+            setProduct((prevProduct) => ({
+                ...prevProduct,
+                [name]: value,  // Update other fields
+            }));
+        }
     };
+
 
     const handleFileChange = (event) => {
         const file = event.target.files[0];
@@ -115,11 +148,11 @@ const EnovaProductEdit = () => {
 
             // Prepare the updated product data
             const updatedProduct = {
-                braid: product.braid,
-                varid: product.varid,
-                catid: product.catid,
-                scatid: product.scatid,
-                itypeid: product.itypeid,
+                brand: product.brand?.id ? { id: product.brand.id } : "", // Set brand to null if no ID is provided
+                variant: {id: product.variant?.id},
+                category: {id: product.category?.id},
+                subcategory: {id: product.subcategory?.id},
+                itemType: {id: product.itemType?.id},
                 description: product.description,
                 polishDescription: product.polishDescription,
                 germanDescription: product.germanDescription,
@@ -188,8 +221,8 @@ const EnovaProductEdit = () => {
                             <InputLabel id="brand-label">Brand</InputLabel>
                             <Select
                                 labelId="brand-label"
-                                name="braid"
-                                value={product?.braid || ''}
+                                name="brand"
+                                value={product.brand?.id || ''}
                                 onChange={handleChange}
                                 label="Brand"
                             >
@@ -208,8 +241,8 @@ const EnovaProductEdit = () => {
                             <InputLabel id="variant-label">Variant</InputLabel>
                             <Select
                                 labelId="variant-label"
-                                name="varid"
-                                value={product?.varid || ''}
+                                name="variant"
+                                value={product.variant?.id || ''}
                                 onChange={handleChange}
                                 label="Variant"
                             >
@@ -228,8 +261,8 @@ const EnovaProductEdit = () => {
                             <InputLabel id="category-label">Category</InputLabel>
                             <Select
                                 labelId="category-label"
-                                name="catid"
-                                value={product?.catid || ''}
+                                name="category"
+                                value={product.category?.id || ''}
                                 onChange={handleChange}
                                 label="Category"
                             >
@@ -248,8 +281,8 @@ const EnovaProductEdit = () => {
                             <InputLabel id="subcategory-label">Subcategory</InputLabel>
                             <Select
                                 labelId="subcategory-label"
-                                name="scatid"
-                                value={product?.scatid || ''}
+                                name="subcategory"
+                                value={product.subcategory?.id || ''}
                                 onChange={handleChange}
                                 label="Subcategory"
                             >
@@ -268,8 +301,8 @@ const EnovaProductEdit = () => {
                             <InputLabel id="itemType-label">Item Type</InputLabel>
                             <Select
                                 labelId="itemType-label"
-                                name="itypeid"
-                                value={product?.itypeid || ''}
+                                name="itemType"
+                                value={product.itemType?.id || ''}
                                 onChange={handleChange}
                                 label="Item Type"
                             >

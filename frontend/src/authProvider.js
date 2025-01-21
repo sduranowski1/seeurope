@@ -55,11 +55,29 @@ const authProvider = {
         // other error code (404, 500, etc): no need to log out
         return Promise.resolve();
     },
-    getIdentity: () =>
-        Promise.resolve({
-            id: 'user',
-            fullName: 'SE-Admin',
-        }),
+    getIdentity: () => {
+        try {
+            const token = localStorage.getItem('authToken');
+            if (!token) {
+                return Promise.reject(new Error('No token found'));
+            }
+
+            // Decode the JWT token
+            const decodedToken = jwtDecode(token);
+
+            // Extract identity details from the token
+            const { id, username, fullName } = decodedToken; // Adjust based on your token structure
+
+            return Promise.resolve({
+                id: decodedToken,
+                email: username,
+                fullName: fullName || 'SE-Admin', // Fallback if fullName is undefined
+            });
+        } catch (error) {
+            console.error('Error decoding token or fetching identity:', error);
+            return Promise.reject(error);
+        }
+    },
     getPermissions: () => Promise.resolve(''),
     getToken: () => {
         return localStorage.getItem('authToken');

@@ -87,6 +87,7 @@ import Box from "@mui/material/Box";
 import {CircularProgress} from "@mui/material";
 import Cart from "./Pages/Order/Cart";
 import Checkout from "./Pages/Order/Checkout";
+import Success from "./Pages/Order/Success";
 // import BrandEdit from "./Resources/Product/BrandEdit";
 // import {SidebarComponent} from "./Components/SidebarComponent/SidebarComponent";
 // import {FooterComponent} from "./Components/FooterComponent/FooterComponent";
@@ -135,6 +136,7 @@ const App = () => {
                           <Route path="my-details" element={<Layout><MyDetails /></Layout>} />
                           <Route path="cart" element={<Layout><Cart /></Layout>} />
                           <Route path="checkout" element={<Layout><Checkout /></Layout>} />
+                          <Route path="success" element={<Layout><Success /></Layout>} />
             </Route>
             <Route path="/admin/*" element={<AdminLayout />} >
                 <Route path="enova-product/:id" element={<EnovaProductEdit />} />

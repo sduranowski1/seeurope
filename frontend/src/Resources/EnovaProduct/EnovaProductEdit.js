@@ -14,7 +14,9 @@ import {
 import { CloudUpload as CloudUploadIcon } from '@mui/icons-material';
 import EnovaProductById from "./EnovaProductById";
 import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css'; // Import Quill styles
+import 'react-quill/dist/quill.snow.css';
+import ListItemIcon from "@mui/material/ListItemIcon"; // Import Quill styles
+import ClearIcon from '@mui/icons-material/Clear'; // Import Quill styles
 
 const EnovaProductEdit = () => {
     const {id} = useParams(); // Get the product ID from the URL
@@ -82,7 +84,7 @@ const EnovaProductEdit = () => {
         if (name === 'brand') {
             setProduct((prevProduct) => ({
                 ...prevProduct,
-                brand: value === 0 ? null : { id: value },  // If value is 0, set brand to null
+                brand: { id: value },  // If value is 0, set brand to null
             }));
         } else if (name === 'variant') {
             setProduct((prevProduct) => ({
@@ -148,11 +150,12 @@ const EnovaProductEdit = () => {
 
             // Prepare the updated product data
             const updatedProduct = {
-                brand: product.brand?.id ? { id: product.brand.id } : "", // Set brand to null if no ID is provided
-                variant: {id: product.variant?.id},
-                category: {id: product.category?.id},
-                subcategory: {id: product.subcategory?.id},
-                itemType: {id: product.itemType?.id},
+                ...(product.brand?.id && product.brand.id !== 0 ? { brand: { id: product.brand.id } } : {}),
+                // brand: {id: product.brand?.id},
+                ...(product.variant?.id && product.variant.id !== 0 ? { variant: { id: product.variant.id } } : {}),
+                ...(product.category?.id && product.category.id !== 0 ? { category: { id: product.category.id } } : {}),
+                ...(product.subcategory?.id && product.subcategory.id !== 0 ? { subcategory: { id: product.subcategory.id } } : {}),
+                ...(product.itemType?.id && product.itemType.id !== 0 ? { itemType: { id: product.itemType.id } } : {}),
                 description: product.description,
                 polishDescription: product.polishDescription,
                 germanDescription: product.germanDescription,
@@ -227,7 +230,9 @@ const EnovaProductEdit = () => {
                                 label="Brand"
                             >
                                 <MenuItem value={0}>
-                                    <em></em>
+                                    <ListItemIcon>
+                                        <ClearIcon />
+                                    </ListItemIcon>
                                 </MenuItem>
                                 {brands.map((brand) => (
                                     <MenuItem key={brand.id} value={brand.id}>
@@ -247,7 +252,9 @@ const EnovaProductEdit = () => {
                                 label="Variant"
                             >
                                 <MenuItem value={0}>
-                                    <em></em>
+                                    <ListItemIcon>
+                                        <ClearIcon />
+                                    </ListItemIcon>
                                 </MenuItem>
                                 {variants.map((variant) => (
                                     <MenuItem key={variant.id} value={variant.id}>
@@ -267,7 +274,9 @@ const EnovaProductEdit = () => {
                                 label="Category"
                             >
                                 <MenuItem value={0}>
-                                    <em></em>
+                                    <ListItemIcon>
+                                        <ClearIcon />
+                                    </ListItemIcon>
                                 </MenuItem>
                                 {categories.map((category) => (
                                     <MenuItem key={category.id} value={category.id}>
@@ -287,7 +296,9 @@ const EnovaProductEdit = () => {
                                 label="Subcategory"
                             >
                                 <MenuItem value={0}>
-                                    <em></em>
+                                    <ListItemIcon>
+                                        <ClearIcon />
+                                    </ListItemIcon>
                                 </MenuItem>
                                 {subcategories.map((subcategory) => (
                                     <MenuItem key={subcategory.id} value={subcategory.id}>
@@ -307,7 +318,9 @@ const EnovaProductEdit = () => {
                                 label="Item Type"
                             >
                                 <MenuItem value={0}>
-                                    <em></em>
+                                    <ListItemIcon>
+                                        <ClearIcon />
+                                    </ListItemIcon>
                                 </MenuItem>
                                 {itemTypes.map((itemType) => (
                                     <MenuItem key={itemType.id} value={itemType.id}>

@@ -197,13 +197,13 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
                 const capacity = product.features.find((value) => value.nazwa === 'Capacity');
                 const capacityFeat = capacity ? capacity.wartosc : null;
 
-                const brandName = brands.find((brand) => brand.id === product.productInfo?.braid)?.name || 'Other';
-                const variantName = variants.find((variant) => variant.id === product.productInfo?.varid)?.variantname || '';
-                const categoryName = categories.find((category) => category.id === product.productInfo?.catid)?.name || '';
-                const subcategoryName = subcategories.find((subcategory) => subcategory.id === product.productInfo?.scatid)?.subCatName || '';
-                const itemTypeName = itemTypes.find((itemType) => itemType.id === product.productInfo?.itypeid)?.name || '';
+                // const brandName = brands.find((brand) => brand.id === product.productInfo?.braid)?.name || 'Other';
+                // const variantName = variants.find((variant) => variant.id === product.productInfo?.varid)?.variantname || '';
+                // const categoryName = categories.find((category) => category.id === product.productInfo?.catid)?.name || '';
+                // const subcategoryName = subcategories.find((subcategory) => subcategory.id === product.productInfo?.scatid)?.subCatName || '';
+                // const itemTypeName = itemTypes.find((itemType) => itemType.id === product.productInfo?.itypeid)?.name || '';
 
-                return { ...product, procWzrostu, replacementParts, capacityFeat,  brandName, variantName, categoryName, subcategoryName, itemTypeName };
+                return { ...product, procWzrostu, replacementParts, capacityFeat};
             });
             console.log("hi:", data)
 
@@ -261,13 +261,13 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
         console.log("normalizedSecondLastPart:", normalizedSecondLastPart);
 
         const filtered = products.filter((product) => {
-            const normalizedSubcategory = product.subcategoryName
+            const normalizedSubcategory = product.productInfo?.subcategory?.subCatName
                 ?.replace(/[^a-zA-Z0-9]/g, "")
                 .toLowerCase();
-            const normalizedCategory = product.categoryName
+            const normalizedCategory = product.productInfo?.category?.name
                 ?.replace(/[^a-zA-Z0-9]/g, "")
                 .toLowerCase();
-            const normalizedItemType = product.itemTypeName // Assuming `itemTypeName` exists in the product
+            const normalizedItemType = product.productInfo?.itemType?.name // Assuming `itemTypeName` exists in the product
                 ?.replace(/[^a-zA-Z0-9]/g, "")
                 .toLowerCase();
 
@@ -320,8 +320,8 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
 
     function findCheckboxes() {
         return Object.values(filteredProducts).flat().reduce((acc, product) => {
-            if (!acc.hasOwnProperty(product.brandName)) {
-                acc[product.brandName] = false;
+            if (!acc.hasOwnProperty(product?.productInfo?.brand?.name)) {
+                acc[product?.productInfo?.brand?.name] = false;
             }
             return acc;
         }, {});
@@ -359,11 +359,14 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
     // console.log(filteredItemTypeTitle[0].name);
 
     if (parts.length === 5) {
-        title = products[0]?.categoryName;
+        // title = products[0]?.categoryName;
+        title = products[0]?.productInfo.category?.name;
     } else if (parts.length === 6) {
-        title = products[0]?.subcategoryName;
+        // title = products[0]?.subcategoryName;
+        title = products[0]?.productInfo.subcategory?.subCatName;
     } else if (parts.length === 7) {
-        title = products[0]?.itemTypeName;
+        // title = products[0]?.itemTypeName;
+        title = products[0]?.productInfo.itemType?.name;
     } else {
         title = "my_machine";
     }
@@ -449,7 +452,7 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
                 {/*<SubcategoryTable productsData={productsData} displayedItems={displayedItems}/>*/}
                 {/*<SubcategoryTable productsData={productsData} displayedItems={displayedItems} checkboxes={checkboxes}/>*/}
                 <SubcategoryTable
-                    productsData={filteredProducts}
+                    productsData={products}
                     onProductClick={handleProductClick}
                     lastPartToCollapse={lastPart}
                 />

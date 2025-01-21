@@ -206,8 +206,11 @@ export const SubcategoryTable = ({ productsData, onProductClick, lastPartToColla
                             <td>{product.name || ""}</td>
                             <td>{product.capacityFeat || ""}</td>
                             {/*<td>{product.netto || ""}</td>*/}
-                            <td>{product.brandName === "Other" ? ("") : ("")}</td>
-                            <td>{product.variantName || ""}</td>
+                            {/*<td>{product.productInfo?.brand?.name === "Other" ? ("") : ("")}</td>*/}
+                            <td>{product.productInfo?.brand?.name || ""}</td>
+                            {/*<td>{product.brandName === "Other" ? ("") : ("")}</td>*/}
+                            {/*<td>{product.variantName || ""}</td>*/}
+                            <td>{product.productInfo?.variant?.variantname || ""}</td>
                             {/*<td>{product.categoryName || ""}</td>*/}
                             {/*<td>{product.subcategoryName || ""}</td>*/}
                             <td>

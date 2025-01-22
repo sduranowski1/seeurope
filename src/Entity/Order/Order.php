@@ -3,12 +3,6 @@
 namespace App\Entity\Order;
 
 use ApiPlatform\Metadata\ApiResource;
-use ApiPlatform\Metadata\Delete;
-use ApiPlatform\Metadata\Get;
-use ApiPlatform\Metadata\GetCollection;
-use ApiPlatform\Metadata\Post;
-use ApiPlatform\Metadata\Put;
-use App\Entity\Enova\UserEnova;
 use App\Repository\OrderRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -16,12 +10,7 @@ use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 
 #[ORM\Entity(repositoryClass: OrderRepository::class)]
 #[HasLifecycleCallbacks]
-#[ApiResource(security: "is_granted('ROLE_USER')")]
-#[Get(security: "is_granted('ROLE_ADMIN') or object.owner == user")]
-#[Put(security: "is_granted('ROLE_ADMIN') or object.owner == user")]
-#[GetCollection(security: "is_granted('ROLE_ADMIN')")]
-#[Post]
-#[Delete(security: "is_granted('ROLE_ADMIN') or object.owner == user")]
+#[ApiResource]
 #[ORM\Table(name: 'orders')]
 class Order
 {
@@ -56,9 +45,6 @@ class Order
 
     #[ORM\Column(type: 'float')]
     private ?float $total = null;
-
-    #[ORM\ManyToOne]
-    public UserEnova $owner;
 
     // Getters and setters for all properties...
 

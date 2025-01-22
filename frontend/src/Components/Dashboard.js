@@ -11,9 +11,10 @@ import {faAngleUp} from "@fortawesome/free-solid-svg-icons";
 import {Link} from "react-router-dom";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Accordion from "@mui/material/Accordion";
+import {useEffect, useState} from "react";
 
 export const Dashboard = () => {
-
+    const [orders, setOrders] = useState([]);
 
 
     const fetchData = [
@@ -24,6 +25,21 @@ export const Dashboard = () => {
         {itemNo: 4, product: 'ŁADOWARKA SKRZYNKOWA', dateChange: '12.03.2024', info: 'ouitrr'},
         {itemNo: 5, product: 'WÓZEK WIDŁOWY', dateChange: '13.03.2024', info: 'ertete'},
     ]
+
+    useEffect(() => {
+        // Fetch orders from an API or another data source
+        const fetchOrders = async () => {
+            try {
+                const response = await fetch('https://se-europe-test.pl/api/orders'); // Replace with your API endpoint
+                const data = await response.json();
+                setOrders(data);
+            } catch (error) {
+                console.error('Error fetching orders:', error);
+            }
+        };
+
+        fetchOrders();
+    }, []);
 
     function displayData(number) {
         console.log(document.querySelector('.vehicles-list .productData .itemNo'));
@@ -42,20 +58,59 @@ export const Dashboard = () => {
                         <Link className={'aside__line aside__line--narrow'} >Purchases</Link>
                     </AccordionSummary>
                     <AccordionDetails>
-                        <div className={'infoData'}>
-                            <p>Nr produktu</p>
-                            <p>Produkt</p>
-                            <p>Data zmiany</p>
-                            <p>Informacje</p>
-                        </div>
                         <div className={'productData'}>
-                            <p className={'itemNo'}></p>
-                            <p className={'product'}></p>
-                            <p className={'dateChange'}></p>
-                            <p className={'info'}></p>
+                            {orders.length > 0 ? (
+                                <table className="ordersTable" style={{width: "100%"}}>
+                                    <thead>
+                                    <tr>
+                                        <th>Order ID</th>
+                                        <th>Email</th>
+                                        {/*<th>Name</th>*/}
+                                        {/*<th>Address</th>*/}
+                                        <th>Phone</th>
+                                        <th>Order Date</th>
+                                        <th>Subtotal</th>
+                                        <th>Tax</th>
+                                        <th>Total</th>
+                                        <th>Items</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {orders.map((order, index) => (
+                                        <tr key={index}>
+                                            <td>{order.id}</td>
+                                            <td>{order.email}</td>
+                                            {/*<td>{order.name}</td>*/}
+                                            {/*<td>{order.address || 'N/A'}</td>*/}
+                                            <td>{order.phone || 'N/A'}</td>
+                                            <td>{new Date(order.orderDate).toLocaleDateString()}</td>
+                                            <td>${order.subtotal}</td>
+                                            <td>${order.tax}</td>
+                                            <td>${order.total}</td>
+                                            <td>
+                                                {/* Optional: Display items in a compact format */}
+                                                {order.items.length > 0 ? (
+                                                    <ul>
+                                                        {order.items.map((item, itemIndex) => (
+                                                            <li key={itemIndex}>
+                                                                <strong>{item.name}</strong> - {item.quantity} x ${item.price}
+                                                            </li>
+                                                        ))}
+                                                    </ul>
+                                                ) : (
+                                                    <p>No items in this order</p>
+                                                )}
+                                            </td>
+                                        </tr>
+                                    ))}
+                                    </tbody>
+                                </table>
+                            ) : (
+                                <p>No orders available</p>
+                            )}
                         </div>
-
                     </AccordionDetails>
+
                 </Accordion>
                 <Accordion className={'aside__line aside__line--accordion'}>
                     <AccordionSummary
@@ -127,22 +182,22 @@ export const Dashboard = () => {
                         </div>
                     </AccordionDetails>
                 </Accordion>
-                <Accordion className={'aside__line aside__line--accordion'}>
-                    <AccordionSummary
-                        expandIcon={<FontAwesomeIcon className={'angle-up'} icon={faAngleUp} />}
-                        aria-controls="panel1-content"
-                        id="panel1-header"
-                    >
-                        <Link className={'aside__line aside__line--narrow'} >Moje ulubione produkty</Link>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                        <ul >
-                            <li>
-                                3 punkt
-                            </li>
-                        </ul>
-                    </AccordionDetails>
-                </Accordion>
+                {/*<Accordion className={'aside__line aside__line--accordion'}>*/}
+                {/*    <AccordionSummary*/}
+                {/*        expandIcon={<FontAwesomeIcon className={'angle-up'} icon={faAngleUp} />}*/}
+                {/*        aria-controls="panel1-content"*/}
+                {/*        id="panel1-header"*/}
+                {/*    >*/}
+                {/*        <Link className={'aside__line aside__line--narrow'} >Moje ulubione produkty</Link>*/}
+                {/*    </AccordionSummary>*/}
+                {/*    <AccordionDetails>*/}
+                {/*        <ul >*/}
+                {/*            <li>*/}
+                {/*                3 punkt*/}
+                {/*            </li>*/}
+                {/*        </ul>*/}
+                {/*    </AccordionDetails>*/}
+                {/*</Accordion>*/}
                 <Accordion className={'aside__line aside__line--accordion'}>
                     <AccordionSummary
                         expandIcon={<FontAwesomeIcon className={'angle-up'} icon={faAngleUp} />}

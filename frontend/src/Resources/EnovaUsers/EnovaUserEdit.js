@@ -69,10 +69,9 @@ const EnovaUserEdit = () => {
     const handleSave = async () => {
         try {
             const token = localStorage.getItem('authToken'); // Retrieve the token from localStorage
+            console.log("Token from localStorage:", token);
 
-            console.log(token)
             if (!token) {
-                // Handle case where token is not found (e.g., redirect to login)
                 console.error('No token found in localStorage');
                 return;
             }
@@ -83,21 +82,22 @@ const EnovaUserEdit = () => {
                 plainPassword: product.plainPassword,
             };
 
-            console.log(JSON.stringify(updatedProduct))
+            console.log("Payload being sent:", JSON.stringify(updatedProduct));
 
-            // Send the PUT request
+            // Send the PATCH request
             const productUpdateResponse = await fetch(`https://se-europe-test.pl/api/user_enovas/${id}`, {
                 method: 'PATCH',
                 headers: {
                     'Accept': 'application/json',
-                    'Content-Type': 'application/merge-patch+json',
-                    'Authorization': `Bearer ${token}`, // Add token to Authorization header
-
+                    'Content-Type': 'application/merge-patch+json', // Ensure correct Content-Type
+                    'Authorization': `Bearer ${token}`,
                 },
                 body: JSON.stringify(updatedProduct),
             });
 
             if (!productUpdateResponse.ok) {
+                const errorResponse = await productUpdateResponse.json();
+                console.error('Error response:', errorResponse);
                 throw new Error('Product update failed');
             }
 
@@ -105,8 +105,11 @@ const EnovaUserEdit = () => {
             navigate('/admin/enova-products'); // Redirect after successful update
         } catch (error) {
             console.error('Error saving product:', error);
+            alert(`Error: ${error.message}`);
         }
     };
+
+
 
 
     if (loading) {

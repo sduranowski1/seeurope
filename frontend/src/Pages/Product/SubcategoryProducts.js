@@ -348,6 +348,7 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
     // console.log(products[0].subcategoryName)
     // console.log(products[0].itemTypeName)
     console.log(products)
+    console.log(filteredProducts)
 
     const filteredCategoriesTitle = categories.filter(category => category.name === lastPart);
     // console.log(filteredCategoriesTitle[0]);
@@ -452,7 +453,7 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
                 {/*<SubcategoryTable productsData={productsData} displayedItems={displayedItems}/>*/}
                 {/*<SubcategoryTable productsData={productsData} displayedItems={displayedItems} checkboxes={checkboxes}/>*/}
                 <SubcategoryTable
-                    productsData={products}
+                    productsData={filteredProducts}
                     onProductClick={handleProductClick}
                     lastPartToCollapse={lastPart}
                 />

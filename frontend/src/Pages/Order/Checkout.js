@@ -1,48 +1,68 @@
-import React, { useState, useEffect } from 'react';
-import { Container, Typography, Grid, Paper, Box, Divider, Button } from '@mui/material';
+import React, {useState, useEffect, useContext} from 'react';
+import {Container, Typography, Grid, Paper, Box, Divider, Button, CircularProgress} from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
 import authProvider from "../../authProvider";
+import AuthContext from "../../AuthContext";
+import {jwtDecode} from "jwt-decode";
 
 const Checkout = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const { cartItems, subtotal, tax, total } = location.state || {};
+    const { token } = useContext(AuthContext); // Get token from AuthContext
 
-    const [userInfo, setUserInfo] = useState(null); // Basic user info from authProvider
+    const [userEmail, setUserEmail] = useState(null);
+    // const [userInfo, setUserInfo] = useState(null); // Basic user info from authProvider
     const [userDetails, setUserDetails] = useState(null); // Additional user details from API
     const [isSubmitting, setIsSubmitting] = useState(false);
+
 
     useEffect(() => {
         const fetchUserInfo = async () => {
             try {
-                const identity = await authProvider.getIdentity();
-                setUserInfo(identity);
+                if (token) {
+                    // Decode the JWT token to get the email
+                    const decodedToken = jwtDecode(token);
+                    console.log(decodedToken)
+                    const email = decodedToken?.username;
 
-                if (identity && identity.email) {
-                    // Fetch additional user details using email
-                    const response = await fetch(
-                        `https://se-europe-test.pl/api/user_enovas?email=${encodeURIComponent(identity.email)}`,
-                        {
-                            method: 'GET',
-                            headers: {
-                                Accept: 'application/json',
-                            },
+                    if (email) {
+                        setUserEmail(email);
+                        console.log(email)
+
+                        // Fetch additional user details using the email
+                        const response = await fetch(
+                            `https://se-europe-test.pl/api/user_enovas?email=${encodeURIComponent(email)}`,
+                            {
+                                method: 'GET',
+                                headers: {
+                                    Accept: 'application/json',
+                                },
+                            }
+                        );
+
+                        if (response.ok) {
+                            const data = await response.json();
+                            setUserDetails(data[0]); // Assuming the API returns an array with the user object
+                        } else {
+                            console.error('Failed to fetch additional user details:', response.status);
                         }
-                    );
-                    if (response.ok) {
-                        const data = await response.json();
-                        setUserDetails(data[0]); // Assuming the API returns an array with the user object
                     } else {
-                        console.error('Failed to fetch additional user details:', response.status);
+                        console.error('Email not found in the token');
                     }
+                } else {
+                    console.error('Token is missing from AuthContext');
                 }
             } catch (error) {
-                console.error('Error fetching user information:', error);
+                console.error('Error decoding token or fetching user information:', error);
             }
         };
 
         fetchUserInfo();
-    }, []);
+    }, [token]);
+
+    console.log('Current localStorage:', localStorage);
+    console.log('Current localStorage:', userEmail);
 
     const handleOrderSubmission = async () => {
         if (!cartItems || cartItems.length === 0) {
@@ -53,12 +73,10 @@ const Checkout = () => {
         setIsSubmitting(true);
 
         const orderData = {
-            user: {
-                email: userInfo?.email,
-                name: userDetails?.name,
-                address: userDetails?.address,
-                phone: userDetails?.phone,
-            },
+            email: userEmail,
+            name: userDetails?.name || "test",
+            address: userDetails?.address || "test",
+            phone: userDetails?.phone || "444777333",
             items: cartItems.map((item) => ({
                 id: item.id,
                 name: item.name,
@@ -71,6 +89,8 @@ const Checkout = () => {
             orderDate: new Date().toISOString(),
         };
 
+        console.log(orderData);
+
         try {
             const response = await fetch('https://se-europe-test.pl/api/orders', {
                 method: 'POST',
@@ -81,8 +101,11 @@ const Checkout = () => {
             });
 
             if (response.ok) {
+                // Clear the cart data from localStorage
+                localStorage.removeItem('cart');  // This will remove the cart from local storage
+
                 // Redirect to success page
-                navigate('/success', { state: { orderId: (await response.json()).id } });
+                navigate('/dashboard/success', { state: { orderId: (await response.json()).id } });
             } else {
                 console.error('Failed to submit order:', response.status);
                 alert('Failed to place your order. Please try again.');
@@ -95,8 +118,19 @@ const Checkout = () => {
         }
     };
 
-    if (!userInfo) {
-        return <Typography>Loading...</Typography>;
+
+    if (!userEmail) {
+        return (
+            <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                height="25vh" // Or use specific height if you want it in a smaller area
+                width="100%"
+            >
+                <CircularProgress />
+            </Box>
+        );
     }
 
     return (
@@ -113,7 +147,7 @@ const Checkout = () => {
                         </Typography>
                         <Box>
                             <Typography variant="body1">
-                                <strong>Email:</strong> {userInfo.email}
+                                <strong>Email:</strong> {userEmail}
                             </Typography>
                             {userDetails && (
                                 <>

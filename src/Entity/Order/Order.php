@@ -2,6 +2,9 @@
 
 namespace App\Entity\Order;
 
+use ApiPlatform\Doctrine\Common\Filter\SearchFilterInterface;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\OrderRepository;
 use Doctrine\DBAL\Types\Types;
@@ -12,6 +15,12 @@ use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 #[HasLifecycleCallbacks]
 #[ApiResource]
 #[ORM\Table(name: 'orders')]
+#[ApiFilter(
+    SearchFilter::class,
+    properties: [
+        'email' => SearchFilterInterface::STRATEGY_PARTIAL
+    ]
+)]
 class Order
 {
     #[ORM\Id]

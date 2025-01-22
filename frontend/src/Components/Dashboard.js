@@ -11,28 +11,50 @@ import {faAngleUp} from "@fortawesome/free-solid-svg-icons";
 import {Link} from "react-router-dom";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Accordion from "@mui/material/Accordion";
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
+import {jwtDecode} from "jwt-decode";
+import AuthContext from "../AuthContext";
+import {Button} from "@mui/material";
+import OrderItemsModal from "./OrderItemsModal/OrderItemsModal";
 
 export const Dashboard = () => {
     const [orders, setOrders] = useState([]);
+    const { token } = useContext(AuthContext); // Get token from AuthContext
+    const [userEmail, setUserEmail] = useState(null);
 
 
-    const fetchData = [
-        {itemNo: 0, product: 'ŁADOWARKA KOŁOWA', dateChange: '03.03.2024', info: 'abcdef'},
-        {itemNo: 1, product: 'KOPARKA', dateChange: '01.03.2024', info: 'ijghkl'},
-        {itemNo: 2, product: 'TRAKTOR', dateChange: '10.03.2024', info: 'bvcbcc'},
-        {itemNo: 3, product: 'PODNOŚNIK TELESKOPOWY', dateChange: '11.03.2024', info: 'dgdgdd'},
-        {itemNo: 4, product: 'ŁADOWARKA SKRZYNKOWA', dateChange: '12.03.2024', info: 'ouitrr'},
-        {itemNo: 5, product: 'WÓZEK WIDŁOWY', dateChange: '13.03.2024', info: 'ertete'},
-    ]
+    // const fetchData = [
+    //     {itemNo: 0, product: 'ŁADOWARKA KOŁOWA', dateChange: '03.03.2024', info: 'abcdef'},
+    //     {itemNo: 1, product: 'KOPARKA', dateChange: '01.03.2024', info: 'ijghkl'},
+    //     {itemNo: 2, product: 'TRAKTOR', dateChange: '10.03.2024', info: 'bvcbcc'},
+    //     {itemNo: 3, product: 'PODNOŚNIK TELESKOPOWY', dateChange: '11.03.2024', info: 'dgdgdd'},
+    //     {itemNo: 4, product: 'ŁADOWARKA SKRZYNKOWA', dateChange: '12.03.2024', info: 'ouitrr'},
+    //     {itemNo: 5, product: 'WÓZEK WIDŁOWY', dateChange: '13.03.2024', info: 'ertete'},
+    // ]
 
     useEffect(() => {
         // Fetch orders from an API or another data source
         const fetchOrders = async () => {
             try {
-                const response = await fetch('https://se-europe-test.pl/api/orders'); // Replace with your API endpoint
-                const data = await response.json();
-                setOrders(data);
+                if (token) {
+                    // Decode the JWT token to get the email
+                    const decodedToken = jwtDecode(token);
+                    console.log(decodedToken)
+                    const email = decodedToken?.username;
+
+                    if (email) {
+                        setUserEmail(email);
+                        console.log(email)
+
+                        const response = await fetch(`https://se-europe-test.pl/api/orders?email=${encodeURIComponent(email)}`); // Replace with your API endpoint
+                        const data = await response.json();
+                        setOrders(data);
+                    } else {
+                        console.error('Email not found in the token');
+                    }
+                } else {
+                    console.error('Token is missing from AuthContext');
+                }
             } catch (error) {
                 console.error('Error fetching orders:', error);
             }
@@ -44,6 +66,18 @@ export const Dashboard = () => {
     function displayData(number) {
         console.log(document.querySelector('.vehicles-list .productData .itemNo'));
     }
+
+    const [modalOpen, setModalOpen] = useState(false);
+    const [currentOrderItems, setCurrentOrderItems] = useState([]);
+
+    const handleOpenModal = (items) => {
+        setCurrentOrderItems(items);
+        setModalOpen(true);
+    };
+
+    const handleCloseModal = () => {
+        setModalOpen(false);
+    };
 
     return (
         <main className={'my-page'}>
@@ -88,18 +122,21 @@ export const Dashboard = () => {
                                             <td>${order.tax}</td>
                                             <td>${order.total}</td>
                                             <td>
-                                                {/* Optional: Display items in a compact format */}
-                                                {order.items.length > 0 ? (
-                                                    <ul>
-                                                        {order.items.map((item, itemIndex) => (
-                                                            <li key={itemIndex}>
-                                                                <strong>{item.name}</strong> - {item.quantity} x ${item.price}
-                                                            </li>
-                                                        ))}
-                                                    </ul>
-                                                ) : (
-                                                    <p>No items in this order</p>
-                                                )}
+                                                <Button
+                                                    variant="text"  // Set the variant to 'text' for a text-style button
+                                                    color="primary" // Use the primary color (usually blue in Material UI)
+                                                    onClick={() => handleOpenModal(order.items)}
+                                                    style={{
+                                                        padding: 0,
+                                                        textTransform: 'none',
+                                                        fontSize: '14px',
+                                                        fontWeight: 'normal',
+                                                        textDecoration: 'underline',
+                                                        backgroundColor: 'transparent', // Make background transparent
+                                                    }}
+                                                >
+                                                    View Items
+                                                </Button>
                                             </td>
                                         </tr>
                                     ))}
@@ -283,6 +320,11 @@ export const Dashboard = () => {
                     </AccordionDetails>
                 </Accordion>
             </section>
+            <OrderItemsModal
+                open={modalOpen}
+                onClose={handleCloseModal}
+                items={currentOrderItems}
+            />
         </main>
     );
 }

@@ -14,6 +14,7 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
+use App\Controller\Admin\UserRoleChangeAction;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
 use App\State\UserPasswordHasher;
@@ -34,6 +35,16 @@ use Symfony\Component\Validator\Constraints as Assert;
         ),
         new Delete(
             security: 'is_granted("ROLE_ADMIN") or object == user' // Allow admins or the user themselves to delete
+        ),
+        // Toggle Role
+        new Patch(
+            uriTemplate: '/user_enovas/{id}/toggle-role',
+            controller: UserRoleChangeAction::class,
+            openapiContext: [
+                'summary' => 'Toggle user role',
+                'description' => 'Allows an admin to toggle a user\'s role.'
+            ],
+            security: "is_granted('ROLE_ADMIN')"
         ),
     ],
     normalizationContext: ['groups' => ['userEnova:read']],
@@ -70,10 +81,18 @@ class UserEnova implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $plainPassword = null;
 
     #[ORM\Column(type: 'json')]
+    #[Groups(['userEnova:read', 'userEnova:update'])]
     private array $roles = [];
 
+    public function __construct()
+    {
+        if (empty($this->roles)) {
+            $this->roles[] = 'ROLE_USER';
+        }
 
+//        $this->regDate = new \DateTime(); // Sets the current date and time
 
+    }
     public function getId(): ?int
     {
         return $this->id;

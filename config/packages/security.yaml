@@ -10,6 +10,10 @@ security:
             entity:
                 class: App\Entity\Enova\UserEnova
                 property: email
+        submissions:
+            entity:
+                class: App\Entity\Submission
+                property: email # or any other unique property for Submission
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
@@ -18,9 +22,10 @@ security:
             user_checker: App\Security\UserChecker
             lazy: true
             stateless: true
+            custom_authenticator: App\Security\CustomAuthenticator
             provider: users
             json_login:
-                check_path: auth # The name in routes.yaml is enough for mapping
+                check_path: /auth # The name in routes.yaml is enough for mapping
                 username_path: email
                 password_path: password
                 success_handler: lexik_jwt_authentication.handler.authentication_success
@@ -28,6 +33,22 @@ security:
             logout:
                 path: app_logout
             jwt: ~
+
+#        submission:
+##            pattern: ^/submission
+#            user_checker: App\Security\UserChecker
+#            lazy: true
+#            stateless: true
+#            provider: submissions
+#            json_login:
+#                check_path: /auth # The name in routes.yaml is enough for mapping
+#                username_path: email
+#                password_path: password
+#                success_handler: lexik_jwt_authentication.handler.authentication_success
+#                failure_handler: lexik_jwt_authentication.handler.authentication_failure
+#            logout:
+#                path: app_logout
+#            jwt: ~
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
@@ -44,10 +65,13 @@ security:
 #        - { path: ^/, roles: IS_AUTHENTICATED_FULLY }
 #        - { path: ^/admin, roles: ROLE_ADMIN }
 #        - { path: ^/profile, roles: ROLE_USER }
+#        - { path: ^/submission_auth, roles: PUBLIC_ACCESS }
 
 when@test:
     security:
         password_hashers:
+            App\Entity\Enova\UserEnova: 'auto'
+            App\Entity\Submission: 'auto'
             # By default, password hashers are resource intensive and take time. This is
             # important to generate secure password hashes. In tests however, secure hashes
             # are not important, waste resources and increase test times. The following

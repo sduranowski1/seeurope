@@ -7,3 +7,7 @@ auth:
     path: /auth
     methods: ['POST']
     controller: App\Controller\SecurityController::login
+submission_auth:
+    path: /submission_auth
+    methods: ['POST']
+    controller: App\Controller\SubmissionAuthController::login

@@ -138,7 +138,11 @@ const dataProvider = {
                                 id: data.cid // Include `cid` only for `categories`
                             }
                         }
-                    : {
+                        : resource === "submissions"
+                            ?
+                            data
+
+                        : {
                         name: nameField
                     }),
                 imagePath: data.imagePath || "landscape-placeholder.svg", // Fallback for `imagePath`

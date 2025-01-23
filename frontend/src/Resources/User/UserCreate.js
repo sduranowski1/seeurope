@@ -25,7 +25,7 @@ const VariantCreate = (props) => (
             <TextInput source="country" />
             <NumberInput source="phone" />
             <TextInput source="machineType" />
-            <TextInput source="consdieredProducts" />
+            <TextInput source="consideredProducts" />
             <TextInput source="plainPassword" />
             <TextField source="message" />
 

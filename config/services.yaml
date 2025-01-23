@@ -28,3 +28,8 @@ services:
     App\State\SubmissionPasswordHasher:
         bind:
             $processor: '@api_platform.doctrine.orm.state.persist_processor'
+    App\Security\CustomAuthenticator:
+        arguments:
+            $userEnovaProvider: '@security.user.provider.concrete.users'
+            $submissionProvider: '@security.user.provider.concrete.submissions'
+            $passwordHasher: '@security.password_hasher'

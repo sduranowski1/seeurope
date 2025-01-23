@@ -15,7 +15,6 @@ import { CloudUpload as CloudUploadIcon } from '@mui/icons-material';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import EnovaUserById from "./EnovaUserById";
-import ToggleRoleButton from "../../Components/ToggleRoleButton/ToggleRoleButton"; // Import Quill styles
 
 const EnovaUserEdit = () => {
     const {id} = useParams(); // Get the product ID from the URL
@@ -158,11 +157,6 @@ const EnovaUserEdit = () => {
                             <TextField id="filled-basic" name="plainPassword" value={product?.plainPassword || ''}   onChange={handleChange} // Connect the change handler
                                        label="Change password" variant="filled" />
                         </FormControl>
-
-                        {/* Add the ToggleRoleButton component here */}
-                        <Box mt={2}>
-                            <ToggleRoleButton userId={id} />
-                        </Box>
 
                         <Box display="flex" justifyContent="space-between" marginTop={2}>
                             <Button variant="outlined" onClick={() => navigate('/admin/enova-products')}>

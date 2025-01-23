@@ -78,7 +78,7 @@ class Submission implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 10)]
     #[Groups(['submission:read', 'submission:create', 'submission:update'])]
-    private ?string $zip_code = null;
+    private ?string $zipCode = null;
 
     #[ORM\Column(length: 20)]
     #[Groups(['submission:read', 'submission:create', 'submission:update'])]
@@ -90,11 +90,11 @@ class Submission implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255)]
     #[Groups(['submission:read', 'submission:create', 'submission:update'])]
-    private ?string $machine_type = null;
+    private ?string $machineType = null;
 
     #[ORM\Column(length: 255)]
     #[Groups(['submission:read', 'submission:create', 'submission:update'])]
-    private ?string $consdiered_products = null;
+    private ?string $consdiredProducts = null;
 
     #[ORM\Column(type: Types::TEXT)]
     #[Groups(['submission:read', 'submission:create', 'submission:update'])]
@@ -238,12 +238,12 @@ class Submission implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getZipCode(): ?string
     {
-        return $this->zip_code;
+        return $this->zipCode;
     }
 
-    public function setZipCode(string $zip_code): static
+    public function setZipCode(string $zipCode): static
     {
-        $this->zip_code = $zip_code;
+        $this->zipCode = $zipCode;
 
         return $this;
     }
@@ -274,24 +274,24 @@ class Submission implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getMachineType(): ?string
     {
-        return $this->machine_type;
+        return $this->machineType;
     }
 
-    public function setMachineType(string $machine_type): static
+    public function setMachineType(string $machineType): static
     {
-        $this->machine_type = $machine_type;
+        $this->machineType = $machineType;
 
         return $this;
     }
 
     public function getConsdieredProducts(): ?string
     {
-        return $this->consdiered_products;
+        return $this->consdiredProducts;
     }
 
-    public function setConsdieredProducts(string $consdiered_products): static
+    public function setConsdieredProducts(string $consdiredProducts): static
     {
-        $this->consdiered_products = $consdiered_products;
+        $this->consdiredProducts = $consdiredProducts;
 
         return $this;
     }

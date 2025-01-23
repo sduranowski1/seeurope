@@ -94,7 +94,7 @@ class Submission implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255)]
     #[Groups(['submission:read', 'submission:create', 'submission:update'])]
-    private ?string $consdiredProducts = null;
+    private ?string $consideredProducts = null;
 
     #[ORM\Column(type: Types::TEXT)]
     #[Groups(['submission:read', 'submission:create', 'submission:update'])]
@@ -284,14 +284,14 @@ class Submission implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getConsdieredProducts(): ?string
+    public function getConsideredProducts(): ?string
     {
-        return $this->consdiredProducts;
+        return $this->consideredProducts;
     }
 
-    public function setConsdieredProducts(string $consdiredProducts): static
+    public function setConsideredProducts(string $consideredProducts): static
     {
-        $this->consdiredProducts = $consdiredProducts;
+        $this->consideredProducts = $consideredProducts;
 
         return $this;
     }

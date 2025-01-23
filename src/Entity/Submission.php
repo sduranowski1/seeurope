@@ -35,7 +35,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     normalizationContext: ['groups' => ['submission:read']],
     denormalizationContext: ['groups' => ['submission:create', 'submission:update']],
 )]
-#[ApiResource()]
+//#[ApiResource()]
 #[ORM\Entity(repositoryClass: SubmissionRepository::class)]
 //#[ORM\Table(name: '`submission`')]
 #[UniqueEntity('email')]
@@ -60,37 +60,48 @@ class Submission implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['submission:create', 'submission:update'])]
     private ?string $plainPassword = null;
 
-            #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 50)]
+    #[Groups(['submission:read', 'submission:create', 'submission:update'])]
     private ?string $firstname = null;
 
-        #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 50)]
+    #[Groups(['submission:read', 'submission:create', 'submission:update'])]
     private ?string $surname = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['submission:read', 'submission:create', 'submission:update'])]
     private ?string $company = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['submission:read', 'submission:create', 'submission:update'])]
     private ?string $address = null;
 
     #[ORM\Column(length: 10)]
+    #[Groups(['submission:read', 'submission:create', 'submission:update'])]
     private ?string $zip_code = null;
 
     #[ORM\Column(length: 20)]
+    #[Groups(['submission:read', 'submission:create', 'submission:update'])]
     private ?string $country = null;
 
     #[ORM\Column]
+    #[Groups(['submission:read', 'submission:create', 'submission:update'])]
     private ?int $phone = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['submission:read', 'submission:create', 'submission:update'])]
     private ?string $machine_type = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['submission:read', 'submission:create', 'submission:update'])]
     private ?string $consdiered_products = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Groups(['submission:read', 'submission:create', 'submission:update'])]
     private ?string $message = null;
 
     #[ORM\Column(type: 'json')]
+    #[Groups(['submission:read', 'submission:update'])]
     private array $roles = [];
 
     #[ORM\Column(type: 'boolean')]

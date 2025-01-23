@@ -40,6 +40,7 @@ import EnovaUserEdit from "../../Resources/EnovaUsers/EnovaUserEdit";
 import PermIdentityIcon from "@mui/icons-material/PermIdentity";
 import EnovaDbProductList from "../../Resources/EnovaProduct/EnovaDbProductList";
 import EnovaContractorEdit from "../../Resources/EnovaContractors/EnovaContractorEdit";
+import UserCreate from "../../Resources/User/UserCreate";
 
 
 
@@ -71,7 +72,7 @@ const AdminLayout = () => {
             <Resource name="categories" list={CategoryList} edit={CategoryEdit} create={CategoryCreate} icon={ClassIcon}/>
             <Resource name="subcategories" list={SubcategoryList}  edit={SubcategoryEdit} create={SubcategoryCreate}/>
             <Resource name="item_types" list={ItemTypeList} edit={ItemTypeEdit} create={ItemTypeCreate} />
-            <Resource name="submissions" list={UserList} edit={UserEdit} icon={PersonAddAlt1Icon} />
+            <Resource name="submissions" list={UserList} edit={UserEdit} create={UserCreate} icon={PersonAddAlt1Icon} />
             {/* Other resources... */}
         </Admin>
     );

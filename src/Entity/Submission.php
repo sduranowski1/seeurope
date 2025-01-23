@@ -12,6 +12,7 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
+use App\State\SubmissionPasswordHasher;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\SubmissionRepository;
@@ -22,18 +23,18 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-//#[ApiResource(
-//    operations: [
-//        new GetCollection(),
-//        new Post(processor: UserPasswordHasher::class, validationContext: ['groups' => ['Default', 'user:create']]),
-//        new Get(),
-//        new Put(processor: UserPasswordHasher::class),
-//        new Patch(processor: UserPasswordHasher::class),
-//        new Delete(),
-//    ],
-//    normalizationContext: ['groups' => ['user:read']],
-//    denormalizationContext: ['groups' => ['user:create', 'user:update']],
-//)]
+#[ApiResource(
+    operations: [
+        new GetCollection(),
+        new Post(validationContext: ['groups' => ['Default', 'submission:create']], processor: SubmissionPasswordHasher::class),
+        new Get(),
+        new Put(processor: SubmissionPasswordHasher::class),
+        new Patch(processor: SubmissionPasswordHasher::class),
+        new Delete(),
+    ],
+    normalizationContext: ['groups' => ['submission:read']],
+    denormalizationContext: ['groups' => ['submission:create', 'submission:update']],
+)]
 #[ApiResource()]
 #[ORM\Entity(repositoryClass: SubmissionRepository::class)]
 //#[ORM\Table(name: '`submission`')]
@@ -55,9 +56,9 @@ class Submission implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
-//    #[Assert\NotBlank(groups: ['user:create'])]
-//    #[Groups(['user:create', 'user:update'])]
-//    private ?string $plainPassword = null;
+    #[Assert\NotBlank(groups: ['submission:create'])]
+    #[Groups(['submission:create', 'submission:update'])]
+    private ?string $plainPassword = null;
 
             #[ORM\Column(length: 50)]
     private ?string $firstname = null;
@@ -128,17 +129,17 @@ class Submission implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-//    public function getPlainPassword(): ?string
-//    {
-//        return $this->plainPassword;
-//    }
-//
-//    public function setPlainPassword(?string $plainPassword): self
-//    {
-//        $this->plainPassword = $plainPassword;
-//
-//        return $this;
-//    }
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
+    }
+
+    public function setPlainPassword(?string $plainPassword): self
+    {
+        $this->plainPassword = $plainPassword;
+
+        return $this;
+    }
 
     /**
      * @see UserInterface

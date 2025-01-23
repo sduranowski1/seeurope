@@ -238,6 +238,8 @@ const dataProvider = {
                     data: { ...params.data, id: json.id },
                 };
             }
+            console.log("userdt:", JSON.stringify(params.data))
+
 
             let data = { ...params.data };
             console.log("Data before upload:", data);
@@ -301,6 +303,10 @@ const dataProvider = {
                                 id: data.scid // Include `cid` only for `categories`
                             }
                         }
+                    : resource === "submissions"
+                        ?
+                            data
+
                     : {
                         name: nameField
                     }),

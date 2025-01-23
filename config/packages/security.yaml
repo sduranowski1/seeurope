@@ -3,6 +3,7 @@ security:
     password_hashers:
 #        Symfony\Component\Security\Core\Submission\PasswordAuthenticatedUserInterface: 'auto'
         App\Entity\Enova\UserEnova: 'auto'
+        App\Entity\Submission: 'auto'
     # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
     providers:
         users:

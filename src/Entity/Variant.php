@@ -31,7 +31,13 @@ class Variant
     #[Groups(['variant:read', 'variant:create', 'variant:update', "productInfo:read", 'productInfo:create', 'enovaProduct:read'])]
     private ?string $variantname = null;
 
+    #[ORM\Column(length: 50)]
+    #[Groups(['variant:read', 'variant:create', 'variant:update', "productInfo:read", 'productInfo:create', 'enovaProduct:read'])]
+    private ?string $polishName = null;
 
+    #[ORM\Column(length: 50)]
+    #[Groups(['variant:read', 'variant:create', 'variant:update', "productInfo:read", 'productInfo:create', 'enovaProduct:read'])]
+    private ?string $germanName = null;
     #[ORM\Column(nullable: true)]
     #[Groups(['variant:read', 'variant:create'])]
     private ?int $bid = null;
@@ -93,7 +99,25 @@ class Variant
         return $this;
     }
 
+    public function getPolishName(): ?string
+    {
+        return $this->polishName;
+    }
 
+    public function setPolishName(?string $polishName): void
+    {
+        $this->polishName = $polishName;
+    }
+
+    public function getGermanName(): ?string
+    {
+        return $this->germanName;
+    }
+
+    public function setGermanName(?string $germanName): void
+    {
+        $this->germanName = $germanName;
+    }
 
     public function getBid(): ?int
     {

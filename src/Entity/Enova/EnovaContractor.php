@@ -20,7 +20,7 @@ class EnovaContractor
 {
     #[ORM\Id]
     #[ORM\Column(name: 'id_enova', type: 'integer', unique: true)]
-    #[Groups(["enovaContractor:read", 'enovaPerson:read'])]
+    #[Groups(["enovaContractor:read", 'enovaPerson:read',  'userEnova:read'])]
     private ?int $idEnova = null;
 
     #[ORM\Column(type: 'string')]
@@ -36,7 +36,7 @@ class EnovaContractor
     private ?string $Email = null;
 
     #[ORM\Column(type: 'string')]
-    #[Groups(['enovaContractor:read', 'enovaContractor:create', 'enovaContractor:update', 'enovaPerson:read', 'enovaPerson:create', 'enovaPerson:update'])]
+    #[Groups(['enovaContractor:read', 'enovaContractor:create', 'enovaContractor:update', 'enovaPerson:read', 'enovaPerson:create', 'enovaPerson:update', 'userEnova:read'])]
     private ?string $cenaKontrahentaNazwa = null;
 
     #[ORM\Column(type: 'string')]

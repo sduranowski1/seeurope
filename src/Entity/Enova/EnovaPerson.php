@@ -22,7 +22,7 @@ class EnovaPerson
     #[ORM\Id]
 //    #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(['enovaPerson:read', 'enovaContractor:read'])]
+    #[Groups(['enovaPerson:read', 'enovaContractor:read', 'userEnova:read'])]
     private ?int $id = null;
 
     #[ORM\Column(type: 'string')]
@@ -35,8 +35,9 @@ class EnovaPerson
 
     #[ORM\ManyToOne(targetEntity: EnovaContractor::class, inversedBy: 'listaOsobyKontrahenta')]
     #[ORM\JoinColumn(referencedColumnName: 'id_enova', nullable: false)]
-    #[Groups(['enovaPerson:read', 'enovaPerson:create'])]
+    #[Groups(['enovaPerson:read', 'enovaPerson:create', 'userEnova:read'])]
     private ?EnovaContractor $contractor = null;
+
 
     public function getId(): ?int
     {

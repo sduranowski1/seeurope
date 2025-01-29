@@ -218,6 +218,8 @@ class EnovaContractorsController extends AbstractController
         $person->setImie($personData['imie'] ?? '');
         $person->setNazwisko($personData['nazwisko'] ?? '');
 
+        $this->enovaPersonRepository->save($person, true);
+
         return $person;
     }
 

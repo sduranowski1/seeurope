@@ -80,6 +80,11 @@ class UserEnova implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['userEnova:create', 'userEnova:update'])]
     private ?string $plainPassword = null;
 
+    #[ORM\ManyToOne(targetEntity: EnovaPerson::class)]
+    #[ORM\JoinColumn(name: 'enova_person_id', referencedColumnName: 'id', nullable: true)]
+    #[Groups(['userEnova:read', 'userEnova:create', 'userEnova:update'])]
+    private ?EnovaPerson $enovaPerson = null;
+
     #[ORM\Column(type: 'json')]
     #[Groups(['userEnova:read', 'userEnova:update'])]
     private array $roles = [];
@@ -134,6 +139,17 @@ class UserEnova implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->plainPassword = $plainPassword;
 
+        return $this;
+    }
+
+    public function getEnovaPerson(): ?EnovaPerson
+    {
+        return $this->enovaPerson;
+    }
+
+    public function setEnovaPerson(?EnovaPerson $enovaPerson): self
+    {
+        $this->enovaPerson = $enovaPerson;
         return $this;
     }
 

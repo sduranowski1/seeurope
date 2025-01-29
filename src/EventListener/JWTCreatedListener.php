@@ -24,8 +24,8 @@ class JWTCreatedListener
         // Add user ID to the token payload
         $data['id'] = $user->getId();
 
-        // Add username to the token payload
-        $data['username'] = $user->getUsername();
+//        // Add username to the token payload
+//        $data['username'] = $user->getUsername();
 
         // Check if the user has a contractor and add cenaContrahentaNazwa if it exists
         $contractor = $user->getContractor();

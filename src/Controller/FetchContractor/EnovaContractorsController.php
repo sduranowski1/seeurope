@@ -100,6 +100,10 @@ class EnovaContractorsController extends AbstractController
                 $newContractor = new EnovaContractor();
                 $newContractor->setIdEnova($contractor['idEnova']);
                 $newContractor->setNazwa($contractor['nazwa']);
+                $newContractor->setKod($contractor['kod']);
+                $newContractor->setEmail($contractor['Email']);
+                $newContractor->setCenaKontrahentaNazwa($contractor['cenaKontrahentaNazwa']);
+                $newContractor->setTelefon($contractor['Telefon']);
                 $newContractor->setAdres($adres);
                 $newContractor->setAdresKorespondencyjny($adresKorespondencyjny);
 
@@ -117,6 +121,10 @@ class EnovaContractorsController extends AbstractController
             } else {
                 // Update the existing contractor
                 $existingContractor->setNazwa($contractor['nazwa']);
+                $existingContractor->setKod($contractor['kod']);
+                $existingContractor->setEmail($contractor['Email']);
+                $existingContractor->setCenaKontrahentaNazwa($contractor['cenaKontrahentaNazwa']);
+                $existingContractor->setTelefon($contractor['Telefon']);
                 $existingContractor->setAdres($adres);  // Update address
                 $existingContractor->setAdresKorespondencyjny($adresKorespondencyjny);  // Update mailing address
 
@@ -141,7 +149,11 @@ class EnovaContractorsController extends AbstractController
 
     private function processAddress(array $addressData): EnovaAddress
     {
-        // Check if an existing entity with the same ID already exists
+        if (!isset($addressData['id'])) {
+            throw new \Exception('Address ID is missing.');
+        }
+
+        // Try to find an existing address by ID
         $adres = $this->enovaAddressRepository->find($addressData['id']);
 
         if (!$adres) {
@@ -162,6 +174,9 @@ class EnovaContractorsController extends AbstractController
         $adres->setKodPocztowy($addressData['kodPocztowy'] ?? null);
         $adres->setKraj($addressData['kraj'] ?? null);
 
+        // Ensure the address is managed by Doctrine
+        $this->enovaAddressRepository->save($adres, true);
+
         return $adres;
     }
 
@@ -169,11 +184,13 @@ class EnovaContractorsController extends AbstractController
 
     private function processLocation(array $locationData): EnovaLocation
     {
-        // Try to find the existing location by the id from the API
-        $location = $this->enovaLocationRepository->findOneBy(['id' => $locationData['id']]) ?: new EnovaLocation();
+        if (!isset($locationData['id'])) {
+            throw new \Exception('Location ID is missing.');
+        }
 
-        // Explicitly set the ID from the API
-        $location->setId($locationData['id']);  // Manually set the ID from the API response
+        // Retrieve existing location or create a new one
+        $location = $this->enovaLocationRepository->find($locationData['id']) ?? new EnovaLocation();
+        $location->setId($locationData['id']);  // Ensure ID is set correctly
 
         $location->setKod($locationData['kod'] ?? '');
         $location->setNazwa($locationData['nazwa'] ?? '');
@@ -188,13 +205,20 @@ class EnovaContractorsController extends AbstractController
     }
 
 
+
     private function processPerson(array $personData): EnovaPerson
     {
-        $person = $this->enovaPersonRepository->findOneBy(['id' => $personData['id']]) ?: new EnovaPerson();
-        $person->setImie($personData['imie']);
-        $person->setNazwisko($personData['nazwisko']);
-        $person->setId($personData['id']);
+        if (!isset($personData['id'])) {
+            throw new \Exception('Person ID is missing.');
+        }
+
+        // Retrieve existing person or create a new one
+        $person = $this->enovaPersonRepository->find($personData['id']) ?? new EnovaPerson();
+        $person->setId($personData['id']);  // Ensure ID is set correctly
+        $person->setImie($personData['imie'] ?? '');
+        $person->setNazwisko($personData['nazwisko'] ?? '');
 
         return $person;
     }
+
 }

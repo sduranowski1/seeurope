@@ -343,19 +343,6 @@ export const ProductDescription = ({ product }) => {
                                         data.stockStatus || "made to order"
                                     )} {data.stockStatus}
                                 </div>
-                                {token ? (
-                                    <Button
-                                        variant="contained"
-                                        color="primary"
-                                        size="large"
-                                        sx={{ mt: 2 }}
-                                        onClick={handleAddToCart}
-                                    >
-                                        Add to Cart
-                                    </Button>
-                                ) : (
-                                    <a/>
-                                )}
 
                                 <br/>
                                 <div className='price-container'>

@@ -96,11 +96,11 @@ const Cart = () => {
                                                     {item.name || 'Unnamed Product'}
                                                 </Box>
                                             </TableCell>
-                                            <TableCell align="right">${price.toFixed(2)}</TableCell>
+                                            <TableCell align="right">€{price.toFixed(2)}</TableCell>
                                             <TableCell align="right">{item.quantity}</TableCell>
 
                                             <TableCell align="right">
-                                                ${(price * quantity).toFixed(2)}
+                                                €{(price * quantity).toFixed(2)}
                                             </TableCell>
                                             <TableCell align="center">
                                                 <Button
@@ -118,10 +118,11 @@ const Cart = () => {
                             </TableBody>
                         </Table>
                     </TableContainer>
+
                     <Box mt={3} textAlign="right">
-                        <Typography variant="body1">Subtotal: ${subtotal.toFixed(2)}</Typography>
-                        <Typography variant="body1">Tax (10%): ${tax.toFixed(2)}</Typography>
-                        <Typography variant="h6">Total: ${total.toFixed(2)}</Typography>
+                        <Typography variant="body1">Subtotal: €{subtotal.toFixed(2)}</Typography>
+                        <Typography variant="body1">Tax (10%): €{tax.toFixed(2)}</Typography>
+                        <Typography variant="h6">Total: €{total.toFixed(2)}</Typography>
                         <Button
                             variant="contained"
                             color="primary"
@@ -132,8 +133,19 @@ const Cart = () => {
                             Proceed to Checkout
                         </Button>
                     </Box>
+
                 </>
             )}
+            <Box mt={4} textAlign="left"> {/* Add the Return button */}
+                <Button
+                    variant="outlined"
+                    color="secondary"
+                    size="large"
+                    onClick={() => navigate(-1)} // Navigate back to the previous page
+                >
+                    Return
+                </Button>
+            </Box>
         </Container>
     );
 };

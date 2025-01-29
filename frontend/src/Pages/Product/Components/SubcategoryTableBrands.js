@@ -6,27 +6,37 @@ import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import {TableComponent} from "../../../Components/TableComponent/TableComponent";
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {ProductDescription} from "./ProductDescription";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import ErrorIcon from '@mui/icons-material/Error';
-import {Tooltip} from "@mui/material";
+import {Button, IconButton, Tooltip} from "@mui/material";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import AuthContext from "../../../AuthContext";
+import {useNavigate} from "react-router-dom";
 
 export const SubcategoryTableBrands = ({ productsData, onProductClick, lastPartToCollapse, displayedItems, checkboxes }) => {
     const [activeFilter, setActiveFilter] = useState("All");
     const [selectedProduct, setSelectedProduct] = useState(null);
+    const [filteredProducts, setFilteredProducts] = useState(productsData);  // Manage the filtered products state
+    const { token } = useContext(AuthContext);
+    const [cart, setCart] = useState([]);
+    const navigate = useNavigate();
 
     // Get unique capacityFeat values for tabs
     const uniqueCapacities = [
         "All",
-        ...new Set(productsData.map((product) => product.categoryName || "Other"))
+        ...new Set(productsData.map((product) => product?.productInfo?.category?.name || "Other"))
     ];
 
     // Filter products based on the active filter
-    const filteredProducts =
-        activeFilter === "All"
-            ? productsData
-            : productsData.filter((product) => product.categoryName === activeFilter);
+    useEffect(() => {
+        if (activeFilter === "All") {
+            setFilteredProducts(productsData);
+        } else {
+            setFilteredProducts(productsData.filter((product) => product?.productInfo?.category?.name === activeFilter));
+        }
+    }, [activeFilter, productsData]);
 
     const handleRowClick = (product) => {
         setSelectedProduct(product); // Highlight selected product
@@ -37,6 +47,43 @@ export const SubcategoryTableBrands = ({ productsData, onProductClick, lastPartT
     useEffect(() => {
         setSelectedProduct(null); // Reset selected product when lastPartToCollapse changes
     }, [lastPartToCollapse]);
+
+    const handleQuantityChange = (productId, change) => {
+        setFilteredProducts((prevProducts) =>
+            prevProducts.map((product) => {
+                if (product.id === productId) {
+                    const updatedQuantity = Math.max(0, (product.quantity || 0) + change);
+
+                    // Update the cart in localStorage
+                    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+                    const productIndex = cart.findIndex((item) => item.id === productId);
+
+                    if (productIndex === -1 && updatedQuantity > 0) {
+                        cart.push({ ...product, quantity: updatedQuantity });
+                    } else if (productIndex !== -1) {
+                        if (updatedQuantity > 0) {
+                            cart[productIndex].quantity = updatedQuantity;
+                        } else {
+                            cart.splice(productIndex, 1); // Remove product if quantity is 0
+                        }
+                    }
+
+                    localStorage.setItem('cart', JSON.stringify(cart));
+
+                    // Dispatch the custom event to update badge
+                    window.dispatchEvent(new Event('cartUpdated'));
+
+                    return { ...product, quantity: updatedQuantity };
+                }
+                return product;
+            })
+        );
+    };
+
+    const handleAddToCart = () => {
+        // Redirect to the cart page without modifying the cart
+        navigate('/dashboard/cart');
+    };
 
     return (
         <div>
@@ -77,6 +124,15 @@ export const SubcategoryTableBrands = ({ productsData, onProductClick, lastPartT
                     {/*<th>Category</th>*/}
                     {/*<th>Subcategory</th>*/}
                     <th>Status</th>
+                    {token ? (
+                        <>
+                            <th>End User Price</th>
+                            <th>Add Quantity</th>
+                            {/*<th>Add to cart</th>*/}
+                        </>
+                    ) : (
+                        <a/>
+                    )}
                 </tr>
                 </thead>
                 <tbody>
@@ -130,17 +186,64 @@ export const SubcategoryTableBrands = ({ productsData, onProductClick, lastPartT
                                     product.stockStatus || "N/A"
                                 )}
                             </td>
+
+                        {token ? (
+                            <>
+                                <td>{product.priceList?.find((price) => price.nazwa === "End User")?.netto || "N/A"} {product.priceList?.find((price) => price.nazwa === "End User")?.waluta || "N/A"}</td>
+
+                                <td>
+                                    <button onClick={() => handleQuantityChange(product.id, -1)}>-</button>
+                                    <input
+                                        type="number"
+                                        value={product.quantity || 0}
+                                        onChange={(e) => handleQuantityChange(product.id, Number(e.target.value) - product.quantity)} // Allow manual input
+                                        style={{width: "60px", textAlign: "center", margin: "0 5px"}}
+                                    />
+                                    <button onClick={() => handleQuantityChange(product.id, 1)}>+</button>
+                                </td>
+                                {/*<td>*/}
+                                {/*    <IconButton*/}
+                                {/*        color="primary"*/}
+                                {/*        size="large"*/}
+                                {/*        sx={{mt: 2, padding: 0, margin: 0}}*/}
+                                {/*        onClick={() => handleAddToCart(product, product.quantity)} // Pass the updated quantity*/}
+                                {/*    >*/}
+                                {/*        <ShoppingCartIcon/>*/}
+                                {/*    </IconButton>*/}
+                                {/*</td>*/}
+                            </>
+                        ) : (
+                            <a/>
+                        )}
                         </tr>
                     ))
                 ) : (
                     <tr>
-                        <td colSpan="8" style={{textAlign: "center", padding: "20px"}}>
+                    <td colSpan="8" style={{textAlign: "center", padding: "20px"}}>
                             No Items Found
                         </td>
                     </tr>
                 )}
                 </tbody>
             </table>
+            {/* Global Redirect to Cart Button */}
+            {token && (
+                <div style={{ textAlign: "right", marginTop: "20px" }}>
+                    {token ? (
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            size="large"
+                            sx={{ mt: 2 }}
+                            onClick={handleAddToCart}
+                        >
+                            Go to Cart
+                        </Button>
+                    ) : (
+                        <a/>
+                    )}
+                </div>
+            )}
             {/* Product Description */}
             {selectedProduct && (
                 // <div style={{ marginTop: "1rem" }}>

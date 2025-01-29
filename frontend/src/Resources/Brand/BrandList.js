@@ -20,6 +20,8 @@ const BrandList = () => (
     <Datagrid>
       <TextField source="id" />
       <TextField source="name" />
+        <TextField source="polishName" />
+        <TextField source="germanName" />
       {/*<TextField source="variant" />*/}
       <TextField source="createdAt" />
       <TextField source="updatedAt" />

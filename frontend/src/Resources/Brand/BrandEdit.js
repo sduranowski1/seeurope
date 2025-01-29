@@ -8,6 +8,8 @@ const BrandEdit = (props) => (
     <Edit {...props}>
         <SimpleForm>
           <TextInput source="name" />
+            <TextInput source="polishName" />
+            <TextInput source="germanName" />
           {/*<TextInput source="variant" />*/}
           <ImageInput source="pictures" label="Related pictures">
               <ImageField source="domainImagePath"/>

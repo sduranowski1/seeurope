@@ -186,22 +186,22 @@ const Checkout = () => {
                                         sx={{ mb: 2 }}
                                     >
                                         <Typography>{`${quantity} x ${item.name}`}</Typography>
-                                        <Typography>${(price * quantity).toFixed(2)}</Typography>
+                                        <Typography>€{(price * quantity).toFixed(2)}</Typography>
                                     </Box>
                                 );
                             })}
                         <Divider sx={{ my: 2 }} />
                         <Box display="flex" justifyContent="space-between">
                             <Typography>Subtotal:</Typography>
-                            <Typography>${subtotal.toFixed(2)}</Typography>
+                            <Typography>€{subtotal.toFixed(2)}</Typography>
                         </Box>
                         <Box display="flex" justifyContent="space-between">
                             <Typography>Tax (10%):</Typography>
-                            <Typography>${tax.toFixed(2)}</Typography>
+                            <Typography>€{tax.toFixed(2)}</Typography>
                         </Box>
                         <Box display="flex" justifyContent="space-between" sx={{ mt: 2 }}>
                             <Typography variant="h6">Total:</Typography>
-                            <Typography variant="h6">${total.toFixed(2)}</Typography>
+                            <Typography variant="h6">€{total.toFixed(2)}</Typography>
                         </Box>
                         <Button
                             type="button"
@@ -217,6 +217,16 @@ const Checkout = () => {
                     </Paper>
                 </Grid>
             </Grid>
+            <Box mt={4} textAlign="left"> {/* Add the Return button */}
+                <Button
+                    variant="outlined"
+                    color="secondary"
+                    size="large"
+                    onClick={() => navigate(-1)} // Navigate back to the previous page
+                >
+                    Return
+                </Button>
+            </Box>
         </Container>
     );
 };

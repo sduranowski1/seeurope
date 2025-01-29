@@ -87,47 +87,41 @@ export const SubcategoryTable = ({ productsData, onProductClick, lastPartToColla
 
     const handleQuantityChange = (productId, change) => {
         setFilteredProducts((prevProducts) =>
-            prevProducts.map((product) =>
-                product.id === productId
-                    ? {
-                        ...product,
-                        quantity: Math.max(0, (product.quantity || 0) + change), // Ensure quantity doesn't go below 0
+            prevProducts.map((product) => {
+                if (product.id === productId) {
+                    const updatedQuantity = Math.max(0, (product.quantity || 0) + change);
+
+                    // Update the cart in localStorage
+                    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+                    const productIndex = cart.findIndex((item) => item.id === productId);
+
+                    if (productIndex === -1 && updatedQuantity > 0) {
+                        cart.push({ ...product, quantity: updatedQuantity });
+                    } else if (productIndex !== -1) {
+                        if (updatedQuantity > 0) {
+                            cart[productIndex].quantity = updatedQuantity;
+                        } else {
+                            cart.splice(productIndex, 1); // Remove product if quantity is 0
+                        }
                     }
-                    : product
-            )
+
+                    localStorage.setItem('cart', JSON.stringify(cart));
+
+                    // Dispatch the custom event to update badge
+                    window.dispatchEvent(new Event('cartUpdated'));
+
+                    return { ...product, quantity: updatedQuantity };
+                }
+                return product;
+            })
         );
     };
 
 
-
-
-    const handleAddToCart = (product, quantity) => {
-        // Get the current cart from localStorage, or an empty array if it's not there
-        const existingCart = JSON.parse(localStorage.getItem('cart')) || [];
-
-        // Check if the product is already in the cart
-        const productIndex = existingCart.findIndex((item) => item.id === product.id);
-
-        if (productIndex === -1) {
-            // If product is not in the cart, add it with the given quantity
-            existingCart.push({ ...product, quantity });
-        } else {
-            // If product is already in the cart, increase its quantity by the specified value
-            existingCart[productIndex].quantity += quantity;
-        }
-
-        // Save the updated cart back to localStorage
-        localStorage.setItem('cart', JSON.stringify(existingCart));
-
-        console.log("Updated Cart:", existingCart); // Optional: to see the updated cart in the console
-
+    const handleAddToCart = () => {
+        // Redirect to the cart page without modifying the cart
         navigate('/dashboard/cart');
     };
-
-
-
-
-
 
     return (
         <div>
@@ -170,8 +164,9 @@ export const SubcategoryTable = ({ productsData, onProductClick, lastPartToColla
                     <th>Status</th>
                     {token ? (
                         <>
-                            <th>Quantity</th>
-                            <th>Add to cart</th>
+                            <th>End User Price</th>
+                            <th>Add Quantity</th>
+                            {/*<th>Add to cart</th>*/}
                         </>
                     ) : (
                         <a/>
@@ -228,6 +223,7 @@ export const SubcategoryTable = ({ productsData, onProductClick, lastPartToColla
                             </td>
                             {token ? (
                                 <>
+                                    <td>{product.priceList?.find((price) => price.nazwa === "End User")?.netto || "N/A"} {product.priceList?.find((price) => price.nazwa === "End User")?.waluta || "N/A"}</td>
                                     <td>
                                         <button onClick={() => handleQuantityChange(product.id, -1)}>-</button>
                                         <input
@@ -236,23 +232,24 @@ export const SubcategoryTable = ({ productsData, onProductClick, lastPartToColla
                                             onChange={(e) => handleQuantityChange(product.id, Number(e.target.value) - product.quantity)} // Allow manual input
                                             style={{width: "60px", textAlign: "center", margin: "0 5px"}}
                                         />
-                                        <button onClick={() => handleQuantityChange(product.id, 1)}>+</button>
+                                        {/*<button onClick={() => handleQuantityChange(product.id, 1)}>+</button>*/}
                                     </td>
-                                    <td>
-                                        <IconButton
-                                            color="primary"
-                                            size="large"
-                                            sx={{mt: 2, padding: 0, margin: 0}}
-                                            onClick={() => handleAddToCart(product, product.quantity)} // Pass the updated quantity
-                                        >
-                                            <ShoppingCartIcon/>
-                                        </IconButton>
-                                    </td>
+                                    {/*<td>*/}
+                                    {/*    <IconButton*/}
+                                    {/*        color="primary"*/}
+                                    {/*        size="large"*/}
+                                    {/*        sx={{mt: 2, padding: 0, margin: 0}}*/}
+                                    {/*        onClick={() => handleAddToCart()} // Pass the updated quantity*/}
+                                    {/*    >*/}
+                                    {/*        <ShoppingCartIcon/>*/}
+                                    {/*    </IconButton>*/}
+                                    {/*</td>*/}
                                 </>
                             ) : (
                                 <a/>
                             )}
                         </tr>
+
                     ))
                 ) : (
                     <tr>
@@ -262,7 +259,26 @@ export const SubcategoryTable = ({ productsData, onProductClick, lastPartToColla
                     </tr>
                 )}
                 </tbody>
+
             </table>
+            {/* Global Redirect to Cart Button */}
+            {token && (
+                <div style={{ textAlign: "right", marginTop: "20px" }}>
+                    {token ? (
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            size="large"
+                            sx={{ mt: 2 }}
+                            onClick={handleAddToCart}
+                        >
+                            Go to Cart
+                        </Button>
+                    ) : (
+                        <a/>
+                    )}
+                </div>
+            )}
             {/* Product Description */}
             {selectedProduct && (
                 // <div style={{ marginTop: "1rem" }}>

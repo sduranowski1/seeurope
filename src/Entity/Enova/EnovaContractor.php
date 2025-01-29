@@ -31,6 +31,18 @@ class EnovaContractor
     #[Groups(['enovaContractor:read', 'enovaContractor:create', 'enovaContractor:update', 'enovaPerson:read', 'enovaPerson:create', 'enovaPerson:update'])]
     private ?string $nazwa = null;
 
+    #[ORM\Column(type: 'string')]
+    #[Groups(['enovaContractor:read', 'enovaContractor:create', 'enovaContractor:update', 'enovaPerson:read', 'enovaPerson:create', 'enovaPerson:update'])]
+    private ?string $Email = null;
+
+    #[ORM\Column(type: 'string')]
+    #[Groups(['enovaContractor:read', 'enovaContractor:create', 'enovaContractor:update', 'enovaPerson:read', 'enovaPerson:create', 'enovaPerson:update'])]
+    private ?string $cenaKontrahentaNazwa = null;
+
+    #[ORM\Column(type: 'string')]
+    #[Groups(['enovaContractor:read', 'enovaContractor:create', 'enovaContractor:update', 'enovaPerson:read', 'enovaPerson:create', 'enovaPerson:update'])]
+    private ?string $Telefon = null;
+
     #[ORM\ManyToOne(cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: true)]
     #[Groups(['enovaContractor:read', 'enovaContractor:create', 'enovaContractor:update'])]
@@ -90,6 +102,36 @@ class EnovaContractor
     public function setNazwa(?string $nazwa): void
     {
         $this->nazwa = $nazwa;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->Email;
+    }
+
+    public function setEmail(?string $Email): void
+    {
+        $this->Email = $Email;
+    }
+
+    public function getCenaKontrahentaNazwa(): ?string
+    {
+        return $this->cenaKontrahentaNazwa;
+    }
+
+    public function setCenaKontrahentaNazwa(?string $cenaKontrahentaNazwa): void
+    {
+        $this->cenaKontrahentaNazwa = $cenaKontrahentaNazwa;
+    }
+
+    public function getTelefon(): ?string
+    {
+        return $this->Telefon;
+    }
+
+    public function setTelefon(?string $Telefon): void
+    {
+        $this->Telefon = $Telefon;
     }
 
     public function getAdres(): ?EnovaAddress

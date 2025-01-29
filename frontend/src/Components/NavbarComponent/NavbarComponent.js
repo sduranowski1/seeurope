@@ -35,9 +35,17 @@ import dataProvider from "../../dataProvider";
 import {useProducts} from "../../ProductProvider";
 import i18n from "i18next";
 import AuthContext from "../../AuthContext";
+import {Badge, Tooltip} from "@mui/material";
 
 export const NavbarComponent = (props) => {
     const [toggleSidebar, setToggleSidebar] = useContext(Context);
+    const [cartItemCount, setCartItemCount] = useState(0);
+    const [isHovered, setIsHovered] = useState(false);
+    const [cartItems, setCartItems] = useState([]);
+
+    const handleMouseEnter = () => setIsHovered(true);
+    const handleMouseLeave = () => setIsHovered(false);
+
 
     let lastScrollTop = 0;
 
@@ -77,6 +85,12 @@ export const NavbarComponent = (props) => {
     const [loadingMachine, setLoadingMachine] = useState(true);
     const navigate = useNavigate(); // Use useNavigate instead of useHistory
     const { token } = useContext(AuthContext);
+
+    // Load cart data from localStorage on component mount
+    // useEffect(() => {
+    //     const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
+    //     setCartItems(storedCart);
+    // }, []);
 
 
 
@@ -202,6 +216,27 @@ export const NavbarComponent = (props) => {
     const handleDashboardClick = () => {
         navigate('/dashboard'); // Navigate to the cart page
     };
+
+    // Function to calculate the cart item count
+    const updateCartCount = () => {
+        const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+        const itemCount = cart.reduce((acc, item) => acc + item.quantity, 0);
+        setCartItemCount(itemCount);
+        setCartItems(cart);
+    };
+
+    // Update cart count on component mount
+    useEffect(() => {
+        updateCartCount();
+
+        // Listen for the custom event
+        const handleCartChange = () => updateCartCount();
+        window.addEventListener('cartUpdated', handleCartChange);
+
+        return () => {
+            window.removeEventListener('cartUpdated', handleCartChange);
+        };
+    }, []);
 
 
     return (
@@ -359,10 +394,64 @@ export const NavbarComponent = (props) => {
                         </li>
                         <li className={'icon-item'}>
                             {token ? (
-                                <FontAwesomeIcon className={'sidebar-icon'} icon={faCartShopping}
-                                                 onClick={handleCartClick}/>
+                                <div className="cart-container" onClick={handleCartClick} onMouseEnter={handleMouseEnter}
+                                     onMouseLeave={handleMouseLeave}>
+                                    {cartItemCount > 0 ? (
+                                        <>                                    <Tooltip
+                                            title={
+                                                cartItemCount > 0 ? (
+                                                    <div className="cart-tooltip">
+                                                        <ul>
+                                                            {cartItems.map((item, index) => (
+                                                                <li key={index}>
+                                                                    <strong>{item.name}</strong> - {item.quantity}
+                                                                </li>
+                                                            ))}
+                                                        </ul>
+                                                    </div>
+                                                ) : (
+                                                    "Your cart is empty"
+                                                )
+                                            }
+                                            placement="bottom"
+                                            arrow
+                                            componentsProps={{
+                                                tooltip: {
+                                                    sx: {
+                                                        bgcolor: 'white',
+                                                        color: 'black',
+                                                        border: '1px solid #ddd',
+                                                        boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
+                                                        borderRadius: '8px',
+                                                        p: 1,
+                                                    },
+                                                },
+                                            }}
+                                        >
+
+                                        <Badge badgeContent={cartItemCount > 0 ? cartItemCount : ''} color="error">
+                                                <FontAwesomeIcon className={'sidebar-icon'} icon={faCartShopping} />
+                                            </Badge>
+                                        </Tooltip>
+
+                                            {/*{isHovered && cartItemCount > 0 && (*/}
+                                            {/*    <div className="cart-dropdown">*/}
+                                            {/*        <ul>*/}
+                                            {/*            {cartItems.map((item, index) => (*/}
+                                            {/*                <li key={index}>*/}
+                                            {/*                    {item.name} - {item.quantity}*/}
+                                            {/*                </li>*/}
+                                            {/*            ))}*/}
+                                            {/*        </ul>*/}
+                                            {/*    </div>*/}
+                                            {/*)}*/}
+                                        </>
+                                    ) : (
+                                        <FontAwesomeIcon className="sidebar-icon" icon={faCartShopping} />
+                                    )}
+                                </div>
                             ) : (
-                                <a/>
+                                <a />
                             )}
                         </li>
                     </ul>

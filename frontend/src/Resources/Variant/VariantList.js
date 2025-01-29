@@ -20,6 +20,8 @@ const VariantList = () => (
     <Datagrid>
       <TextField source="id" />
       <TextField source="variantname" />
+        <TextField source="polishName" />
+        <TextField source="germanName" />
       <ReferenceField reference="brands" source="bid" label="Brand" >
         <TextField source="name" />
       </ReferenceField>

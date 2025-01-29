@@ -16,6 +16,8 @@ const VariantCreate = (props) => (
   <Create {...props}>
     <SimpleForm>
       <TextInput source="variantname" />
+        <TextInput source="polishName" />
+        <TextInput source="germanName" />
       <ReferenceInput source="bid" reference="brands">
         <SelectInput optionText="name" />
       </ReferenceInput>

@@ -33,19 +33,30 @@ const EnovaProductEdit = () => {
         const fetchData = async () => {
             try {
                 // Fetch the token first
-                const token = await fetchToken();
-                setToken(token);
+                // const token = await fetchToken();
+                // setToken(token);
 
                 // Use the token to fetch the actual data
-                const response = await fetch('https://se-europe-test.pl/api/PanelWWW_API/DajTowarWgId', {
-                    method: 'POST',
+                // const response = await fetch('https://se-europe-test.pl/api/PanelWWW_API/DajTowarWgId', {
+                //     method: 'POST',
+                //     headers: {
+                //         'accept': 'application/json',
+                //         'Content-Type': 'application/json',
+                //     },
+                //     body: JSON.stringify({
+                //         parametr: id,
+                //     }),
+                // });
+
+                const response = await fetch(`https://se-europe-test.pl/api/enova_products/${id}`, {
+                    method: 'GET',
                     headers: {
                         'accept': 'application/json',
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({
-                        parametr: id,
-                    }),
+                    // body: JSON.stringify({
+                    //     parametr: id,
+                    // }),
                 });
 
 
@@ -95,12 +106,12 @@ const EnovaProductEdit = () => {
             'Dealer Detal',
             'Volvo PL',
             'Volvo EUR',
-            'End Submission',
+            'End User',
         ];
 
         // Map through desiredPrices and fetch matching price objects
         const prices = desiredPrices.map((priceName) => {
-            const matchedPrice = product.listaCen.find((price) => price.nazwa === priceName);
+            const matchedPrice = product?.priceList?.find((price) => price.nazwa === priceName);
             return {
                 nazwa: priceName,
                 netto: matchedPrice ? matchedPrice.netto : null,
@@ -170,11 +181,11 @@ const EnovaProductEdit = () => {
                                 </TableRow>
                                 <TableRow>
                                     <TableCell sx={{fontWeight: 'bold'}}>Product Name</TableCell>
-                                    <TableCell>{data.nazwa || 'N/A'}</TableCell>
+                                    <TableCell>{data.name || 'N/A'}</TableCell>
                                 </TableRow>
                                 <TableRow>
                                     <TableCell sx={{fontWeight: 'bold'}}>Code</TableCell>
-                                    <TableCell>{data.kod || 'N/A'}</TableCell>
+                                    <TableCell>{data.code || 'N/A'}</TableCell>
                                 </TableRow>
                                 {/*<TableRow>*/}
                                 {/*    <TableCell sx={{ fontWeight: 'bold' }}>% Increase</TableCell>*/}
@@ -186,15 +197,15 @@ const EnovaProductEdit = () => {
                                 {/*</TableRow>*/}
                                 <TableRow>
                                     <TableCell sx={{fontWeight: 'bold'}}>Unit</TableCell>
-                                    <TableCell>{data.jednostka || 'N/A'}</TableCell>
+                                    <TableCell>{data.unit || 'N/A'}</TableCell>
                                 </TableRow>
                                 <TableRow>
                                     <TableCell sx={{fontWeight: 'bold'}}>Quantity</TableCell>
-                                    <TableCell>{data.Ilosc || 'N/A'}</TableCell>
+                                    <TableCell>{data.quantity || '0'}</TableCell>
                                 </TableRow>
                                 <TableRow>
                                     <TableCell sx={{fontWeight: 'bold'}}>Availability</TableCell>
-                                    <TableCell>{data.stanMagazynowy || 'N/A'}</TableCell>
+                                    <TableCell>{data.stockStatus || 'N/A'}</TableCell>
                                 </TableRow>
                                 {/*<TableRow>*/}
                                 {/*    <TableCell sx={{ fontWeight: 'bold' }}>Price (Netto)</TableCell>*/}

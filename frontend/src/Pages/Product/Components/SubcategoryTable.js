@@ -164,6 +164,7 @@ export const SubcategoryTable = ({ productsData, onProductClick, lastPartToColla
                     <th>Status</th>
                     {token ? (
                         <>
+                            <th>Dedicated Price</th>
                             <th>End User Price</th>
                             <th>Add Quantity</th>
                             {/*<th>Add to cart</th>*/}
@@ -224,6 +225,7 @@ export const SubcategoryTable = ({ productsData, onProductClick, lastPartToColla
                             {token ? (
                                 <>
                                     <td>{product.priceList?.find((price) => price.nazwa === "End User")?.netto || "N/A"} {product.priceList?.find((price) => price.nazwa === "End User")?.waluta || "N/A"}</td>
+                                    <td>{product.priceList?.find((price) => price.nazwa === "End User")?.netto || "N/A"} {product.priceList?.find((price) => price.nazwa === "End User")?.waluta || "N/A"}</td>
                                     <td>
                                         <button onClick={() => handleQuantityChange(product.id, -1)}>-</button>
                                         <input
@@ -253,7 +255,7 @@ export const SubcategoryTable = ({ productsData, onProductClick, lastPartToColla
                     ))
                 ) : (
                     <tr>
-                        <td colSpan="8" style={{textAlign: "center", padding: "20px"}}>
+                    <td colSpan="8" style={{textAlign: "center", padding: "20px"}}>
                             No Items Found
                         </td>
                     </tr>

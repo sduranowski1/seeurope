@@ -80,6 +80,18 @@ const EnovaContractorEdit = () => {
                             <TableCell sx={{ fontWeight: 'bold' }}>Nazwa</TableCell>
                             <TableCell>{data.nazwa || 'N/A'}</TableCell>
                         </TableRow>
+                        <TableRow>
+                            <TableCell sx={{ fontWeight: 'bold' }}>Email</TableCell>
+                            <TableCell>{data.Email || 'N/A'}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell sx={{ fontWeight: 'bold' }}>Cena kontrahenta</TableCell>
+                            <TableCell>{data.cenaKontrahentaNazwa || 'N/A'}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell sx={{ fontWeight: 'bold' }}>Telefon</TableCell>
+                            <TableCell>{data.Telefon || 'N/A'}</TableCell>
+                        </TableRow>
                         {/* Address Details */}
                         <TableRow>
                             <TableCell sx={{ fontWeight: 'bold' }}>Address</TableCell>

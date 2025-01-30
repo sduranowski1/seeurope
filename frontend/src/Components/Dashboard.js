@@ -106,6 +106,7 @@ export const Dashboard = () => {
                                         <th>Subtotal</th>
                                         <th>Tax</th>
                                         <th>Total</th>
+                                        <th>Currency</th>
                                         <th>Items</th>
                                     </tr>
                                     </thead>
@@ -118,9 +119,10 @@ export const Dashboard = () => {
                                             {/*<td>{order.address || 'N/A'}</td>*/}
                                             <td>{order.phone || 'N/A'}</td>
                                             <td>{new Date(order.orderDate).toLocaleDateString()}</td>
-                                            <td>€{order.subtotal}</td>
-                                            <td>€{order.tax}</td>
-                                            <td>€{order.total}</td>
+                                            <td>{order.subtotal}</td>
+                                            <td>{order.tax}</td>
+                                            <td>{order.total}</td>
+                                            <td>{order.currency}</td>
                                             <td>
                                                 <Button
                                                     variant="text"  // Set the variant to 'text' for a text-style button

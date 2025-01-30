@@ -2,9 +2,9 @@ import '../ThreePoint/ThreePoint.scss';
 import {BoxWithCheckboxes} from "../../Components/BoxWithCheckboxes/BoxWithCheckboxes";
 import {ProductRangeComponent} from "./Components/ProductRangeComponent";
 import {TableWithTabs} from "../../Components/TableWithTabs/TableWithTabs";
-import {useState, useEffect, useMemo, useCallback} from "react";
+import {useState, useEffect, useMemo, useCallback, useContext} from "react";
 import { useTranslation } from 'react-i18next';
-import {Link, useNavigate} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import {fetchToken} from "../../utils/fetchToken";
 import {ProductDescription} from "./Components/ProductDescription";
 import Box from "@mui/material/Box";
@@ -13,6 +13,8 @@ import * as React from "react";
 import {SubcategoryTableBrands} from "./Components/SubcategoryTableBrands";
 import {WeightRange} from "./Components/WeightRange";
 import {SubcategoryTable} from "./Components/SubcategoryTable";
+import {jwtDecode} from "jwt-decode";
+import AuthContext from "../../AuthContext";
 
 const productsData = {
     name: '3 POINT',
@@ -70,6 +72,8 @@ export const VariantProducts = ({lastPart, slug}) => {
     const [displayedItems, setDisplayedItems] = useState([0, 1000000]);
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [checkboxes, setCheckboxes] = useState({});
+    const [userDetails, setUserDetails] = useState([])
+
 
     // function findCheckboxes() {
     //     return Object.values(productsData.tableData).flat().reduce((acc, product) => {
@@ -92,7 +96,7 @@ export const VariantProducts = ({lastPart, slug}) => {
     const [variants, setVariants] = useState([]);
     const [categories, setCategories] = useState([]);
     const [subcategories, setSubcategories] = useState([]);
-    const [token, setToken] = useState(null);
+    // const [token, setToken] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
@@ -101,6 +105,8 @@ export const VariantProducts = ({lastPart, slug}) => {
     const navigate = useNavigate();
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [weightRange, setWeightRange] = useState([0, 30000]);
+    const {id} = useParams(); // Get the product ID from the URL
+    const { token } = useContext(AuthContext); // Get token from AuthContext
 
 
     // Debounce timeout variable
@@ -270,6 +276,52 @@ export const VariantProducts = ({lastPart, slug}) => {
     // Keep the domain and the first part of the slug
     const brandsSlug = parts[4]; // First part of the slug
 
+    useEffect(() => {
+        const fetchUserInfo = async () => {
+            try {
+                if (token) {
+                    // Decode the JWT token to get the email
+                    const decodedToken = jwtDecode(token);
+                    console.log(decodedToken)
+                    const email = decodedToken?.username;
+
+                    if (email) {
+                        // setUserEmail(email);
+                        // console.log(email)
+
+                        // Fetch additional user details using the email
+                        const response = await fetch(
+                            `https://se-europe-test.pl/api/user_enovas?email=${encodeURIComponent(email)}`,
+                            {
+                                method: 'GET',
+                                headers: {
+                                    Accept: 'application/json',
+                                },
+                            }
+                        );
+
+                        if (response.ok) {
+                            const data = await response.json();
+                            setUserDetails(data[0]); // Assuming the API returns an array with the user object
+                        } else {
+                            console.error('Failed to fetch additional user details:', response.status);
+                        }
+                    } else {
+                        console.error('Email not found in the token');
+                    }
+                } else {
+                    console.error('Token is missing from AuthContext');
+                }
+            } catch (error) {
+                console.error('Error decoding token or fetching user information:', error);
+            }
+        };
+
+        fetchUserInfo();
+    }, [token]);
+
+    console.log(userDetails)
+
     return (
         <main>
             <section className={'section-contrains tables-page'}>
@@ -339,6 +391,8 @@ export const VariantProducts = ({lastPart, slug}) => {
                     productsData={filteredProducts}
                     onProductClick={handleProductClick}
                     lastPartToCollapse={lastPart}
+                    userDetailsPrice={userDetails}
+
                 />
                 {/*{selectedProduct && (*/}
                 {/*    <ProductDescription product={selectedProduct} productsData={filteredProducts}/>*/}

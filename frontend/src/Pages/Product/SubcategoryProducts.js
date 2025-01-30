@@ -508,6 +508,7 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
                     productsData={filteredProducts}
                     onProductClick={handleProductClick}
                     lastPartToCollapse={lastPart}
+                    userDetailsPrice={userDetails}
                 />
                 {/*{selectedProduct && (*/}
                 {/*    <ProductDescription product={selectedProduct} productsData={filteredProducts}/>*/}

@@ -48,7 +48,7 @@ import {useNavigate} from "react-router-dom";
 //     );
 // }
 
-export const SubcategoryTable = ({ productsData, onProductClick, lastPartToCollapse, displayedItems, checkboxes }) => {
+export const SubcategoryTable = ({ productsData, onProductClick, lastPartToCollapse, displayedItems, checkboxes, userDetailsPrice }) => {
     const [activeFilter, setActiveFilter] = useState("All");
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [filteredProducts, setFilteredProducts] = useState(productsData);  // Manage the filtered products state
@@ -91,7 +91,7 @@ export const SubcategoryTable = ({ productsData, onProductClick, lastPartToColla
                 if (product.id === productId) {
                     const updatedQuantity = Math.max(0, (product.quantity || 0) + change);
 
-                    // Update the cart in localStorage
+                    // Retrieve the cart from localStorage
                     const cart = JSON.parse(localStorage.getItem('cart') || '[]');
                     const productIndex = cart.findIndex((item) => item.id === productId);
 
@@ -106,6 +106,17 @@ export const SubcategoryTable = ({ productsData, onProductClick, lastPartToColla
                     }
 
                     localStorage.setItem('cart', JSON.stringify(cart));
+
+                    // Update priceCurrency in localStorage safely
+                    const priceCurrency = product.priceList?.length
+                        ? product.priceList.find((price) => price.nazwa === userDetailsPrice?.enovaPerson?.contractor?.cenaKontrahentaNazwa)?.waluta || ""
+                        : "";
+
+                    if (localStorage.getItem("priceCurrency") !== priceCurrency) {
+                        localStorage.setItem("priceCurrency", priceCurrency);
+                    }
+
+                    console.log(priceCurrency)
 
                     // Dispatch the custom event to update badge
                     window.dispatchEvent(new Event('cartUpdated'));
@@ -122,6 +133,8 @@ export const SubcategoryTable = ({ productsData, onProductClick, lastPartToColla
         // Redirect to the cart page without modifying the cart
         navigate('/dashboard/cart');
     };
+
+    console.log(userDetailsPrice?.enovaPerson?.contractor?.cenaKontrahentaNazwa)
 
     return (
         <div>
@@ -224,7 +237,7 @@ export const SubcategoryTable = ({ productsData, onProductClick, lastPartToColla
                             </td>
                             {token ? (
                                 <>
-                                    <td>{product.priceList?.find((price) => price.nazwa === "End User")?.netto || "N/A"} {product.priceList?.find((price) => price.nazwa === "End User")?.waluta || "N/A"}</td>
+                                    <td>{product.priceList?.find((price) => price.nazwa === userDetailsPrice?.enovaPerson?.contractor?.cenaKontrahentaNazwa)?.netto || ""} {product.priceList?.find((price) => price.nazwa === userDetailsPrice?.enovaPerson?.contractor?.cenaKontrahentaNazwa)?.waluta || ""}</td>
                                     <td>{product.priceList?.find((price) => price.nazwa === "End User")?.netto || "N/A"} {product.priceList?.find((price) => price.nazwa === "End User")?.waluta || "N/A"}</td>
                                     <td>
                                         <button onClick={() => handleQuantityChange(product.id, -1)}>-</button>
@@ -234,7 +247,7 @@ export const SubcategoryTable = ({ productsData, onProductClick, lastPartToColla
                                             onChange={(e) => handleQuantityChange(product.id, Number(e.target.value) - product.quantity)} // Allow manual input
                                             style={{width: "60px", textAlign: "center", margin: "0 5px"}}
                                         />
-                                        {/*<button onClick={() => handleQuantityChange(product.id, 1)}>+</button>*/}
+                                        <button onClick={() => handleQuantityChange(product.id, 1)}>+</button>
                                     </td>
                                     {/*<td>*/}
                                     {/*    <IconButton*/}

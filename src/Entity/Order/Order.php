@@ -55,6 +55,9 @@ class Order
     #[ORM\Column(type: 'float')]
     private ?float $total = null;
 
+    #[ORM\Column(type: 'string', length: 20, nullable: true)]
+    private ?string $currency = null;
+
     // Getters and setters for all properties...
 
     public function getId(): ?int
@@ -156,6 +159,16 @@ class Order
     public function setPhone(?string $phone): void
     {
         $this->phone = $phone;
+    }
+
+    public function getCurrency(): ?string
+    {
+        return $this->currency;
+    }
+
+    public function setCurrency(?string $currency): void
+    {
+        $this->currency = $currency;
     }
 
 

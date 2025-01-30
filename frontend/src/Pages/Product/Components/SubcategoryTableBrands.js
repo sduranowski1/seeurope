@@ -15,7 +15,7 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import AuthContext from "../../../AuthContext";
 import {useNavigate} from "react-router-dom";
 
-export const SubcategoryTableBrands = ({ productsData, onProductClick, lastPartToCollapse, displayedItems, checkboxes }) => {
+export const SubcategoryTableBrands = ({ productsData, onProductClick, lastPartToCollapse, displayedItems, checkboxes, userDetailsPrice }) => {
     const [activeFilter, setActiveFilter] = useState("All");
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [filteredProducts, setFilteredProducts] = useState(productsData);  // Manage the filtered products state
@@ -54,7 +54,7 @@ export const SubcategoryTableBrands = ({ productsData, onProductClick, lastPartT
                 if (product.id === productId) {
                     const updatedQuantity = Math.max(0, (product.quantity || 0) + change);
 
-                    // Update the cart in localStorage
+                    // Retrieve the cart from localStorage
                     const cart = JSON.parse(localStorage.getItem('cart') || '[]');
                     const productIndex = cart.findIndex((item) => item.id === productId);
 
@@ -70,6 +70,15 @@ export const SubcategoryTableBrands = ({ productsData, onProductClick, lastPartT
 
                     localStorage.setItem('cart', JSON.stringify(cart));
 
+                    // Update priceCurrency in localStorage safely
+                    const priceCurrency = product.priceList?.length
+                        ? product.priceList.find((price) => price.nazwa === userDetailsPrice?.enovaPerson?.contractor?.cenaKontrahentaNazwa)?.waluta || ""
+                        : "";
+
+                    if (localStorage.getItem("priceCurrency") !== priceCurrency) {
+                        localStorage.setItem("priceCurrency", priceCurrency);
+                    }
+
                     // Dispatch the custom event to update badge
                     window.dispatchEvent(new Event('cartUpdated'));
 
@@ -79,6 +88,7 @@ export const SubcategoryTableBrands = ({ productsData, onProductClick, lastPartT
             })
         );
     };
+
 
     const handleAddToCart = () => {
         // Redirect to the cart page without modifying the cart
@@ -126,6 +136,7 @@ export const SubcategoryTableBrands = ({ productsData, onProductClick, lastPartT
                     <th>Status</th>
                     {token ? (
                         <>
+                            <th>Dedicated Price</th>
                             <th>End User Price</th>
                             <th>Add Quantity</th>
                             {/*<th>Add to cart</th>*/}
@@ -189,6 +200,7 @@ export const SubcategoryTableBrands = ({ productsData, onProductClick, lastPartT
 
                         {token ? (
                             <>
+                                <td>{product.priceList?.find((price) => price.nazwa === userDetailsPrice?.enovaPerson?.contractor?.cenaKontrahentaNazwa)?.netto || ""} {product.priceList?.find((price) => price.nazwa === userDetailsPrice?.enovaPerson?.contractor?.cenaKontrahentaNazwa)?.waluta || ""}</td>
                                 <td>{product.priceList?.find((price) => price.nazwa === "End User")?.netto || "N/A"} {product.priceList?.find((price) => price.nazwa === "End User")?.waluta || "N/A"}</td>
 
                                 <td>
@@ -219,7 +231,7 @@ export const SubcategoryTableBrands = ({ productsData, onProductClick, lastPartT
                     ))
                 ) : (
                     <tr>
-                    <td colSpan="8" style={{textAlign: "center", padding: "20px"}}>
+                        <td colSpan="8" style={{textAlign: "center", padding: "20px"}}>
                             No Items Found
                         </td>
                     </tr>

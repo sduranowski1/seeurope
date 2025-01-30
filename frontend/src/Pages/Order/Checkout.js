@@ -87,6 +87,7 @@ const Checkout = () => {
             tax,
             total,
             orderDate: new Date().toISOString(),
+            currency: storedPriceCurrency,
         };
 
         console.log(orderData);
@@ -118,6 +119,8 @@ const Checkout = () => {
         }
     };
 
+    const storedPriceCurrency = localStorage.getItem("priceCurrency");
+    console.log(storedPriceCurrency)
 
     if (!userEmail) {
         return (
@@ -186,22 +189,22 @@ const Checkout = () => {
                                         sx={{ mb: 2 }}
                                     >
                                         <Typography>{`${quantity} x ${item.name}`}</Typography>
-                                        <Typography>€{(price * quantity).toFixed(2)}</Typography>
+                                        <Typography>{(price * quantity).toFixed(2)} {storedPriceCurrency}</Typography>
                                     </Box>
                                 );
                             })}
                         <Divider sx={{ my: 2 }} />
                         <Box display="flex" justifyContent="space-between">
                             <Typography>Subtotal:</Typography>
-                            <Typography>€{subtotal.toFixed(2)}</Typography>
+                            <Typography>{subtotal.toFixed(2)} {storedPriceCurrency}</Typography>
                         </Box>
                         <Box display="flex" justifyContent="space-between">
                             <Typography>Tax (10%):</Typography>
-                            <Typography>€{tax.toFixed(2)}</Typography>
+                            <Typography>{tax.toFixed(2)} {storedPriceCurrency}</Typography>
                         </Box>
                         <Box display="flex" justifyContent="space-between" sx={{ mt: 2 }}>
                             <Typography variant="h6">Total:</Typography>
-                            <Typography variant="h6">€{total.toFixed(2)}</Typography>
+                            <Typography variant="h6">{total.toFixed(2)} {storedPriceCurrency}</Typography>
                         </Box>
                         <Button
                             type="button"

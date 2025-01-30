@@ -58,6 +58,10 @@ const Cart = () => {
     const tax = subtotal * TAX_RATE;
     const total = subtotal + tax;
 
+
+    const storedPriceCurrency = localStorage.getItem("priceCurrency");
+    console.log(storedPriceCurrency)
+
     return (
         <Container maxWidth="lg" sx={{ mt: 4, marginBottom: 3 }}>
             <Typography variant="h4" gutterBottom>
@@ -96,11 +100,11 @@ const Cart = () => {
                                                     {item.name || 'Unnamed Product'}
                                                 </Box>
                                             </TableCell>
-                                            <TableCell align="right">€{price.toFixed(2)}</TableCell>
+                                            <TableCell align="right">{price.toFixed(2)} {storedPriceCurrency}</TableCell>
                                             <TableCell align="right">{item.quantity}</TableCell>
 
                                             <TableCell align="right">
-                                                €{(price * quantity).toFixed(2)}
+                                                {(price * quantity).toFixed(2)} {storedPriceCurrency}
                                             </TableCell>
                                             <TableCell align="center">
                                                 <Button
@@ -120,9 +124,9 @@ const Cart = () => {
                     </TableContainer>
 
                     <Box mt={3} textAlign="right">
-                        <Typography variant="body1">Subtotal: €{subtotal.toFixed(2)}</Typography>
-                        <Typography variant="body1">Tax (10%): €{tax.toFixed(2)}</Typography>
-                        <Typography variant="h6">Total: €{total.toFixed(2)}</Typography>
+                        <Typography variant="body1">Subtotal: {subtotal.toFixed(2)} {storedPriceCurrency}</Typography>
+                        <Typography variant="body1">Tax (10%): {tax.toFixed(2)} {storedPriceCurrency}</Typography>
+                        <Typography variant="h6">Total: {total.toFixed(2)} {storedPriceCurrency}</Typography>
                         <Button
                             variant="contained"
                             color="primary"

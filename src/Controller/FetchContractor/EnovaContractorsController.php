@@ -217,6 +217,11 @@ class EnovaContractorsController extends AbstractController
         $person->setId($personData['id']);  // Ensure ID is set correctly
         $person->setImie($personData['imie'] ?? '');
         $person->setNazwisko($personData['nazwisko'] ?? '');
+        $person->setStanowisko($personData['stanowisko'] ?? '');
+        $person->setEmail($personData['email'] ?? '');
+        $person->setTelKomórkowy($personData['telKomórkowy'] ?? '');
+        $person->setDostepDoWWW($personData['dostepDoWWW'] ?? false);
+        $person->setPrawoDoZamowien($personData['prawoDoZamowien'] ?? false);
 
         $this->enovaPersonRepository->save($person, true);
 

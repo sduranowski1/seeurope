@@ -40,8 +40,10 @@ const authProvider = {
         }
     },
     logout: () => {
-        localStorage.removeItem('authToken');
+        localStorage.removeItem('token');
         localStorage.removeItem('username');
+        localStorage.removeItem('contractorName');
+        localStorage.removeItem('priceCurrency');
         return Promise.resolve();
     },
         checkAuth: () =>
@@ -57,7 +59,7 @@ const authProvider = {
     },
     getIdentity: () => {
         try {
-            const token = localStorage.getItem('authToken');
+            const token = localStorage.getItem('token');
             if (!token) {
                 return Promise.reject(new Error('No token found'));
             }

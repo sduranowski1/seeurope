@@ -21,7 +21,7 @@ const OrderItemsModal = ({ open, onClose, items }) => {
                     <ul>
                         {items.map((item, index) => (
                             <li key={index}>
-                                <strong>{item.name}</strong> - {item.quantity} x €{item.price}
+                                <strong>{item.name}</strong> - {item.quantity} x {item.price}
                             </li>
                         ))}
                     </ul>

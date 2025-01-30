@@ -43,11 +43,13 @@ const Cart = () => {
         localStorage.setItem("cart", JSON.stringify(updatedCart)); // Update localStorage
     };
 
+    const savedContractorName = localStorage.getItem('contractorName');
+
     // Calculate subtotal
 // Calculate subtotal with checks for valid numbers
     const calculateSubtotal = () =>
         cartItems.reduce((total, item) => {
-            const price = Number(item.priceList?.find(p => p.nazwa === 'End User')?.netto || 0); // Ensure price is a number
+            const price = Number(item.priceList?.find(p => p.nazwa === savedContractorName)?.netto || item.priceList?.find(p => p.nazwa === 'End User')?.netto); // Ensure price is a number
             const quantity = Number(item.quantity || 0); // Ensure quantity is a number
             return total + (price * quantity);
         }, 0);
@@ -61,6 +63,9 @@ const Cart = () => {
 
     const storedPriceCurrency = localStorage.getItem("priceCurrency");
     console.log(storedPriceCurrency)
+
+
+
 
     return (
         <Container maxWidth="lg" sx={{ mt: 4, marginBottom: 3 }}>
@@ -85,7 +90,7 @@ const Cart = () => {
                             <TableBody>
                                 {cartItems.map((item) => {
                                     // Find the price object where nazwa is 'End User'
-                                    const price = item.priceList?.find(p => p.nazwa === 'End User')?.netto || 0;  // Fallback to 0 if not found
+                                    const price = item.priceList?.find(p => p.nazwa === savedContractorName)?.netto || item.priceList?.find(p => p.nazwa === 'End User')?.netto;  // Fallback to 0 if not found
                                     const quantity = item.quantity || 0; // Fallback to 0 if quantity is undefined
 
                                     return (

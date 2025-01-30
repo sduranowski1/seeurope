@@ -26,12 +26,33 @@ class EnovaPerson
     private ?int $id = null;
 
     #[ORM\Column(type: 'string')]
-    #[Groups(['enovaPerson:read', 'enovaPerson:create', 'enovaPerson:update', 'enovaContractor:read', 'enovaContractor:create', 'enovaContractor:update'])]
+    #[Groups(['enovaPerson:read', 'enovaPerson:create', 'enovaPerson:update', 'enovaContractor:read', 'enovaContractor:create', 'enovaContractor:update', 'userEnova:read'])]
     private ?string $imie = null;
 
     #[ORM\Column(type: 'string')]
-    #[Groups(['enovaPerson:read', 'enovaPerson:create', 'enovaPerson:update', 'enovaContractor:read', 'enovaContractor:create', 'enovaContractor:update'])]
+    #[Groups(['enovaPerson:read', 'enovaPerson:create', 'enovaPerson:update', 'enovaContractor:read', 'enovaContractor:create', 'enovaContractor:update', 'userEnova:read'])]
     private ?string $nazwisko = null;
+
+    #[ORM\Column(type: 'string')]
+    #[Groups(['enovaPerson:read', 'enovaPerson:create', 'enovaPerson:update', 'enovaContractor:read', 'enovaContractor:create', 'enovaContractor:update', 'userEnova:read'])]
+    private ?string $stanowisko = null;
+
+    #[ORM\Column(type: 'string')]
+    #[Groups(['enovaPerson:read', 'enovaPerson:create', 'enovaPerson:update', 'enovaContractor:read', 'enovaContractor:create', 'enovaContractor:update', 'userEnova:read'])]
+    private ?string $email = null;
+
+    #[ORM\Column(type: 'string')]
+    #[Groups(['enovaPerson:read', 'enovaPerson:create', 'enovaPerson:update', 'enovaContractor:read', 'enovaContractor:create', 'enovaContractor:update', 'userEnova:read'])]
+    private ?string $telKomorkowy = null;
+
+    // New properties
+    #[ORM\Column(type: 'boolean')]
+    #[Groups(['enovaPerson:read', 'enovaPerson:create', 'enovaPerson:update', 'enovaContractor:read', 'enovaContractor:create', 'enovaContractor:update', 'userEnova:read'])]
+    private bool $dostepDoWWW = false;
+
+    #[ORM\Column(type: 'boolean')]
+    #[Groups(['enovaPerson:read', 'enovaPerson:create', 'enovaPerson:update', 'enovaContractor:read', 'enovaContractor:create', 'enovaContractor:update', 'userEnova:read'])]
+    private bool $prawoDoZamowien = false;
 
     #[ORM\ManyToOne(targetEntity: EnovaContractor::class, inversedBy: 'listaOsobyKontrahenta')]
     #[ORM\JoinColumn(referencedColumnName: 'id_enova', nullable: false)]
@@ -71,6 +92,38 @@ class EnovaPerson
         $this->nazwisko = $nazwisko;
     }
 
+    public function getStanowisko(): ?string
+    {
+        return $this->stanowisko;
+    }
+
+    public function setStanowisko(?string $stanowisko): void
+    {
+        $this->stanowisko = $stanowisko;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(?string $email): void
+    {
+        $this->email = $email;
+    }
+
+    public function getTelKomorkowy(): ?string
+    {
+        return $this->telKomorkowy;
+    }
+
+    public function setTelKomorkowy(?string $telKomorkowy): void
+    {
+        $this->telKomorkowy = $telKomorkowy;
+    }
+
+
+
     public function getContractor(): ?EnovaContractor
     {
         return $this->contractor;
@@ -81,4 +134,26 @@ class EnovaPerson
         $this->contractor = $contractor;
         return $this;
     }
+
+    public function isDostepDoWWW(): bool
+    {
+        return $this->dostepDoWWW;
+    }
+
+    public function setDostepDoWWW(bool $dostepDoWWW): void
+    {
+        $this->dostepDoWWW = $dostepDoWWW;
+    }
+
+    public function isPrawoDoZamowien(): bool
+    {
+        return $this->prawoDoZamowien;
+    }
+
+    public function setPrawoDoZamowien(bool $prawoDoZamowien): void
+    {
+        $this->prawoDoZamowien = $prawoDoZamowien;
+    }
+
+
 }

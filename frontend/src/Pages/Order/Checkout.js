@@ -64,6 +64,8 @@ const Checkout = () => {
     console.log('Current localStorage:', localStorage);
     console.log('Current localStorage:', userEmail);
 
+    const savedContractorName = localStorage.getItem('contractorName');
+
     const handleOrderSubmission = async () => {
         if (!cartItems || cartItems.length === 0) {
             alert('No items in the cart!');
@@ -81,7 +83,7 @@ const Checkout = () => {
                 id: item.id,
                 name: item.name,
                 quantity: item.quantity,
-                price: item.priceList?.find((p) => p.nazwa === 'End User')?.netto || 0,
+                price: item.priceList?.find(p => p.nazwa === savedContractorName)?.netto || item.priceList?.find(p => p.nazwa === 'End User')?.netto,
             })),
             subtotal,
             tax,
@@ -178,7 +180,7 @@ const Checkout = () => {
                         {cartItems &&
                             cartItems.map((item) => {
                                 const price =
-                                    item.priceList?.find((p) => p.nazwa === 'End User')?.netto || 0;
+                                    item.priceList?.find(p => p.nazwa === savedContractorName)?.netto || item.priceList?.find(p => p.nazwa === 'End User')?.netto;
                                 const quantity = item.quantity || 0;
 
                                 return (

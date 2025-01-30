@@ -111,7 +111,7 @@ export const Dashboard = () => {
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    {orders.map((order, index) => (
+                                    {orders.slice().reverse().map((order, index) => (
                                         <tr key={index}>
                                             <td>{order.id}</td>
                                             <td>{order.email}</td>

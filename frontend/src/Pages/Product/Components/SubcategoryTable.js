@@ -109,8 +109,8 @@ export const SubcategoryTable = ({ productsData, onProductClick, lastPartToColla
 
                     // Update priceCurrency in localStorage safely
                     const priceCurrency = product.priceList?.length
-                        ? product.priceList.find((price) => price.nazwa === userDetailsPrice?.enovaPerson?.contractor?.cenaKontrahentaNazwa)?.waluta || ""
-                        : "";
+                        ? product.priceList.find((price) => price.nazwa === userDetailsPrice?.enovaPerson?.contractor?.cenaKontrahentaNazwa)?.waluta || "EUR"
+                        : "EUR";
 
                     if (localStorage.getItem("priceCurrency") !== priceCurrency) {
                         localStorage.setItem("priceCurrency", priceCurrency);
@@ -135,6 +135,13 @@ export const SubcategoryTable = ({ productsData, onProductClick, lastPartToColla
     };
 
     console.log(userDetailsPrice?.enovaPerson?.contractor?.cenaKontrahentaNazwa)
+
+    const contractorName = userDetailsPrice?.enovaPerson?.contractor?.cenaKontrahentaNazwa || "End User";
+
+    // Check if the value exists before storing it
+    if (contractorName) {
+        localStorage.setItem('contractorName', contractorName);
+    }
 
     return (
         <div>

@@ -219,7 +219,7 @@ class EnovaContractorsController extends AbstractController
         $person->setNazwisko($personData['nazwisko'] ?? '');
         $person->setStanowisko($personData['stanowisko'] ?? '');
         $person->setEmail($personData['email'] ?? '');
-        $person->setTelKomórkowy($personData['telKomórkowy'] ?? '');
+        $person->setTelKomorkowy($personData['telKomorkowy'] ?? '');
         $person->setDostepDoWWW($personData['dostepDoWWW'] ?? false);
         $person->setPrawoDoZamowien($personData['prawoDoZamowien'] ?? false);
 

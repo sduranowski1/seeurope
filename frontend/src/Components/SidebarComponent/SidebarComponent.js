@@ -36,7 +36,7 @@ export const SidebarComponent = () => {
             if (response.ok) {
                 const data = await response.json();
                 console.log("Response Data:", data);  // Log the actual response data
-                localStorage.setItem("authToken", data.token);
+                localStorage.setItem("token", data.token);
                 setUser({ name: login, isAuthenticated: true });
                 console.log(`${login}: ${true}`);
 

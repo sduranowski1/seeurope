@@ -99,6 +99,7 @@ class EnovaContractorsController extends AbstractController
                 // Create a new contractor if not found
                 $newContractor = new EnovaContractor();
                 $newContractor->setIdEnova($contractor['idEnova']);
+                $newContractor->setId($contractor['idEnova']);
                 $newContractor->setNazwa($contractor['nazwa']);
                 $newContractor->setKod($contractor['kod']);
                 $newContractor->setEmail($contractor['Email']);
@@ -120,6 +121,7 @@ class EnovaContractorsController extends AbstractController
                 $this->enovaContractorRepository->save($newContractor, true);
             } else {
                 // Update the existing contractor
+                $existingContractor->setId($contractor['idEnova']);
                 $existingContractor->setNazwa($contractor['nazwa']);
                 $existingContractor->setKod($contractor['kod']);
                 $existingContractor->setEmail($contractor['Email']);

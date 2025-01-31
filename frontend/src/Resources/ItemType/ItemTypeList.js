@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {List, Datagrid, TextField, ReferenceField, TextInput} from 'react-admin';
+import {List, Datagrid, TextField, ReferenceField, TextInput, DateField} from 'react-admin';
 
 const ItemTypeList = () => (
     <List resource="item_types">
@@ -11,8 +11,8 @@ const ItemTypeList = () => (
             <ReferenceField reference="subcategories" source="scid" label="SubCategory" >
                 <TextField source="subCatName" />
             </ReferenceField>
-            <TextField source="createdAt" />
-            <TextField source="updatedAt" />
+            <DateField source="createdAt" />
+            <DateField source="updatedAt" />
         </Datagrid>
     </List>
 );

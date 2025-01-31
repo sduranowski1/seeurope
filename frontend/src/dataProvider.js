@@ -7,20 +7,46 @@ const domainUrl = 'https://se-europe-test.pl';
 const httpClient = fetchUtils.fetchJson
 
 const dataProvider = {
-  getList: (resource, params) => {
-    const { page, perPage } = params.pagination;
-    const url = `${apiUrl}/${resource}?page=${page}&perPage=${perPage}`;
+    getList: (resource, params) => {
+        const { page, perPage } = params.pagination;
+        const filterQuery = new URLSearchParams(params.filter).toString();
+        const url = `${apiUrl}/${resource}?page=${page}&${filterQuery}`;
 
-    return httpClient(url)
-      .then(response => ({
-        data: response.json,
-        total: parseInt(response.headers.get('x-total-count')),
-      }));
-  },
+        // Create a new Headers object
+        const headers = new Headers({
+            'Content-Type': 'application/ld+json', // Set the content type as JSON-LD
+            'Accept': 'application/ld+json', // Tell the server you expect JSON-LD data in response
+        });
+
+        return httpClient(url, {
+            method: 'GET',
+            headers: headers, // Pass headers as a Headers object
+        })
+            .then(({ json }) => {
+                if (!json['hydra:member'] || !Array.isArray(json['hydra:member'])) {
+                    throw new Error("Invalid response format: 'hydra:member' is missing or not an array.");
+                }
+
+                return {
+                    data: json['hydra:member'].map(item => ({
+                        id: item.id,
+                        ...item,
+                    })),
+                    total: json['hydra:totalItems'] || json['hydra:member'].length,
+                };
+            })
+            .catch((error) => {
+                console.error("Error fetching data:", error);
+                return {
+                    data: [],
+                    total: 0,
+                };
+            });
+    },
   getOne: (resource, params) => {
     const url = `${apiUrl}/${resource}/${params.id}`;
     return httpClient(url).then(({ json }) => ({
-      data: json,
+        ...json, id: json.idEnova
     }));
   },
   getMany: (resource, params) => {

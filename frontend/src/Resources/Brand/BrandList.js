@@ -1,7 +1,7 @@
 // src/BookList.js
 
 import * as React from 'react';
-import { List, Datagrid, TextField } from 'react-admin';
+import {List, Datagrid, TextField, DateField} from 'react-admin';
 import customDataProvider from '../../dataProvider';
 
 // const BookList = (props) => (
@@ -23,8 +23,8 @@ const BrandList = () => (
         <TextField source="polishName" />
         <TextField source="germanName" />
       {/*<TextField source="variant" />*/}
-      <TextField source="createdAt" />
-      <TextField source="updatedAt" />
+        <DateField source="createdAt" />
+        <DateField source="updatedAt" />
     </Datagrid>
   </List>
 );

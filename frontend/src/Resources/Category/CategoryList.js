@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { List, Datagrid, TextField } from 'react-admin';
+import {List, Datagrid, TextField, DateField} from 'react-admin';
 
 const CategoryList = () => (
     <List resource="categories">
@@ -8,8 +8,8 @@ const CategoryList = () => (
             <TextField source="name" />
             <TextField source="polishName" />
             <TextField source="germanName" />
-            <TextField source="createdAt" />
-            <TextField source="updatedAt" />
+            <DateField source="createdAt" />
+            <DateField source="updatedAt" />
         </Datagrid>
     </List>
 );

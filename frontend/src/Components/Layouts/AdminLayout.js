@@ -8,10 +8,10 @@ import {Admin, Resource} from "react-admin";
 import authProvider from "../../authProvider";
 import {MyLayout} from "../../Layouts/AdminToolbar";
 import i18nProvider from "../../i18nProvider";
-import EnovaProductList from "../../Resources/EnovaProduct/EnovaProductList";
+import EnovaProductListOld from "../../Resources/EnovaProduct/EnovaProductListOld";
 import EnovaProductEdit from "../../Resources/EnovaProduct/EnovaProductEdit";
 import InventoryIcon from "@mui/icons-material/Inventory";
-import EnovaContractorList from "../../Resources/EnovaContractors/EnovaContractorList";
+import EnovaContractorListOld from "../../Resources/EnovaContractors/EnovaContractorListOld";
 import GroupIcon from "@mui/icons-material/Group";
 import BrandList from "../../Resources/Brand/BrandList";
 import BrandEdit from "../../Resources/Brand/BrandEdit";
@@ -41,6 +41,8 @@ import PermIdentityIcon from "@mui/icons-material/PermIdentity";
 import EnovaDbProductList from "../../Resources/EnovaProduct/EnovaDbProductList";
 import EnovaContractorEdit from "../../Resources/EnovaContractors/EnovaContractorEdit";
 import UserCreate from "../../Resources/User/UserCreate";
+import EnovaProductList from "../../Resources/EnovaProduct/EnovaProductList";
+import EnovaContractorList from "../../Resources/EnovaContractors/EnovaContractorList";
 
 
 
@@ -64,9 +66,10 @@ const AdminLayout = () => {
     return (
         <Admin dataProvider={dataProvider} authProvider={authProvider} layout={MyLayout} locale="en" i18nProvider={i18nProvider} basename="/admin">
             {/*<Resource name="products" list={ProductList} edit={ProductEdit} />*/}
-            <Resource name="enova-products" list={EnovaDbProductList} edit={EnovaProductEdit} icon={InventoryIcon} />
-            <Resource name="enova-contractors" list={EnovaContractorList} edit={EnovaContractorEdit} icon={GroupIcon}/>
-            <Resource name="enova-users" list={EnovaUserList} edit={EnovaUserEdit} icon={PermIdentityIcon}/>
+            {/*<Resource name="enova-products" list={EnovaDbProductList} edit={EnovaProductEdit} icon={InventoryIcon} />*/}
+            <Resource name="enova_products" list={EnovaProductList} edit={EnovaProductEdit} icon={InventoryIcon} />
+            <Resource name="enova_contractors" list={EnovaContractorList} edit={EnovaContractorEdit} icon={GroupIcon}/>
+            <Resource name="enova_people" list={EnovaUserList} edit={EnovaUserEdit} icon={PermIdentityIcon}/>
             <Resource name="brands" list={BrandList} edit={BrandEdit} create={BrandCreate} icon={AppsIcon}/>
             <Resource name="variants" list={VariantList} edit={VariantEdit} create={VariantCreate} />
             <Resource name="categories" list={CategoryList} edit={CategoryEdit} create={CategoryCreate} icon={ClassIcon}/>

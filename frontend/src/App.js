@@ -64,8 +64,8 @@ import VariantList from "./Resources/Variant/VariantList";
 import VariantEdit from "./Resources/Variant/VariantEdit";
 import VariantCreate from "./Resources/Variant/VariantCreate";
 import BrandCreate from "./Resources/Brand/BrandCreate";
-import EnovaProductList from "./Resources/EnovaProduct/EnovaProductList";
-import EnovaContractorList from "./Resources/EnovaContractors/EnovaContractorList";
+import EnovaProductListOld from "./Resources/EnovaProduct/EnovaProductListOld";
+import EnovaContractorListOld from "./Resources/EnovaContractors/EnovaContractorListOld";
 import EnovaProductEdit from "./Resources/EnovaProduct/EnovaProductEdit";
 import BlankPage from "./Pages/Admin/EnovaProducts/BlankPage";
 import CategoryList from "./Resources/Category/CategoryList";
@@ -88,6 +88,7 @@ import {CircularProgress} from "@mui/material";
 import Cart from "./Pages/Order/Cart";
 import Checkout from "./Pages/Order/Checkout";
 import Success from "./Pages/Order/Success";
+import ProtectedRoute from "./Components/ProtectedRoute/ProtectedRoute";
 // import BrandEdit from "./Resources/Product/BrandEdit";
 // import {SidebarComponent} from "./Components/SidebarComponent/SidebarComponent";
 // import {FooterComponent} from "./Components/FooterComponent/FooterComponent";
@@ -138,8 +139,17 @@ const App = () => {
                           <Route path="checkout" element={<Layout><Checkout /></Layout>} />
                           <Route path="success" element={<Layout><Success /></Layout>} />
             </Route>
-            <Route path="/admin/*" element={<AdminLayout />} >
-                <Route path="enova-product/:id" element={<EnovaProductEdit />} />
+
+            {/*<Route path="/admin/*" element={<ProtectedRoute roles={['ROLE_ADMIN']}>*/}
+            {/*    <AdminLayout />*/}
+            {/*</ProtectedRoute>}>*/}
+                {/*<ProtectedRoute roles={['ROLE_ADMIN']}>*/}
+                {/*    <AdminLayout />*/}
+                {/*</ProtectedRoute>*/}
+            {/*</Route>*/}
+            <Route path="/admin/*" element={<AdminLayout/>}>
+                {/*<Route path="enova-product/:id" element={<EnovaProductEdit />} />*/}
+
             </Route>
             {/* <Route path="*" element={<Navigate to="/" replace />} /> */}
           {/*<Route path="/moje-zlacze">*/}

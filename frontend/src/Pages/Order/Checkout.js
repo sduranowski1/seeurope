@@ -76,9 +76,9 @@ const Checkout = () => {
 
         const orderData = {
             email: userEmail,
-            name: userDetails?.name || "test",
-            address: userDetails?.address || "test",
-            phone: userDetails?.phone || "444777333",
+            name: userDetails?.enovaPerson?.imie || "",
+            address: userDetails?.address || "",
+            phone: userDetails?.enovaPerson?.telKomorkowy || "",
             items: cartItems.map((item) => ({
                 id: item.id,
                 name: item.name,
@@ -157,13 +157,13 @@ const Checkout = () => {
                             {userDetails && (
                                 <>
                                     <Typography variant="body1">
-                                        <strong>Name:</strong> {userDetails.name || 'N/A'}
+                                        <strong>Name:</strong> {userDetails?.enovaPerson?.imie || 'N/A'}
                                     </Typography>
                                     <Typography variant="body1">
-                                        <strong>Address:</strong> {userDetails.address || 'N/A'}
+                                        <strong>Surname:</strong> {userDetails?.enovaPerson?.nazwisko || 'N/A'}
                                     </Typography>
                                     <Typography variant="body1">
-                                        <strong>Phone:</strong> {userDetails.phone || 'N/A'}
+                                        <strong>Phone:</strong> {userDetails?.enovaPerson?.telKomorkowy || 'N/A'}
                                     </Typography>
                                 </>
                             )}

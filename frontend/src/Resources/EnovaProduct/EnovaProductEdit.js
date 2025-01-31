@@ -179,7 +179,7 @@ const EnovaProductEdit = () => {
             }
 
             console.log('Product updated successfully');
-            navigate('/admin/enova-products'); // Redirect after successful update
+            navigate('/admin/enova_products'); // Redirect after successful update
         } catch (error) {
             console.error('Error saving product:', error);
         }
@@ -397,7 +397,7 @@ const EnovaProductEdit = () => {
                         </Box>
 
                         <Box display="flex" justifyContent="space-between" marginTop={2}>
-                            <Button variant="outlined" onClick={() => navigate('/admin/enova-products')}>
+                            <Button variant="outlined" onClick={() => navigate('/admin/enova_products')}>
                                 Cancel
                             </Button>
                             <Button variant="contained" color="primary" onClick={handleSave}>

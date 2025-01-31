@@ -30,7 +30,7 @@ const authProvider = {
             }
 
             // Step 4: Store the token and username in localStorage
-            localStorage.setItem('authToken', token);
+            localStorage.setItem('token', token);
             localStorage.setItem('username', username);
 
             return Promise.resolve();
@@ -42,11 +42,9 @@ const authProvider = {
     logout: () => {
         localStorage.removeItem('token');
         localStorage.removeItem('username');
-        localStorage.removeItem('contractorName');
-        localStorage.removeItem('priceCurrency');
         return Promise.resolve();
     },
-        checkAuth: () =>
+    checkAuth: () =>
         localStorage.getItem('username') ? Promise.resolve() : Promise.reject(),
     checkError:  (error) => {
         const status = error.status;
@@ -82,7 +80,7 @@ const authProvider = {
     },
     getPermissions: () => Promise.resolve(''),
     getToken: () => {
-        return localStorage.getItem('authToken');
+        return localStorage.getItem('token');
     }
 };
 

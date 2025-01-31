@@ -13,9 +13,9 @@ import NestedSubmenu from "./NestedSubmenu";
 
 export const AdminMyMenu = () => (
     <Menu>
-        <Menu.ResourceItem name="enova-products" />
-        <Menu.ResourceItem name="enova-contractors" />
-        <Menu.ResourceItem name="enova-users" />
+        <Menu.ResourceItem name="enova_products" />
+        <Menu.ResourceItem name="enova_contractors" />
+        <Menu.ResourceItem name="enova_people" />
         {/*<Menu.ResourceItem name="brands" icon={<AppsIcon />}/>*/}
         <Submenu text="Brands" name="brands" icon={<AppsIcon />}>
             <Menu.ResourceItem name="variants" />

@@ -23,6 +23,10 @@ class EnovaContractor
     #[Groups(["enovaContractor:read", 'enovaPerson:read',  'userEnova:read'])]
     private ?int $idEnova = null;
 
+    #[ORM\Column(type: 'integer', unique: true)]
+    #[Groups(["enovaContractor:read"])]
+    private ?int $id = null;
+
     #[ORM\Column(type: 'string')]
     #[Groups(["enovaContractor:read", 'enovaLocation:read'])]
     private ?string $kod = null;
@@ -71,6 +75,17 @@ class EnovaContractor
         $this->locations = new ArrayCollection();
     }
 
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function setId(int $id): self
+    {
+        $this->id = $id;
+        return $this;
+    }
+
     public function getIdEnova(): ?int
     {
         return $this->idEnova;
@@ -79,6 +94,8 @@ class EnovaContractor
     public function setIdEnova(int $idEnova): self
     {
         $this->idEnova = $idEnova;
+        // Optionally, clone the idEnova into id (if you want automatic sync)
+        $this->id = $idEnova; // Clone logic
         return $this;
     }
 

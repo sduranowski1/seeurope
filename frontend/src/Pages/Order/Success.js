@@ -14,7 +14,8 @@ const Success = () => {
             <Box textAlign="center">
                 <Paper sx={{ p: 3 }} elevation={3}>
                 <Typography variant="body1" gutterBottom>
-                    Thanks <strong>{identity.email || 'N/A'}</strong>
+                    Thanks!
+                    {/*Thanks <strong>{identity.username || 'N/A'}</strong>*/}
                 </Typography>
                 <Typography variant="h4" gutterBottom>
                     Order Placed Successfully!

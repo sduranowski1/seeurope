@@ -154,7 +154,7 @@ const EnovaDbProductList = () => {
     }, [totalPages, loading]);
 
     const handleRowClick = useCallback((productId) => {
-        navigate(`/admin/enova-products/${productId}`);
+        navigate(`/admin/enova_products/${productId}`);
     }, [navigate]);
 
     // Debounced function to handle the input change

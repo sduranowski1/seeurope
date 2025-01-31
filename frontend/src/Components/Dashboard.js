@@ -117,7 +117,7 @@ export const Dashboard = () => {
                                             <td>{order.email}</td>
                                             {/*<td>{order.name}</td>*/}
                                             {/*<td>{order.address || 'N/A'}</td>*/}
-                                            <td>{order.phone || 'N/A'}</td>
+                                            <td>{order.phone || ''}</td>
                                             <td>{new Date(order.orderDate).toLocaleDateString()}</td>
                                             <td>{order.subtotal}</td>
                                             <td>{order.tax}</td>

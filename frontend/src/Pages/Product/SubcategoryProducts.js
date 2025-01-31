@@ -242,7 +242,7 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
     }, [totalPages, loading]);
 
     const handleRowClick = useCallback((productId) => {
-        navigate(`/admin/enova-products/${productId}`);
+        navigate(`/admin/enova_products/${productId}`);
     }, [navigate]);
 
     useEffect(() => {

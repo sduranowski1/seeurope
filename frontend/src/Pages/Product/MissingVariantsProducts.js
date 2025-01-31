@@ -210,7 +210,7 @@ export const MissingVariantsProducts = ({lastPart, slug}) => {
     }, [totalPages, loading]);
 
     const handleRowClick = useCallback((productId) => {
-        navigate(`/admin/enova-products/${productId}`);
+        navigate(`/admin/enova_products/${productId}`);
     }, [navigate]);
 
     const handleProductClick = (product) => {

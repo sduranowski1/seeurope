@@ -9,7 +9,7 @@ const postFilters = [
 const EnovaContractorList = () => (
     <List resource="enova_contractors" filters={postFilters}>
         <Datagrid rowClick="edit"> {/* This makes the entire row clickable */}
-            <TextField source="idEnova" />
+            <TextField source="id" />
             <TextField source="nazwa" />
         </Datagrid>
     </List>

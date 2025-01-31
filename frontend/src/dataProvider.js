@@ -46,7 +46,7 @@ const dataProvider = {
   getOne: (resource, params) => {
     const url = `${apiUrl}/${resource}/${params.id}`;
     return httpClient(url).then(({ json }) => ({
-        ...json, id: json.idEnova
+      data: json,
     }));
   },
   getMany: (resource, params) => {

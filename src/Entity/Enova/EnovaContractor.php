@@ -18,11 +18,11 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ORM\Entity]
 class EnovaContractor
 {
-    #[ORM\Id]
     #[ORM\Column(name: 'id_enova', type: 'integer', unique: true)]
     #[Groups(["enovaContractor:read", 'enovaPerson:read',  'userEnova:read'])]
     private ?int $idEnova = null;
 
+    #[ORM\Id]
     #[ORM\Column(type: 'integer', unique: true)]
     #[Groups(["enovaContractor:read"])]
     private ?int $id = null;

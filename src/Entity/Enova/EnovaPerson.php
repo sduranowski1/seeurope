@@ -2,6 +2,7 @@
 
 namespace App\Entity\Enova;
 
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
@@ -17,6 +18,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
     'imie' => 'partial',
     'nazwisko' => 'partial'])]
 #[ORM\Entity]
+#[ApiFilter(OrderFilter::class, properties: ['id', 'imie', 'nazwisko'])]
 class EnovaPerson
 {
     #[ORM\Id]

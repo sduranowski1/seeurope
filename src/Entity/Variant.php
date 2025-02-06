@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use App\Entity\Traits\Timestampable;
@@ -17,6 +19,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
     denormalizationContext: ['groups' => ['variant:create']]
 
 )]
+#[ApiFilter(OrderFilter::class, properties: ['id', 'variantname', 'polishName', 'germanName'])]
 class Variant
 {
     use Timestampable;

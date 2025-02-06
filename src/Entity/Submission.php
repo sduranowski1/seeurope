@@ -3,6 +3,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
@@ -37,6 +38,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 )]
 //#[ApiResource()]
 #[ORM\Entity(repositoryClass: SubmissionRepository::class)]
+#[ApiFilter(OrderFilter::class, properties: ['id', 'email', 'firstname', 'surname', 'enabled'])]
 //#[ORM\Table(name: '`submission`')]
 #[UniqueEntity('email')]
 class Submission implements UserInterface, PasswordAuthenticatedUserInterface

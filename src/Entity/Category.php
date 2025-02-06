@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiProperty;
@@ -19,6 +20,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
     denormalizationContext: ['groups' => ['category:create']]
 )]
 #[ApiFilter(SearchFilter::class, properties: ['name' => 'partial'])]
+#[ApiFilter(OrderFilter::class, properties: ['id', 'name', 'polishName', 'germanName'])]
 class Category
 {
     use Timestampable;

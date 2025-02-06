@@ -11,7 +11,11 @@ const dataProvider = {
         const { page, perPage } = params.pagination;
         const { field, order } = params.sort; // Extract sorting parameters
         const filterQuery = new URLSearchParams(params.filter).toString();
-        const url = `${apiUrl}/${resource}?page=${page}&_sort=${field}&_order=${order}&${filterQuery}`;
+
+        // Convert sorting format to match API requirements
+        const sortQuery = `order[${field}]=${order.toLowerCase()}`;
+
+        const url = `${apiUrl}/${resource}?page=${page}&${sortQuery}&${filterQuery}`;
 
         // Create a new Headers object
         const headers = new Headers({

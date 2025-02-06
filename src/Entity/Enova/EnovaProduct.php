@@ -131,7 +131,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
     'productInfo.category.name' => 'partial',
     'productInfo.subcategory.subCatName' => 'partial',
     'productInfo.itemType.name' => 'partial'])]
-#[ApiFilter(OrderFilter::class, properties: ['id', 'name'])]
+#[ApiFilter(OrderFilter::class, properties: ['id', 'name', 'code', 'stockStatus', 'quantity', 'updatedAt', 'productInfo.brand.name', 'productInfo.variant.variantname', 'productInfo.category.name', 'productInfo.subcategory.subCatName', 'productInfo.itemType.name'])]
 #[ORM\Entity]
 class EnovaProduct
 {

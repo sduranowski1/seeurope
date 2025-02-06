@@ -7,6 +7,7 @@ use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\QueryParameter;
 use ApiPlatform\OpenApi\Model;
 use App\Controller\FetchProduct\FetchProductByCodeController;
 use App\Controller\FetchProduct\FetchProductByIdController;
@@ -129,6 +130,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
     'productInfo.category.name' => 'partial',
     'productInfo.subcategory.subCatName' => 'partial',
     'productInfo.itemType.name' => 'partial'])]
+#[QueryParameter(key: 'sort[:property]')]
 #[ORM\Entity]
 class EnovaProduct
 {

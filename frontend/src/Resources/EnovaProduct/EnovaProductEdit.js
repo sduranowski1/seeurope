@@ -16,7 +16,8 @@ import EnovaProductById from "./EnovaProductById";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import ListItemIcon from "@mui/material/ListItemIcon"; // Import Quill styles
-import ClearIcon from '@mui/icons-material/Clear'; // Import Quill styles
+import ClearIcon from '@mui/icons-material/Clear';
+import {Edit} from "react-admin"; // Import Quill styles
 
 const EnovaProductEdit = () => {
     const {id} = useParams(); // Get the product ID from the URL
@@ -185,20 +186,24 @@ const EnovaProductEdit = () => {
         }
     };
 
-
+    {/* Do not remove! The Edit tag is for security */}
     if (loading) {
         return (
-            <Box
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                height="100vh" // Or use specific height if you want it in a smaller area
-                width="100%"
-            >
-                <CircularProgress/>
-            </Box>
+            <Edit>
+                <Box
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                    height="100vh" // Or use specific height if you want it in a smaller area
+                    width="100%"
+                >
+                    <CircularProgress/>
+                </Box>
+            </Edit>
         );
     }
+    {/* Do not remove! The Edit tag is for security */}
+
 
     return (
         <div>

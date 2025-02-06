@@ -2,9 +2,10 @@
 
 import * as React from 'react';
 import { List, Datagrid, TextField, BooleanField  } from 'react-admin';
+import {AdminPagination} from "../../Components/AdminPagination/AdminPagination";
 
 const UserList = (props) => (
-  <List {...props} perPage={10}>
+  <List {...props} pagination={<AdminPagination />}>
     <Datagrid>
       <TextField source="id" />
       <TextField source="email" />

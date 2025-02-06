@@ -3,6 +3,7 @@
 import * as React from 'react';
 import {List, Datagrid, TextField, DateField} from 'react-admin';
 import customDataProvider from '../../dataProvider';
+import {AdminPagination} from "../../Components/AdminPagination/AdminPagination";
 
 // const BookList = (props) => (
 //   <List {...props} perPage={10} dataProvider={customDataProvider}>
@@ -16,7 +17,7 @@ import customDataProvider from '../../dataProvider';
 // );
 
 const BrandList = () => (
-  <List resource="brands">
+  <List resource="brands"  pagination={<AdminPagination />}>
     <Datagrid>
       <TextField source="id" />
       <TextField source="name" />

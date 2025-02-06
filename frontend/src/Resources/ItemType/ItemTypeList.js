@@ -1,8 +1,9 @@
 import * as React from 'react';
 import {List, Datagrid, TextField, ReferenceField, TextInput, DateField} from 'react-admin';
+import {AdminPagination} from "../../Components/AdminPagination/AdminPagination";
 
 const ItemTypeList = () => (
-    <List resource="item_types">
+    <List resource="item_types"  pagination={<AdminPagination />}>
         <Datagrid>
             <TextField source="id" />
             <TextField source="name" />

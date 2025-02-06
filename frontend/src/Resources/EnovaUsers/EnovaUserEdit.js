@@ -15,6 +15,7 @@ import { CloudUpload as CloudUploadIcon } from '@mui/icons-material';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import EnovaUserById from "./EnovaUserById";
+import {Edit} from "react-admin";
 
 const EnovaUserEdit = () => {
     const {id} = useParams(); // Get the product ID from the URL
@@ -68,7 +69,7 @@ const EnovaUserEdit = () => {
 
     const handleSave = async () => {
         try {
-            const token = localStorage.getItem('authToken'); // Retrieve the token from localStorage
+            const token = localStorage.getItem('token'); // Retrieve the token from localStorage
             console.log("Token from localStorage:", token);
 
             if (!token) {
@@ -109,22 +110,24 @@ const EnovaUserEdit = () => {
         }
     };
 
-
-
-
+    {/* Do not remove! The Edit tag is for security */}
     if (loading) {
         return (
-            <Box
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                height="100vh" // Or use specific height if you want it in a smaller area
-                width="100%"
-            >
-                <CircularProgress/>
-            </Box>
+            <Edit>
+                <Box
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                    height="100vh" // Or use specific height if you want it in a smaller area
+                    width="100%"
+                >
+                    <CircularProgress/>
+                </Box>
+            </Edit>
+
         );
     }
+    {/* Do not remove! The Edit tag is for security */}
 
     return (
         <div>

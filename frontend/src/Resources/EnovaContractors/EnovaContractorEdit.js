@@ -11,6 +11,7 @@ import {
     TableContainer, Grid
 } from '@mui/material';
 import {useNavigate, useParams} from "react-router-dom";
+import {Edit} from "react-admin";
 
 const EnovaContractorEdit = () => {
     const {id} = useParams(); // Get the product ID from the URL
@@ -37,22 +38,26 @@ const EnovaContractorEdit = () => {
     }, [id]);
 
     const handleRowClick = useCallback((productId) => {
-        navigate(`/admin/enova-users/${productId}`);
+        navigate(`/admin/enova_people/${productId}`);
     }, [navigate]);
 
+    {/* Do not remove! The Edit tag is for security */}
     if (loading) {
         return (
-            <Box
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                height="100vh"
-                width="100%"
-            >
-                <CircularProgress />
-            </Box>
+            <Edit>
+                <Box
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                    height="100vh"
+                    width="100%"
+                >
+                    <CircularProgress />
+                </Box>
+            </Edit>
         );
     }
+    {/* Do not remove! The Edit tag is for security */}
 
     if (error) {
         return (
@@ -152,6 +157,7 @@ const EnovaContractorEdit = () => {
                 </Grid>
 
                 {/* People Table */}
+
                 <Grid item xs={12} md={6}>
                     <Typography variant="h6" sx={{ marginBottom: '10px' }}>
                         People
@@ -196,6 +202,9 @@ const EnovaContractorEdit = () => {
                         </Table>
                     </TableContainer>
                 </Grid>
+
+
+
             </Grid>
         </Box>
     );

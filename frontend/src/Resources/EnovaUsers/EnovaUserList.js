@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {List, Datagrid, TextField, DateField, NumberField, TextInput, SearchInput} from 'react-admin';
+import {AdminPagination} from "../../Components/AdminPagination/AdminPagination";
 
 const postFilters = [
   <SearchInput source="imie" placeholder="Search by name" alwaysOn/>,
@@ -8,7 +9,7 @@ const postFilters = [
 ];
 
 const EnovaUserList = () => (
-    <List resource="enova_people" filters={postFilters}>
+    <List resource="enova_people" filters={postFilters}  pagination={<AdminPagination />}>
       <Datagrid>
         <TextField source="id" />
         {/*<TextField source="contractor.idEnova" />*/}

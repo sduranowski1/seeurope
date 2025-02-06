@@ -3,6 +3,7 @@
 // src/Entity/FetchProduct.php
 namespace App\Entity\Enova;
 
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
@@ -130,7 +131,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
     'productInfo.category.name' => 'partial',
     'productInfo.subcategory.subCatName' => 'partial',
     'productInfo.itemType.name' => 'partial'])]
-#[QueryParameter(key: 'sort[:property]')]
+#[ApiFilter(OrderFilter::class, properties: ['id', 'name'])]
 #[ORM\Entity]
 class EnovaProduct
 {

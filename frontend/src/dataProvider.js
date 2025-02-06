@@ -9,8 +9,9 @@ const httpClient = fetchUtils.fetchJson
 const dataProvider = {
     getList: (resource, params) => {
         const { page, perPage } = params.pagination;
+        const { field, order } = params.sort; // Extract sorting parameters
         const filterQuery = new URLSearchParams(params.filter).toString();
-        const url = `${apiUrl}/${resource}?page=${page}&${filterQuery}`;
+        const url = `${apiUrl}/${resource}?page=${page}&_sort=${field}&_order=${order}&${filterQuery}`;
 
         // Create a new Headers object
         const headers = new Headers({

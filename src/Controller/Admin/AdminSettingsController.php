@@ -1,46 +1,69 @@
 <?php
-// src/Controller/AdminSettingsController.php
-namespace App\Controller\Admin;
+namespace App\Controller\Enova;
 
-use App\Entity\GlobalSettings;
+use App\Entity\Enova\GlobalSettings;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-class AdminSettingsController
+class GlobalSettingsController extends AbstractController
 {
-    #[Route('/api/admin/sorting', name: 'update_sorting', methods: ['POST'])]
-    public function updateSorting(Request $request, EntityManagerInterface $em, Security $security): JsonResponse
+    private $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        $user = $security->getUser();
-        if (!$user || !in_array('ROLE_ADMIN', $user->getRoles())) {
-            return new JsonResponse(['error' => 'Unauthorized'], 403);
-        }
-
-        $data = json_decode($request->getContent(), true);
-        if (!isset($data['field'], $data['order'])) {
-            return new JsonResponse(['error' => 'Invalid data'], 400);
-        }
-
-        $globalSettings = $em->getRepository(GlobalSettings::class)->find(1) ?? new GlobalSettings();
-        $globalSettings->setSortField($data['field']);
-        $globalSettings->setSortOrder($data['order']);
-
-        $em->persist($globalSettings);
-        $em->flush();
-
-        return new JsonResponse(['success' => true]);
+        $this->entityManager = $entityManager;
     }
 
-    #[Route('/api/sorting', name: 'get_sorting', methods: ['GET'])]
-    public function getSorting(EntityManagerInterface $em): JsonResponse
+    #[Route('/api/global_settings', name: 'get_sorting_settings', methods: ['GET'])]
+    public function getSortingSettings(): JsonResponse
     {
-        $globalSettings = $em->getRepository(GlobalSettings::class)->find(1);
-        return new JsonResponse([
-            'field' => $globalSettings ? $globalSettings->getSortField() : 'id',
-            'order' => $globalSettings ? $globalSettings->getSortOrder() : 'asc',
+        // Fetch global settings, assuming there is only one row
+        $globalSettings = $this->entityManager->getRepository(GlobalSettings::class)->find(1);
+
+        if (!$globalSettings) {
+            return $this->json([
+                'sortField' => 'id',
+                'sortOrder' => 'asc',
+            ]);
+        }
+
+        return $this->json([
+            'sortField' => $globalSettings->getSortField(),
+            'sortOrder' => $globalSettings->getSortOrder(),
+        ]);
+    }
+
+    #[Route('/api/global_settings/{id}', name: 'update_sorting_settings', methods: ['PUT'])]
+    public function updateSortingSettings(int $id): JsonResponse
+    {
+        // Fetch the global settings object
+        $globalSettings = $this->entityManager->getRepository(GlobalSettings::class)->find($id);
+
+        if (!$globalSettings) {
+            return $this->json(['error' => 'Global settings not found'], 404);
+        }
+
+        // Get the new settings from the PUT request body
+        $data = json_decode(file_get_contents('php://input'), true);
+
+        if (isset($data['sortField'])) {
+            $globalSettings->setSortField($data['sortField']);
+        }
+
+        if (isset($data['sortOrder'])) {
+            $globalSettings->setSortOrder($data['sortOrder']);
+        }
+
+        // Persist the changes
+        $this->entityManager->persist($globalSettings);
+        $this->entityManager->flush();
+
+        return $this->json([
+            'sortField' => $globalSettings->getSortField(),
+            'sortOrder' => $globalSettings->getSortOrder(),
         ]);
     }
 }
+

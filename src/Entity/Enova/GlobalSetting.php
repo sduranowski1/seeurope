@@ -3,10 +3,24 @@
 namespace App\Entity\Enova;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Post;
+use App\Controller\Admin\GlobalSettingsController;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
-#[ApiResource]
+#[ApiResource(
+    operations: [
+        new Get(
+            uriTemplate: '/global_settings',
+            controller: GlobalSettingsController::class,
+        ),
+        new Post(
+            uriTemplate: '/global_settings/{id}',
+            controller: GlobalSettingsController::class,
+        )
+    ]
+)]
 class GlobalSetting
 {
     #[ORM\Id]
@@ -24,7 +38,7 @@ class GlobalSetting
     {
         return $this->id;
     } // or 'desc'
-    
+
 
     public function getSortField(): string
     {

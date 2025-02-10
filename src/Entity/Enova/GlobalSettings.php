@@ -1,6 +1,6 @@
 <?php
 // src/Entity/GlobalSettings.php
-namespace App\Entity;
+namespace App\Entity\Enova;
 
 use ApiPlatform\Metadata\ApiResource;
 use Doctrine\ORM\Mapping as ORM;

@@ -36,6 +36,7 @@ import {useProducts} from "../../ProductProvider";
 import i18n from "i18next";
 import AuthContext from "../../AuthContext";
 import {Badge, Tooltip} from "@mui/material";
+import {useGetList} from "react-admin";
 
 export const NavbarComponent = (props) => {
     const [toggleSidebar, setToggleSidebar] = useContext(Context);
@@ -93,11 +94,10 @@ export const NavbarComponent = (props) => {
     // }, []);
 
 
-
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const brandResponse = await fetch('https://se-europe-test.pl/api/brands');
+                const brandResponse = await fetch('https://se-europe-test.pl/api/brands?order[name]=asc');
                 // const brandResponse = await fetch('https://127.0.0.1:8000/api/brands');
                 const brandsData = await brandResponse.json();
 

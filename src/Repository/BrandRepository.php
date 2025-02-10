@@ -3,7 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Brand;
+use App\Entity\GlobalSettings;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -40,4 +42,16 @@ class BrandRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
+    public function findAllWithSorting(EntityManagerInterface $em)
+    {
+        $globalSettings = $em->getRepository(GlobalSettings::class)->find(1);
+        $sortField = $globalSettings ? $globalSettings->getSortField() : 'id';
+        $sortOrder = $globalSettings ? $globalSettings->getSortOrder() : 'asc';
+
+        return $this->createQueryBuilder('b')
+            ->orderBy("b.$sortField", $sortOrder)
+            ->getQuery()
+            ->getResult();
+    }
 }

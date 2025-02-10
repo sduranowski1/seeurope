@@ -247,7 +247,7 @@ const EnovaProductEdit = () => {
                             </Select>
                         </FormControl>
 
-                        <FormControl fullWidth margin="normal">
+                        <FormControl fullWidth margin="normal" disabled={!product.brand?.id}>
                             <InputLabel id="variant-label">Variant</InputLabel>
                             <Select
                                 labelId="variant-label"
@@ -261,11 +261,13 @@ const EnovaProductEdit = () => {
                                         <ClearIcon />
                                     </ListItemIcon>
                                 </MenuItem>
-                                {variants.map((variant) => (
-                                    <MenuItem key={variant.id} value={variant.id}>
-                                        {variant.variantname}
-                                    </MenuItem>
-                                ))}
+                                {variants
+                                    .filter((variant) => variant.bid === product.brand?.id) // Filter variants by selected brand ID
+                                    .map((variant) => (
+                                        <MenuItem key={variant.id} value={variant.id}>
+                                            {variant.variantname}
+                                        </MenuItem>
+                                    ))}
                             </Select>
                         </FormControl>
 
@@ -291,7 +293,7 @@ const EnovaProductEdit = () => {
                             </Select>
                         </FormControl>
 
-                        <FormControl fullWidth margin="normal">
+                        <FormControl fullWidth margin="normal"  disabled={!product.category?.id}>
                             <InputLabel id="subcategory-label">Subcategory</InputLabel>
                             <Select
                                 labelId="subcategory-label"
@@ -305,7 +307,9 @@ const EnovaProductEdit = () => {
                                         <ClearIcon />
                                     </ListItemIcon>
                                 </MenuItem>
-                                {subcategories.map((subcategory) => (
+                                {subcategories
+                                    .filter((subcategory) => subcategory.cid === product.category?.id) // Filter variants by selected brand ID
+                                    .map((subcategory) => (
                                     <MenuItem key={subcategory.id} value={subcategory.id}>
                                         {subcategory.subCatName}
                                     </MenuItem>
@@ -313,7 +317,7 @@ const EnovaProductEdit = () => {
                             </Select>
                         </FormControl>
 
-                        <FormControl fullWidth margin="normal">
+                        <FormControl fullWidth margin="normal"  disabled={!product.subcategory?.id}>
                             <InputLabel id="itemType-label">Item Type</InputLabel>
                             <Select
                                 labelId="itemType-label"
@@ -327,7 +331,9 @@ const EnovaProductEdit = () => {
                                         <ClearIcon />
                                     </ListItemIcon>
                                 </MenuItem>
-                                {itemTypes.map((itemType) => (
+                                {itemTypes
+                                    .filter((itemType) => itemType.scid === product.subcategory?.id) // Filter variants by selected brand ID
+                                    .map((itemType) => (
                                     <MenuItem key={itemType.id} value={itemType.id}>
                                         {itemType.name}
                                     </MenuItem>

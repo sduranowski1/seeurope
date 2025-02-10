@@ -14,10 +14,12 @@ use Doctrine\ORM\Mapping as ORM;
         new Get(
             uriTemplate: '/global_settings',
             controller: GlobalSettingsController::class,
+            name: 'get_sorting_settings', // Optional: Name for this operation
         ),
         new Post(
             uriTemplate: '/global_settings/{id}',
             controller: GlobalSettingsController::class,
+            name: 'update_sorting_settings', // Optional: Name for this operation
         )
     ]
 )]

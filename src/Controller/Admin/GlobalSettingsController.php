@@ -1,7 +1,7 @@
 <?php
 namespace App\Controller\Admin;
 
-use App\Entity\Enova\GlobalSettings;
+use App\Entity\Enova\GlobalSetting;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -20,7 +20,7 @@ class GlobalSettingsController extends AbstractController
     public function getSortingSettings(): JsonResponse
     {
         // Fetch global settings, assuming there is only one row
-        $globalSettings = $this->entityManager->getRepository(GlobalSettings::class)->find(1);
+        $globalSettings = $this->entityManager->getRepository(GlobalSetting::class)->find(1);
 
         if (!$globalSettings) {
             return $this->json([
@@ -39,7 +39,7 @@ class GlobalSettingsController extends AbstractController
     public function updateSortingSettings(int $id): JsonResponse
     {
         // Fetch the global settings object
-        $globalSettings = $this->entityManager->getRepository(GlobalSettings::class)->find($id);
+        $globalSettings = $this->entityManager->getRepository(GlobalSetting::class)->find($id);
 
         if (!$globalSettings) {
             return $this->json(['error' => 'Global settings not found'], 404);

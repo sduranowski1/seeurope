@@ -1,5 +1,5 @@
 <?php
-// src/Entity/GlobalSettings.php
+// src/Entity/GlobalSetting.php
 namespace App\Entity\Enova;
 
 use ApiPlatform\Metadata\ApiResource;
@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ApiResource]
-class GlobalSettings
+class GlobalSetting
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

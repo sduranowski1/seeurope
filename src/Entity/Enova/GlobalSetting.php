@@ -18,7 +18,13 @@ class GlobalSetting
     private string $sortField = 'id';
 
     #[ORM\Column(length: 4)]
-    private string $sortOrder = 'asc'; // or 'desc'
+    private string $sortOrder = 'asc';
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    } // or 'desc'
+    
 
     public function getSortField(): string
     {

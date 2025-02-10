@@ -1,5 +1,5 @@
 <?php
-namespace App\Controller\Enova;
+namespace App\Controller\Admin;
 
 use App\Entity\Enova\GlobalSettings;
 use Doctrine\ORM\EntityManagerInterface;

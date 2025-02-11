@@ -155,9 +155,14 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
             // Derive parts from URL path
             const urlPath = window.location.pathname;
             const parts = urlPath.split('/').filter(part => part !== '');
+            const lastPart = parts[parts.length - 1];  // Last part of the URL path
+            const secondPart = parts[parts.length - 2]; // Second to last part of the URL path
+            const thirdPart = parts[parts.length - 3]; // Third to last part of the URL path
             // const lastPart = parts[parts.length - 1];
             console.log('URL parts:', parts);
             console.log('Last part:', lastPart);
+            console.log('Second part:', secondPart);
+            console.log('Third part:', thirdPart);
             // const token = await fetchToken();
             // setToken(token);
             let apiUrl;
@@ -165,9 +170,9 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
             if (parts.length === 2) {
                 apiUrl = `https://se-europe-test.pl/api/enova_products?productInfo.category.name=${lastPart}`;
             } else if (parts.length === 3) {
-                apiUrl = `https://se-europe-test.pl/api/enova_products?productInfo.subcategory.subCatName=${lastPart}`;
+                apiUrl = `https://se-europe-test.pl/api/enova_products?productInfo.category.name=${secondPart}&productInfo.subcategory.subCatName=${lastPart}`;
             } else if (parts.length === 4) {
-                apiUrl = `https://se-europe-test.pl/api/enova_products?productInfo.itemType.name=${lastPart}`;
+                apiUrl = `https://se-europe-test.pl/api/enova_products?productInfo.category.name=${thirdPart}&productInfo.subcategory.subCatName=${secondPart}&productInfo.itemType.name=${lastPart}`;
             } else {
                 throw new Error("Unsupported URL structure");
             }
@@ -318,7 +323,7 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
 
     // Find the maximum weight in the filtered products
     const maxWeight = Math.max(
-        ...filteredProducts.map(product => parseFloat(product.capacityFeat.replace(/[^\d.-]/g, "")) || 0),
+        ...products.map(product => parseFloat(product.capacityFeat.replace(/[^\d.-]/g, "")) || 0),
         30000 // Default fallback value for the max weight if no valid products are found
     );
 
@@ -326,7 +331,7 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
     console.log(products)
 
     function findCheckboxes() {
-        return Object.values(filteredProducts).flat().reduce((acc, product) => {
+        return Object.values(products).flat().reduce((acc, product) => {
             if (!acc.hasOwnProperty(product?.productInfo?.brand?.name)) {
                 acc[product?.productInfo?.brand?.name] = false;
             }
@@ -337,7 +342,7 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
     useEffect(() => {
         const uniqueCheckboxes = findCheckboxes();
         setCheckboxes(uniqueCheckboxes);
-    }, [filteredProducts]);
+    }, [products]);
 
     const fullUrl = window.location.href;
 
@@ -505,7 +510,7 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
                 {/*<SubcategoryTable productsData={productsData} displayedItems={displayedItems}/>*/}
                 {/*<SubcategoryTable productsData={productsData} displayedItems={displayedItems} checkboxes={checkboxes}/>*/}
                 <SubcategoryTable
-                    productsData={filteredProducts}
+                    productsData={products}
                     onProductClick={handleProductClick}
                     lastPartToCollapse={lastPart}
                     userDetailsPrice={userDetails}

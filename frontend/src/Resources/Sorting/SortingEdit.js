@@ -1,21 +1,28 @@
-// src/Resources/UserEdit.js
 import React from 'react';
-import {Edit, SimpleForm, TextInput, BooleanInput, NumberInput, TextField, ImageInput, ImageField} from 'react-admin';
+import { Edit, SimpleForm, SelectInput } from 'react-admin';
+import "../../mui_fix.css";
 
-import "../../mui_fix.css"
+// Define the choices for the dropdowns
+const sortFieldChoices = [
+    { id: 'id', name: 'ID' },
+    { id: 'name', name: 'Name' },
+    { id: 'createdAt', name: 'Created Date' },
+    { id: 'updatedAt', name: 'Updated Date' },
+];
+
+const sortOrderChoices = [
+    { id: 'asc', name: 'Ascending' },
+    { id: 'desc', name: 'Descending' },
+];
 
 const SortingEdit = (props) => (
     <Edit {...props}>
         <SimpleForm>
-            <TextInput source="sortField" />
-            <TextInput source="sortOrder" />
-            {/*<TextInput source="germanName" />*/}
-            {/*/!*<TextInput source="variant" />*!/*/}
-            {/*<ImageInput source="pictures" label="Related pictures">*/}
-            {/*    <ImageField source="domainImagePath"/>*/}
-            {/*</ImageInput>*/}
-            {/*<ImageField source="domainImagePath"/>*/}
+            {/* Sort Field dropdown */}
+            <SelectInput source="sortField" choices={sortFieldChoices} />
 
+            {/* Sort Order dropdown */}
+            <SelectInput source="sortOrder" choices={sortOrderChoices} />
         </SimpleForm>
     </Edit>
 );

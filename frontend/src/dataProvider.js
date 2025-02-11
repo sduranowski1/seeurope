@@ -177,11 +177,19 @@ const dataProvider = {
                             //     id: data.cid // Include `cid` only for `categories`
                             // }
                         }
-                        : resource === "submissions"
-                            ?
-                            data
+                    : resource === "global_settings"
+                        ? {
+                            sortField: data.sortField, // Include `subCatName` for `subcategories`
+                            sortOrder: data.sortOrder, // Include `subCatName` for `subcategories`
+                            // category: {
+                            //     id: data.cid // Include `cid` only for `categories`
+                            // }
+                        }
+                    : resource === "submissions"
+                        ?
+                        data
 
-                        : {
+                    : {
                         name: nameField
                     }),
                 imagePath: data.imagePath || "landscape-placeholder.svg", // Fallback for `imagePath`

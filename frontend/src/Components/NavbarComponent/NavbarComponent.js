@@ -101,8 +101,9 @@ export const NavbarComponent = (props) => {
             const response = await fetch('https://se-europe-test.pl/api/global_settings');
             const data = await response.json();
             console.log('Fetched Sorting Settings:', data);
-            setSortField(data.sortField);
-            setSortOrder(data.sortOrder);
+            setSortField(data[0].sortField);
+            setSortOrder(data[0].sortOrder);
+            console.log(data[0])
         };
 
         fetchSortingSettings();
@@ -116,13 +117,19 @@ export const NavbarComponent = (props) => {
             setLoadingCoupling(true);
 
             try {
+                // Adjust sortField based on the language
+                const adjustedSortField = (i18n.language === 'pl' && sortField === 'name')
+                    ? 'polishName'
+                    : (i18n.language === 'de' && sortField === 'name')
+                        ? 'germanName'
+                        : sortField;
+
                 // Fetch brands and apply sorting
-                const brandResponse = await fetch(`https://se-europe-test.pl/api/brands?order[${sortField}]=${sortOrder}`);
+                const brandResponse = await fetch(`https://se-europe-test.pl/api/brands?order[${adjustedSortField}]=${sortOrder}`);
                 const brandsData = await brandResponse.json();
                 console.log('Fetched Brands:', brandsData);
 
                 // Optionally, filter out unsorted or unwanted results (if necessary)
-                // For example, if you want to filter out brands that don't have a `name`
                 // const filteredBrands = brandsData.filter(brand => brand.name);
 
                 // Fetch variants
@@ -132,15 +139,15 @@ export const NavbarComponent = (props) => {
                 // Adjust name based on language
                 const updatedBrands = brandsData.map(brand => ({
                     ...brand,
-                    name: language === 'pl'
+                    name: i18n.language === 'pl'
                         ? brand.polishName || brand.name
-                        : language === 'de'
-                        ? brand.germanName || brand.name
-                        : brand.name
+                        : i18n.language === 'de'
+                            ? brand.germanName || brand.name
+                            : brand.name
                 }));
 
                 // Set the data to state
-                setBrands(updatedBrands);
+                setBrands(brandsData);
                 setVariants(variantsData);
                 setLoadingCoupling(false);
             } catch (error) {
@@ -150,30 +157,31 @@ export const NavbarComponent = (props) => {
         };
 
         fetchBrands();
-    }, [sortField, sortOrder, language]); // Trigger refetch when sorting settings change
+    }, [sortField, sortOrder, i18n.language]); // Trigger re-fetch when language changes
+
 
     console.log(`Fetching from: https://se-europe-test.pl/api/brands?order[${sortField}]=${sortOrder}`);
 
 
     useEffect(() => {
         if (!sortField || !sortOrder) return; // Wait for sorting settings
+
         const fetchMachine = async () => {
             setLoadingMachine(true);
 
             try {
-                const categoryResponse = await fetch(`https://se-europe-test.pl/api/categories?order[${sortField}]=${sortOrder}`);
+                // Adjust sortField based on the language
+                const adjustedSortField = (i18n.language === 'pl' && sortField === 'name')
+                    ? 'polishName'
+                    : (i18n.language === 'de' && sortField === 'name')
+                        ? 'germanName'
+                        : sortField;
+
+                // Fetch categories and apply sorting
+                const categoryResponse = await fetch(`https://se-europe-test.pl/api/categories?order[${adjustedSortField}]=${sortOrder}`);
                 const categoriesData = await categoryResponse.json();
 
-                const updatedCategories = categoriesData.map(category => ({
-                    ...category,
-                    name: language === 'pl'
-                        ? category.polishName || category.name
-                        : language === 'de'
-                        ? category.germanName || category.name
-                        : category.name
-                }));
-
-                setCategories(updatedCategories);
+                setCategories(categoriesData);
                 setLoadingMachine(false);
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -182,7 +190,7 @@ export const NavbarComponent = (props) => {
         };
 
         fetchMachine();
-    }, []);
+    }, [sortField, sortOrder, i18n.language]); // Trigger re-fetch when any of these values change
 
     // if (loading) {
     //     return <div>LoadingComponent...</div>;
@@ -222,7 +230,13 @@ export const NavbarComponent = (props) => {
                             if (hasSubItems) e.preventDefault(); // Prevent navigation if the brand has variants
                         }}
                     >
-                        {brand.name}
+                        {i18n.language === 'en' ? (
+                            brand.name
+                        ) : i18n.language === 'pl' ? (
+                            brand.polishName
+                        ) : (
+                            brand.germanName
+                        )}
                         {hasSubItems && <FontAwesomeIcon icon={faAngleDown} className={'angle-up'} />}
                     </Link>
                     {hasSubItems && <ul>{variantItems}</ul>}

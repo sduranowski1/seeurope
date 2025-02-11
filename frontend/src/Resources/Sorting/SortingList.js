@@ -21,7 +21,7 @@ const SortingList = () => (
     <List resource="global_settings"  pagination={<AdminPagination />}>
         {/*<SortingSelect/>*/}
         <Datagrid>
-            <TextField source="id" />
+            {/*<TextField source="id" />*/}
             <TextField source="sortField" />
             <TextField source="sortOrder" />
             {/*<DateField source="createdAt" />*/}

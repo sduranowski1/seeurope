@@ -19,7 +19,7 @@ import SortingSelect from "../../Components/AdminSortingSelect/SortingSelect";
 
 const BrandList = () => (
   <List resource="brands"  pagination={<AdminPagination />}>
-      <SortingSelect/>
+      {/*<SortingSelect/>*/}
     <Datagrid>
       <TextField source="id" />
       <TextField source="name" />

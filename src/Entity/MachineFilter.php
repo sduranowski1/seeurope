@@ -9,11 +9,12 @@ use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use App\Entity\Traits\Timestampable;
 use App\Repository\CouplingFilterRepository;
+use App\Repository\MachineFilterRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ORM\Entity(repositoryClass: CouplingFilterRepository::class)]
+#[ORM\Entity(repositoryClass: MachineFilterRepository::class)]
 #[HasLifecycleCallbacks]
 #[ApiResource(
     normalizationContext: ['groups' => ['machineFilter:read']],

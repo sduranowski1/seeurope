@@ -48,6 +48,9 @@ import SortingEdit from "../../Resources/Sorting/SortingEdit";
 import CouplingFilterList from "../../Resources/CouplingFilter/CouplingFilterList";
 import CouplingFilterEdit from "../../Resources/CouplingFilter/CouplingFilterEdit";
 import CouplingFilterCreate from "../../Resources/CouplingFilter/CouplingFilterCreate";
+import MachineFilterList from "../../Resources/MachineFilter/MachineFilterList";
+import MachineFilterEdit from "../../Resources/MachineFilter/MachineFilterEdit";
+import MachineFilterCreate from "../../Resources/MachineFilter/MachineFilterCreate";
 
 
 
@@ -81,6 +84,7 @@ const AdminLayout = () => {
             <Resource name="categories" list={CategoryList} edit={CategoryEdit} create={CategoryCreate} icon={ClassIcon}/>
             <Resource name="subcategories" list={SubcategoryList}  edit={SubcategoryEdit} create={SubcategoryCreate}/>
             <Resource name="item_types" list={ItemTypeList} edit={ItemTypeEdit} create={ItemTypeCreate} />
+            <Resource name="machine_filters" list={MachineFilterList} edit={MachineFilterEdit} create={MachineFilterCreate} icon={AppsIcon}/>
             <Resource name="submissions" list={UserList} edit={UserEdit} create={UserCreate} icon={PersonAddAlt1Icon} />
             <Resource name="global_settings" list={SortingList} edit={SortingEdit} icon={PersonAddAlt1Icon}/>
             {/* Other resources... */}

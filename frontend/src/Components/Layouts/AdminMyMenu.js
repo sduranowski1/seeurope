@@ -25,6 +25,7 @@ export const AdminMyMenu = () => (
         <Submenu text="Categories" name="categories" icon={<ClassIcon />}>
             <Submenu text="Subcategories" name="subcategories" icon={<ViewListIcon style={{ paddingLeft: '10px' }}/>}>
                 <Menu.ResourceItem name="item_types" icon={<ViewListIcon style={{ paddingLeft: '10px'}}/>} />
+                <Menu.ResourceItem name="machine_filters" icon={<ViewListIcon style={{ paddingLeft: '10px'}}/>} />
 
             </Submenu>
         </Submenu>

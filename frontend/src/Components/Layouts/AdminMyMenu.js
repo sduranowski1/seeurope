@@ -19,6 +19,7 @@ export const AdminMyMenu = () => (
         {/*<Menu.ResourceItem name="brands" icon={<AppsIcon />}/>*/}
         <Submenu text="Brands" name="brands" icon={<AppsIcon />}>
             <Menu.ResourceItem name="variants" />
+            <Menu.ResourceItem name="coupling_filters" />
         </Submenu>
         {/*<Menu.ResourceItem name="categories" icon={<ClassIcon />}/>*/}
         <Submenu text="Categories" name="categories" icon={<ClassIcon />}>

@@ -6,6 +6,7 @@ use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use App\Entity\Brand;
 use App\Entity\Category;
+use App\Entity\CouplingFilter;
 use App\Entity\ItemType;
 use App\Entity\ProductsMediaObject;
 use App\Entity\Subcategory;
@@ -41,6 +42,11 @@ class ProductInfo
     #[Groups(['enovaProduct:read', "productInfo:read", 'productInfo:create'])]
     private ?Variant $variant = null;
 
+    #[ORM\ManyToOne(targetEntity: CouplingFilter::class)]
+    #[ORM\JoinColumn(name: 'coupling_filter_id', referencedColumnName: 'id', options: ["default" => 0])]
+    #[Groups(['enovaProduct:read', "productInfo:read", 'productInfo:create'])]
+    private ?CouplingFilter $couplingFilter = null;
+
 //    #[ORM\Column(type: "integer", options: ["default" => 0])]
 //    #[Groups(['enovaProduct:read', "productInfo:read"])]
 //    private int $varid;
@@ -71,6 +77,14 @@ class ProductInfo
 //    #[ORM\Column(type: "integer", options: ["default" => 0])]
 //    #[Groups(['enovaProduct:read', "productInfo:read"])]
 //    private int $itypeid;
+
+    #[ORM\Column(type: "text", nullable: true)]
+    #[Groups(['enovaProduct:read', "productInfo:read", 'productInfo:create'])]
+    private ?string $englishTitle = null;
+
+    #[ORM\Column(type: "text", nullable: true)]
+    #[Groups(['enovaProduct:read', "productInfo:read", 'productInfo:create'])]
+    private ?string $germanTitle = null;
 
     #[ORM\Column(type: "text", nullable: true)]
     #[Groups(['enovaProduct:read', "productInfo:read", 'productInfo:create'])]
@@ -150,6 +164,16 @@ class ProductInfo
         $this->variant = $variant;
     }
 
+    public function getCouplingFilter(): ?CouplingFilter
+    {
+        return $this->couplingFilter;
+    }
+
+    public function setCouplingFilter(?CouplingFilter $couplingFilter): void
+    {
+        $this->couplingFilter = $couplingFilter;
+    }
+
 
 
 //    public function getVarid(): int
@@ -214,6 +238,29 @@ class ProductInfo
     {
         $this->itemType = $itemType;
     }
+
+    public function getEnglishTitle(): ?string
+    {
+        return $this->englishTitle;
+    }
+
+    public function setEnglishTitle(?string $englishTitle): void
+    {
+        $this->englishTitle = $englishTitle;
+    }
+
+
+
+    public function getGermanTitle(): ?string
+    {
+        return $this->germanTitle;
+    }
+
+    public function setGermanTitle(?string $germanTitle): void
+    {
+        $this->germanTitle = $germanTitle;
+    }
+
 //    public function getItypeid(): int
 //    {
 //        return $this->itypeid;
@@ -223,6 +270,8 @@ class ProductInfo
 //    {
 //        $this->itypeid = $itypeid;
 //    }
+
+
 
     public function getDescription(): ?string
     {

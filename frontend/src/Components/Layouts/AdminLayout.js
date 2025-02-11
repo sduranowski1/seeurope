@@ -45,6 +45,9 @@ import EnovaProductList from "../../Resources/EnovaProduct/EnovaProductList";
 import EnovaContractorList from "../../Resources/EnovaContractors/EnovaContractorList";
 import SortingList from "../../Resources/Sorting/SortingList";
 import SortingEdit from "../../Resources/Sorting/SortingEdit";
+import CouplingFilterList from "../../Resources/CouplingFilter/CouplingFilterList";
+import CouplingFilterEdit from "../../Resources/CouplingFilter/CouplingFilterEdit";
+import CouplingFilterCreate from "../../Resources/CouplingFilter/CouplingFilterCreate";
 
 
 
@@ -74,6 +77,7 @@ const AdminLayout = () => {
             <Resource name="enova_people" list={EnovaUserList} edit={EnovaUserEdit} icon={PermIdentityIcon}/>
             <Resource name="brands" list={BrandList} edit={BrandEdit} create={BrandCreate} icon={AppsIcon}/>
             <Resource name="variants" list={VariantList} edit={VariantEdit} create={VariantCreate} />
+            <Resource name="coupling_filters" list={CouplingFilterList} edit={CouplingFilterEdit} create={CouplingFilterCreate} icon={AppsIcon}/>
             <Resource name="categories" list={CategoryList} edit={CategoryEdit} create={CategoryCreate} icon={ClassIcon}/>
             <Resource name="subcategories" list={SubcategoryList}  edit={SubcategoryEdit} create={SubcategoryCreate}/>
             <Resource name="item_types" list={ItemTypeList} edit={ItemTypeEdit} create={ItemTypeCreate} />

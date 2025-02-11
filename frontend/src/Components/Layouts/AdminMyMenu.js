@@ -28,5 +28,6 @@ export const AdminMyMenu = () => (
             </Submenu>
         </Submenu>
         <Menu.ResourceItem name="submissions" />
+        <Menu.ResourceItem name="global_settings" />
     </Menu>
 );

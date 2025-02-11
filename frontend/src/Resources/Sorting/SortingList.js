@@ -17,19 +17,17 @@ import SortingSelect from "../../Components/AdminSortingSelect/SortingSelect";
 //   </List>
 // );
 
-const BrandList = () => (
-  <List resource="brands"  pagination={<AdminPagination />}>
-      <SortingSelect/>
-    <Datagrid>
-      <TextField source="id" />
-      <TextField source="name" />
-        <TextField source="polishName" />
-        <TextField source="germanName" />
-      {/*<TextField source="variant" />*/}
-        <DateField source="createdAt" />
-        <DateField source="updatedAt" />
-    </Datagrid>
-  </List>
+const SortingList = () => (
+    <List resource="global_settings"  pagination={<AdminPagination />}>
+        {/*<SortingSelect/>*/}
+        <Datagrid>
+            <TextField source="id" />
+            <TextField source="sortField" />
+            <TextField source="sortOrder" />
+            {/*<DateField source="createdAt" />*/}
+            {/*<DateField source="updatedAt" />*/}
+        </Datagrid>
+    </List>
 );
 
-export default BrandList;
+export default SortingList;

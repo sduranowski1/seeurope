@@ -30,6 +30,7 @@ class GlobalSettingsController extends AbstractController
         }
 
         return $this->json([
+            'id' => $globalSettings->getId(),
             'sortField' => $globalSettings->getSortField(),
             'sortOrder' => $globalSettings->getSortOrder(),
         ]);

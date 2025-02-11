@@ -80,6 +80,8 @@ export const NavbarComponent = (props) => {
 
 
     const [brands, setBrands] = useState([]);
+    const [sortField, setSortField] = useState("id");
+    const [sortOrder, setSortOrder] = useState("asc");
     const [variants, setVariants] = useState([]);
     const [categories, setCategories] = useState([]);
     const [loadingCoupling, setLoadingCoupling] = useState(true);
@@ -93,19 +95,52 @@ export const NavbarComponent = (props) => {
     //     setCartItems(storedCart);
     // }, []);
 
-
+    // Fetch sorting settings
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const brandResponse = await fetch('https://se-europe-test.pl/api/brands?order[name]=asc');
-                // const brandResponse = await fetch('https://127.0.0.1:8000/api/brands');
-                const brandsData = await brandResponse.json();
+        const fetchSortingSettings = async () => {
+            const response = await fetch('https://se-europe-test.pl/api/global_settings');
+            const data = await response.json();
+            console.log('Fetched Sorting Settings:', data);
+            setSortField(data.sortField);
+            setSortOrder(data.sortOrder);
+        };
 
-                const variantResponse = await fetch('https://se-europe-test.pl/api/variants');
-                // const variantResponse = await fetch('https://127.0.0.1:8000/api/variants');
+        fetchSortingSettings();
+    }, []);
+
+    // Fetch and filter data
+    useEffect(() => {
+        if (!sortField || !sortOrder) return; // Wait for sorting settings
+
+        const fetchBrands = async () => {
+            setLoadingCoupling(true);
+
+            try {
+                // Fetch brands and apply sorting
+                const brandResponse = await fetch(`https://se-europe-test.pl/api/brands?order[${sortField}]=${sortOrder}`);
+                const brandsData = await brandResponse.json();
+                console.log('Fetched Brands:', brandsData);
+
+                // Optionally, filter out unsorted or unwanted results (if necessary)
+                // For example, if you want to filter out brands that don't have a `name`
+                // const filteredBrands = brandsData.filter(brand => brand.name);
+
+                // Fetch variants
+                const variantResponse = await fetch(`https://se-europe-test.pl/api/variants`);
                 const variantsData = await variantResponse.json();
 
-                setBrands(brandsData);
+                // Adjust name based on language
+                const updatedBrands = brandsData.map(brand => ({
+                    ...brand,
+                    name: language === 'pl'
+                        ? brand.polishName || brand.name
+                        : language === 'de'
+                        ? brand.germanName || brand.name
+                        : brand.name
+                }));
+
+                // Set the data to state
+                setBrands(updatedBrands);
                 setVariants(variantsData);
                 setLoadingCoupling(false);
             } catch (error) {
@@ -114,16 +149,31 @@ export const NavbarComponent = (props) => {
             }
         };
 
-        fetchData();
-    }, []);
+        fetchBrands();
+    }, [sortField, sortOrder, language]); // Trigger refetch when sorting settings change
+
+    console.log(`Fetching from: https://se-europe-test.pl/api/brands?order[${sortField}]=${sortOrder}`);
+
 
     useEffect(() => {
+        if (!sortField || !sortOrder) return; // Wait for sorting settings
         const fetchMachine = async () => {
+            setLoadingMachine(true);
+
             try {
-                const categoryResponse = await fetch('https://se-europe-test.pl/api/categories');
+                const categoryResponse = await fetch(`https://se-europe-test.pl/api/categories?order[${sortField}]=${sortOrder}`);
                 const categoriesData = await categoryResponse.json();
 
-                setCategories(categoriesData);
+                const updatedCategories = categoriesData.map(category => ({
+                    ...category,
+                    name: language === 'pl'
+                        ? category.polishName || category.name
+                        : language === 'de'
+                        ? category.germanName || category.name
+                        : category.name
+                }));
+
+                setCategories(updatedCategories);
                 setLoadingMachine(false);
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -240,7 +290,7 @@ export const NavbarComponent = (props) => {
 
 
     return (
-        <nav className={'nav '} dataProvider={dataProvider}>
+        <nav className={'nav '}>
             <div className={'nav-bar__content visible'}>
                 {/*<div className={'nav--top section-contrains'}>*/}
                 <div className={'nav--top'}>

@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import Modal from '@mui/material/Modal';
 import { Button, Box } from '@mui/material';
+import i18n from "i18next";
 
 const OrderItemsModal = ({ open, onClose, items }) => {
+
+    console.log(items)
     return (
         <Modal open={open} onClose={onClose}>
             <Box sx={{
@@ -21,7 +24,11 @@ const OrderItemsModal = ({ open, onClose, items }) => {
                     <ul>
                         {items.map((item, index) => (
                             <li key={index}>
-                                <strong>{item.name}</strong> - {item.quantity} x {item.price}
+                                <strong>{i18n.language === "en"
+                                    ? item.productInfo?.englishTitle || item.name
+                                    : i18n.language === "de"
+                                        ? item.productInfo?.germanTitle || item.name
+                                        : item.name}</strong> - {item.quantity} x {item.price}
                             </li>
                         ))}
                     </ul>

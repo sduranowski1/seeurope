@@ -262,7 +262,13 @@ export const ProductDescription = ({ product }) => {
                     <div>
                         <section className={'section-contrains tables-page item-page'}>
                             <div>
-                                <h1 className={"description-header"}>{data.name || ""}</h1>
+                                <h1 className={"description-header"}>
+                                    {i18n.language === "en"
+                                    ? product.productInfo?.englishTitle || product.name
+                                    : i18n.language === "de"
+                                        ? product.productInfo?.germanTitle || product.name
+                                        : product.name}
+                                </h1>
                                 <hr></hr>
                                 <p>{data.code}</p>
                                 <br/>

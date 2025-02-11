@@ -14,6 +14,7 @@ import {Button, IconButton, Tooltip} from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import AuthContext from "../../../AuthContext";
 import {useNavigate} from "react-router-dom";
+import i18n from "i18next";
 
 export const SubcategoryTableBrands = ({ productsData, onProductClick, lastPartToCollapse, displayedItems, checkboxes, userDetailsPrice }) => {
     const [activeFilter, setActiveFilter] = useState("All");
@@ -26,7 +27,8 @@ export const SubcategoryTableBrands = ({ productsData, onProductClick, lastPartT
     // Get unique capacityFeat values for tabs
     const uniqueCapacities = [
         "All",
-        ...new Set(productsData.map((product) => product?.productInfo?.category?.name || "Other"))
+        // ...new Set(productsData.map((product) => product?.productInfo?.category?.name || "Other"))
+        ...new Set(productsData.map((product) => product?.productInfo?.couplingFilter?.name || "Other"))
     ];
 
     // Filter products based on the active filter
@@ -34,7 +36,8 @@ export const SubcategoryTableBrands = ({ productsData, onProductClick, lastPartT
         if (activeFilter === "All") {
             setFilteredProducts(productsData);
         } else {
-            setFilteredProducts(productsData.filter((product) => product?.productInfo?.category?.name === activeFilter));
+            // setFilteredProducts(productsData.filter((product) => product?.productInfo?.category?.name === activeFilter));
+            setFilteredProducts(productsData.filter((product) => product?.productInfo?.couplingFilter?.name === activeFilter));
         }
     }, [activeFilter, productsData]);
 
@@ -185,7 +188,13 @@ export const SubcategoryTableBrands = ({ productsData, onProductClick, lastPartT
                                 "" +
                                 "" +
                                 ""}</td>
-                            <td>{product.name || ""}</td>
+                            <td>
+                                {i18n.language === "en"
+                                    ? product.productInfo?.englishTitle || product.name
+                                    : i18n.language === "de"
+                                        ? product.productInfo?.germanTitle || product.name
+                                        : product.name}
+                            </td>
                             <td>{product.capacityFeat || ""}</td>
                             {/*<td>{product.netto || "N/A"}</td>*/}
                             <td>{product.productInfo?.brand?.name  || ""}</td>

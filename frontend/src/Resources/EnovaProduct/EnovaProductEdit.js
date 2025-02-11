@@ -29,6 +29,7 @@ const EnovaProductEdit = () => {
     const [categories, setCategories] = useState([]);
     const [subcategories, setSubcategories] = useState([]);
     const [itemTypes, setItemTypes] = useState([]);
+    const [couplingFilters, setCouplingFilters] = useState([]);
     const [loading, setLoading] = useState(true);
     const [image, setImage] = useState(null);
     const [imagePreview, setImagePreview] = useState(null);
@@ -51,23 +52,26 @@ const EnovaProductEdit = () => {
                 setProduct(productData);
 
                 // Fetch brands and variants data
-                const [brandsResponse, variantsResponse, categoriesResponse, subcategoriesResponse, itemTypesResponse] = await Promise.all([
+                const [brandsResponse, variantsResponse, categoriesResponse, subcategoriesResponse, itemTypesResponse, couplingFiltersResponse] = await Promise.all([
                     fetch('https://se-europe-test.pl/api/brands'),
                     fetch('https://se-europe-test.pl/api/variants'),
                     fetch('https://se-europe-test.pl/api/categories'),
                     fetch('https://se-europe-test.pl/api/subcategories'),
-                    fetch('https://se-europe-test.pl/api/item_types')
+                    fetch('https://se-europe-test.pl/api/item_types'),
+                    fetch('https://se-europe-test.pl/api/coupling_filters'),
                 ]);
                 const brandsData = await brandsResponse.json();
                 const variantsData = await variantsResponse.json();
                 const categoriesData = await categoriesResponse.json();
                 const subcategoriesData = await subcategoriesResponse.json();
                 const itemTypesData = await itemTypesResponse.json();
+                const couplingFiltersData = await couplingFiltersResponse.json();
                 setBrands(brandsData);
                 setVariants(variantsData);
                 setCategories(categoriesData);
                 setSubcategories(subcategoriesData);
                 setItemTypes(itemTypesData);
+                setCouplingFilters(couplingFiltersData);
 
                 setLoading(false);
             } catch (error) {
@@ -106,6 +110,11 @@ const EnovaProductEdit = () => {
             setProduct((prevProduct) => ({
                 ...prevProduct,
                 itemType: { id: value },  // Update the itemType by id
+            }));
+        } else if (name === 'couplingFilter') {
+            setProduct((prevProduct) => ({
+                ...prevProduct,
+                couplingFilter: { id: value },  // Update the itemType by id
             }));
         } else {
             setProduct((prevProduct) => ({
@@ -157,7 +166,10 @@ const EnovaProductEdit = () => {
                 ...(product.category?.id && product.category.id !== 0 ? { category: { id: product.category.id } } : {}),
                 ...(product.subcategory?.id && product.subcategory.id !== 0 ? { subcategory: { id: product.subcategory.id } } : {}),
                 ...(product.itemType?.id && product.itemType.id !== 0 ? { itemType: { id: product.itemType.id } } : {}),
+                ...(product.couplingFilter?.id && product.couplingFilter.id !== 0 ? { couplingFilter: { id: product.couplingFilter.id } } : {}),
                 description: product.description,
+                englishTitle: product.englishTitle,
+                germanTitle: product.germanTitle,
                 polishDescription: product.polishDescription,
                 germanDescription: product.germanDescription,
                 imagePath: imageId, // Use the existing or updated image path
@@ -339,6 +351,48 @@ const EnovaProductEdit = () => {
                                     </MenuItem>
                                 ))}
                             </Select>
+                        </FormControl>
+
+                        <FormControl fullWidth margin="normal">
+                            <InputLabel id="couplingFilter-label">Coupling Filter</InputLabel>
+                            <Select
+                                labelId="couplingFilter-label"
+                                name="couplingFilter"
+                                value={product.couplingFilter?.id || ''}
+                                onChange={handleChange}
+                                label="Item Type"
+                            >
+                                <MenuItem value={0}>
+                                    <ListItemIcon>
+                                        <ClearIcon />
+                                    </ListItemIcon>
+                                </MenuItem>
+                                {couplingFilters.map((couplingFilter) => (
+                                        <MenuItem key={couplingFilter.id} value={couplingFilter.id}>
+                                            {couplingFilter.name}
+                                        </MenuItem>
+                                    ))}
+                            </Select>
+                        </FormControl>
+
+                        <Typography variant="h5" component="h5" sx={{ marginTop: "20px" }}>English Title</Typography>
+                        <FormControl fullWidth margin="normal">
+                            <TextField
+                                id="englishTitle"
+                                value={product?.englishTitle || ''}
+                                onChange={(event) => handleChange({ target: { name: 'englishTitle', value: event.target.value } })}
+                                placeholder="Enter the English title"
+                            />
+                        </FormControl>
+
+                        <Typography variant="h5" component="h5" sx={{ marginTop: "20px" }}>German Title</Typography>
+                        <FormControl fullWidth margin="normal">
+                            <TextField
+                                id="germanTitle"
+                                value={product?.germanTitle || ''}
+                                onChange={(event) => handleChange({ target: { name: 'germanTitle', value: event.target.value } })}
+                                placeholder="Enter the German title"
+                            />
                         </FormControl>
 
 

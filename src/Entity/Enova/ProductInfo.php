@@ -8,6 +8,7 @@ use App\Entity\Brand;
 use App\Entity\Category;
 use App\Entity\CouplingFilter;
 use App\Entity\ItemType;
+use App\Entity\MachineFilter;
 use App\Entity\ProductsMediaObject;
 use App\Entity\Subcategory;
 use App\Entity\Variant;
@@ -47,6 +48,10 @@ class ProductInfo
     #[Groups(['enovaProduct:read', "productInfo:read", 'productInfo:create'])]
     private ?CouplingFilter $couplingFilter = null;
 
+    #[ORM\ManyToOne(targetEntity: MachineFilter::class)]
+    #[ORM\JoinColumn(name: 'machine_filter_id', referencedColumnName: 'id', options: ["default" => 0])]
+    #[Groups(['enovaProduct:read', "productInfo:read", 'productInfo:create'])]
+    private ?MachineFilter $machineFilter = null;
 //    #[ORM\Column(type: "integer", options: ["default" => 0])]
 //    #[Groups(['enovaProduct:read', "productInfo:read"])]
 //    private int $varid;
@@ -172,6 +177,16 @@ class ProductInfo
     public function setCouplingFilter(?CouplingFilter $couplingFilter): void
     {
         $this->couplingFilter = $couplingFilter;
+    }
+
+    public function getMachineFilter(): ?MachineFilter
+    {
+        return $this->machineFilter;
+    }
+
+    public function setMachineFilter(?MachineFilter $machineFilter): void
+    {
+        $this->machineFilter = $machineFilter;
     }
 
 

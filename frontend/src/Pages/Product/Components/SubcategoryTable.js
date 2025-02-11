@@ -14,6 +14,7 @@ import {Button, IconButton, Tooltip} from "@mui/material";
 import AuthContext from "../../../AuthContext";
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import {useNavigate} from "react-router-dom";
+import i18n from "i18next";
 
 
 // export const SubcategoryTable = (props) => {
@@ -219,7 +220,11 @@ export const SubcategoryTable = ({ productsData, onProductClick, lastPartToColla
                             }}
                         >
                             <td>{product.code || ""}</td>
-                            <td>{product.name || ""}</td>
+                            <td>{i18n.language === "en"
+                                ? product.productInfo?.englishTitle || product.name
+                                : i18n.language === "de"
+                                    ? product.productInfo?.germanTitle || product.name
+                                    : product.name}</td>
                             <td>{product.capacityFeat || ""}</td>
                             {/*<td>{product.netto || ""}</td>*/}
                             {/*<td>{product.productInfo?.brand?.name === "Other" ? ("") : ("")}</td>*/}

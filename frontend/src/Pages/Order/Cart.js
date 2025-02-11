@@ -98,7 +98,7 @@ const Cart = () => {
                                             <TableCell>
                                                 <Box display="flex" alignItems="center">
                                                     <img
-                                                        src={item.image || 'https://via.placeholder.com/50'} // Fallback to a placeholder image
+                                                        src={item.imagePath || 'https://www.se-europe-test.pl/media/item_types/landscape-placeholder.svg'} // Fallback to a placeholder image
                                                         alt={item.name || 'Unnamed Product'} // Fallback to a generic name
                                                         style={{ width: '50px', marginRight: '10px' }}
                                                     />

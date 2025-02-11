@@ -23,6 +23,7 @@ use Doctrine\ORM\Mapping as ORM;
 //            controller: GlobalSettingsController::class,
 //            name: 'update_sorting_settings', // Optional: Name for this operation
 //        ),
+        new Get(),
         new GetCollection(),
         new Put()
     ]

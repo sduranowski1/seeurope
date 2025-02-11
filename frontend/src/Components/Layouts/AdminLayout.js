@@ -44,6 +44,7 @@ import UserCreate from "../../Resources/User/UserCreate";
 import EnovaProductList from "../../Resources/EnovaProduct/EnovaProductList";
 import EnovaContractorList from "../../Resources/EnovaContractors/EnovaContractorList";
 import SortingList from "../../Resources/Sorting/SortingList";
+import SortingEdit from "../../Resources/Sorting/SortingEdit";
 
 
 
@@ -77,7 +78,7 @@ const AdminLayout = () => {
             <Resource name="subcategories" list={SubcategoryList}  edit={SubcategoryEdit} create={SubcategoryCreate}/>
             <Resource name="item_types" list={ItemTypeList} edit={ItemTypeEdit} create={ItemTypeCreate} />
             <Resource name="submissions" list={UserList} edit={UserEdit} create={UserCreate} icon={PersonAddAlt1Icon} />
-            <Resource name="global_settings" list={SortingList} icon={PersonAddAlt1Icon}/>
+            <Resource name="global_settings" list={SortingList} edit={SortingEdit} icon={PersonAddAlt1Icon}/>
             {/* Other resources... */}
         </Admin>
     );

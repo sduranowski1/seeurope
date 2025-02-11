@@ -36,10 +36,10 @@ class GlobalSetting
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
-    private string $sortField = 'id';
+    private ?string $sortField = null;
 
     #[ORM\Column(length: 4)]
-    private string $sortOrder = 'asc';
+    private ?string $sortOrder = null;
 
     public function getId(): ?int
     {

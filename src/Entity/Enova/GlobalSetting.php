@@ -4,6 +4,7 @@ namespace App\Entity\Enova;
 
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Controller\Admin\GlobalSettingsController;
@@ -12,16 +13,18 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity]
 #[ApiResource(
     operations: [
-        new Get(
-            uriTemplate: '/global_settings',
-            controller: GlobalSettingsController::class,
-            name: 'get_sorting_settings', // Optional: Name for this operation
-        ),
-        new Put(
-            uriTemplate: '/global_settings/{id}',
-            controller: GlobalSettingsController::class,
-            name: 'update_sorting_settings', // Optional: Name for this operation
-        )
+//        new Get(
+//            uriTemplate: '/global_settings',
+//            controller: GlobalSettingsController::class,
+//            name: 'get_sorting_settings', // Optional: Name for this operation
+//        ),
+//        new Put(
+//            uriTemplate: '/global_settings/{id}',
+//            controller: GlobalSettingsController::class,
+//            name: 'update_sorting_settings', // Optional: Name for this operation
+//        ),
+        new GetCollection(),
+        new Put()
     ]
 )]
 class GlobalSetting

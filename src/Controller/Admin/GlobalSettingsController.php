@@ -30,9 +30,12 @@ class GlobalSettingsController extends AbstractController
         }
 
         return $this->json([
-            'id' => $globalSettings->getId(),
-            'sortField' => $globalSettings->getSortField(),
-            'sortOrder' => $globalSettings->getSortOrder(),
+            '@context' => '/contexts/GlobalSetting', // Adjust as needed
+            '@id' => '/api/global_settings',
+            '@type' => 'GlobalSetting',
+            'id' => $globalSettings ? $globalSettings->getId() : null,
+            'sortField' => $globalSettings ? $globalSettings->getSortField() : 'id',
+            'sortOrder' => $globalSettings ? $globalSettings->getSortOrder() : 'asc',
         ]);
     }
 

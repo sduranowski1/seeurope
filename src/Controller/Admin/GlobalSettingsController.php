@@ -24,6 +24,9 @@ class GlobalSettingsController extends AbstractController
 
         if (!$globalSettings) {
             return $this->json([
+                '@context' => '/contexts/GlobalSetting',
+                '@id' => '/api/global_settings',
+                '@type' => 'GlobalSetting',
                 'sortField' => 'id',
                 'sortOrder' => 'asc',
             ]);

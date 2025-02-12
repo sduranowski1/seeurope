@@ -136,14 +136,7 @@ const dataProvider = {
             // Construct the payload
             const payload = {
                 ...(resource === "variants"
-                    ? {
-                        variantname: nameField,
-                        polishName: data.polishName, // Include `subCatName` for `subcategories`
-                        germanName: data.germanName, // Include `subCatName` for `subcategories`
-                        brand: {
-                            id: data.bid
-                        } // Include `bid` only for `variants`
-                    }
+                    ? data
                     : resource === "brands"
                         ? {
                             name: nameField, // Include `subCatName` for `subcategories`
@@ -151,23 +144,9 @@ const dataProvider = {
                             germanName: data.germanName, // Include `subCatName` for `subcategories`
                         }
                     : resource === "subcategories"
-                        ? {
-                            subCatName: nameField, // Include `subCatName` for `subcategories`
-                            polishSubCatName: data.polishSubCatName, // Include `subCatName` for `subcategories`
-                            germanSubCatName: data.germanSubCatName, // Include `subCatName` for `subcategories`
-                            category: {
-                                id: data.cid // Include `cid` only for `categories`
-                            }
-                        }
+                        ? data
                     : resource === "item_types"
-                        ? {
-                            name: nameField, // Include `subCatName` for `subcategories`
-                            polishName: data.polishName, // Include `subCatName` for `subcategories`
-                            germanName: data.germanName, // Include `subCatName` for `subcategories`
-                            subcategory: {
-                                id: data.scid // Include `cid` only for `categories`
-                            }
-                        }
+                        ? data
                     : resource === "categories"
                         ? {
                             name: nameField, // Include `subCatName` for `subcategories`
@@ -379,7 +358,14 @@ const dataProvider = {
                             // }
                         }
                     : resource === "subcategories"
-                        ? data
+                        ? {
+                            subCatName: nameField, // Include `subCatName` for `subcategories`
+                            polishSubCatName: data.polishSubCatName, // Include `subCatName` for `subcategories`
+                            germanSubCatName: data.germanSubCatName, // Include `subCatName` for `subcategories`
+                            category: {
+                                id: data.cid // Include `cid` only for `categories`
+                            }
+                    }
                     : resource === "item_types"
                         ? {
                             name: nameField, // Include `subCatName` for `subcategories`

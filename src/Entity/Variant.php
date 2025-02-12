@@ -41,9 +41,10 @@ class Variant
     #[ORM\Column(length: 50)]
     #[Groups(['variant:read', 'variant:create', 'variant:update', "productInfo:read", 'productInfo:create', 'enovaProduct:read'])]
     private ?string $germanName = null;
-    #[ORM\Column(nullable: true)]
-    #[Groups(['variant:read', 'variant:create'])]
-    private ?int $bid = null;
+
+//    #[ORM\Column(nullable: true)]
+//    #[Groups(['variant:read', 'variant:create'])]
+//    private ?int $bid = null;
 
     #[ORM\ManyToOne(targetEntity: Brand::class)]
     #[ORM\JoinColumn(name: 'bid', referencedColumnName: 'id', nullable: true)]
@@ -122,17 +123,17 @@ class Variant
         $this->germanName = $germanName;
     }
 
-    public function getBid(): ?int
-    {
-        return $this->bid;
-    }
-
-    public function setBid(?int $bid): static
-    {
-        $this->bid = $bid;
-
-        return $this;
-    }
+//    public function getBid(): ?int
+//    {
+//        return $this->bid;
+//    }
+//
+//    public function setBid(?int $bid): static
+//    {
+//        $this->bid = $bid;
+//
+//        return $this;
+//    }
 
     public function getBrand(): ?Brand
     {

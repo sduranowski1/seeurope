@@ -19,11 +19,11 @@ const SubcategoryEdit = (props) => (
             <TextInput source="subCatName" />
             <TextInput source="polishSubCatName" />
             <TextInput source="germanSubCatName" />
-            <ReferenceInput reference="categories" source="cid">
+            <ReferenceInput reference="categories" source="category.id">
                 <SelectInput
-                    // label="Category"
-                    // source="cid"
-                    optionText="name"
+                    label="Category"
+                    source="category.id"
+                    optionText={(record) => record?.name}
                     validate={required()}
                 />
             </ReferenceInput>

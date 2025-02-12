@@ -43,9 +43,9 @@ class ItemType
     #[Groups(['itemType:read', 'itemType:create', 'itemType:update', "productInfo:read", 'enovaProduct:read'])]
     private ?string $germanName = null;
 
-    #[ORM\Column(nullable: true)]
-    #[Groups(['itemType:read', 'itemType:create'])]
-    private ?int $scid = null;
+//    #[ORM\Column(nullable: true)]
+//    #[Groups(['itemType:read', 'itemType:create'])]
+//    private ?int $scid = null;
 
     #[ORM\ManyToOne(targetEntity: Subcategory::class)]
     #[ORM\JoinColumn(name: 'scid', referencedColumnName: 'id', nullable: true)]
@@ -135,13 +135,13 @@ class ItemType
         $this->subcategory = $subcategory;
     }
 
-    public function getScid(): ?int
-    {
-        return $this->scid;
-    }
-
-    public function setScid(?int $scid): void
-    {
-        $this->scid = $scid;
-    }
+//    public function getScid(): ?int
+//    {
+//        return $this->scid;
+//    }
+//
+//    public function setScid(?int $scid): void
+//    {
+//        $this->scid = $scid;
+//    }
 }

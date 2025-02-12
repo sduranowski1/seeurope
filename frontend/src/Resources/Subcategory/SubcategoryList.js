@@ -23,7 +23,7 @@ const SubcategoryList = () => (
       <TextField source="subCatName" />
         <TextField source="polishSubCatName" />
         <TextField source="germanSubCatName" />
-      <ReferenceField reference="categories" source="cid" label="Category" >
+      <ReferenceField reference="categories" source="category.id" label="Category" >
         <TextField source="name" />
       </ReferenceField>
       <DateField source="createdAt" />

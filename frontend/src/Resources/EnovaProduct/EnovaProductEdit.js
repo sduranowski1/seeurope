@@ -30,6 +30,7 @@ const EnovaProductEdit = () => {
     const [subcategories, setSubcategories] = useState([]);
     const [itemTypes, setItemTypes] = useState([]);
     const [couplingFilters, setCouplingFilters] = useState([]);
+    const [machineFilters, setMachineFilters] = useState([]);
     const [loading, setLoading] = useState(true);
     const [image, setImage] = useState(null);
     const [imagePreview, setImagePreview] = useState(null);
@@ -52,13 +53,14 @@ const EnovaProductEdit = () => {
                 setProduct(productData);
 
                 // Fetch brands and variants data
-                const [brandsResponse, variantsResponse, categoriesResponse, subcategoriesResponse, itemTypesResponse, couplingFiltersResponse] = await Promise.all([
+                const [brandsResponse, variantsResponse, categoriesResponse, subcategoriesResponse, itemTypesResponse, couplingFiltersResponse, machineFiltersResponse] = await Promise.all([
                     fetch('https://se-europe-test.pl/api/brands'),
                     fetch('https://se-europe-test.pl/api/variants'),
                     fetch('https://se-europe-test.pl/api/categories'),
                     fetch('https://se-europe-test.pl/api/subcategories'),
                     fetch('https://se-europe-test.pl/api/item_types'),
                     fetch('https://se-europe-test.pl/api/coupling_filters'),
+                    fetch('https://se-europe-test.pl/api/machine_filters'),
                 ]);
                 const brandsData = await brandsResponse.json();
                 const variantsData = await variantsResponse.json();
@@ -66,12 +68,14 @@ const EnovaProductEdit = () => {
                 const subcategoriesData = await subcategoriesResponse.json();
                 const itemTypesData = await itemTypesResponse.json();
                 const couplingFiltersData = await couplingFiltersResponse.json();
+                const machineFiltersData = await machineFiltersResponse.json();
                 setBrands(brandsData);
                 setVariants(variantsData);
                 setCategories(categoriesData);
                 setSubcategories(subcategoriesData);
                 setItemTypes(itemTypesData);
                 setCouplingFilters(couplingFiltersData);
+                setMachineFilters(machineFiltersData);
 
                 setLoading(false);
             } catch (error) {
@@ -115,6 +119,11 @@ const EnovaProductEdit = () => {
             setProduct((prevProduct) => ({
                 ...prevProduct,
                 couplingFilter: { id: value },  // Update the itemType by id
+            }));
+        } else if (name === 'machineFilter') {
+            setProduct((prevProduct) => ({
+                ...prevProduct,
+                machineFilter: { id: value },  // Update the itemType by id
             }));
         } else {
             setProduct((prevProduct) => ({
@@ -167,6 +176,7 @@ const EnovaProductEdit = () => {
                 ...(product.subcategory?.id && product.subcategory.id !== 0 ? { subcategory: { id: product.subcategory.id } } : {}),
                 ...(product.itemType?.id && product.itemType.id !== 0 ? { itemType: { id: product.itemType.id } } : {}),
                 ...(product.couplingFilter?.id && product.couplingFilter.id !== 0 ? { couplingFilter: { id: product.couplingFilter.id } } : {}),
+                ...(product.machineFilter?.id && product.machineFilter.id !== 0 ? { machineFilter: { id: product.machineFilter.id } } : {}),
                 description: product.description,
                 englishTitle: product.englishTitle,
                 germanTitle: product.germanTitle,
@@ -372,6 +382,28 @@ const EnovaProductEdit = () => {
                                             {couplingFilter.name}
                                         </MenuItem>
                                     ))}
+                            </Select>
+                        </FormControl>
+
+                        <FormControl fullWidth margin="normal">
+                            <InputLabel id="machineFilter-label">Machine Filter</InputLabel>
+                            <Select
+                                labelId="machineFilter-label"
+                                name="machineFilter"
+                                value={product.machineFilter?.id || ''}
+                                onChange={handleChange}
+                                label="Item Type"
+                            >
+                                <MenuItem value={0}>
+                                    <ListItemIcon>
+                                        <ClearIcon />
+                                    </ListItemIcon>
+                                </MenuItem>
+                                {machineFilters.map((machineFilter) => (
+                                    <MenuItem key={machineFilter.id} value={machineFilter.id}>
+                                        {machineFilter.name}
+                                    </MenuItem>
+                                ))}
                             </Select>
                         </FormControl>
 

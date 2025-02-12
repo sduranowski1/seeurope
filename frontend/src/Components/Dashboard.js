@@ -21,6 +21,8 @@ export const Dashboard = () => {
     const [orders, setOrders] = useState([]);
     const { token } = useContext(AuthContext); // Get token from AuthContext
     const [userEmail, setUserEmail] = useState(null);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
 
 
     // const fetchData = [
@@ -32,36 +34,51 @@ export const Dashboard = () => {
     //     {itemNo: 5, product: 'WÓZEK WIDŁOWY', dateChange: '13.03.2024', info: 'ertete'},
     // ]
 
-    useEffect(() => {
-        // Fetch orders from an API or another data source
-        const fetchOrders = async () => {
-            try {
-                if (token) {
-                    // Decode the JWT token to get the email
-                    const decodedToken = jwtDecode(token);
-                    console.log(decodedToken)
-                    const email = decodedToken?.username;
+    const fetchOrders = async (page = 1) => {
+        try {
+            if (token) {
+                const decodedToken = jwtDecode(token);
+                const email = decodedToken?.username;
 
-                    if (email) {
-                        setUserEmail(email);
-                        console.log(email)
+                if (email) {
+                    setUserEmail(email);
 
-                        const response = await fetch(`https://se-europe-test.pl/api/orders?email=${encodeURIComponent(email)}`); // Replace with your API endpoint
-                        const data = await response.json();
-                        setOrders(data);
-                    } else {
-                        console.error('Email not found in the token');
+                    const response = await fetch(`https://se-europe-test.pl/api/orders?email=${encodeURIComponent(email)}&page=${page}`, {
+                        headers: {
+                            'Accept': 'application/ld+json'
+                        }
+                    });
+
+                    const data = await response.json();
+                    console.log(data); // Debug JSON-LD response
+
+                    setOrders(data['hydra:member'] || []);
+
+                    // Extract total pages from hydra:view
+                    if (data['hydra:view']) {
+                        const lastPageMatch = data['hydra:view']['hydra:last']?.match(/page=(\d+)/);
+                        setTotalPages(lastPageMatch ? Number(lastPageMatch[1]) : 1);
                     }
                 } else {
-                    console.error('Token is missing from AuthContext');
+                    console.error('Email not found in the token');
                 }
-            } catch (error) {
-                console.error('Error fetching orders:', error);
+            } else {
+                console.error('Token is missing from AuthContext');
             }
-        };
+        } catch (error) {
+            console.error('Error fetching orders:', error);
+        }
+    };
 
-        fetchOrders();
+// Fetch first page on component mount
+    useEffect(() => {
+        fetchOrders(1);
     }, []);
+
+    useEffect(() => {
+        fetchOrders(currentPage);
+    }, [currentPage]); // Refetch when page changes
+
 
     function displayData(number) {
         console.log(document.querySelector('.vehicles-list .productData .itemNo'));
@@ -94,6 +111,7 @@ export const Dashboard = () => {
                     <AccordionDetails>
                         <div className={'productData'}>
                             {orders.length > 0 ? (
+                                <>
                                 <table className="ordersTable" style={{width: "100%"}}>
                                     <thead>
                                     <tr>
@@ -111,7 +129,7 @@ export const Dashboard = () => {
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    {orders.slice().reverse().map((order, index) => (
+                                    {orders.slice().map((order, index) => (
                                         <tr key={index}>
                                             <td>{order.id}</td>
                                             <td>{order.email}</td>
@@ -144,6 +162,27 @@ export const Dashboard = () => {
                                     ))}
                                     </tbody>
                                 </table>
+
+                                {/* Pagination Controls */}
+                                    <div className="pagination">
+                                        <button
+                                            onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                                            disabled={currentPage === 1}
+                                        >
+                                            Previous
+                                        </button>
+
+                                        <span>Page {currentPage} of {totalPages}</span>
+
+                                        <button
+                                            onClick={() => setCurrentPage(prev => (prev < totalPages ? prev + 1 : prev))}
+                                            disabled={currentPage === totalPages}
+                                        >
+                                            Next
+                                        </button>
+                                    </div>
+
+                                </>
                             ) : (
                                 <p>No orders available</p>
                             )}

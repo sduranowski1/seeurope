@@ -3,6 +3,7 @@
 namespace App\Entity\Order;
 
 use ApiPlatform\Doctrine\Common\Filter\SearchFilterInterface;
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
@@ -21,6 +22,7 @@ use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
         'email' => SearchFilterInterface::STRATEGY_PARTIAL
     ]
 )]
+#[ApiFilter(OrderFilter::class, properties: ['id'])]
 class Order
 {
     #[ORM\Id]

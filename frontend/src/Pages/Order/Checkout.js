@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import authProvider from "../../authProvider";
 import AuthContext from "../../AuthContext";
 import {jwtDecode} from "jwt-decode";
+import i18n from "i18next";
 
 const Checkout = () => {
     const location = useLocation();
@@ -190,7 +191,11 @@ const Checkout = () => {
                                         justifyContent="space-between"
                                         sx={{ mb: 2 }}
                                     >
-                                        <Typography>{`${quantity} x ${item.name}`}</Typography>
+                                        <Typography>{`${quantity} x ${i18n.language === "en"
+                                            ? item.productInfo?.englishTitle || item.name
+                                            : i18n.language === "de"
+                                                ? item.productInfo?.germanTitle || item.name
+                                                : item.name}`}</Typography>
                                         <Typography>{(price * quantity).toFixed(2)} {storedPriceCurrency}</Typography>
                                     </Box>
                                 );

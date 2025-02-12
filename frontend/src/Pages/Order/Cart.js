@@ -14,6 +14,7 @@ import {
     Box,
 } from '@mui/material';
 import { useNavigate } from "react-router-dom";
+import i18n from "i18next";
 
 const Cart = () => {
     const navigate = useNavigate();
@@ -26,6 +27,8 @@ const Cart = () => {
         const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
         setCartItems(storedCart);
     }, []);
+
+    console.log(cartItems)
 
     // Update quantity for a cart item
     const updateQuantity = (id, quantity) => {
@@ -102,7 +105,11 @@ const Cart = () => {
                                                         alt={item.name || 'Unnamed Product'} // Fallback to a generic name
                                                         style={{ width: '50px', marginRight: '10px' }}
                                                     />
-                                                    {item.name || 'Unnamed Product'}
+                                                    {i18n.language === "en"
+                                                        ? item.productInfo?.englishTitle || item.name
+                                                        : i18n.language === "de"
+                                                            ? item.productInfo?.germanTitle || item.name
+                                                            : item.name}
                                                 </Box>
                                             </TableCell>
                                             <TableCell align="right">{price.toFixed(2)} {storedPriceCurrency}</TableCell>

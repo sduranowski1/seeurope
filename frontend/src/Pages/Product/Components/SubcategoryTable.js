@@ -64,7 +64,8 @@ export const SubcategoryTable = ({ productsData, onProductClick, lastPartToColla
     // Get unique capacityFeat values for tabs
     const uniqueCapacities = [
         "All",
-        ...new Set(productsData.map((product) => product.capacityFeat || "Other"))
+        // ...new Set(productsData.map((product) => product.capacityFeat || "Other"))
+        ...new Set(productsData.map((product) => product.productInfo?.machineFilter?.name || "Other"))
     ];
 
     // Filter products based on the active filter
@@ -72,7 +73,8 @@ export const SubcategoryTable = ({ productsData, onProductClick, lastPartToColla
         if (activeFilter === "All") {
             setFilteredProducts(productsData);
         } else {
-            setFilteredProducts(productsData.filter((product) => product.capacityFeat === activeFilter));
+            // setFilteredProducts(productsData.filter((product) => product.capacityFeat === activeFilter));
+            setFilteredProducts(productsData.filter((product) => product.productInfo?.machineFilter?.name === activeFilter));
         }
     }, [activeFilter, productsData]);
 

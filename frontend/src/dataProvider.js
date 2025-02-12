@@ -186,6 +186,15 @@ const dataProvider = {
                             //     id: data.cid // Include `cid` only for `categories`
                             // }
                         }
+                    : resource === "machine_filters"
+                        ? {
+                            name: nameField, // Include `subCatName` for `subcategories`
+                            polishName: data.polishName, // Include `subCatName` for `subcategories`
+                            germanName: data.germanName, // Include `subCatName` for `subcategories`
+                            // category: {
+                            //     id: data.cid // Include `cid` only for `categories`
+                            // }
+                        }
                     : resource === "global_settings"
                         ? {
                             sortField: data.sortField, // Include `subCatName` for `subcategories`
@@ -388,6 +397,15 @@ const dataProvider = {
                             }
                         }
                     : resource === "coupling_filters"
+                        ? {
+                            name: nameField, // Include `subCatName` for `subcategories`
+                            polishName: data.polishName, // Include `subCatName` for `subcategories`
+                            germanName: data.germanName, // Include `subCatName` for `subcategories`
+                            // category: {
+                            //     id: data.cid // Include `cid` only for `categories`
+                            // }
+                        }
+                    : resource === "machine_filters"
                         ? {
                             name: nameField, // Include `subCatName` for `subcategories`
                             polishName: data.polishName, // Include `subCatName` for `subcategories`

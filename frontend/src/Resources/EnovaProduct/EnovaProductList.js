@@ -20,6 +20,7 @@ const EnovaProductList = () => (
             <TextField source="productInfo.subcategory.subCatName" label="Subcategory" />
             <TextField source="productInfo.itemType.name" label="Item type" />
             <TextField source="productInfo.couplingFilter.name" label="Coupling filter" />
+            <TextField source="productInfo.machineFilter.name" label="Machine filter" />
             <TextField source="stockStatus" />
             <NumberField source="quantity" />
             <DateField source="updatedAt" />

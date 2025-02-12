@@ -82,7 +82,11 @@ const Checkout = () => {
             phone: userDetails?.enovaPerson?.telKomorkowy || "",
             items: cartItems.map((item) => ({
                 id: item.id,
-                name: item.name,
+                name: i18n.language === "en"
+                        ? item.productInfo?.englishTitle || item.name
+                        : i18n.language === "de"
+                            ? item.productInfo?.germanTitle || item.name
+                            : item.name,
                 quantity: item.quantity,
                 price: item.priceList?.find(p => p.nazwa === savedContractorName)?.netto || item.priceList?.find(p => p.nazwa === 'End User')?.netto,
             })),

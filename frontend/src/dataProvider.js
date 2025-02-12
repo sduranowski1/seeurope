@@ -379,14 +379,7 @@ const dataProvider = {
                             // }
                         }
                     : resource === "subcategories"
-                        ? {
-                            subCatName: nameField, // Include `subCatName` for `subcategories`
-                            polishSubCatName: data.polishSubCatName, // Include `subCatName` for `subcategories`
-                            germanSubCatName: data.germanSubCatName, // Include `subCatName` for `subcategories`
-                            category: {
-                                id: data.cid // Include `cid` only for `categories`
-                            }
-                    }
+                        ? data
                     : resource === "item_types"
                         ? {
                             name: nameField, // Include `subCatName` for `subcategories`

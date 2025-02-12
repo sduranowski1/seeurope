@@ -17,58 +17,6 @@ import {WeightRange} from "./Components/WeightRange";
 import {jwtDecode} from "jwt-decode";
 import AuthContext from "../../AuthContext";
 
-const productsData = {
-    name: '3 POINT',
-    description: 'We deliver and stock equipment for tractors.',
-    couplings: [],
-    tableData: {
-        adapter: [
-            {
-                artNo: 100838,
-                coupling: '3 punkt',
-                width: 1134,
-                height: 781,
-                capacity: 2500,
-                machineSide: '3punkt',
-                equipmentSide: 'SMS/Euro',
-                weight: 87
-            },
-            {
-                artNo: 100839,
-                coupling: '3 punkt',
-                width: 1165,
-                height: 850,
-                capacity: 5000,
-                machineSide: '3punkt',
-                equipmentSide: 'Stora BM',
-                weight: 121
-            },
-            {
-                artNo: 113542,
-                coupling: 'Big BM / 3 punkt',
-                width: 1184,
-                height: 492,
-                capacity: 2500,
-                machineSide: 'Big BM/3 punkt',
-                equipmentSide: 'SMS/Euro',
-                weight: 134
-            }
-        ],
-        stengrep: [
-            {
-                artNo: 113224,
-                coupling: '3 punkt',
-                width: 2000,
-                height: 600,
-                depth: 1000,
-                horn: 35,
-                bump: 'JA',
-                weight: 335
-            },
-        ]
-    }
-};
-
 export const MissingVariantsProducts = ({lastPart, slug}) => {
     const [displayedItems, setDisplayedItems] = useState([0, 1000000]);
     const [selectedProduct, setSelectedProduct] = useState(null);
@@ -193,15 +141,17 @@ export const MissingVariantsProducts = ({lastPart, slug}) => {
         }
     }, [currentPage, limit, brands, variants, categories, subcategories]);
 
+    // Only fetch brands and variants once on mount
     useEffect(() => {
         fetchAdditionalData();
-    }, [lastPart]); // Only fetch brands and variants once on mount
+    }, [lastPart]);
 
+    // Fetch product data after brands and variants are loaded & lastPart of the slug applied here makes the page reload while clicking on variants within navbar
     useEffect(() => {
         if (brands.length > 0 && variants.length > 0) {
             fetchProductData();
         }
-    }, [brands, variants, currentPage, limit, lastPart]); // Fetch product data after brands and variants are loaded
+    }, [brands, variants, currentPage, limit, lastPart]);
 
     const handlePageChange = useCallback((page) => {
         if (page >= 1 && page <= totalPages && !loading) {
@@ -340,22 +290,6 @@ export const MissingVariantsProducts = ({lastPart, slug}) => {
                                 maxWeight={maxWeight}
                                 onChange={handleWeightRangeChange}
                             />
-                            {/*<div>*/}
-                            {/*    <h3>Filter by Weight</h3>*/}
-                            {/*    <Slider*/}
-                            {/*        value={weightRange}*/}
-                            {/*        onChange={handleWeightRangeChange}*/}
-                            {/*        valueLabelDisplay="auto"*/}
-                            {/*        valueLabelFormat={(value) => `${value}kg`}*/}
-                            {/*        min={0}*/}
-                            {/*        max={maxWeight} // Dynamically set the max value based on filtered products*/}
-                            {/*        marks={[*/}
-                            {/*            { value: 0, label: "0 kg" },*/}
-                            {/*            { value: maxWeight / 2, label: `${maxWeight / 2} kg` }, // Midpoint mark*/}
-                            {/*            { value: maxWeight, label: `${maxWeight} kg` },*/}
-                            {/*        ]}*/}
-                            {/*    />*/}
-                            {/*</div>*/}
                         </div>
                         <div className={'choice-container'}>
                             <h2>{t("coupling")}</h2>
@@ -375,18 +309,12 @@ export const MissingVariantsProducts = ({lastPart, slug}) => {
                             </div>
                         </div>
                     </div>
-                    {/*<SubcategoryTable productsData={productsData} displayedItems={displayedItems}/>*/}
-                    {/*<SubcategoryTable productsData={productsData} displayedItems={displayedItems} checkboxes={checkboxes}/>*/}
                     <SubcategoryTableBrands
                         productsData={filteredProducts}
                         onProductClick={handleProductClick}
                         lastPartToCollapse={lastPart}
                         userDetailsPrice={userDetails}
-
                     />
-                    {/*{selectedProduct && (*/}
-                    {/*    <ProductDescription product={selectedProduct} productsData={filteredProducts}/>*/}
-                    {/*)}*/}
                 </div>)}
             </section>
         </main>

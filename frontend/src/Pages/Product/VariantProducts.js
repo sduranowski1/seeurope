@@ -206,15 +206,17 @@ export const VariantProducts = ({lastPart, slug}) => {
         }
     }, [currentPage, limit, brands, variants, categories, subcategories]);
 
+    // Only fetch brands and variants once on mount & lastPart refetches the data in the product table
     useEffect(() => {
         fetchAdditionalData();
-    }, []); // Only fetch brands and variants once on mount
+    }, [lastPart]);
 
+    // Fetch product data after brands and variants are loaded & lastPart of the slug applied here makes the page reload while clicking on variants within navbar
     useEffect(() => {
         if (brands.length > 0 && variants.length > 0) {
             fetchProductData();
         }
-    }, [brands, variants, currentPage, limit]); // Fetch product data after brands and variants are loaded
+    }, [brands, variants, currentPage, limit, lastPart]);
 
     const handlePageChange = useCallback((page) => {
         if (page >= 1 && page <= totalPages && !loading) {
@@ -256,8 +258,8 @@ export const VariantProducts = ({lastPart, slug}) => {
 
     function findCheckboxes() {
         return Object.values(filteredProducts).flat().reduce((acc, product) => {
-            if (!acc.hasOwnProperty(product.brandName)) {
-                acc[product.brandName] = false;
+            if (!acc.hasOwnProperty(product.productInfo.variant.variantname)) {
+                acc[product.productInfo.variant.variantname] = false;
             }
             return acc;
         }, {});

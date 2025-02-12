@@ -14,81 +14,14 @@ import * as React from "react";
 import {WeightRange} from "./Components/WeightRange";
 import {jwtDecode} from "jwt-decode";
 import AuthContext from "../../AuthContext";
-
-const productsData = {
-    name: '3 POINT',
-    description: 'We deliver and stock equipment for tractors.',
-    couplings: [],
-    tableData: {
-        adapter: [
-            {
-                artNo: 100838,
-                coupling: '3 punkt',
-                width: 1134,
-                height: 781,
-                capacity: 2500,
-                machineSide: '3punkt',
-                equipmentSide: 'SMS/Euro',
-                weight: 87
-            },
-            {
-                artNo: 100839,
-                coupling: '3 punkt',
-                width: 1165,
-                height: 850,
-                capacity: 5000,
-                machineSide: '3punkt',
-                equipmentSide: 'Stora BM',
-                weight: 121
-            },
-            {
-                artNo: 113542,
-                coupling: 'Big BM / 3 punkt',
-                width: 1184,
-                height: 492,
-                capacity: 2500,
-                machineSide: 'Big BM/3 punkt',
-                equipmentSide: 'SMS/Euro',
-                weight: 134
-            }
-        ],
-        stengrep: [
-            {
-                artNo: 113224,
-                coupling: '3 punkt',
-                width: 2000,
-                height: 600,
-                depth: 1000,
-                horn: 35,
-                bump: 'JA',
-                weight: 335
-            },
-        ]
-    }
-};
+import useUserDetails from "./useUserDetails";
 
 export const SubcategoryProducts = ({lastPart, slug}) => {
     const [displayedItems, setDisplayedItems] = useState([0, 1000000]);
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [checkboxes, setCheckboxes] = useState({});
-    const [userDetails, setUserDetails] = useState([])
-
-    // function findCheckboxes() {
-    //     return Object.values(productsData.tableData).flat().reduce((acc, product) => {
-    //         if (!acc.hasOwnProperty(product.coupling)) {
-    //             acc[product.coupling] = false;
-    //         }
-    //         return acc;
-    //     }, {});
-    // }
-    //
-    // useEffect(() => {
-    //     const uniqueCheckboxes = findCheckboxes();
-    //     setCheckboxes(uniqueCheckboxes);
-    // }, [productsData.tableData]);
-
+    // const [userDetails, setUserDetails] = useState([])
     const { t } = useTranslation();
-
     const [products, setProducts] = useState([]);
     const [brands, setBrands] = useState([]);
     const [variants, setVariants] = useState([]);
@@ -106,14 +39,7 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
     const [weightRange, setWeightRange] = useState([0, 30000]);
     const {id} = useParams(); // Get the product ID from the URL
     const { token } = useContext(AuthContext); // Get token from AuthContext
-
-
     let [title, setTitle] = useState("");
-
-
-    // Debounce timeout variable
-    const [debounceTimeout, setDebounceTimeout] = useState(null);
-
     // Memoize the totalPages calculation to prevent unnecessary re-calculation
     const totalPages = useMemo(() => Math.ceil(totalItems / limit), [totalItems, limit]);
 
@@ -158,7 +84,6 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
             const lastPart = parts[parts.length - 1];  // Last part of the URL path
             const secondPart = parts[parts.length - 2]; // Second to last part of the URL path
             const thirdPart = parts[parts.length - 3]; // Third to last part of the URL path
-            // const lastPart = parts[parts.length - 1];
             console.log('URL parts:', parts);
             console.log('Last part:', lastPart);
             console.log('Second part:', secondPart);
@@ -195,10 +120,7 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
             const data = await response.json();
 
             // Map product data with brand and variant names
-            // const productsData = data.elementy.map((product) => {
             const productsData = data.map((product) => {
-                // const dealerDetalPrice = product.listaCen.find((price) => price.nazwa === 'Dealer Detal');
-                // const netto = dealerDetalPrice ? dealerDetalPrice.netto : null;
 
                 const wzrostu = product.features.find((value) => value.nazwa === '% wzrostu');
                 const procWzrostu = wzrostu ? wzrostu.wartosc : null;
@@ -208,12 +130,6 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
 
                 const capacity = product.features.find((value) => value.nazwa === 'Capacity');
                 const capacityFeat = capacity ? capacity.wartosc : null;
-
-                // const brandName = brands.find((brand) => brand.id === product.productInfo?.braid)?.name || 'Other';
-                // const variantName = variants.find((variant) => variant.id === product.productInfo?.varid)?.variantname || '';
-                // const categoryName = categories.find((category) => category.id === product.productInfo?.catid)?.name || '';
-                // const subcategoryName = subcategories.find((subcategory) => subcategory.id === product.productInfo?.scatid)?.subCatName || '';
-                // const itemTypeName = itemTypes.find((itemType) => itemType.id === product.productInfo?.itypeid)?.name || '';
 
                 return { ...product, procWzrostu, replacementParts, capacityFeat};
             });
@@ -251,64 +167,11 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
     }, [navigate]);
 
     useEffect(() => {
-        // Get the full URL of the current page
-        const fullUrl = window.location.href;
-        console.log("Full URL:", fullUrl); // Log the full URL
-
-        // Extract the slug (the part of the URL after the domain)
-        const slug = fullUrl.split(window.location.origin)[1];
-        console.log("Extracted Slug:", slug);
-
-        // Split the slug into parts
-        const slugParts = slug.split("/").filter(Boolean); // Remove empty parts (e.g., trailing slashes)
-        console.log("slugParts:", slugParts);
-
-        // Normalize the parts of the slug
-        const normalizedLastPart = slugParts.at(-1)?.replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
-        const normalizedSecondLastPart = slugParts.length > 1
-            ? slugParts.at(-2)?.replace(/[^a-zA-Z0-9]/g, "").toLowerCase()
-            : undefined;
-
-        console.log("normalizedLastPart:", normalizedLastPart);
-        console.log("normalizedSecondLastPart:", normalizedSecondLastPart);
-
         const filtered = products.filter((product) => {
-            const normalizedSubcategory = product.productInfo?.subcategory?.subCatName
-                ?.replace(/[^a-zA-Z0-9]/g, "")
-                .toLowerCase();
-            const normalizedCategory = product.productInfo?.category?.name
-                ?.replace(/[^a-zA-Z0-9]/g, "")
-                .toLowerCase();
-            const normalizedItemType = product.productInfo?.itemType?.name // Assuming `itemTypeName` exists in the product
-                ?.replace(/[^a-zA-Z0-9]/g, "")
-                .toLowerCase();
-
-            console.log("normalizedSubcategory:", normalizedSubcategory);
-            console.log("normalizedCategory:", normalizedCategory);
-            console.log("normalizedItemType:", normalizedItemType);
-
-            const weightString = product.capacityFeat; // Example: "2500kg"
-            const weight = parseFloat(weightString.replace(/[^\d.-]/g, ""));
-
-            if (slugParts.length < 4) {
-                return normalizedSubcategory === normalizedLastPart &&
-                    weight >= weightRange[0] &&
-                    weight <= weightRange[1];
-            } else if (slugParts.length === 4) {
-                // When the link has 4 parts, swap subcategory with item type
-                return normalizedItemType === normalizedLastPart &&
-                    weight >= weightRange[0] &&
-                    weight <= weightRange[1];
-            } else {
-                // Default behavior for other lengths
-                return normalizedSubcategory === normalizedLastPart &&
-                    weight >= weightRange[0] &&
-                    weight <= weightRange[1];
-            }
+            const capacity = parseFloat(product.capacityFeat?.replace(/[^\d.-]/g, "") || 0);
+            return capacity >= weightRange[0] && capacity <= weightRange[1];
         });
-
         setFilteredProducts(filtered);
-        console.log("oh:", filtered)
     }, [products, weightRange]);
 
 
@@ -323,15 +186,12 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
 
     // Find the maximum weight in the filtered products
     const maxWeight = Math.max(
-        ...products.map(product => parseFloat(product.capacityFeat.replace(/[^\d.-]/g, "")) || 0),
+        ...filteredProducts.map(product => parseFloat(product.capacityFeat.replace(/[^\d.-]/g, "")) || 0),
         30000 // Default fallback value for the max weight if no valid products are found
     );
 
-    console.log(maxWeight)
-    console.log(products)
-
     function findCheckboxes() {
-        return Object.values(products).flat().reduce((acc, product) => {
+        return Object.values(filteredProducts).flat().reduce((acc, product) => {
             if (!acc.hasOwnProperty(product?.productInfo?.brand?.name)) {
                 acc[product?.productInfo?.brand?.name] = false;
             }
@@ -342,7 +202,7 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
     useEffect(() => {
         const uniqueCheckboxes = findCheckboxes();
         setCheckboxes(uniqueCheckboxes);
-    }, [products]);
+    }, [filteredProducts]);
 
     const fullUrl = window.location.href;
 
@@ -356,11 +216,7 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
     console.log("categories slug:", categoriesSlug); // Outputs the desired middle part of the URL
     console.log(filteredProducts)
     console.log(categories)
-    console.log(products[0]?.categoryName)
-    // console.log(products[0].subcategoryName)
-    // console.log(products[0].itemTypeName)
     console.log(products)
-    console.log(filteredProducts)
 
     const filteredCategoriesTitle = categories.filter(category => category.name === lastPart);
     // console.log(filteredCategoriesTitle[0]);
@@ -384,52 +240,7 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
         title = "my_machine";
     }
 
-
-    useEffect(() => {
-        const fetchUserInfo = async () => {
-            try {
-                if (token) {
-                    // Decode the JWT token to get the email
-                    const decodedToken = jwtDecode(token);
-                    console.log(decodedToken)
-                    const email = decodedToken?.username;
-
-                    if (email) {
-                        // setUserEmail(email);
-                        // console.log(email)
-
-                        // Fetch additional user details using the email
-                        const response = await fetch(
-                            `https://se-europe-test.pl/api/user_enovas?email=${encodeURIComponent(email)}`,
-                            {
-                                method: 'GET',
-                                headers: {
-                                    Accept: 'application/json',
-                                },
-                            }
-                        );
-
-                        if (response.ok) {
-                            const data = await response.json();
-                            setUserDetails(data[0]); // Assuming the API returns an array with the user object
-                        } else {
-                            console.error('Failed to fetch additional user details:', response.status);
-                        }
-                    } else {
-                        console.error('Email not found in the token');
-                    }
-                } else {
-                    console.error('Token is missing from AuthContext');
-                }
-            } catch (error) {
-                console.error('Error decoding token or fetching user information:', error);
-            }
-        };
-
-        fetchUserInfo();
-    }, [token]);
-
-    console.log(userDetails)
+    const userDetails = useUserDetails(token);
 
     return (
         <main>
@@ -510,7 +321,7 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
                 {/*<SubcategoryTable productsData={productsData} displayedItems={displayedItems}/>*/}
                 {/*<SubcategoryTable productsData={productsData} displayedItems={displayedItems} checkboxes={checkboxes}/>*/}
                 <SubcategoryTable
-                    productsData={products}
+                    productsData={filteredProducts}
                     onProductClick={handleProductClick}
                     lastPartToCollapse={lastPart}
                     userDetailsPrice={userDetails}

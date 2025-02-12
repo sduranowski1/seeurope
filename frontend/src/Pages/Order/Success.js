@@ -3,11 +3,15 @@ import { useLocation } from 'react-router-dom';
 import { Typography, Container, Box, Button } from '@mui/material';
 import Paper from "@mui/material/Paper";
 import authProvider from "../../authProvider";
+import { useNavigate } from 'react-router-dom';
+
 
 const Success = () => {
     const location = useLocation();
     const { orderId } = location.state || {};
     const identity = authProvider.getIdentity();
+    const navigate = useNavigate();
+
 
     return (
         <Container maxWidth="sm" sx={{ mt: 20, mb: 20 }}>
@@ -26,7 +30,7 @@ const Success = () => {
                 <Button
                     variant="contained"
                     color="primary"
-                    href="/"
+                    onClick={() => navigate('/')}
                     sx={{ mt: 3 }}
                 >
                     Back to Home

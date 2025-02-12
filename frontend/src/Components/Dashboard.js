@@ -43,7 +43,7 @@ export const Dashboard = () => {
                 if (email) {
                     setUserEmail(email);
 
-                    const response = await fetch(`https://se-europe-test.pl/api/orders?email=${encodeURIComponent(email)}&page=${page}`, {
+                    const response = await fetch(`https://se-europe-test.pl/api/orders?email=${encodeURIComponent(email)}&page=${page}&order[id]=desc`, {
                         headers: {
                             'Accept': 'application/ld+json'
                         }

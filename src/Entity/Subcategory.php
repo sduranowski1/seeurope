@@ -44,9 +44,9 @@ class Subcategory
     #[Groups(['subcategory:read', 'subcategory:create', 'subcategory:update', 'itemType:read', 'itemType:create', 'itemType:update', "productInfo:read", 'enovaProduct:read'])]
     private ?string $germanSubCatName = null;
 
-    #[ORM\Column(nullable: true)]
-    #[Groups(['subcategory:read', 'subcategory:create'])]
-    private ?int $cid = null;
+//    #[ORM\Column(nullable: true)]
+//    #[Groups(['subcategory:read', 'subcategory:create'])]
+//    private ?int $cid = null;
 
     #[ORM\ManyToOne(targetEntity: Category::class)]
     #[ORM\JoinColumn(name: 'cid', referencedColumnName: 'id', nullable: true)]
@@ -126,17 +126,17 @@ class Subcategory
 
 
 
-    public function getCid(): ?int
-    {
-        return $this->cid;
-    }
-
-    public function setCid(?int $cid): static
-    {
-        $this->cid = $cid;
-
-        return $this;
-    }
+//    public function getCid(): ?int
+//    {
+//        return $this->cid;
+//    }
+//
+//    public function setCid(?int $cid): static
+//    {
+//        $this->cid = $cid;
+//
+//        return $this;
+//    }
 
     public function getCategory(): ?Category
     {

@@ -11,6 +11,7 @@ import {
     ImageField,
     ImageInput
 } from 'react-admin';
+import { required } from 'react-admin';
 
 const SubcategoryCreate = (props) => (
     <Create {...props}>
@@ -19,7 +20,7 @@ const SubcategoryCreate = (props) => (
             <TextInput source="polishSubCatName" />
             <TextInput source="germanSubCatName" />
             <ReferenceInput source="cid" reference="categories">
-                <SelectInput optionText="name" />
+                <SelectInput optionText="name" validate={required()}/>
             </ReferenceInput>
             {/*<DateInput source="createdAt" />*/}
             {/*<DateInput source="updatedAt" />*/}

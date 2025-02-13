@@ -127,7 +127,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
     operations: [
         new GetCollection(),
         new GetCollection(
-            uriTemplate: '/api/enova_products/no_pagination',
+            uriTemplate: '/enova_products/no_pagination',
             paginationEnabled: false,
         ),
         new Post(),

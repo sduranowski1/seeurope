@@ -23,7 +23,7 @@ const VariantList = () => (
       <TextField source="variantname" />
         <TextField source="polishName" />
         <TextField source="germanName" />
-      <ReferenceField reference="brands" source="bid" label="Brand" >
+      <ReferenceField reference="brands" source="brand.id" label="Brand" >
         <TextField source="name" />
       </ReferenceField>
       <DateField source="createdAt" />

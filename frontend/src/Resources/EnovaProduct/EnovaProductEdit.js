@@ -284,7 +284,7 @@ const EnovaProductEdit = () => {
                                     </ListItemIcon>
                                 </MenuItem>
                                 {variants
-                                    .filter((variant) => variant.bid === product.brand?.id) // Filter variants by selected brand ID
+                                    .filter((variant) => variant.brand.id === product.brand?.id) // Filter variants by selected brand ID
                                     .map((variant) => (
                                         <MenuItem key={variant.id} value={variant.id}>
                                             {variant.variantname}
@@ -330,7 +330,7 @@ const EnovaProductEdit = () => {
                                     </ListItemIcon>
                                 </MenuItem>
                                 {subcategories
-                                    .filter((subcategory) => subcategory.cid === product.category?.id) // Filter variants by selected brand ID
+                                    .filter((subcategory) => subcategory.category.id === product.category?.id) // Filter variants by selected brand ID
                                     .map((subcategory) => (
                                     <MenuItem key={subcategory.id} value={subcategory.id}>
                                         {subcategory.subCatName}
@@ -354,7 +354,7 @@ const EnovaProductEdit = () => {
                                     </ListItemIcon>
                                 </MenuItem>
                                 {itemTypes
-                                    .filter((itemType) => itemType.scid === product.subcategory?.id) // Filter variants by selected brand ID
+                                    .filter((itemType) => itemType.subcategory.id === product.subcategory?.id) // Filter variants by selected brand ID
                                     .map((itemType) => (
                                     <MenuItem key={itemType.id} value={itemType.id}>
                                         {itemType.name}

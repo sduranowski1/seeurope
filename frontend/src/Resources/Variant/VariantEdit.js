@@ -8,7 +8,7 @@ import {
     NumberInput,
     TextField,
     SelectInput,
-    ReferenceInput, ImageInput, ImageField
+    ReferenceInput, ImageInput, ImageField, required
 } from 'react-admin';
 
 import "../../mui_fix.css"
@@ -19,11 +19,12 @@ const VariantEdit = (props) => (
             <TextInput source="variantname" />
             <TextInput source="polishName" />
             <TextInput source="germanName" />
-            <ReferenceInput reference="brands" source="bid">
+            <ReferenceInput reference="brands" source="brand.id">
                 <SelectInput
                     label="Brand"
-                    source="bid"
-                    optionText="name"
+                    source="brand.id"
+                    optionText={(record) => record?.name}
+                    validate={required()}
                 />
             </ReferenceInput>
             <ImageInput source="pictures" label="Related pictures">

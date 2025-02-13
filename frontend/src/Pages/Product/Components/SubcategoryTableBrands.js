@@ -28,7 +28,17 @@ export const SubcategoryTableBrands = ({ productsData, onProductClick, lastPartT
     const uniqueCapacities = [
         "All",
         // ...new Set(productsData.map((product) => product?.productInfo?.category?.name || "Other"))
-        ...new Set(productsData.map((product) => product?.productInfo?.couplingFilter?.name || "Other"))
+        ...new Set(
+            productsData.map((product) => {
+                const couplingFilter = product?.productInfo?.couplingFilter;
+                return i18n.language === "en"
+                    ? couplingFilter?.name
+                    : i18n.language === "de"
+                        ? couplingFilter?.germanName
+                        : couplingFilter?.polishName || "Other";
+            })
+        )
+
     ];
 
     // Filter products based on the active filter
@@ -37,7 +47,20 @@ export const SubcategoryTableBrands = ({ productsData, onProductClick, lastPartT
             setFilteredProducts(productsData);
         } else {
             // setFilteredProducts(productsData.filter((product) => product?.productInfo?.category?.name === activeFilter));
-            setFilteredProducts(productsData.filter((product) => product?.productInfo?.couplingFilter?.name === activeFilter));
+            setFilteredProducts(
+                productsData.filter((product) => {
+                    const couplingFilter = product?.productInfo?.couplingFilter;
+                    const translatedName =
+                        i18n.language === "en"
+                            ? couplingFilter?.name
+                            : i18n.language === "de"
+                                ? couplingFilter?.germanName
+                                : couplingFilter?.polishName;
+
+                    return translatedName === activeFilter;
+                })
+            );
+
         }
     }, [activeFilter, productsData]);
 

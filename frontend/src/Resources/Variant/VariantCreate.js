@@ -9,7 +9,7 @@ import {
     SelectInput,
     DateInput,
     ImageField,
-    ImageInput
+    ImageInput, required
 } from 'react-admin';
 
 const VariantCreate = (props) => (
@@ -19,7 +19,7 @@ const VariantCreate = (props) => (
         <TextInput source="polishName" />
         <TextInput source="germanName" />
       <ReferenceInput source="bid" reference="brands">
-        <SelectInput optionText="name" />
+        <SelectInput optionText="name" validate={required()}/>
       </ReferenceInput>
       {/*<DateInput source="createdAt" />*/}
       {/*<DateInput source="updatedAt" />*/}

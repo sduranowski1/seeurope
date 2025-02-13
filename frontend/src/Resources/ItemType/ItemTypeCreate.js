@@ -9,7 +9,7 @@ import {
     SelectInput,
     DateInput,
     ImageInput,
-    ImageField
+    ImageField, required
 } from 'react-admin';
 
 const ItemTypeCreate = (props) => (
@@ -19,7 +19,7 @@ const ItemTypeCreate = (props) => (
         <TextInput source="polishName" />
         <TextInput source="germanName" />
       <ReferenceInput source="scid" reference="subcategories">
-        <SelectInput optionText="subCatName" />
+        <SelectInput optionText="subCatName" validate={required()}/>
       </ReferenceInput>
       {/*<DateInput source="createdAt" />*/}
       {/*<DateInput source="updatedAt" />*/}

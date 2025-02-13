@@ -9,7 +9,7 @@ import {
     TextField,
     ImageInput,
     ImageField,
-    ReferenceInput, SelectInput
+    ReferenceInput, SelectInput, required
 } from 'react-admin';
 
 import "../../mui_fix.css"
@@ -20,11 +20,12 @@ const ItemTypeEdit = (props) => (
           <TextInput source="name" />
             <TextInput source="polishName" />
             <TextInput source="germanName" />
-            <ReferenceInput reference="subcategories" source="scid">
+            <ReferenceInput reference="subcategories" source="subcategory.id">
                 <SelectInput
                     label="Subcategory"
-                    source="scid"
-                    optionText="subCatName"
+                    source="subcategory.id"
+                    optionText={(record) => record?.subCatName}
+                    validate={required()}
                 />
             </ReferenceInput>
             <ImageInput source="pictures" label="Related pictures">

@@ -49,7 +49,7 @@ import i18n from "i18next";
 //     );
 // }
 
-export const SubcategoryTable = ({ productsData, onProductClick, lastPartToCollapse, displayedItems, checkboxes, userDetailsPrice }) => {
+export const SubcategoryTable = ({ productsData, onProductClick, lastPartToCollapse, displayedItems, checkboxes, userDetailsPrice, currentPage, setCurrentPage, totalPages }) => {
     const [activeFilter, setActiveFilter] = useState("All");
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [filteredProducts, setFilteredProducts] = useState(productsData);  // Manage the filtered products state
@@ -63,9 +63,19 @@ export const SubcategoryTable = ({ productsData, onProductClick, lastPartToColla
 
     // Get unique capacityFeat values for tabs
     const uniqueCapacities = [
-        "All",
+        // "All",
         // ...new Set(productsData.map((product) => product.capacityFeat || "Other"))
-        ...new Set(productsData.map((product) => product.productInfo?.machineFilter?.name || "Other"))
+        ...new Set(
+            productsData.map((product) => {
+                const machineFilter = product?.productInfo?.machineFilter;
+                return i18n.language === "en"
+                    ? machineFilter?.name
+                    : i18n.language === "de"
+                        ? machineFilter?.germanName
+                        : machineFilter?.polishName || "All";
+            })
+        )
+
     ];
 
     // Filter products based on the active filter
@@ -74,7 +84,20 @@ export const SubcategoryTable = ({ productsData, onProductClick, lastPartToColla
             setFilteredProducts(productsData);
         } else {
             // setFilteredProducts(productsData.filter((product) => product.capacityFeat === activeFilter));
-            setFilteredProducts(productsData.filter((product) => product.productInfo?.machineFilter?.name === activeFilter));
+            setFilteredProducts(
+                productsData.filter((product) => {
+                    const machineFilter = product?.productInfo?.machineFilter;
+                    const translatedName =
+                        i18n.language === "en"
+                            ? machineFilter?.name
+                            : i18n.language === "de"
+                                ? machineFilter?.germanName
+                                : machineFilter?.polishName;
+
+                    return translatedName === activeFilter;
+                })
+            );
+
         }
     }, [activeFilter, productsData]);
 
@@ -290,6 +313,25 @@ export const SubcategoryTable = ({ productsData, onProductClick, lastPartToColla
                 </tbody>
 
             </table>
+            {/* Pagination Controls */}
+            <div className="pagination">
+                <button
+                    onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                    disabled={currentPage === 1}
+                >
+                    Previous
+                </button>
+
+                <span>Page {currentPage} of {totalPages}</span>
+
+                <button
+                    onClick={() => setCurrentPage(prev => (prev < totalPages ? prev + 1 : prev))}
+                    disabled={currentPage === totalPages}
+                >
+                    Next
+                </button>
+            </div>
+
             {/* Global Redirect to Cart Button */}
             {token && (
                 <div style={{ textAlign: "right", marginTop: "20px" }}>

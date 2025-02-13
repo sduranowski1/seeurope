@@ -198,7 +198,7 @@ export const NavbarComponent = (props) => {
 
     const renderVariantItems = (brandId) => {
         return variants
-            .filter(variant => variant.bid === brandId)
+            .filter(variant => variant.brand.id === brandId)
             .map(variant => {
                 const variantSlug = variant.variantname.replace(/\s+/g, '_'); // Convert spaces to dashes
                 const brandSlug = variant.brand?.name.replace(/\s+/g, '_'); // Convert spaces to dashes
@@ -213,6 +213,8 @@ export const NavbarComponent = (props) => {
                 );
             });
     };
+
+    console.log(renderVariantItems())
 
     const renderBrandMenuItems = () => {
         return brands.map((brand) => {

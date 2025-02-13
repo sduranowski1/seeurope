@@ -54,13 +54,13 @@ const EnovaProductEdit = () => {
 
                 // Fetch brands and variants data
                 const [brandsResponse, variantsResponse, categoriesResponse, subcategoriesResponse, itemTypesResponse, couplingFiltersResponse, machineFiltersResponse] = await Promise.all([
-                    fetch('https://se-europe-test.pl/api/brands'),
-                    fetch('https://se-europe-test.pl/api/variants'),
-                    fetch('https://se-europe-test.pl/api/categories'),
-                    fetch('https://se-europe-test.pl/api/subcategories'),
-                    fetch('https://se-europe-test.pl/api/item_types'),
-                    fetch('https://se-europe-test.pl/api/coupling_filters'),
-                    fetch('https://se-europe-test.pl/api/machine_filters'),
+                    fetch('https://se-europe-test.pl/api/brands/no_pagination'),
+                    fetch('https://se-europe-test.pl/api/variants/no_pagination'),
+                    fetch('https://se-europe-test.pl/api/categories/no_pagination'),
+                    fetch('https://se-europe-test.pl/api/subcategories/no_pagination'),
+                    fetch('https://se-europe-test.pl/api/item_types/no_pagination'),
+                    fetch('https://se-europe-test.pl/api/coupling_filters/no_pagination'),
+                    fetch('https://se-europe-test.pl/api/machine_filters/no_pagination'),
                 ]);
                 const brandsData = await brandsResponse.json();
                 const variantsData = await variantsResponse.json();

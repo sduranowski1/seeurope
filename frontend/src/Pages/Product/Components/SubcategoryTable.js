@@ -49,7 +49,7 @@ import i18n from "i18next";
 //     );
 // }
 
-export const SubcategoryTable = ({ productsData, onProductClick, lastPartToCollapse, displayedItems, checkboxes, userDetailsPrice, currentPage, setCurrentPage, totalPages }) => {
+export const SubcategoryTable = ({ productsData, onProductClick, lastPartToCollapse, displayedItems, checkboxes, userDetailsPrice }) => {
     const [activeFilter, setActiveFilter] = useState("All");
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [filteredProducts, setFilteredProducts] = useState(productsData);  // Manage the filtered products state
@@ -313,25 +313,6 @@ export const SubcategoryTable = ({ productsData, onProductClick, lastPartToColla
                 </tbody>
 
             </table>
-            {/* Pagination Controls */}
-            <div className="pagination">
-                <button
-                    onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-                    disabled={currentPage === 1}
-                >
-                    Previous
-                </button>
-
-                <span>Page {currentPage} of {totalPages}</span>
-
-                <button
-                    onClick={() => setCurrentPage(prev => (prev < totalPages ? prev + 1 : prev))}
-                    disabled={currentPage === totalPages}
-                >
-                    Next
-                </button>
-            </div>
-
             {/* Global Redirect to Cart Button */}
             {token && (
                 <div style={{ textAlign: "right", marginTop: "20px" }}>

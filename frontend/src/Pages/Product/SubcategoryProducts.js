@@ -41,8 +41,7 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
     const { token } = useContext(AuthContext); // Get token from AuthContext
     let [title, setTitle] = useState("");
     // Memoize the totalPages calculation to prevent unnecessary re-calculation
-    // const totalPages = useMemo(() => Math.ceil(totalItems / limit), [totalItems, limit]);
-    const [totalPages, setTotalPages] = useState(1);
+    const totalPages = useMemo(() => Math.ceil(totalItems / limit), [totalItems, limit]);
 
     const fetchAdditionalData = async () => {
         try {
@@ -76,7 +75,7 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
     };
 
     // Function to fetch product data from both API endpoints
-    const fetchProductData = useCallback(async (page = 1) => {
+    const fetchProductData = useCallback(async () => {
         setLoading(true); // Set loading true at the start of the request
         try {
             // Derive parts from URL path
@@ -94,11 +93,11 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
             let apiUrl;
 
             if (parts.length === 2) {
-                apiUrl = `https://se-europe-test.pl/api/enova_products?productInfo.category.name=${lastPart}&pagination=false`;
+                apiUrl = `https://se-europe-test.pl/api/enova_products/no_pagination?productInfo.category.name=${lastPart}`;
             } else if (parts.length === 3) {
-                apiUrl = `https://se-europe-test.pl/api/enova_products?productInfo.category.name=${secondPart}&productInfo.subcategory.subCatName=${lastPart}&pagination=false`;
+                apiUrl = `https://se-europe-test.pl/api/enova_products/no_pagination?productInfo.category.name=${secondPart}&productInfo.subcategory.subCatName=${lastPart}`;
             } else if (parts.length === 4) {
-                apiUrl = `https://se-europe-test.pl/api/enova_products?productInfo.category.name=${thirdPart}&productInfo.subcategory.subCatName=${secondPart}&productInfo.itemType.name=${lastPart}&pagination=false`;
+                apiUrl = `https://se-europe-test.pl/api/enova_products/no_pagination?productInfo.category.name=${thirdPart}&productInfo.subcategory.subCatName=${secondPart}&productInfo.itemType.name=${lastPart}`;
             } else {
                 throw new Error("Unsupported URL structure");
             }
@@ -109,8 +108,8 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
             const response = await fetch(apiUrl, {
                 method: 'GET',
                 headers: {
-                    'Content-Type': 'application/ld+json',
-                    'Accept': 'application/ld+json',
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
                 },
             });
 
@@ -121,7 +120,7 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
             const data = await response.json();
 
             // Map product data with brand and variant names
-            const productsData = data['hydra:member'].map((product) => {
+            const productsData = data.map((product) => {
 
                 const wzrostu = product.features.find((value) => value.nazwa === '% wzrostu');
                 const procWzrostu = wzrostu ? wzrostu.wartosc : null;
@@ -138,11 +137,6 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
 
             console.log(productsData)
 
-            if (data['hydra:view']) {
-                const lastPageMatch = data['hydra:view']['hydra:last']?.match(/page=(\d+)/);
-                setTotalPages(lastPageMatch ? Number(lastPageMatch[1]) : 1);
-            }
-
             setProducts(productsData);
             // setTotalItems(data.liczbaWszystkich);
         } catch (error) {
@@ -151,15 +145,6 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
             setLoading(false); // Set loading to false when done
         }
     }, [currentPage, limit, brands, variants, categories, subcategories, itemTypes]);
-
-    // Fetch first page on component mount
-    useEffect(() => {
-        fetchProductData(1);
-    }, []);
-
-    useEffect(() => {
-        fetchProductData(currentPage);
-    }, [currentPage]); // Refetch when page changes
 
     useEffect(() => {
         fetchAdditionalData();
@@ -340,9 +325,6 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
                     onProductClick={handleProductClick}
                     lastPartToCollapse={lastPart}
                     userDetailsPrice={userDetails}
-                    setCurrentPage={setCurrentPage}
-                    currentPage={currentPage}
-                    totalPages={totalPages}
                 />
                 {/*{selectedProduct && (*/}
                 {/*    <ProductDescription product={selectedProduct} productsData={filteredProducts}/>*/}

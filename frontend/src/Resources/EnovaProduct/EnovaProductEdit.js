@@ -247,6 +247,8 @@ const EnovaProductEdit = () => {
                 {/* Sticky Section */}
                 <Box sx={{flex: 1, maxWidth: 600, position: 'sticky', top: 16}}>
                     <Box component="form" sx={{maxWidth: '100%'}}>
+
+                        <Typography variant="h5" component="h5" sx={{marginTop: "20px"}}>My Coupling</Typography>
                         <FormControl fullWidth margin="normal">
                             <InputLabel id="brand-label">Brand</InputLabel>
                             <Select
@@ -293,6 +295,29 @@ const EnovaProductEdit = () => {
                             </Select>
                         </FormControl>
 
+                        <FormControl fullWidth margin="normal">
+                            <InputLabel id="couplingFilter-label">Coupling Filter</InputLabel>
+                            <Select
+                                labelId="couplingFilter-label"
+                                name="couplingFilter"
+                                value={product.couplingFilter?.id || ''}
+                                onChange={handleChange}
+                                label="Item Type"
+                            >
+                                <MenuItem value={0}>
+                                    <ListItemIcon>
+                                        <ClearIcon />
+                                    </ListItemIcon>
+                                </MenuItem>
+                                {couplingFilters.map((couplingFilter) => (
+                                    <MenuItem key={couplingFilter.id} value={couplingFilter.id}>
+                                        {couplingFilter.name}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+
+                        <Typography variant="h5" component="h5" sx={{marginTop: "20px"}}>My Machine</Typography>
                         <FormControl fullWidth margin="normal">
                             <InputLabel id="category-label">Category</InputLabel>
                             <Select
@@ -360,28 +385,6 @@ const EnovaProductEdit = () => {
                                         {itemType.name}
                                     </MenuItem>
                                 ))}
-                            </Select>
-                        </FormControl>
-
-                        <FormControl fullWidth margin="normal">
-                            <InputLabel id="couplingFilter-label">Coupling Filter</InputLabel>
-                            <Select
-                                labelId="couplingFilter-label"
-                                name="couplingFilter"
-                                value={product.couplingFilter?.id || ''}
-                                onChange={handleChange}
-                                label="Item Type"
-                            >
-                                <MenuItem value={0}>
-                                    <ListItemIcon>
-                                        <ClearIcon />
-                                    </ListItemIcon>
-                                </MenuItem>
-                                {couplingFilters.map((couplingFilter) => (
-                                        <MenuItem key={couplingFilter.id} value={couplingFilter.id}>
-                                            {couplingFilter.name}
-                                        </MenuItem>
-                                    ))}
                             </Select>
                         </FormControl>
 

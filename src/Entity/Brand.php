@@ -7,6 +7,12 @@ use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Entity\Traits\Timestampable;
 use App\Repository\BrandRepository;
 use Doctrine\ORM\Mapping as ORM;
@@ -16,6 +22,18 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ORM\Entity(repositoryClass: BrandRepository::class)]
 #[HasLifecycleCallbacks]
 #[ApiResource(
+    operations: [
+        new GetCollection(),
+        new GetCollection(
+            uriTemplate: '/brands/no_pagination',
+            paginationEnabled: false,
+        ),
+        new Post(),
+        new Get(),
+        new Put(),
+        new Patch(),
+        new Delete()
+    ],
     normalizationContext: ['groups' => ['brand:read']],
     denormalizationContext: ['groups' => ['brand:create']]
 )]

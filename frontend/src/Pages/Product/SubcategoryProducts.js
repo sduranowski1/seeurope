@@ -131,7 +131,11 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
                 const capacity = product.features.find((value) => value.nazwa === 'Capacity');
                 const capacityFeat = capacity ? capacity.wartosc : null;
 
-                return { ...product, procWzrostu, replacementParts, capacityFeat};
+
+                const weight = product.features?.find((value) => value.nazwa === 'Weight');
+                const weightFeat = weight ? weight.wartosc : null;
+
+                return { ...product, procWzrostu, replacementParts, capacityFeat, weightFeat};
             });
             console.log("hi:", data)
 
@@ -168,8 +172,10 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
 
     useEffect(() => {
         const filtered = products.filter((product) => {
-            const capacity = parseFloat(product.capacityFeat?.replace(/[^\d.-]/g, "") || 0);
-            return capacity >= weightRange[0] && capacity <= weightRange[1];
+            // const capacity = parseFloat(product.capacityFeat?.replace(/[^\d.-]/g, "") || 0);
+            // return capacity >= weightRange[0] && capacity <= weightRange[1];
+            const weight = parseFloat(product.weightFeat?.replace(/[^\d.-]/g, "") || 0);
+            return weight >= weightRange[0] && weight <= weightRange[1];
         });
         setFilteredProducts(filtered);
     }, [products, weightRange]);

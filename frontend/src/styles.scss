@@ -242,6 +242,29 @@ video {
   margin: 0 !important;
 }
 
+.product-container {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px; /* Adjust spacing between description and image */
+}
+
+.product-description {
+  flex: 1; /* Takes up available space */
+  max-width: 60%; /* Adjust width as needed */
+}
+
+.product-image {
+  flex-shrink: 0; /* Prevents image from shrinking */
+  max-width: 40%; /* Adjust width as needed */
+}
+
+.product-image img {
+  width: 100%; /* Makes image responsive */
+  height: auto;
+  object-fit: contain;
+}
+
+
 //.css-ycxhju *, .css-ycxhju ::before, .css-ycxhju ::after {
 //  color: black;
 //}

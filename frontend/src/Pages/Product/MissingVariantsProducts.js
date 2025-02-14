@@ -94,7 +94,7 @@ export const MissingVariantsProducts = ({lastPart, slug}) => {
         setLoading(true); // Set loading true at the start of the request
         try {
             // const response = await fetch('https://se-europe-test.pl/api/PanelWWW_API/DajTowary?nazwa=Koszt', {
-            const response = await fetch(`https://se-europe-test.pl/api/enova_products?productInfo.brand.name=${lastPart}`, {
+            const response = await fetch(`https://se-europe-test.pl/api/enova_products/no_pagination?productInfo.brand.name=${lastPart}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -124,10 +124,13 @@ export const MissingVariantsProducts = ({lastPart, slug}) => {
                 const capacity = product.features?.find((value) => value.nazwa === 'Capacity');
                 const capacityFeat = capacity ? capacity.wartosc : null;
 
+                const weight = product.features?.find((value) => value.nazwa === 'Weight');
+                const weightFeat = weight ? weight.wartosc : null;
+
                 // const brandName = brands.find((brand) => brand.id === product.productInfo?.braid)?.name || '';
                 const variantName = variants.find((variant) => variant.id === product.productInfo?.varid)?.variantname || '';
 
-                return { ...product, procWzrostu, replacementParts, capacityFeat,  variantName};
+                return { ...product, procWzrostu, replacementParts, capacityFeat, weightFeat,  variantName};
             });
 
             console.log(productsData)
@@ -170,8 +173,8 @@ export const MissingVariantsProducts = ({lastPart, slug}) => {
     // Filter products based on weight range
     useEffect(() => {
         const filtered = products.filter((product) => {
-            const capacity = parseFloat(product.capacityFeat?.replace(/[^\d.-]/g, "") || 0);
-            return capacity >= weightRange[0] && capacity <= weightRange[1];
+            const weight = parseFloat(product.weightFeat?.replace(/[^\d.-]/g, "") || 0);
+            return weight >= weightRange[0] && weight <= weightRange[1];
         });
         setFilteredProducts(filtered);
     }, [products, weightRange]);
@@ -183,7 +186,7 @@ export const MissingVariantsProducts = ({lastPart, slug}) => {
 
     // Find the maximum weight in the filtered products
     const maxWeight = Math.max(
-        ...products.map(product => parseFloat(product.capacityFeat.replace(/[^\d.-]/g, "")) || 0),
+        ...products.map(product => parseFloat(product.weightFeat.replace(/[^\d.-]/g, "")) || 0),
         30000 // Default fallback value for the max weight if no valid products are found
     );
 

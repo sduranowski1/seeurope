@@ -133,7 +133,7 @@ export const NavbarComponent = (props) => {
                 // const filteredBrands = brandsData.filter(brand => brand.name);
 
                 // Fetch variants
-                const variantResponse = await fetch(`https://se-europe-test.pl/api/variants`);
+                const variantResponse = await fetch(`https://se-europe-test.pl/api/variants?order[variantname]=asc`);
                 const variantsData = await variantResponse.json();
 
                 // Adjust name based on language

@@ -150,7 +150,7 @@ export const VariantProducts = ({lastPart, slug}) => {
             // const token = await fetchToken();
             // setToken(token);
 
-            const response = await fetch(`https://se-europe-test.pl/api/enova_products?productInfo.variant.variantname=${lastPart}`, {
+            const response = await fetch(`https://se-europe-test.pl/api/enova_products/no_pagination?productInfo.variant.variantname=${lastPart}`, {
             // const response = await fetch('https://se-europe-test.pl/api/PanelWWW_API/DajTowary?nazwa=Koszt', {
                 method: 'GET',
                 headers: {
@@ -187,12 +187,15 @@ export const VariantProducts = ({lastPart, slug}) => {
                 const capacity = product.features.find((value) => value.nazwa === 'Capacity');
                 const capacityFeat = capacity ? capacity.wartosc : null;
 
+                const weight = product.features?.find((value) => value.nazwa === 'Weight');
+                const weightFeat = weight ? weight.wartosc : null;
+
                 const brandName = brands.find((brand) => brand.id === product.productInfo?.braid)?.name || '';
                 const variantName = variants.find((variant) => variant.id === product.productInfo?.varid)?.variantname || '';
                 const categoryName = categories.find((category) => category.id === product.productInfo?.catid)?.name || '';
                 const subcategoryName = subcategories.find((subcategory) => subcategory.id === product.productInfo?.scatid)?.subCatName || '';
 
-                return { ...product, procWzrostu, replacementParts, capacityFeat,  brandName, variantName, categoryName, subcategoryName };
+                return { ...product, procWzrostu, replacementParts, capacityFeat, weightFeat, brandName, variantName, categoryName, subcategoryName };
             });
 
             console.log(productsData)
@@ -232,8 +235,10 @@ export const VariantProducts = ({lastPart, slug}) => {
 
     useEffect(() => {
         const filtered = products.filter((product) => {
-            const capacity = parseFloat(product.capacityFeat?.replace(/[^\d.-]/g, "") || 0);
-            return capacity >= weightRange[0] && capacity <= weightRange[1];
+            // const capacity = parseFloat(product.capacityFeat?.replace(/[^\d.-]/g, "") || 0);
+            // return capacity >= weightRange[0] && capacity <= weightRange[1];
+            const weight = parseFloat(product.weightFeat?.replace(/[^\d.-]/g, "") || 0);
+            return weight >= weightRange[0] && weight <= weightRange[1];
         });
         setFilteredProducts(filtered);
     }, [products, weightRange]);

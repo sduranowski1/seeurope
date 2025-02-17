@@ -200,8 +200,8 @@ export const NavbarComponent = (props) => {
         return variants
             .filter(variant => variant.brand.id === brandId)
             .map(variant => {
-                const variantSlug = variant.variantname.replace(/\s+/g, '_'); // Convert spaces to dashes
-                const brandSlug = variant.brand?.name.replace(/\s+/g, '_'); // Convert spaces to dashes
+                const variantSlug = variant.variantname.replace(/\s+/g, '_').replace(/\//g, '%2F'); // Convert spaces to dashes
+                const brandSlug = variant.brand?.name.replace(/\s+/g, '_').replace(/\//g, '%2F'); // Convert spaces to dashes
 
 
                 return (
@@ -222,7 +222,7 @@ export const NavbarComponent = (props) => {
             const hasSubItems = variantItems.length > 0;
 
             // Replace spaces with dashes in the brand name
-            const brandSlug = brand.name.replace(/\s+/g, '_'); // Convert spaces to dashes
+            const brandSlug = brand.name.replace(/\s+/g, '_').replace(/\//g, '%2F'); // Convert spaces to dashes
 
             return (
                 <li key={brand.id} className={`nav__submenu-item ${hasSubItems ? 'nav__submenu-item--list' : ''}`}>
@@ -252,7 +252,7 @@ export const NavbarComponent = (props) => {
     const renderCategoryMenuItems = () => {
         return categories.map(category => {
 
-            const categorySlug = category.name.replace(/\s+/g, '_'); // Convert spaces to dashes
+            const categorySlug = category.name.replace(/\s+/g, '_').replace(/\//g, '%2F'); // Convert spaces to dashes
 
             return (
                 <li key={category.id} className={`nav__submenu-item 'nav__submenu-item--list' : ''}`}>

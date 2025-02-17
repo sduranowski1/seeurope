@@ -73,6 +73,8 @@ export const VariantProducts = ({lastPart, slug}) => {
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [checkboxes, setCheckboxes] = useState({});
     const [userDetails, setUserDetails] = useState([])
+    let [title, setTitle] = useState("");
+
 
 
     // function findCheckboxes() {
@@ -329,6 +331,16 @@ export const VariantProducts = ({lastPart, slug}) => {
 
     console.log(userDetails)
 
+    if (parts.length === 5) {
+        // title = products[0]?.categoryName;
+        title = products[0]?.productInfo.brand?.name;
+    } else if (parts.length === 6) {
+        // title = products[0]?.subcategoryName;
+        title = products[0]?.productInfo.variant?.variantname;
+    } else {
+        title = "my_coupling";
+    }
+
     return (
         <main>
             <section className={'section-contrains tables-page'}>
@@ -350,10 +362,10 @@ export const VariantProducts = ({lastPart, slug}) => {
                     >
                         {brandsSlug}
                     </Link>
-                    <Typography sx={{ color: 'text.primary' }}>{lastPart ? lastPart : t("my_coupling")}</Typography>
+                    <Typography sx={{ color: 'text.primary' }}>{title ? title : t("my_coupling")}</Typography>
                 </Breadcrumbs>
                 <div className={'heading-container'}>
-                    <h1 className={'page-title'}>{lastPart ? lastPart : t("my_coupling")}</h1>
+                    <h1 className={'page-title'}>{title ? title : t("my_coupling")}</h1>
                     <p className={'paragraph paragraph--medium'}>{t("tractor_equipment")}</p>
                 </div>
                 {loading ? (

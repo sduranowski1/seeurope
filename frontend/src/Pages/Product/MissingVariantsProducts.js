@@ -56,6 +56,7 @@ export const MissingVariantsProducts = ({lastPart, slug}) => {
     const [weightRange, setWeightRange] = useState([0, 30000]);
     const {id} = useParams(); // Get the product ID from the URL
     const { token } = useContext(AuthContext); // Get token from AuthContext
+    let [title, setTitle] = useState("");
 
 
 
@@ -254,6 +255,19 @@ export const MissingVariantsProducts = ({lastPart, slug}) => {
 
     console.log(userDetails)
 
+    const fullUrl = window.location.href;
+    const parts = fullUrl.split("/"); // Split the string by delimiter
+
+    if (parts.length === 5) {
+        // title = products[0]?.categoryName;
+        title = products[0]?.productInfo.brand?.name;
+    } else if (parts.length === 6) {
+        // title = products[0]?.subcategoryName;
+        title = products[0]?.productInfo.variant?.variantname;
+    } else {
+        title = "my_coupling";
+    }
+
     return (
         <main>
             <section className={'section-contrains tables-page'}>
@@ -268,10 +282,10 @@ export const MissingVariantsProducts = ({lastPart, slug}) => {
                     >
                         My Coupling
                     </Link>
-                    <Typography sx={{ color: 'text.primary' }}>{lastPart ? lastPart : t("my_coupling")}</Typography>
+                    <Typography sx={{ color: 'text.primary' }}>{title ? title : t("my_coupling")}</Typography>
                 </Breadcrumbs>
                 <div className={'heading-container'}>
-                    <h1 className={'page-title'}>{lastPart ? lastPart : t("my_coupling")}</h1>
+                    <h1 className={'page-title'}>{title ? title : t("my_coupling")}</h1>
                     <p className={'paragraph paragraph--medium'}>{t("tractor_equipment")}</p>
                 </div>
                 {loading ? (

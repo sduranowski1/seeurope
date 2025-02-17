@@ -35,7 +35,7 @@ export const MyMachine = () => {
         return text
             .toLowerCase()
             .replace(/\s+/g, '_') // Replace spaces with dashes
-            .replace(/[^\w-]+/g, ''); // Remove non-word characters
+            .replace(/[^\w-]+/g, '%2F'); // Remove non-word characters
     };
 
     // Get the current category slug from the URL

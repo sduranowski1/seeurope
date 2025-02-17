@@ -51,7 +51,7 @@ class EnovaContractor
 
     #[ORM\ManyToOne(cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: true)]
-    #[Groups(['enovaContractor:read', 'enovaContractor:create', 'enovaContractor:update'])]
+    #[Groups(['enovaContractor:read', 'enovaContractor:create', 'enovaContractor:update', 'enovaPerson:read', 'enovaPerson:create', 'enovaPerson:update'])]
     private ?EnovaAddress $adres = null;
 
     #[ORM\ManyToOne(cascade: ['persist', 'remove'])]

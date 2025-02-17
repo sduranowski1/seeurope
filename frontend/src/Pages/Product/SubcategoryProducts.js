@@ -233,6 +233,10 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
     const filteredItemTypeTitle = itemTypes.filter(itemType => itemType.name === lastPart);
     // console.log(filteredItemTypeTitle[0].name);
 
+    const breadCrumbCategory = products[0]?.productInfo.category?.name;
+    const breadCrumbSubcategory = products[0]?.productInfo.subcategory?.subCatName;
+    const breadCrumbItemType = products[0]?.productInfo.itemType?.name;
+
     if (parts.length === 5) {
         // title = products[0]?.categoryName;
         title = products[0]?.productInfo.category?.name;
@@ -247,6 +251,15 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
     }
 
     const userDetails = useUserDetails(token);
+
+    const formatString = (str) => {
+        return str
+            .split('_') // Split by underscore
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()) // Capitalize each word
+            .join(' '); // Join with spaces
+    };
+
+    const formattedLastPart = formatString(lastPart);
 
     return (
         <main>
@@ -267,7 +280,7 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
                         color="inherit"
                         to={`/my-machine/${categoriesSlug}`}
                     >
-                        {categoriesSlug}
+                        {breadCrumbCategory ? breadCrumbCategory : categoriesSlug}
                     </Link>
                     {subcategoriesSlug && (
                         <Link
@@ -275,10 +288,10 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
                             color="inherit"
                             to={`/my-machine/${categoriesSlug}/${subcategoriesSlug}`}
                         >
-                            {subcategoriesSlug}
+                            {breadCrumbSubcategory ? breadCrumbSubcategory : subcategoriesSlug}
                         </Link>
                     )}
-                    <Typography sx={{ color: 'text.primary' }}>{lastPart ? lastPart : t("my_coupling")}</Typography>
+                    <Typography sx={{ color: 'text.primary' }}>{title ? title : t("my_machine")}</Typography>
                 </Breadcrumbs>
                 <div className={'heading-container'}>
                     {/*<h1 className={'page-title'}>{lastPart ? lastPart : t("my_machine")}</h1>*/}

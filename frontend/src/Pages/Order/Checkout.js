@@ -173,6 +173,28 @@ const Checkout = () => {
                                 </>
                             )}
                         </Box>
+                        <br/>
+                        <Typography variant="h6" gutterBottom>
+                            Address
+                        </Typography>
+                        <Box>
+                            <Typography variant="body1">
+                                <strong>Email:</strong> {userEmail}
+                            </Typography>
+                            {userDetails && (
+                                <>
+                                    <Typography variant="body1">
+                                        <strong>Name:</strong> {userDetails?.enovaPerson?.contractor.imie || 'N/A'}
+                                    </Typography>
+                                    <Typography variant="body1">
+                                        <strong>Surname:</strong> {userDetails?.enovaPerson?.nazwisko || 'N/A'}
+                                    </Typography>
+                                    <Typography variant="body1">
+                                        <strong>Phone:</strong> {userDetails?.enovaPerson?.telKomorkowy || 'N/A'}
+                                    </Typography>
+                                </>
+                            )}
+                        </Box>
                     </Paper>
                 </Grid>
 

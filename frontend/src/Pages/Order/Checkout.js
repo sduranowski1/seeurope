@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {Container, Typography, Grid, Paper, Box, Divider, Button, CircularProgress} from '@mui/material';
+import {Container, Typography, Grid, Paper, Box, Divider, Button, CircularProgress, Tabs, Tab, TextField} from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
 import authProvider from "../../authProvider";
 import AuthContext from "../../AuthContext";
@@ -16,6 +16,22 @@ const Checkout = () => {
     // const [userInfo, setUserInfo] = useState(null); // Basic user info from authProvider
     const [userDetails, setUserDetails] = useState(null); // Additional user details from API
     const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const [selectedAddress, setSelectedAddress] = useState('existing');  // Default to 'existing'
+    const [newAddress, setNewAddress] = useState({
+        voivodeship: '',
+        region: '',
+        buildingNumber: '',
+        apartmentNumber: '',
+        postOffice: '',
+        district: '',
+        regon: '',
+        phone: '',
+        street: '',
+        city: '',
+        zipCode: '',
+        country: '',
+    });
 
 
     useEffect(() => {
@@ -78,7 +94,34 @@ const Checkout = () => {
         const orderData = {
             email: userEmail,
             name: userDetails?.enovaPerson?.imie || "",
-            address: userDetails?.address || "",
+            // address: userDetails?.address || "",
+            address: selectedAddress === 'existing' ? {
+                voivodeship: userDetails?.enovaPerson?.contractor?.adres?.wojewodztwo || "", // Existing Address Field
+                region: userDetails?.enovaPerson?.contractor?.adres?.gmina || "", // Existing Address Field
+                buildingNumber: userDetails?.enovaPerson?.contractor?.adres?.nrDomu || "", // Existing Address Field
+                apartmentNumber: userDetails?.enovaPerson?.contractor?.adres?.nrLokalu || "", // Existing Address Field
+                postOffice: userDetails?.enovaPerson?.contractor?.adres?.poczta || "", // Existing Address Field
+                district: userDetails?.enovaPerson?.contractor?.adres?.powiat || "", // Existing Address Field
+                regon: userDetails?.enovaPerson?.contractor?.adres?.Regon || "", // Existing Address Field
+                phone: userDetails?.enovaPerson?.contractor?.adres?.telefon || "", // Existing Address Field
+                street: userDetails?.enovaPerson?.contractor?.adres?.ulica || "", // Existing Address Field
+                city: userDetails?.enovaPerson?.contractor?.adres?.miejscowosc || "", // Existing Address Field
+                zipCode: userDetails?.enovaPerson?.contractor?.adres?.kodPocztowy || "", // Existing Address Field
+                country: userDetails?.enovaPerson?.contractor?.adres?.kraj || "", // Existing Address Field
+            } : {
+                voivodeship: newAddress?.voivodeship || "", // New Address Field
+                region: newAddress?.region || "", // New Address Field
+                buildingNumber: newAddress?.buildingNumber || "", // New Address Field
+                apartmentNumber: newAddress?.apartmentNumber || "", // New Address Field
+                postOffice: newAddress?.postOffice || "", // New Address Field
+                district: newAddress?.district || "", // New Address Field
+                regon: newAddress?.regon || "", // New Address Field
+                phone: newAddress?.phone || "", // New Address Field
+                street: newAddress?.street || "", // New Address Field
+                city: newAddress?.city || "", // New Address Field
+                zipCode: newAddress?.zipCode || "", // New Address Field
+                country: newAddress?.country || "", // New Address Field
+            },
             phone: userDetails?.enovaPerson?.telKomorkowy || "",
             items: cartItems.map((item) => ({
                 id: item.id,
@@ -129,6 +172,14 @@ const Checkout = () => {
     const storedPriceCurrency = localStorage.getItem("priceCurrency");
     console.log(storedPriceCurrency)
 
+    const [value, setValue] = useState(0);
+
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+        // Switch between 'existing' and 'new' address when changing tabs
+        setSelectedAddress(newValue === 0 ? 'existing' : 'new');
+    };
+
     if (!userEmail) {
         return (
             <Box
@@ -153,7 +204,7 @@ const Checkout = () => {
             <Grid container spacing={4}>
                 {/* User Information */}
                 <Grid item xs={12} md={7}>
-                    <Paper sx={{ p: 3 }} elevation={3}>
+                    <Paper sx={{p: 3}} elevation={3}>
                         <Typography variant="h6" gutterBottom>
                             Personal Information
                         </Typography>
@@ -175,28 +226,109 @@ const Checkout = () => {
                                 </>
                             )}
                         </Box>
+                        <Divider sx={{ my: 2 }} />                        <Tabs value={value} onChange={handleChange} aria-label="address tabs">
+                            <Tab label="Existing Address"/>
+                            <Tab label="New Address"/>
+                        </Tabs>
                         <br/>
-                        <Typography variant="h6" gutterBottom>
-                            Address
-                        </Typography>
-                        <Box>
-                            <Typography variant="body1">
-                                <strong>Email:</strong> {userEmail}
-                            </Typography>
-                            {userDetails && (
-                                <>
-                                    <Typography variant="body1">
-                                        <strong>Voivoideship:</strong> {userDetails?.enovaPerson?.contractor?.adres?.gmina || 'N/A'}
-                                    </Typography>
-                                    <Typography variant="body1">
-                                        <strong>Surname:</strong> {userDetails?.enovaPerson?.nazwisko || 'N/A'}
-                                    </Typography>
-                                    <Typography variant="body1">
-                                        <strong>Phone:</strong> {userDetails?.enovaPerson?.telKomorkowy || 'N/A'}
-                                    </Typography>
-                                </>
-                            )}
-                        </Box>
+                        {value === 0 && (
+                            <Box>
+                                {/*    <Typography variant="h6" gutterBottom>*/}
+                                {/*    Address*/}
+                                {/*</Typography>*/}
+
+                                {userDetails && (
+                                    <>
+                                        <Typography variant="body1">
+                                            <strong>Voivoideship:</strong> {userDetails?.enovaPerson?.contractor?.adres?.wojewodztwo || 'N/A'}
+                                        </Typography>
+                                        <Typography variant="body1">
+                                            <strong>Region:</strong> {userDetails?.enovaPerson?.contractor?.adres?.gmina || 'N/A'}
+                                        </Typography>
+                                        <Typography variant="body1">
+                                            <strong>Building
+                                                Number:</strong> {userDetails?.enovaPerson?.contractor?.adres?.nrDomu || 'N/A'}
+                                        </Typography>
+                                        <Typography variant="body1">
+                                            <strong>Apartment
+                                                Number:</strong> {userDetails?.enovaPerson?.contractor?.adres?.nrLokalu || 'N/A'}
+                                        </Typography>
+                                        <Typography variant="body1">
+                                            <strong>Post
+                                                office:</strong> {userDetails?.enovaPerson?.contractor?.adres?.poczta || 'N/A'}
+                                        </Typography>
+                                        <Typography variant="body1">
+                                            <strong>District:</strong> {userDetails?.enovaPerson?.contractor?.adres?.powiat || 'N/A'}
+                                        </Typography>
+                                        <Typography variant="body1">
+                                            <strong>Regon:</strong> {userDetails?.enovaPerson?.contractor?.adres?.Regon || 'N/A'}
+                                        </Typography>
+                                        <Typography variant="body1">
+                                            <strong>Phone:</strong> {userDetails?.enovaPerson?.contractor?.adres?.telefon || 'N/A'}
+                                        </Typography>
+                                        <Typography variant="body1">
+                                            <strong>Street:</strong> {userDetails?.enovaPerson?.contractor?.adres?.ulica || 'N/A'}
+                                        </Typography>
+                                        <Typography variant="body1">
+                                            <strong>City:</strong> {userDetails?.enovaPerson?.contractor?.adres?.miejscowosc || 'N/A'}
+                                        </Typography>
+                                        <Typography variant="body1">
+                                            <strong>Zip
+                                                Code:</strong> {userDetails?.enovaPerson?.contractor?.adres?.kodPocztowy || 'N/A'}
+                                        </Typography>
+                                        <Typography variant="body1">
+                                            <strong>Country:</strong> {userDetails?.enovaPerson?.contractor?.adres?.kraj || 'N/A'}
+                                        </Typography>
+                                    </>
+                                )}
+                            </Box>
+                        )}
+                        {/* New Address Tab */}
+                        {value === 1 && (
+                            <Box>
+                                {/*<Typography variant="h6" gutterBottom>*/}
+                                {/*    New Address*/}
+                                {/*</Typography>*/}
+                                <Grid container spacing={2}>
+                                    <Grid item xs={12} sm={6}>
+                                        <TextField label="Voivodeship" fullWidth/>
+                                    </Grid>
+                                    <Grid item xs={12} sm={6}>
+                                        <TextField label="Region" fullWidth/>
+                                    </Grid>
+                                    <Grid item xs={12} sm={6}>
+                                        <TextField label="Building Number" fullWidth/>
+                                    </Grid>
+                                    <Grid item xs={12} sm={6}>
+                                        <TextField label="Apartment Number" fullWidth/>
+                                    </Grid>
+                                    <Grid item xs={12} sm={6}>
+                                        <TextField label="Post office" fullWidth/>
+                                    </Grid>
+                                    <Grid item xs={12} sm={6}>
+                                        <TextField label="District" fullWidth/>
+                                    </Grid>
+                                    <Grid item xs={12} sm={6}>
+                                        <TextField label="Regon" fullWidth/>
+                                    </Grid>
+                                    <Grid item xs={12} sm={6}>
+                                        <TextField label="Phone" fullWidth/>
+                                    </Grid>
+                                    <Grid item xs={12} sm={6}>
+                                        <TextField label="Street" fullWidth/>
+                                    </Grid>
+                                    <Grid item xs={12} sm={6}>
+                                        <TextField label="City" fullWidth/>
+                                    </Grid>
+                                    <Grid item xs={12} sm={6}>
+                                        <TextField label="Zip Code" fullWidth/>
+                                    </Grid>
+                                    <Grid item xs={12} sm={6}>
+                                        <TextField label="Country" fullWidth/>
+                                    </Grid>
+                                </Grid>
+                            </Box>
+                        )}
                     </Paper>
                 </Grid>
 

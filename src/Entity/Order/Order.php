@@ -36,8 +36,8 @@ class Order
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $name = null;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private ?string $address = null;
+    #[ORM\Column(type: Types::JSON)]
+    private array $address = [];
 
     #[ORM\Column(type: 'string', length: 20, nullable: true)]
     private ?string $phone = null;
@@ -103,12 +103,12 @@ class Order
         return $this;
     }
 
-    public function getAddress(): ?string
+    public function getAddress(): array
     {
         return $this->address;
     }
 
-    public function setAddress(?string $address): void
+    public function setAddress(array $address): void
     {
         $this->address = $address;
     }

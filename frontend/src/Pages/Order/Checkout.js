@@ -143,6 +143,8 @@ const Checkout = () => {
         );
     }
 
+    console.log(userDetails)
+
     return (
         <Container maxWidth="md" sx={{ mt: 4, marginBottom: 3 }}>
             <Typography variant="h4" gutterBottom>
@@ -184,7 +186,7 @@ const Checkout = () => {
                             {userDetails && (
                                 <>
                                     <Typography variant="body1">
-                                        <strong>Name:</strong> {userDetails?.enovaPerson?.contractor.imie || 'N/A'}
+                                        <strong>Voivoideship:</strong> {userDetails?.enovaPerson?.contractor?.adres?.gmina || 'N/A'}
                                     </Typography>
                                     <Typography variant="body1">
                                         <strong>Surname:</strong> {userDetails?.enovaPerson?.nazwisko || 'N/A'}

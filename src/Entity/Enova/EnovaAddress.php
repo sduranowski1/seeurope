@@ -19,35 +19,35 @@ class EnovaAddress
     private ?string $id = null;
 
     #[ORM\Column(type: 'string', nullable: true)]
-    #[Groups(['enovaContractor:read', 'enovaContractor:create', 'enovaContractor:update', 'enovaLocation:read', 'enovaLocation:write', 'enovaLocation:update', 'enovaPerson:read', 'enovaPerson:create', 'enovaPerson:update' ])]
+    #[Groups(['enovaContractor:read', 'enovaContractor:create', 'enovaContractor:update', 'enovaLocation:read', 'enovaLocation:write', 'enovaLocation:update', 'userEnova:read', 'userEnova:create', 'userEnova:update' ])]
     private ?string $wojewodztwo = null;
 
     #[ORM\Column(type: 'string', nullable: true)]
-    #[Groups(['enovaContractor:read', 'enovaContractor:create', 'enovaContractor:update', 'enovaLocation:read', 'enovaLocation:write', 'enovaLocation:update', 'enovaPerson:read', 'enovaPerson:create', 'enovaPerson:update'])]
+    #[Groups(['enovaContractor:read', 'enovaContractor:create', 'enovaContractor:update', 'enovaLocation:read', 'enovaLocation:write', 'enovaLocation:update', 'userEnova:read', 'userEnova:create', 'userEnova:update'])]
     private ?string $gmina = null;
 
     #[ORM\Column(type: 'string', nullable: true)]
-    #[Groups(['enovaContractor:read', 'enovaContractor:create', 'enovaContractor:update', 'enovaLocation:read', 'enovaLocation:write', 'enovaLocation:update', 'enovaPerson:read', 'enovaPerson:create', 'enovaPerson:update'])]
+    #[Groups(['enovaContractor:read', 'enovaContractor:create', 'enovaContractor:update', 'enovaLocation:read', 'enovaLocation:write', 'enovaLocation:update', 'userEnova:read', 'userEnova:create', 'userEnova:update'])]
     private ?string $nrDomu = null;
 
     #[ORM\Column(type: 'string', nullable: true)]
-    #[Groups(['enovaContractor:read', 'enovaContractor:create', 'enovaContractor:update', 'enovaLocation:read', 'enovaLocation:write', 'enovaLocation:update', 'enovaPerson:read', 'enovaPerson:create', 'enovaPerson:update'])]
+    #[Groups(['enovaContractor:read', 'enovaContractor:create', 'enovaContractor:update', 'enovaLocation:read', 'enovaLocation:write', 'enovaLocation:update', 'userEnova:read', 'userEnova:create', 'userEnova:update'])]
     private ?string $nrLokalu = null;
 
     #[ORM\Column(type: 'string', nullable: true)]
-    #[Groups(['enovaContractor:read', 'enovaContractor:create', 'enovaContractor:update', 'enovaLocation:read', 'enovaLocation:write', 'enovaLocation:update', 'enovaPerson:read', 'enovaPerson:create', 'enovaPerson:update'])]
+    #[Groups(['enovaContractor:read', 'enovaContractor:create', 'enovaContractor:update', 'enovaLocation:read', 'enovaLocation:write', 'enovaLocation:update', 'userEnova:read', 'userEnova:create', 'userEnova:update'])]
     private ?string $poczta = null;
 
     #[ORM\Column(type: 'string', nullable: true)]
-    #[Groups(['enovaContractor:read', 'enovaContractor:create', 'enovaContractor:update', 'enovaLocation:read', 'enovaLocation:write', 'enovaLocation:update', 'enovaPerson:read', 'enovaPerson:create', 'enovaPerson:update'])]
+    #[Groups(['enovaContractor:read', 'enovaContractor:create', 'enovaContractor:update', 'enovaLocation:read', 'enovaLocation:write', 'enovaLocation:update', 'userEnova:read', 'userEnova:create', 'userEnova:update'])]
     private ?string $powiat = null;
 
     #[ORM\Column(type: 'string', nullable: true)]
-    #[Groups(['enovaContractor:read', 'enovaContractor:create', 'enovaContractor:update', 'enovaLocation:read', 'enovaLocation:write', 'enovaLocation:update', 'enovaPerson:read', 'enovaPerson:create', 'enovaPerson:update'])]
+    #[Groups(['enovaContractor:read', 'enovaContractor:create', 'enovaContractor:update', 'enovaLocation:read', 'enovaLocation:write', 'enovaLocation:update', 'userEnova:read', 'userEnova:create', 'userEnova:update'])]
     private ?string $ulica = null;
 
     #[ORM\Column(type: 'string', nullable: true)]
-    #[Groups(['enovaContractor:read', 'enovaContractor:create', 'enovaContractor:update', 'enovaLocation:read', 'enovaLocation:write', 'enovaLocation:update', 'enovaPerson:read', 'enovaPerson:create', 'enovaPerson:update'])]
+    #[Groups(['enovaContractor:read', 'enovaContractor:create', 'enovaContractor:update', 'enovaLocation:read', 'enovaLocation:write', 'enovaLocation:update', 'userEnova:read', 'userEnova:create', 'userEnova:update'])]
     private ?string $miejscowosc = null;
 
     #[ORM\Column(type: 'string', nullable: true)]

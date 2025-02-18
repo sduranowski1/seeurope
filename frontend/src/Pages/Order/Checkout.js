@@ -180,6 +180,13 @@ const Checkout = () => {
         setSelectedAddress(newValue === 0 ? 'existing' : 'new');
     };
 
+    const handleAddressChange = (field, value) => {
+        setNewAddress((prevState) => ({
+            ...prevState,
+            [field]: value
+        }));
+    };
+
     if (!userEmail) {
         return (
             <Box
@@ -291,40 +298,100 @@ const Checkout = () => {
                                 {/*</Typography>*/}
                                 <Grid container spacing={2}>
                                     <Grid item xs={12} sm={6}>
-                                        <TextField label="Voivodeship" fullWidth/>
+                                        <TextField
+                                            label="Voivodeship"
+                                            fullWidth
+                                            value={newAddress?.voivodeship || ""}
+                                            onChange={(e) => handleAddressChange('voivodeship', e.target.value)}
+                                        />
                                     </Grid>
                                     <Grid item xs={12} sm={6}>
-                                        <TextField label="Region" fullWidth/>
+                                        <TextField
+                                            label="Region"
+                                            fullWidth
+                                            value={newAddress?.region || ""}
+                                            onChange={(e) => handleAddressChange('region', e.target.value)}
+                                        />
                                     </Grid>
                                     <Grid item xs={12} sm={6}>
-                                        <TextField label="Building Number" fullWidth/>
+                                        <TextField
+                                            label="Building Number"
+                                            fullWidth
+                                            value={newAddress?.buildingNumber || ""}
+                                            onChange={(e) => handleAddressChange('buildingNumber', e.target.value)}
+                                        />
                                     </Grid>
                                     <Grid item xs={12} sm={6}>
-                                        <TextField label="Apartment Number" fullWidth/>
+                                        <TextField
+                                            label="Apartment Number"
+                                            fullWidth
+                                            value={newAddress?.apartmentNumber || ""}
+                                            onChange={(e) => handleAddressChange('apartmentNumber', e.target.value)}
+                                        />
                                     </Grid>
                                     <Grid item xs={12} sm={6}>
-                                        <TextField label="Post office" fullWidth/>
+                                        <TextField
+                                            label="Post office"
+                                            fullWidth
+                                            value={newAddress?.postOffice || ""}
+                                            onChange={(e) => handleAddressChange('postOffice', e.target.value)}
+                                        />
                                     </Grid>
                                     <Grid item xs={12} sm={6}>
-                                        <TextField label="District" fullWidth/>
+                                        <TextField
+                                            label="District"
+                                            fullWidth
+                                            value={newAddress?.district || ""}
+                                            onChange={(e) => handleAddressChange('district', e.target.value)}
+                                        />
                                     </Grid>
                                     <Grid item xs={12} sm={6}>
-                                        <TextField label="Regon" fullWidth/>
+                                        <TextField
+                                            label="Regon"
+                                            fullWidth
+                                            value={newAddress?.regon || ""}
+                                            onChange={(e) => handleAddressChange('regon', e.target.value)}
+                                        />
                                     </Grid>
                                     <Grid item xs={12} sm={6}>
-                                        <TextField label="Phone" fullWidth/>
+                                        <TextField
+                                            label="Phone"
+                                            fullWidth
+                                            value={newAddress?.phone || ""}
+                                            onChange={(e) => handleAddressChange('phone', e.target.value)}
+                                        />
                                     </Grid>
                                     <Grid item xs={12} sm={6}>
-                                        <TextField label="Street" fullWidth/>
+                                        <TextField
+                                            label="Street"
+                                            fullWidth
+                                            value={newAddress?.street || ""}
+                                            onChange={(e) => handleAddressChange('street', e.target.value)}
+                                        />
                                     </Grid>
                                     <Grid item xs={12} sm={6}>
-                                        <TextField label="City" fullWidth/>
+                                        <TextField
+                                            label="City"
+                                            fullWidth
+                                            value={newAddress?.city || ""}
+                                            onChange={(e) => handleAddressChange('city', e.target.value)}
+                                        />
                                     </Grid>
                                     <Grid item xs={12} sm={6}>
-                                        <TextField label="Zip Code" fullWidth/>
+                                        <TextField
+                                            label="Zip Code"
+                                            fullWidth
+                                            value={newAddress?.zipCode || ""}
+                                            onChange={(e) => handleAddressChange('zipCode', e.target.value)}
+                                        />
                                     </Grid>
                                     <Grid item xs={12} sm={6}>
-                                        <TextField label="Country" fullWidth/>
+                                        <TextField
+                                            label="Country"
+                                            fullWidth
+                                            value={newAddress?.country || ""}
+                                            onChange={(e) => handleAddressChange('country', e.target.value)}
+                                        />
                                     </Grid>
                                 </Grid>
                             </Box>

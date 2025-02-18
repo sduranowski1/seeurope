@@ -16,6 +16,7 @@ import {jwtDecode} from "jwt-decode";
 import AuthContext from "../AuthContext";
 import {Button} from "@mui/material";
 import OrderItemsModal from "./OrderItemsModal/OrderItemsModal";
+import OrderAddressModal from "./OrderAddressModal/OrderAddressModal";
 
 export const Dashboard = () => {
     const [orders, setOrders] = useState([]);
@@ -85,15 +86,25 @@ export const Dashboard = () => {
     }
 
     const [modalOpen, setModalOpen] = useState(false);
+    const [modalAddressOpen, setModalAddressOpen] = useState(false);
     const [currentOrderItems, setCurrentOrderItems] = useState([]);
+    const [currentOrderAddress, setCurrentOrderAddress] = useState([]);
 
     const handleOpenModal = (items) => {
         setCurrentOrderItems(items);
         setModalOpen(true);
     };
+    const handleOpenModalAddress = (address) => {
+        setCurrentOrderAddress(address);
+        setModalAddressOpen(true);
+    };
 
     const handleCloseModal = () => {
         setModalOpen(false);
+    };
+
+    const handleCloseModalAddress = () => {
+        setModalAddressOpen(false);
     };
 
     return (
@@ -126,6 +137,7 @@ export const Dashboard = () => {
                                         <th>Total</th>
                                         <th>Currency</th>
                                         <th>Items</th>
+                                        <th>Address</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -158,12 +170,29 @@ export const Dashboard = () => {
                                                     View Items
                                                 </Button>
                                             </td>
+                                            <td>
+                                                <Button
+                                                    variant="text"  // Set the variant to 'text' for a text-style button
+                                                    color="primary" // Use the primary color (usually blue in Material UI)
+                                                    onClick={() => handleOpenModalAddress(order.address)}
+                                                    style={{
+                                                        padding: 0,
+                                                        textTransform: 'none',
+                                                        fontSize: '14px',
+                                                        fontWeight: 'normal',
+                                                        textDecoration: 'underline',
+                                                        backgroundColor: 'transparent', // Make background transparent
+                                                    }}
+                                                >
+                                                    View Address
+                                                </Button>
+                                            </td>
                                         </tr>
                                     ))}
                                     </tbody>
                                 </table>
 
-                                {/* Pagination Controls */}
+                                    {/* Pagination Controls */}
                                     <div className="pagination">
                                         <button
                                             onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
@@ -365,6 +394,11 @@ export const Dashboard = () => {
                 open={modalOpen}
                 onClose={handleCloseModal}
                 items={currentOrderItems}
+            />
+            <OrderAddressModal
+                openAddress={modalAddressOpen}
+                onCloseAddress={handleCloseModalAddress}
+                addresses={currentOrderAddress}
             />
         </main>
     );

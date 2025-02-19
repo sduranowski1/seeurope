@@ -37,7 +37,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
     normalizationContext: ['groups' => ['itemType:read']],
     denormalizationContext: ['groups' => ['itemType:create']]
 )]
-#[ApiFilter(SearchFilter::class, properties: ['name' => 'partial'])]
+#[ApiFilter(SearchFilter::class, properties: ['name' => 'partial', 'subcategory.subCatName' => 'partial'])]
 #[ApiFilter(OrderFilter::class, properties: ['id', 'name', 'polishName', 'germanName'])]
 class ItemType
 {

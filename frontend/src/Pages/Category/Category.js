@@ -10,6 +10,7 @@ import i18n from "i18next";
 
 export const Category = () => {
     const [products, setProducts] = useState([]);
+    const [filteredCategories, setFilteredCategories] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
     const navigate = useNavigate();
@@ -26,25 +27,38 @@ export const Category = () => {
             .replace(/[^\w-]+/g, '%2F'); // Remove non-word characters
     };
 
+    const slugifyFilter = (text) => {
+        return text
+            .toLowerCase()
+            .replace(/\s+/g, '_') // Replace spaces with dashes
+            .replace(/%2F/gi, '/'); // Replace '%2F' with '/'
+
+    };
+
     // Get the current category slug from the URL
     const pathParts = location.pathname.split('/');
     const currentSlug = slugify(pathParts[pathParts.length - 1]); // Last part of the URL
+    const currentSlugFilter = slugifyFilter(pathParts[pathParts.length - 1]); // Last part of the URL
+
+    console.log(currentSlug)
+    console.log(currentSlugFilter)
 
     useEffect(() => {
         const fetchProducts = async () => {
             setIsLoading(true); // Ensure loading state is true before starting the fetch
             try {
-                const response = await fetch('https://se-europe-test.pl/api/subcategories');
+                const response = await fetch(`https://se-europe-test.pl/api/subcategories/no_pagination?category.name=${currentSlugFilter}`);
                 if (!response.ok) {
                     throw new Error('Failed to fetch data');
                 }
                 const data = await response.json();
 
                 console.log(data);
+                setFilteredCategories(data)
 
                 // Filter the products to only include those from the current category
                 const filteredData = data
-                    .filter(item => slugify(item.category.name) === currentSlug)
+                    .filter(item => slugifyFilter(item.category.name) === currentSlugFilter)
                     .map(item => ({
                         name: item.subCatName,
                         imgUrl: item.domainImagePath, // Images not handled yet
@@ -54,6 +68,7 @@ export const Category = () => {
                         categoryTitleDe: item.category.germanName,
                     }));
 
+                console.log(filteredData);
                 setProducts(filteredData);
             } catch (err) {
                 setError(err.message);
@@ -107,6 +122,7 @@ export const Category = () => {
     }
 
     console.log(products);
+    console.log(filteredCategories)
     // console.log(products[0].categoryTitle);
     // console.log(products[0].categoryTitlePl);
 
@@ -121,7 +137,7 @@ export const Category = () => {
                         </div>
                     </div>
                 </section>
-            ) : products && products.length > 0 ? (
+            ) : filteredCategories && filteredCategories.length > 0 ? (
                 <section className={'section-contrains tables-page'}>
                     <div className={'heading-container'}>
                         <h1 className={'page-title'}>

@@ -68,7 +68,7 @@ class Subcategory
 
     #[ORM\ManyToOne(targetEntity: Category::class)]
     #[ORM\JoinColumn(name: 'cid', referencedColumnName: 'id', nullable: true)]
-    #[Groups(['subcategory:read', 'subcategory:create'])]
+    #[Groups(['subcategory:read', 'subcategory:create', 'itemType:read'])]
     public ?Category $category = null;
 
     #[ORM\ManyToOne(targetEntity: SubcategoriesMediaObject::class)]

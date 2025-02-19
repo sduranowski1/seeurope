@@ -38,8 +38,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
     denormalizationContext: ['groups' => ['subcategory:create']]
 
 )]
-#[ApiFilter(SearchFilter::class, properties: ['subCatName' => 'partial'])]
-#[ApiFilter(OrderFilter::class, properties: ['id', 'subCatName', 'polishName', 'germanName', 'category.name'])]
+#[ApiFilter(SearchFilter::class, properties: ['subCatName' => 'partial', 'category.name' => 'partial'])]
+#[ApiFilter(OrderFilter::class, properties: ['id', 'subCatName', 'polishName', 'germanName'])]
 class Subcategory
 {
     use Timestampable;

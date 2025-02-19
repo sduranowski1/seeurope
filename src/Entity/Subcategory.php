@@ -39,7 +39,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 )]
 #[ApiFilter(SearchFilter::class, properties: ['subCatName' => 'partial'])]
-#[ApiFilter(OrderFilter::class, properties: ['id', 'subCatName', 'polishName', 'germanName'])]
+#[ApiFilter(OrderFilter::class, properties: ['id', 'subCatName', 'polishName', 'germanName', 'category.name'])]
 class Subcategory
 {
     use Timestampable;

@@ -9,7 +9,7 @@ const ItemTypeList = () => (
             <TextField source="name" />
             <TextField source="polishName" />
             <TextField source="germanName" />
-            <ReferenceField reference="subcategories" source="subcategory.id" label="SubCategory" >
+            <ReferenceField reference="subcategories/no_pagination" source="subcategory.id" label="SubCategory" >
                 <TextField source="subCatName" />
             </ReferenceField>
             <DateField source="createdAt" />

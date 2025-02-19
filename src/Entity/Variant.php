@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
@@ -37,6 +38,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
     denormalizationContext: ['groups' => ['variant:create']]
 
 )]
+#[ApiFilter(SearchFilter::class, properties: ['variantname' => 'partial', 'brand.name' => 'partial'])]
 #[ApiFilter(OrderFilter::class, properties: ['id', 'variantname', 'polishName', 'germanName'])]
 class Variant
 {

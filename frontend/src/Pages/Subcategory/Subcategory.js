@@ -26,15 +26,25 @@ export const Subcategory = () => {
             .replace(/[^\w-]+/g, ''); // Remove non-word characters
     };
 
+    const slugifyFilter = (text) => {
+        return text
+            .toLowerCase()
+            .replace(/\s+/g, '_') // Replace spaces with dashes
+            .replace(/%2F/gi, '/'); // Replace '%2F' with '/'
+
+    };
+
     // Get the current category slug from the URL
     const pathParts = location.pathname.split('/');
     const currentSlug = slugify(pathParts[pathParts.length - 1]); // Last part of the URL
+    const currentSlugFilter = slugifyFilter(pathParts[pathParts.length - 1]); // Last part of the URL
+    const secondSlugFilter = slugifyFilter(pathParts[pathParts.length - 2]); // Last part of the URL
 
     useEffect(() => {
         const fetchProducts = async () => {
             setIsLoading(true); // Ensure loading state is true before starting the fetch
             try {
-                const response = await fetch('https://se-europe-test.pl/api/item_types');
+                const response = await fetch(`https://se-europe-test.pl/api/item_types?subcategory.subCatName=${currentSlugFilter}&subcategory.category.name=${secondSlugFilter}`);
                 if (!response.ok) {
                     throw new Error('Failed to fetch data');
                 }

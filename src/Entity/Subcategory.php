@@ -62,6 +62,18 @@ class Subcategory
     #[Groups(['subcategory:read', 'subcategory:create', 'subcategory:update', 'itemType:read', 'itemType:create', 'itemType:update', "productInfo:read", 'enovaProduct:read'])]
     private ?string $germanSubCatName = null;
 
+    #[ORM\Column(type: "text", nullable: true)]
+    #[Groups(['subcategory:read', 'subcategory:create', 'subcategory:update', 'itemType:read', 'itemType:create', 'itemType:update', "productInfo:read", 'enovaProduct:read'])]
+    private ?string $description = null;
+
+    #[ORM\Column(type: "text", nullable: true)]
+    #[Groups(['subcategory:read', 'subcategory:create', 'subcategory:update', 'itemType:read', 'itemType:create', 'itemType:update', "productInfo:read", 'enovaProduct:read'])]
+    private ?string $polishDescription = null;
+
+    #[ORM\Column(type: "text", nullable: true)]
+    #[Groups(['subcategory:read', 'subcategory:create', 'subcategory:update', 'itemType:read', 'itemType:create', 'itemType:update', "productInfo:read", 'enovaProduct:read'])]
+    private ?string $germanDescription = null;
+
 //    #[ORM\Column(nullable: true)]
 //    #[Groups(['subcategory:read', 'subcategory:create'])]
 //    private ?int $cid = null;
@@ -140,6 +152,36 @@ class Subcategory
     public function setGermanSubCatName(?string $germanSubCatName): void
     {
         $this->germanSubCatName = $germanSubCatName;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): void
+    {
+        $this->description = $description;
+    }
+
+    public function getPolishDescription(): ?string
+    {
+        return $this->polishDescription;
+    }
+
+    public function setPolishDescription(?string $polishDescription): void
+    {
+        $this->polishDescription = $polishDescription;
+    }
+
+    public function getGermanDescription(): ?string
+    {
+        return $this->germanDescription;
+    }
+
+    public function setGermanDescription(?string $germanDescription): void
+    {
+        $this->germanDescription = $germanDescription;
     }
 
 

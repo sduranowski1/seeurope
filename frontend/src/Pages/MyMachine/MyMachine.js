@@ -45,7 +45,8 @@ export const MyMachine = () => {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await fetch('https://se-europe-test.pl/api/categories');
+                const response = await fetch('https://se-europe-test.pl/api/categories/no_pagination' +
+                    '');
                 if (!response.ok) {
                     throw new Error('Failed to fetch data');
                 }

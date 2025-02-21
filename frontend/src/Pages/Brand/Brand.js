@@ -22,16 +22,25 @@ export const Brand = () => {
             .replace(/[^\w-]+/g, '%2F'); // Remove non-word characters
     };
 
+    const slugifyFilter = (text) => {
+        return text
+            .toLowerCase()
+            .replace(/\s+/g, '_') // Replace spaces with dashes
+            .replace(/%2F/gi, '/'); // Replace '%2F' with '/'
+
+    };
+
     // Get the current category slug from the URL
     const pathParts = location.pathname.split('/');
     const currentSlug = slugify(pathParts[pathParts.length - 1]); // Last part of the URL
+    const currentSlugFilter = slugifyFilter(pathParts[pathParts.length - 1]); // Last part of the URL
 
     console.log(currentSlug)
 
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await fetch('https://se-europe-test.pl/api/variants');
+                const response = await fetch(`https://se-europe-test.pl/api/variants/no_pagination?brand.name=${currentSlugFilter}`);
                 if (!response.ok) {
                     throw new Error('Failed to fetch data');
                 }

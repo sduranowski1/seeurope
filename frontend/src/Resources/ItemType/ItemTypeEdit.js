@@ -24,7 +24,7 @@ const ItemTypeEdit = (props) => (
                 <SelectInput
                     label="Subcategory"
                     source="subcategory.id"
-                    optionText={(record) => record?.subCatName}
+                    optionText={(record) => `${record?.category.name} - ${record?.subCatName}`} // Display multiple fields
                     validate={required()}
                 />
             </ReferenceInput>

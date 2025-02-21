@@ -18,8 +18,11 @@ const ItemTypeCreate = (props) => (
       <TextInput source="name" />
         <TextInput source="polishName" />
         <TextInput source="germanName" />
-      <ReferenceInput source="scid" reference="subcategories">
-        <SelectInput optionText="subCatName" validate={required()}/>
+      <ReferenceInput source="scid" reference="subcategories/no_pagination">
+          <SelectInput
+              optionText={(record) => `${record?.category.name} - ${record?.subCatName}`}
+              validate={required()}
+          />
       </ReferenceInput>
       {/*<DateInput source="createdAt" />*/}
       {/*<DateInput source="updatedAt" />*/}

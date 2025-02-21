@@ -19,7 +19,7 @@ const SubcategoryCreate = (props) => (
             <TextInput source="subCatName" />
             <TextInput source="polishSubCatName" />
             <TextInput source="germanSubCatName" />
-            <ReferenceInput source="cid" reference="categories">
+            <ReferenceInput source="cid" reference="categories/no_pagination">
                 <SelectInput optionText="name" validate={required()}/>
             </ReferenceInput>
             {/*<DateInput source="createdAt" />*/}

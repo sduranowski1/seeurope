@@ -62,6 +62,9 @@ export const Subcategory = () => {
                         subcategoryTitle: item.subcategory.subCatName,
                         subcategoryTitlePl: item.subcategory.polishSubCatName,
                         subcategoryTitleDe: item.subcategory.germanSubCatName,
+                        subcategoryDescription: item.subcategory.description,
+                        subcategoryDescriptionPl: item.subcategory.polishDescription,
+                        subcategoryDescriptionDe: item.subcategory.germanDescription,
                     }));
 
                 setProducts(filteredData);
@@ -152,12 +155,19 @@ export const Subcategory = () => {
                             )}
                         </h1>
                         <p className={'paragraph paragraph--medium'}>
-                            Tutaj znajdziesz pełną standardową gamę sprzętu SE Equipment do wózków widłowych.
+                            {/*Tutaj znajdziesz pełną standardową gamę sprzętu SE Equipment do wózków widłowych.*/}
+                            {i18n.language === 'en' ? (
+                                products[0].subcategoryDescription
+                            ) : i18n.language === 'pl' ? (
+                                products[0].subcategoryDescriptionPl
+                            ) : (
+                                products[0].subcategoryDescriptionDe
+                            )}
                         </p>
                         <br />
-                        <p className={'paragraph paragraph--medium'}>
-                            Kliknij na wybrany produkt poniżej, aby znaleźć odpowiedni sprzęt dla siebie.
-                        </p>
+                        {/*<p className={'paragraph paragraph--medium'}>*/}
+                        {/*    Kliknij na wybrany produkt poniżej, aby znaleźć odpowiedni sprzęt dla siebie.*/}
+                        {/*</p>*/}
                     </div>
                     <LinksListWithImages data={products} />
                 </section>

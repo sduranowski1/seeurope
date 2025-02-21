@@ -15,6 +15,7 @@ import {WeightRange} from "./Components/WeightRange";
 import {jwtDecode} from "jwt-decode";
 import AuthContext from "../../AuthContext";
 import useUserDetails from "./useUserDetails";
+import i18n from "i18next";
 
 export const SubcategoryProducts = ({lastPart, slug}) => {
     const [displayedItems, setDisplayedItems] = useState([0, 1000000]);
@@ -40,6 +41,11 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
     const {id} = useParams(); // Get the product ID from the URL
     const { token } = useContext(AuthContext); // Get token from AuthContext
     let [title, setTitle] = useState("");
+    let [germanTitle, setGermanTitle] = useState("");
+    let [polishTitle, setPolishTitle] = useState("");
+    let [description, setDescripiton] = useState("");
+    let [polishDescription, setPolishDescripiton] = useState("");
+    let [germanDescription, setGErmanDescripiton] = useState("");
     // Memoize the totalPages calculation to prevent unnecessary re-calculation
     const totalPages = useMemo(() => Math.ceil(totalItems / limit), [totalItems, limit]);
 
@@ -234,18 +240,41 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
     // console.log(filteredItemTypeTitle[0].name);
 
     const breadCrumbCategory = products[0]?.productInfo.category?.name;
+    const polishBreadCrumbCategory = products[0]?.productInfo.category?.polishName;
+    const germanBreadCrumbCategory = products[0]?.productInfo.category?.germanName;
+
     const breadCrumbSubcategory = products[0]?.productInfo.subcategory?.subCatName;
+    const polishBreadCrumbSubcategory = products[0]?.productInfo.subcategory?.polishSubCatName;
+    const germanBreadCrumbSubcategory = products[0]?.productInfo.subcategory?.germanSubCatName;
     const breadCrumbItemType = products[0]?.productInfo.itemType?.name;
 
     if (parts.length === 5) {
         // title = products[0]?.categoryName;
         title = products[0]?.productInfo.category?.name;
+        polishTitle = products[0]?.productInfo.category?.polishName;
+        germanTitle = products[0]?.productInfo.category?.germanName;
+
+        description = products[0]?.productInfo.category?.description;
+        polishDescription = products[0]?.productInfo.category?.polishDescription;
+        germanDescription = products[0]?.productInfo.category?.germanDescription;
     } else if (parts.length === 6) {
         // title = products[0]?.subcategoryName;
         title = products[0]?.productInfo.subcategory?.subCatName;
+        polishTitle = products[0]?.productInfo.subcategory?.polishSubCatName;
+        germanTitle = products[0]?.productInfo.subcategory?.germanSubCatName;
+
+        description = products[0]?.productInfo.subcategory?.description;
+        polishDescription = products[0]?.productInfo.subcategory?.polishDescription;
+        germanDescription = products[0]?.productInfo.subcategory?.germanDescription;
     } else if (parts.length === 7) {
         // title = products[0]?.itemTypeName;
         title = products[0]?.productInfo.itemType?.name;
+        polishTitle = products[0]?.productInfo.itemType?.polishName;
+        germanTitle = products[0]?.productInfo.itemType?.germanName;
+
+        description = products[0]?.productInfo.itemType?.description;
+        polishDescription = products[0]?.productInfo.itemType?.polishDescription;
+        germanDescription = products[0]?.productInfo.itemType?.germanDescription;
     } else {
         title = "my_machine";
     }
@@ -273,14 +302,21 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
                         color="inherit"
                         to={"/my-machine"}
                     >
-                        My Machine
+                        {t('my_machine')}
                     </Link>
                     <Link
                         underline="hover"
                         color="inherit"
                         to={`/my-machine/${categoriesSlug}`}
                     >
-                        {breadCrumbCategory ? breadCrumbCategory : categoriesSlug}
+                        {/*{breadCrumbCategory ? breadCrumbCategory : categoriesSlug}*/}
+                        {i18n.language === "en"
+                            ? breadCrumbCategory || categoriesSlug
+                            : i18n.language === "de"
+                                ? germanBreadCrumbCategory || categoriesSlug
+                                : i18n.language === "pl"
+                                    ? polishBreadCrumbCategory || categoriesSlug
+                                    : t("my_machine")}
                     </Link>
                     {subcategoriesSlug && (
                         <Link
@@ -288,16 +324,42 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
                             color="inherit"
                             to={`/my-machine/${categoriesSlug}/${subcategoriesSlug}`}
                         >
-                            {breadCrumbSubcategory ? breadCrumbSubcategory : subcategoriesSlug}
+                            {/*{breadCrumbSubcategory ? breadCrumbSubcategory : subcategoriesSlug}*/}
+                            {i18n.language === "en"
+                                ? breadCrumbSubcategory || subcategoriesSlug
+                                : i18n.language === "de"
+                                    ? germanBreadCrumbSubcategory || subcategoriesSlug
+                                    : i18n.language === "pl"
+                                        ? polishBreadCrumbSubcategory || subcategoriesSlug
+                                        : t("my_machine")}
                         </Link>
                     )}
-                    <Typography sx={{ color: 'text.primary' }}>{title ? title : t("my_machine")}</Typography>
+                    <Typography sx={{ color: 'text.primary' }}>{i18n.language === "en"
+                        ? title || t("my_machine")
+                        : i18n.language === "de"
+                            ? germanTitle || t("my_machine")
+                            : i18n.language === "pl"
+                                ? polishTitle || t("my_machine")
+                                : t("my_machine")}</Typography>
                 </Breadcrumbs>
                 <div className={'heading-container'}>
                     {/*<h1 className={'page-title'}>{lastPart ? lastPart : t("my_machine")}</h1>*/}
-                    <h1 className={'page-title'}>{title ? title : t("my_machine")}</h1>
+                    <h1 className={'page-title'}>{i18n.language === "en"
+                        ? title || t("my_machine")
+                        : i18n.language === "de"
+                            ? germanTitle || t("my_machine")
+                            : i18n.language === "pl"
+                                ? polishTitle || t("my_machine")
+                                : t("my_machine")}</h1>
                     {/*<h1 className={'page-title'}>{lastPart ? lastPart : t("my_machine")}</h1>*/}
-                    <p className={'paragraph paragraph--medium'}>{t("tractor_equipment")}</p>
+                    <p className={'paragraph paragraph--medium'}>{i18n.language === "en"
+                        ? description || t("tractor_equipment")
+                        : i18n.language === "de"
+                            ? germanDescription || t("tractor_equipment")
+                            : i18n.language === "pl"
+                                ? polishDescription || t("tractor_equipment")
+                                : t("tractor_equipment")}</p>
+
                 </div>
                 {loading ? (
                     <Box

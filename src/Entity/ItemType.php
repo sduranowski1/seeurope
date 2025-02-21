@@ -65,6 +65,18 @@ class ItemType
 //    #[Groups(['itemType:read', 'itemType:create'])]
 //    private ?int $scid = null;
 
+    #[ORM\Column(type: "text", nullable: true)]
+    #[Groups(['itemType:read', 'itemType:create', 'itemType:update', "productInfo:read", 'enovaProduct:read'])]
+    private ?string $description = null;
+
+    #[ORM\Column(type: "text", nullable: true)]
+    #[Groups(['itemType:read', 'itemType:create', 'itemType:update', "productInfo:read", 'enovaProduct:read'])]
+    private ?string $polishDescription = null;
+
+    #[ORM\Column(type: "text", nullable: true)]
+    #[Groups(['itemType:read', 'itemType:create', 'itemType:update', "productInfo:read", 'enovaProduct:read'])]
+    private ?string $germanDescription = null;
+
     #[ORM\ManyToOne(targetEntity: Subcategory::class)]
     #[ORM\JoinColumn(name: 'scid', referencedColumnName: 'id', nullable: true)]
     #[Groups(['itemType:read', 'itemType:create'])]
@@ -139,6 +151,36 @@ class ItemType
     public function setGermanName(?string $germanName): void
     {
         $this->germanName = $germanName;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): void
+    {
+        $this->description = $description;
+    }
+
+    public function getPolishDescription(): ?string
+    {
+        return $this->polishDescription;
+    }
+
+    public function setPolishDescription(?string $polishDescription): void
+    {
+        $this->polishDescription = $polishDescription;
+    }
+
+    public function getGermanDescription(): ?string
+    {
+        return $this->germanDescription;
+    }
+
+    public function setGermanDescription(?string $germanDescription): void
+    {
+        $this->germanDescription = $germanDescription;
     }
 
 

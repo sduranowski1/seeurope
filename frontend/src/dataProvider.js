@@ -138,11 +138,7 @@ const dataProvider = {
                 ...(resource === "variants"
                     ? data
                     : resource === "brands"
-                        ? {
-                            name: nameField, // Include `subCatName` for `subcategories`
-                            polishName: data.polishName, // Include `subCatName` for `subcategories`
-                            germanName: data.germanName, // Include `subCatName` for `subcategories`
-                        }
+                        ? data
                     : resource === "subcategories"
                         ? data
                     : resource === "item_types"

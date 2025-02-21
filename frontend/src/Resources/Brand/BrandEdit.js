@@ -11,6 +11,9 @@ const BrandEdit = (props) => (
             <TextInput source="polishName" />
             <TextInput source="germanName" />
           {/*<TextInput source="variant" />*/}
+            <TextInput source="description" />
+            <TextInput source="polishDescription" />
+            <TextInput source="germanDescription" />
           <ImageInput source="pictures" label="Related pictures">
               <ImageField source="domainImagePath"/>
           </ImageInput>

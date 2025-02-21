@@ -16,6 +16,7 @@ import Slider from "@mui/material/Slider";
 import {WeightRange} from "./Components/WeightRange";
 import {jwtDecode} from "jwt-decode";
 import AuthContext from "../../AuthContext";
+import i18n from "i18next";
 
 export const MissingVariantsProducts = ({lastPart, slug}) => {
     const [displayedItems, setDisplayedItems] = useState([0, 1000000]);
@@ -57,7 +58,11 @@ export const MissingVariantsProducts = ({lastPart, slug}) => {
     const {id} = useParams(); // Get the product ID from the URL
     const { token } = useContext(AuthContext); // Get token from AuthContext
     let [title, setTitle] = useState("");
-
+    let [germanTitle, setGermanTitle] = useState("");
+    let [polishTitle, setPolishTitle] = useState("");
+    let [description, setDescripiton] = useState("");
+    let [polishDescription, setPolishDescripiton] = useState("");
+    let [germanDescription, setGErmanDescripiton] = useState("");
 
 
     // Debounce timeout variable
@@ -261,9 +266,21 @@ export const MissingVariantsProducts = ({lastPart, slug}) => {
     if (parts.length === 5) {
         // title = products[0]?.categoryName;
         title = products[0]?.productInfo.brand?.name;
+        polishTitle = products[0]?.productInfo.brand?.polishName;
+        germanTitle = products[0]?.productInfo.brand?.germanName;
+
+        description = products[0]?.productInfo.brand?.description;
+        polishDescription = products[0]?.productInfo.brand?.polishDescription;
+        germanDescription = products[0]?.productInfo.brand?.germanDescription;
     } else if (parts.length === 6) {
         // title = products[0]?.subcategoryName;
         title = products[0]?.productInfo.variant?.variantname;
+        polishTitle = products[0]?.productInfo.variant?.polishSubCatName;
+        germanTitle = products[0]?.productInfo.variant?.germanSubCatName;
+
+        description = products[0]?.productInfo.variant?.description;
+        polishDescription = products[0]?.productInfo.variant?.polishDescription;
+        germanDescription = products[0]?.productInfo.variant?.germanDescription;
     } else {
         title = "my_coupling";
     }
@@ -280,13 +297,31 @@ export const MissingVariantsProducts = ({lastPart, slug}) => {
                         color="inherit"
                         to={"/my-coupling"}
                     >
-                        My Coupling
+                        {t('my_coupling')}
                     </Link>
-                    <Typography sx={{ color: 'text.primary' }}>{title ? title : t("my_coupling")}</Typography>
+                    <Typography sx={{ color: 'text.primary' }}>{i18n.language === "en"
+                        ? title || t("my_coupling")
+                        : i18n.language === "de"
+                            ? germanTitle || t("my_coupling")
+                            : i18n.language === "pl"
+                                ? polishTitle || t("my_coupling")
+                                : t("my_coupling")}</Typography>
                 </Breadcrumbs>
                 <div className={'heading-container'}>
-                    <h1 className={'page-title'}>{title ? title : t("my_coupling")}</h1>
-                    <p className={'paragraph paragraph--medium'}>{t("tractor_equipment")}</p>
+                    <h1 className={'page-title'}>{i18n.language === "en"
+                        ? title || t("my_coupling")
+                        : i18n.language === "de"
+                            ? germanTitle || t("my_coupling")
+                            : i18n.language === "pl"
+                                ? polishTitle || t("my_coupling")
+                                : t("my_coupling")}</h1>
+                    <p className={'paragraph paragraph--medium'}>{i18n.language === "en"
+                        ? description || t("tractor_equipment")
+                        : i18n.language === "de"
+                            ? germanDescription || t("tractor_equipment")
+                            : i18n.language === "pl"
+                                ? polishDescription || t("tractor_equipment")
+                                : t("tractor_equipment")}</p>
                 </div>
                 {loading ? (
                     <Box

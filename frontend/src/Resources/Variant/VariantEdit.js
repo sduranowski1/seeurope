@@ -19,6 +19,9 @@ const VariantEdit = (props) => (
             <TextInput source="variantname" />
             <TextInput source="polishName" />
             <TextInput source="germanName" />
+            <TextInput source="description" />
+            <TextInput source="polishDescription" />
+            <TextInput source="germanDescription" />
             <ReferenceInput reference="brands" source="brand.id">
                 <SelectInput
                     label="Brand"

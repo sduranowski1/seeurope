@@ -1,5 +1,6 @@
 import './LinksListWithImages.scss';
 import {useNavigate} from "react-router-dom";
+import i18n from "i18next";
 
 export const LinksListWithImages = (props) => {
     const navigate = useNavigate();
@@ -24,7 +25,14 @@ export const LinksListWithImages = (props) => {
                         <div className={'bg-change'} />
                         {product.imgUrl ? el : ''}
                         <p className={'link-name'} >
-                            {product.name}
+                            {/*{product.name}*/}
+                            {i18n.language === 'en' ? (
+                                product.name
+                            ) : i18n.language === 'pl' ? (
+                                product.polishName
+                            ) : (
+                                product.germanName
+                            )}
                         </p>
                     </div>
                 )

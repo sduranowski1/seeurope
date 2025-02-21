@@ -20,6 +20,9 @@ const ItemTypeEdit = (props) => (
           <TextInput source="name" />
             <TextInput source="polishName" />
             <TextInput source="germanName" />
+            <TextInput source="description" />
+            <TextInput source="polishDescription" />
+            <TextInput source="germanDescription" />
             <ReferenceInput reference="subcategories/no_pagination" source="subcategory.id">
                 <SelectInput
                     label="Subcategory"

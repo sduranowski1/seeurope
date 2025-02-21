@@ -134,7 +134,7 @@ export const MyCoupling = () => {
             <section className={'section-contrains tables-page'}>
                 <div className={'heading-container'}>
                     <h1 className={'page-title'}>{t("my_coupling")}</h1>
-                    <p className={'paragraph paragraph--medium'}>{t("click")}</p>
+                    {/*<p className={'paragraph paragraph--medium'}>{t("click")}</p>*/}
                 </div>
                 <LinksListWithImages data={products} />
             </section>

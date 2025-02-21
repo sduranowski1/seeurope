@@ -61,11 +61,16 @@ export const Category = () => {
                     .filter(item => slugifyFilter(item.category.name) === currentSlugFilter)
                     .map(item => ({
                         name: item.subCatName,
+                        polishName: item.polishSubCatName,
+                        germanName: item.germanSubCatName,
                         imgUrl: item.domainImagePath, // Images not handled yet
                         slug: slugify(item.subCatName),
                         categoryTitle: item.category.name,
                         categoryTitlePl: item.category.polishName,
                         categoryTitleDe: item.category.germanName,
+                        categoryDescription: item.category.description,
+                        categoryDescriptionPl: item.category.polishDescription,
+                        categoryDescriptionDe: item.category.germanDescription,
                     }));
 
                 console.log(filteredData);
@@ -152,12 +157,19 @@ export const Category = () => {
                             )}
                         </h1>
                         <p className={'paragraph paragraph--medium'}>
-                            Tutaj znajdziesz pełną standardową gamę sprzętu SE Equipment do wózków widłowych.
+                            {/*Tutaj znajdziesz pełną standardową gamę sprzętu SE Equipment do wózków widłowych.*/}
+                            {i18n.language === 'en' ? (
+                                products[0].categoryDescription
+                            ) : i18n.language === 'pl' ? (
+                                products[0].categoryDescriptionPl
+                            ) : (
+                                products[0].categoryDescriptionDe
+                            )}
                         </p>
-                        <br />
-                        <p className={'paragraph paragraph--medium'}>
-                            Kliknij na wybrany produkt poniżej, aby znaleźć odpowiedni sprzęt dla siebie.
-                        </p>
+                        {/*<br />*/}
+                        {/*<p className={'paragraph paragraph--medium'}>*/}
+                        {/*    Kliknij na wybrany produkt poniżej, aby znaleźć odpowiedni sprzęt dla siebie.*/}
+                        {/*</p>*/}
                     </div>
                     <LinksListWithImages data={products} />
                 </section>

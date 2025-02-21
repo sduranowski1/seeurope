@@ -62,6 +62,18 @@ class Variant
     #[Groups(['variant:read', 'variant:create', 'variant:update', "productInfo:read", 'productInfo:create', 'enovaProduct:read'])]
     private ?string $germanName = null;
 
+    #[ORM\Column(type: "text", nullable: true)]
+    #[Groups(['variant:read', 'variant:create', 'variant:update', "productInfo:read", 'productInfo:create', 'enovaProduct:read'])]
+    private ?string $description = null;
+
+    #[ORM\Column(type: "text", nullable: true)]
+    #[Groups(['variant:read', 'variant:create', 'variant:update', "productInfo:read", 'productInfo:create', 'enovaProduct:read'])]
+    private ?string $polishDescription = null;
+
+    #[ORM\Column(type: "text", nullable: true)]
+    #[Groups(['variant:read', 'variant:create', 'variant:update', "productInfo:read", 'productInfo:create', 'enovaProduct:read'])]
+    private ?string $germanDescription = null;
+
 //    #[ORM\Column(nullable: true)]
 //    #[Groups(['variant:read', 'variant:create'])]
 //    private ?int $bid = null;
@@ -142,6 +154,38 @@ class Variant
     {
         $this->germanName = $germanName;
     }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): void
+    {
+        $this->description = $description;
+    }
+
+    public function getPolishDescription(): ?string
+    {
+        return $this->polishDescription;
+    }
+
+    public function setPolishDescription(?string $polishDescription): void
+    {
+        $this->polishDescription = $polishDescription;
+    }
+
+    public function getGermanDescription(): ?string
+    {
+        return $this->germanDescription;
+    }
+
+    public function setGermanDescription(?string $germanDescription): void
+    {
+        $this->germanDescription = $germanDescription;
+    }
+
+    
 
 //    public function getBid(): ?int
 //    {

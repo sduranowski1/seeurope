@@ -59,6 +59,8 @@ export const MyMachine = () => {
                     // .filter(item => slugify(item.brand.name) === currentSlug)
                     .map(item => ({
                         name: item.name,
+                        polishName: item.polishName,
+                        germanName: item.germanName,
                         imgUrl: item.domainImagePath, // Images not handled yet
                         slug: slugify(item.name),
                     }));

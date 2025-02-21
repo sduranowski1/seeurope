@@ -57,6 +57,8 @@ export const Subcategory = () => {
                     .filter(item => slugify(item.subcategory.subCatName) === currentSlug)
                     .map(item => ({
                         name: item.name,
+                        polishName: item.polishName,
+                        germanName: item.germanName,
                         imgUrl: item.domainImagePath, // Images not handled yet
                         slug: slugify(item.name),
                         subcategoryTitle: item.subcategory.subCatName,

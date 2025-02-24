@@ -216,6 +216,16 @@ class Order
         $this->shippingMethod = $shippingMethod;
     }
 
+    public function getOrderNumber(): ?string
+    {
+        return $this->orderNumber;
+    }
+
+    public function setOrderNumber(?string $orderNumber): void
+    {
+        $this->orderNumber = $orderNumber;
+    }
+
 
 
     // Add other getters and setters as needed...

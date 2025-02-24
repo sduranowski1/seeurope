@@ -132,8 +132,8 @@ export const Dashboard = () => {
                                         {/*<th>Address</th>*/}
                                         <th>Phone</th>
                                         <th>Order Date</th>
-                                        <th>Subtotal</th>
-                                        <th>Tax</th>
+                                        {/*<th>Subtotal</th>*/}
+                                        {/*<th>Tax</th>*/}
                                         <th>Total</th>
                                         <th>Currency</th>
                                         <th>Items</th>
@@ -149,8 +149,8 @@ export const Dashboard = () => {
                                             {/*<td>{order.address || 'N/A'}</td>*/}
                                             <td>{order.phone || ''}</td>
                                             <td>{new Date(order.orderDate).toLocaleDateString()}</td>
-                                            <td>{order.subtotal}</td>
-                                            <td>{order.tax}</td>
+                                            {/*<td>{order.subtotal}</td>*/}
+                                            {/*<td>{order.tax}</td>*/}
                                             <td>{order.total}</td>
                                             <td>{order.currency}</td>
                                             <td>

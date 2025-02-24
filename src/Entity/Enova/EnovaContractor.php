@@ -60,7 +60,7 @@ class EnovaContractor
     private ?EnovaAddress $adresKorespondencyjny = null;
 
     #[ORM\OneToMany(mappedBy: 'contractor', targetEntity: EnovaLocation::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
-    #[Groups(['enovaContractor:read', 'enovaContractor:write'])]
+    #[Groups(['enovaContractor:read', 'enovaContractor:write', 'enovaPerson:read', 'enovaPerson:create', 'enovaPerson:update', 'userEnova:read'])]
     private Collection $locations;
 
     #[ORM\OneToMany(targetEntity: EnovaPerson::class, mappedBy: 'contractor', cascade: ['persist', 'remove'])]

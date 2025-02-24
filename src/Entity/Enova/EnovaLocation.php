@@ -16,24 +16,24 @@ class EnovaLocation
     #[ORM\Id]
 //    #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups([ 'enovaLocation:read', 'enovaContractor:read',])]
+    #[Groups([ 'enovaLocation:read', 'enovaContractor:read', 'userEnova:read'])]
     private ?int $id = null;
 
     #[ORM\Column(type: 'string', length: 50, nullable: true)] // Made nullable
-    #[Groups(['enovaLocation:read', 'enovaLocation:write', 'enovaContractor:read'])]
+    #[Groups(['enovaLocation:read', 'enovaLocation:write', 'enovaContractor:read', 'userEnova:read'])]
     private ?string $kod = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)] // Made nullable
-    #[Groups(['enovaLocation:read', 'enovaLocation:write', 'enovaContractor:read'])]
+    #[Groups(['enovaLocation:read', 'enovaLocation:write', 'enovaContractor:read', 'userEnova:read'])]
     private ?string $nazwa = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    #[Groups(['enovaLocation:read', 'enovaLocation:write', 'enovaContractor:read'])]
+    #[Groups(['enovaLocation:read', 'enovaLocation:write', 'enovaContractor:read', 'userEnova:read'])]
     private ?string $eMail = null;
 
     #[ORM\ManyToOne(cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: true)]
-    #[Groups(['enovaLocation:read', 'enovaLocation:write', 'enovaContractor:read'])]
+    #[Groups(['enovaLocation:read', 'enovaLocation:write', 'enovaContractor:read', 'userEnova:read'])]
     private ?EnovaAddress $adresLocation = null;
 
     #[ORM\ManyToOne(targetEntity: EnovaContractor::class, inversedBy: 'locations')]

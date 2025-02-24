@@ -241,12 +241,9 @@ const Checkout = () => {
                         <br/>
                         {value === 0 && (
                             <Box>
-                                {/*    <Typography variant="h6" gutterBottom>*/}
-                                {/*    Address*/}
-                                {/*</Typography>*/}
-
                                 {userDetails && (
                                     <>
+                                        {/* Main Address */}
                                         <Typography variant="body1">
                                             <strong>Voivoideship:</strong> {userDetails?.enovaPerson?.contractor?.adres?.wojewodztwo || 'N/A'}
                                         </Typography>
@@ -254,16 +251,13 @@ const Checkout = () => {
                                             <strong>Region:</strong> {userDetails?.enovaPerson?.contractor?.adres?.gmina || 'N/A'}
                                         </Typography>
                                         <Typography variant="body1">
-                                            <strong>Building
-                                                Number:</strong> {userDetails?.enovaPerson?.contractor?.adres?.nrDomu || 'N/A'}
+                                            <strong>Building Number:</strong> {userDetails?.enovaPerson?.contractor?.adres?.nrDomu || 'N/A'}
                                         </Typography>
                                         <Typography variant="body1">
-                                            <strong>Apartment
-                                                Number:</strong> {userDetails?.enovaPerson?.contractor?.adres?.nrLokalu || 'N/A'}
+                                            <strong>Apartment Number:</strong> {userDetails?.enovaPerson?.contractor?.adres?.nrLokalu || 'N/A'}
                                         </Typography>
                                         <Typography variant="body1">
-                                            <strong>Post
-                                                office:</strong> {userDetails?.enovaPerson?.contractor?.adres?.poczta || 'N/A'}
+                                            <strong>Post office:</strong> {userDetails?.enovaPerson?.contractor?.adres?.poczta || 'N/A'}
                                         </Typography>
                                         <Typography variant="body1">
                                             <strong>District:</strong> {userDetails?.enovaPerson?.contractor?.adres?.powiat || 'N/A'}
@@ -281,12 +275,42 @@ const Checkout = () => {
                                             <strong>City:</strong> {userDetails?.enovaPerson?.contractor?.adres?.miejscowosc || 'N/A'}
                                         </Typography>
                                         <Typography variant="body1">
-                                            <strong>Zip
-                                                Code:</strong> {userDetails?.enovaPerson?.contractor?.adres?.kodPocztowy || 'N/A'}
+                                            <strong>Zip Code:</strong> {userDetails?.enovaPerson?.contractor?.adres?.kodPocztowy || 'N/A'}
                                         </Typography>
                                         <Typography variant="body1">
                                             <strong>Country:</strong> {userDetails?.enovaPerson?.contractor?.adres?.kraj || 'N/A'}
                                         </Typography>
+
+                                        {/* Locations Addresses */}
+                                        {userDetails?.enovaPerson?.contractor?.locations?.map((location, index) => (
+                                            <Box key={index}>
+                                                <Typography variant="h6">{`Location ${index + 1}`}</Typography>
+                                                <Typography variant="body1">
+                                                    <strong>Voivodeship:</strong> {location?.adresLocation?.wojewodztwo || 'N/A'}
+                                                </Typography>
+                                                <Typography variant="body1">
+                                                    <strong>Region:</strong> {location?.adresLocation?.gmina || 'N/A'}
+                                                </Typography>
+                                                <Typography variant="body1">
+                                                    <strong>Building Number:</strong> {location?.adresLocation?.nrDomu || 'N/A'}
+                                                </Typography>
+                                                <Typography variant="body1">
+                                                    <strong>Apartment Number:</strong> {location?.adresLocation?.nrLokalu || 'N/A'}
+                                                </Typography>
+                                                <Typography variant="body1">
+                                                    <strong>Post office:</strong> {location?.adresLocation?.poczta || 'N/A'}
+                                                </Typography>
+                                                <Typography variant="body1">
+                                                    <strong>District:</strong> {location?.adresLocation?.powiat || 'N/A'}
+                                                </Typography>
+                                                <Typography variant="body1">
+                                                    <strong>Street:</strong> {location?.adresLocation?.ulica || 'N/A'}
+                                                </Typography>
+                                                <Typography variant="body1">
+                                                    <strong>City:</strong> {location?.adresLocation?.miejscowosc || 'N/A'}
+                                                </Typography>
+                                            </Box>
+                                        ))}
                                     </>
                                 )}
                             </Box>

@@ -24,5 +24,22 @@ class EnovaProductRepository extends ServiceEntityRepository
         $this->entityManager->persist($fetchProduct);
         $this->entityManager->flush();
     }
+
+    public function findAllProductIds(): array
+    {
+        return $this->createQueryBuilder('p')
+            ->select('p.id')
+            ->getQuery()
+            ->getSingleColumnResult();
+    }
+
+    public function remove(EnovaProduct $product, bool $flush = false): void
+    {
+        $this->entityManager->remove($product);
+        if ($flush) {
+            $this->entityManager->flush();
+        }
+    }
+
 }
 

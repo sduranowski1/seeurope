@@ -36,14 +36,12 @@ class EnovaProductsController extends AbstractController
 
     public function fetchAndSaveProducts(): JsonResponse
     {
-        // Call the TokenController method to fetch and save the token at the beginning
         try {
-            $token = $this->tokenService->fetchAndStoreToken();  // Fetch and save the token
+            $token = $this->tokenService->fetchAndStoreToken();
         } catch (\Exception $e) {
             return new JsonResponse(['error' => $e->getMessage()], 500);
         }
 
-        // Get the token from the database
         $tokenEntity = $this->tokenRepository->findLatestToken();
         if (!$tokenEntity) {
             throw new \Exception('No token found in the database.');
@@ -51,9 +49,13 @@ class EnovaProductsController extends AbstractController
 
         $token = $tokenEntity->getToken();
 
+        // Get all existing product IDs before fetching
+        $existingProductIds = $this->enovaProductRepository->findAllProductIds(); // You need to implement this in the repository
+
         $allProducts = [];
+        $fetchedProductIds = [];
         $currentPage = 1;
-        $limit = 50; // Adjust as needed
+        $limit = 50;
 
         do {
             $productUrl = 'http://extranet.seequipment.pl:9010/api/PanelWWW_API/DajTowary';
@@ -79,24 +81,24 @@ class EnovaProductsController extends AbstractController
                 break;
             }
 
+            foreach ($productData['elementy'] as $product) {
+                $fetchedProductIds[] = $product['id'];
+            }
+
             $allProducts = array_merge($allProducts, $productData['elementy']);
             $currentPage++;
         } while (count($allProducts) < $productData['liczbaWszystkich']);
 
         foreach ($allProducts as $product) {
-            // Fetch the corresponding ProductInfo entity by its ID (using the same ID as in the product)
-            $productInfo = $this->productInfoRepository->find($product['id']); // Adjust this if 'id' is not the right field for ProductInfo
+            $productInfo = $this->productInfoRepository->find($product['id']);
 
             if (!$productInfo) {
-                // If the ProductInfo doesn't exist, you can handle the case here, maybe skip this product or log an error
                 continue;
             }
 
-            // Check if the product already exists in the database
             $existingProduct = $this->enovaProductRepository->findOneBy(['id' => $product['id']]);
 
             if (!$existingProduct) {
-                // Create a new FetchProduct entity
                 $newProduct = new EnovaProduct();
                 $newProduct->setId($product['id']);
                 $newProduct->setProductInfo($productInfo);
@@ -108,14 +110,10 @@ class EnovaProductsController extends AbstractController
                 $newProduct->setStockStatus($product['stanMagazynowy']);
                 $newProduct->setFeatures($product['listaCechy']);
                 $newProduct->setPriceList($product['listaCen']);
-//                $newProduct->setIndividualPrices($product['listaCenIndywidualnych']);
                 $newProduct->setUpdatedAt(new \DateTime());
-                // Map other fields as needed
 
                 $this->enovaProductRepository->save($newProduct, true);
             } else {
-                // Update existing product
-                $existingProduct->setId($product['id']);
                 $existingProduct->setProductInfo($productInfo);
                 $existingProduct->setName($product['nazwa']);
                 $existingProduct->setCode($product['kod']);
@@ -125,14 +123,23 @@ class EnovaProductsController extends AbstractController
                 $existingProduct->setStockStatus($product['stanMagazynowy']);
                 $existingProduct->setFeatures($product['listaCechy']);
                 $existingProduct->setPriceList($product['listaCen']);
-//                $existingProduct->setIndividualPrices($product['listaCenIndywidualnych']);
                 $existingProduct->setUpdatedAt(new \DateTime());
-                // Update other fields as needed
 
                 $this->enovaProductRepository->save($existingProduct, true);
             }
         }
 
-        return new JsonResponse(['status' => 'success', 'message' => 'Products fetched and saved successfully']);
+        // Remove products that were not present in the latest fetch
+        $productsToRemove = array_diff($existingProductIds, $fetchedProductIds);
+
+        foreach ($productsToRemove as $productId) {
+            $productToDelete = $this->enovaProductRepository->find($productId);
+            if ($productToDelete) {
+                $this->enovaProductRepository->remove($productToDelete, true);
+            }
+        }
+
+        return new JsonResponse(['status' => 'success', 'message' => 'Products fetched, updated, and removed successfully']);
     }
+
 }

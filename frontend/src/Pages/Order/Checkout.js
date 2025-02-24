@@ -1,10 +1,28 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {Container, Typography, Grid, Paper, Box, Divider, Button, CircularProgress, Tabs, Tab, TextField} from '@mui/material';
+import {
+    Container,
+    Typography,
+    Grid,
+    Paper,
+    Box,
+    Divider,
+    Button,
+    CircularProgress,
+    Tabs,
+    Tab,
+    TextField,
+    FormControl, InputLabel, Select, MenuItem, FormControlLabel, Radio, RadioGroup
+} from '@mui/material';
+import Textarea from '@mui/joy/Textarea';
 import { useLocation, useNavigate } from 'react-router-dom';
 import authProvider from "../../authProvider";
 import AuthContext from "../../AuthContext";
 import {jwtDecode} from "jwt-decode";
 import i18n from "i18next";
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+// import {Radio, RadioGroup} from "@mui/joy";
 
 const Checkout = () => {
     const location = useLocation();
@@ -34,6 +52,17 @@ const Checkout = () => {
         country: '',
     });
 
+    const [selectedLocation, setSelectedLocation] = useState("");
+    const [date, setDate] = useState(null);
+
+    const [selectedOption, setSelectedOption] = useState(null);
+    const [contactPerson, setContactPerson] = useState("");
+    const [selectedDate, setSelectedDate] = useState(null);
+    const [orderNumber, setOrderNumber] = useState("");
+
+    const handleCheckboxChange = (event) => {
+        setSelectedOption(event.target.value);
+    };
 
     useEffect(() => {
         const fetchUserInfo = async () => {
@@ -97,18 +126,30 @@ const Checkout = () => {
             name: userDetails?.enovaPerson?.imie || "",
             // address: userDetails?.address || "",
             address: selectedAddress === 'existing' ? {
-                voivodeship: userDetails?.enovaPerson?.contractor?.adres?.wojewodztwo || "", // Existing Address Field
-                region: userDetails?.enovaPerson?.contractor?.adres?.gmina || "", // Existing Address Field
-                buildingNumber: userDetails?.enovaPerson?.contractor?.adres?.nrDomu || "", // Existing Address Field
-                apartmentNumber: userDetails?.enovaPerson?.contractor?.adres?.nrLokalu || "", // Existing Address Field
-                postOffice: userDetails?.enovaPerson?.contractor?.adres?.poczta || "", // Existing Address Field
-                district: userDetails?.enovaPerson?.contractor?.adres?.powiat || "", // Existing Address Field
-                regon: userDetails?.enovaPerson?.contractor?.adres?.Regon || "", // Existing Address Field
-                phone: userDetails?.enovaPerson?.contractor?.adres?.telefon || "", // Existing Address Field
-                street: userDetails?.enovaPerson?.contractor?.adres?.ulica || "", // Existing Address Field
-                city: userDetails?.enovaPerson?.contractor?.adres?.miejscowosc || "", // Existing Address Field
-                zipCode: userDetails?.enovaPerson?.contractor?.adres?.kodPocztowy || "", // Existing Address Field
-                country: userDetails?.enovaPerson?.contractor?.adres?.kraj || "", // Existing Address Field
+                // voivodeship: userDetails?.enovaPerson?.contractor?.adres?.wojewodztwo || "", // Existing Address Field
+                // region: userDetails?.enovaPerson?.contractor?.adres?.gmina || "", // Existing Address Field
+                // buildingNumber: userDetails?.enovaPerson?.contractor?.adres?.nrDomu || "", // Existing Address Field
+                // apartmentNumber: userDetails?.enovaPerson?.contractor?.adres?.nrLokalu || "", // Existing Address Field
+                // postOffice: userDetails?.enovaPerson?.contractor?.adres?.poczta || "", // Existing Address Field
+                // district: userDetails?.enovaPerson?.contractor?.adres?.powiat || "", // Existing Address Field
+                // regon: userDetails?.enovaPerson?.contractor?.adres?.Regon || "", // Existing Address Field
+                // phone: userDetails?.enovaPerson?.contractor?.adres?.telefon || "", // Existing Address Field
+                // street: userDetails?.enovaPerson?.contractor?.adres?.ulica || "", // Existing Address Field
+                // city: userDetails?.enovaPerson?.contractor?.adres?.miejscowosc || "", // Existing Address Field
+                // zipCode: userDetails?.enovaPerson?.contractor?.adres?.kodPocztowy || "", // Existing Address Field
+                // country: userDetails?.enovaPerson?.contractor?.adres?.kraj || "", // Existing Address Field
+                voivodeship: locations[selectedLocation]?.adresLocation?.wojewodztwo || "",
+                region: locations[selectedLocation]?.adresLocation?.gmina || "",
+                buildingNumber: locations[selectedLocation]?.adresLocation?.nrDomu || "",
+                apartmentNumber: locations[selectedLocation]?.adresLocation?.nrLokalu || "",
+                postOffice: locations[selectedLocation]?.adresLocation?.poczta || "",
+                district: locations[selectedLocation]?.adresLocation?.powiat || "",
+                regon: locations[selectedLocation]?.adresLocation?.Regon || "",
+                phone: locations[selectedLocation]?.adresLocation?.telefon || "",
+                street: locations[selectedLocation]?.adresLocation?.ulica || "",
+                city: locations[selectedLocation]?.adresLocation?.miejscowosc || "",
+                zipCode: locations[selectedLocation]?.adresLocation?.kodPocztowy || "",
+                country: locations[selectedLocation]?.adresLocation?.kraj || "",
             } : {
                 voivodeship: newAddress?.voivodeship || "", // New Address Field
                 region: newAddress?.region || "", // New Address Field
@@ -124,6 +165,10 @@ const Checkout = () => {
                 country: newAddress?.country || "", // New Address Field
             },
             phone: userDetails?.enovaPerson?.telKomorkowy || "",
+            contactPerson: contactPerson,
+            requestedOrderDate: selectedDate ? selectedDate.toISOString() : "",
+            orderNumber: orderNumber,
+            shippingMethod: selectedOption,
             items: cartItems.map((item) => ({
                 id: item.id,
                 name: i18n.language === "en"
@@ -204,6 +249,9 @@ const Checkout = () => {
 
     console.log(userDetails)
 
+
+    const locations = userDetails?.enovaPerson?.contractor?.locations || [];
+
     return (
         <Container maxWidth="md" sx={{ mt: 4, marginBottom: 3 }}>
             <Typography variant="h4" gutterBottom>
@@ -234,7 +282,8 @@ const Checkout = () => {
                                 </>
                             )}
                         </Box>
-                        <Divider sx={{ my: 2 }} />                        <Tabs value={value} onChange={handleChange} aria-label="address tabs">
+                        <Divider sx={{ my: 2 }} />
+                        <Tabs value={value} onChange={handleChange} aria-label="address tabs">
                             <Tab label="Existing Address"/>
                             <Tab label="New Address"/>
                         </Tabs>
@@ -243,74 +292,81 @@ const Checkout = () => {
                             <Box>
                                 {userDetails && (
                                     <>
-                                        {/* Main Address */}
-                                        <Typography variant="body1">
-                                            <strong>Voivoideship:</strong> {userDetails?.enovaPerson?.contractor?.adres?.wojewodztwo || 'N/A'}
-                                        </Typography>
-                                        <Typography variant="body1">
-                                            <strong>Region:</strong> {userDetails?.enovaPerson?.contractor?.adres?.gmina || 'N/A'}
-                                        </Typography>
-                                        <Typography variant="body1">
-                                            <strong>Building Number:</strong> {userDetails?.enovaPerson?.contractor?.adres?.nrDomu || 'N/A'}
-                                        </Typography>
-                                        <Typography variant="body1">
-                                            <strong>Apartment Number:</strong> {userDetails?.enovaPerson?.contractor?.adres?.nrLokalu || 'N/A'}
-                                        </Typography>
-                                        <Typography variant="body1">
-                                            <strong>Post office:</strong> {userDetails?.enovaPerson?.contractor?.adres?.poczta || 'N/A'}
-                                        </Typography>
-                                        <Typography variant="body1">
-                                            <strong>District:</strong> {userDetails?.enovaPerson?.contractor?.adres?.powiat || 'N/A'}
-                                        </Typography>
-                                        <Typography variant="body1">
-                                            <strong>Regon:</strong> {userDetails?.enovaPerson?.contractor?.adres?.Regon || 'N/A'}
-                                        </Typography>
-                                        <Typography variant="body1">
-                                            <strong>Phone:</strong> {userDetails?.enovaPerson?.contractor?.adres?.telefon || 'N/A'}
-                                        </Typography>
-                                        <Typography variant="body1">
-                                            <strong>Street:</strong> {userDetails?.enovaPerson?.contractor?.adres?.ulica || 'N/A'}
-                                        </Typography>
-                                        <Typography variant="body1">
-                                            <strong>City:</strong> {userDetails?.enovaPerson?.contractor?.adres?.miejscowosc || 'N/A'}
-                                        </Typography>
-                                        <Typography variant="body1">
-                                            <strong>Zip Code:</strong> {userDetails?.enovaPerson?.contractor?.adres?.kodPocztowy || 'N/A'}
-                                        </Typography>
-                                        <Typography variant="body1">
-                                            <strong>Country:</strong> {userDetails?.enovaPerson?.contractor?.adres?.kraj || 'N/A'}
-                                        </Typography>
+                                        {/*/!* Main Address *!/*/}
+                                        {/*<Typography variant="h6">Main Address</Typography>*/}
+                                        {/*<Typography variant="body1">*/}
+                                        {/*    <strong>Voivodeship:</strong> {userDetails?.enovaPerson?.contractor?.adres?.wojewodztwo || 'N/A'}*/}
+                                        {/*</Typography>*/}
+                                        {/*<Typography variant="body1">*/}
+                                        {/*    <strong>Region:</strong> {userDetails?.enovaPerson?.contractor?.adres?.gmina || 'N/A'}*/}
+                                        {/*</Typography>*/}
+                                        {/*<Typography variant="body1">*/}
+                                        {/*    <strong>Building Number:</strong> {userDetails?.enovaPerson?.contractor?.adres?.nrDomu || 'N/A'}*/}
+                                        {/*</Typography>*/}
+                                        {/*<Typography variant="body1">*/}
+                                        {/*    <strong>Apartment Number:</strong> {userDetails?.enovaPerson?.contractor?.adres?.nrLokalu || 'N/A'}*/}
+                                        {/*</Typography>*/}
+                                        {/*<Typography variant="body1">*/}
+                                        {/*    <strong>Post office:</strong> {userDetails?.enovaPerson?.contractor?.adres?.poczta || 'N/A'}*/}
+                                        {/*</Typography>*/}
+                                        {/*<Typography variant="body1">*/}
+                                        {/*    <strong>District:</strong> {userDetails?.enovaPerson?.contractor?.adres?.powiat || 'N/A'}*/}
+                                        {/*</Typography>*/}
+                                        {/*<Typography variant="body1">*/}
+                                        {/*    <strong>Street:</strong> {userDetails?.enovaPerson?.contractor?.adres?.ulica || 'N/A'}*/}
+                                        {/*</Typography>*/}
+                                        {/*<Typography variant="body1">*/}
+                                        {/*    <strong>City:</strong> {userDetails?.enovaPerson?.contractor?.adres?.miejscowosc || 'N/A'}*/}
+                                        {/*</Typography>*/}
 
-                                        {/* Locations Addresses */}
-                                        {userDetails?.enovaPerson?.contractor?.locations?.map((location, index) => (
-                                            <Box key={index}>
-                                                <Typography variant="h6">{`Location ${index + 1}`}</Typography>
+                                        {/* Locations Dropdown */}
+                                        {locations.length > 0 && (
+                                            <FormControl fullWidth sx={{ mt: 2 }}>
+                                                <InputLabel>Select Location</InputLabel>
+                                                <Select
+                                                    value={selectedLocation}
+                                                    onChange={(e) => setSelectedLocation(e.target.value)}
+                                                    label="Select Location"
+                                                >
+                                                    {locations.map((location, index) => (
+                                                        <MenuItem key={index} value={index}>
+                                                            {location.nazwa || `Location ${index + 1}`}
+                                                        </MenuItem>
+                                                    ))}
+                                                </Select>
+                                            </FormControl>
+                                        )}
+
+                                        {/* Display Selected Location Address */}
+                                        {selectedLocation !== "" && (
+                                            <Box mt={2}>
+                                                <Typography variant="h6">Selected Location Address</Typography>
                                                 <Typography variant="body1">
-                                                    <strong>Voivodeship:</strong> {location?.adresLocation?.wojewodztwo || 'N/A'}
+                                                    <strong>Voivodeship:</strong> {locations[selectedLocation]?.adresLocation?.wojewodztwo || 'N/A'}
                                                 </Typography>
                                                 <Typography variant="body1">
-                                                    <strong>Region:</strong> {location?.adresLocation?.gmina || 'N/A'}
+                                                    <strong>Region:</strong> {locations[selectedLocation]?.adresLocation?.gmina || 'N/A'}
                                                 </Typography>
                                                 <Typography variant="body1">
-                                                    <strong>Building Number:</strong> {location?.adresLocation?.nrDomu || 'N/A'}
+                                                    <strong>Building Number:</strong> {locations[selectedLocation]?.adresLocation?.nrDomu || 'N/A'}
                                                 </Typography>
                                                 <Typography variant="body1">
-                                                    <strong>Apartment Number:</strong> {location?.adresLocation?.nrLokalu || 'N/A'}
+                                                    <strong>Apartment Number:</strong> {locations[selectedLocation]?.adresLocation?.nrLokalu || 'N/A'}
                                                 </Typography>
                                                 <Typography variant="body1">
-                                                    <strong>Post office:</strong> {location?.adresLocation?.poczta || 'N/A'}
+                                                    <strong>Post office:</strong> {locations[selectedLocation]?.adresLocation?.poczta || 'N/A'}
                                                 </Typography>
                                                 <Typography variant="body1">
-                                                    <strong>District:</strong> {location?.adresLocation?.powiat || 'N/A'}
+                                                    <strong>District:</strong> {locations[selectedLocation]?.adresLocation?.powiat || 'N/A'}
                                                 </Typography>
                                                 <Typography variant="body1">
-                                                    <strong>Street:</strong> {location?.adresLocation?.ulica || 'N/A'}
+                                                    <strong>Street:</strong> {locations[selectedLocation]?.adresLocation?.ulica || 'N/A'}
                                                 </Typography>
                                                 <Typography variant="body1">
-                                                    <strong>City:</strong> {location?.adresLocation?.miejscowosc || 'N/A'}
+                                                    <strong>City:</strong> {locations[selectedLocation]?.adresLocation?.miejscowosc || 'N/A'}
                                                 </Typography>
                                             </Box>
-                                        ))}
+                                        )}
                                     </>
                                 )}
                             </Box>
@@ -421,6 +477,48 @@ const Checkout = () => {
                                 </Grid>
                             </Box>
                         )}
+                        <Divider sx={{ my: 2 }} />
+                        <Textarea
+                            minRows={2}
+                            placeholder="Contact person"
+                            fullWidth
+                            sx={{marginBottom: "15px"}}
+                            value={contactPerson}
+                            onChange={(e) => setContactPerson(e.target.value)}
+                        />
+                        <Grid container spacing={2}>
+
+                            <Grid item xs={12} sm={6}>
+                                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                    <DatePicker
+                                        label="Select Date"
+                                        value={selectedDate}
+                                        onChange={(newDate) => setSelectedDate(newDate)}
+                                        renderInput={(params) => <TextField {...params} />}
+                                    />
+                                </LocalizationProvider>
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    label="My Order Number"
+                                    fullWidth
+                                    value={orderNumber}
+                                    onChange={(e) => setOrderNumber(e.target.value)}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <FormControl>
+                                    <RadioGroup
+                                        value={selectedOption}
+                                        onChange={handleCheckboxChange}
+                                    >
+                                        <FormControlLabel value="shipping" control={<Radio />} label="Shipping" />
+                                        <FormControlLabel value="collection" control={<Radio />} label="Collection" />
+                                    </RadioGroup>
+                                </FormControl>
+                            </Grid>
+                        </Grid>
+
                     </Paper>
                 </Grid>
 

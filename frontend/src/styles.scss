@@ -173,8 +173,9 @@ button {
 }
 
 .section-contrains {
-  max-width: 1320px;
-  padding: 0 60px;
+  //max-width: 1320px;
+  //padding: 0 60px;
+  padding: 0 25px;
   margin-inline: auto;
   @media (max-width: $medium) {
     padding: 0 24px;

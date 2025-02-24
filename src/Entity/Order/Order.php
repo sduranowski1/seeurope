@@ -45,6 +45,9 @@ class Order
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTime $orderDate = null;
 
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTime $requestedOrderDate = null;
+
     #[ORM\Column(type: Types::JSON)]
     private array $items = [];
 
@@ -59,6 +62,16 @@ class Order
 
     #[ORM\Column(type: 'string', length: 20, nullable: true)]
     private ?string $currency = null;
+
+    // New fields
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $contactPerson = null;
+
+    #[ORM\Column(type: 'string', length: 50, nullable: true)]
+    private ?string $orderNumber = null;
+
+    #[ORM\Column(type: 'string', length: 50, nullable: true)]
+    private ?string $shippingMethod = null;
 
     // Getters and setters for all properties...
 
@@ -171,6 +184,36 @@ class Order
     public function setCurrency(?string $currency): void
     {
         $this->currency = $currency;
+    }
+
+    public function getContactPerson(): ?string
+    {
+        return $this->contactPerson;
+    }
+
+    public function setContactPerson(?string $contactPerson): void
+    {
+        $this->contactPerson = $contactPerson;
+    }
+
+    public function getRequestedOrderDate(): ?\DateTime
+    {
+        return $this->requestedOrderDate;
+    }
+
+    public function setRequestedOrderDate(?\DateTime $requestedOrderDate): void
+    {
+        $this->requestedOrderDate = $requestedOrderDate;
+    }
+
+    public function getShippingMethod(): ?string
+    {
+        return $this->shippingMethod;
+    }
+
+    public function setShippingMethod(?string $shippingMethod): void
+    {
+        $this->shippingMethod = $shippingMethod;
     }
 
 

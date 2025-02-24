@@ -58,10 +58,11 @@ const Cart = () => {
         }, 0);
 
 
-    const TAX_RATE = 0.1; // 10% tax
+    // const TAX_RATE = 0.1; // 10% tax
     const subtotal = calculateSubtotal();
-    const tax = subtotal * TAX_RATE;
-    const total = subtotal + tax;
+    // const tax = subtotal * TAX_RATE;
+    // const total = subtotal + tax;
+    const total = subtotal;
 
 
     const storedPriceCurrency = localStorage.getItem("priceCurrency");
@@ -142,14 +143,15 @@ const Cart = () => {
 
                     <Box mt={3} textAlign="right">
                         <Typography variant="body1">Subtotal: {subtotal.toFixed(2)} {storedPriceCurrency}</Typography>
-                        <Typography variant="body1">Tax (10%): {tax.toFixed(2)} {storedPriceCurrency}</Typography>
+                        {/*<Typography variant="body1">Tax (10%): {tax.toFixed(2)} {storedPriceCurrency}</Typography>*/}
                         <Typography variant="h6">Total: {total.toFixed(2)} {storedPriceCurrency}</Typography>
                         <Button
                             variant="contained"
                             color="primary"
                             size="large"
                             sx={{ mt: 2 }}
-                            onClick={() => navigate('/dashboard/checkout', { state: { cartItems, subtotal, tax, total } })}
+                            onClick={() => navigate('/dashboard/checkout', { state: { cartItems, subtotal, total } })}
+                            // onClick={() => navigate('/dashboard/checkout', { state: { cartItems, subtotal, tax, total } })}
                         >
                             Proceed to Checkout
                         </Button>

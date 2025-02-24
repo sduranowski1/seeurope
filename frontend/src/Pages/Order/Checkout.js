@@ -9,7 +9,8 @@ import i18n from "i18next";
 const Checkout = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    const { cartItems, subtotal, tax, total } = location.state || {};
+    // const { cartItems, subtotal, tax, total } = location.state || {};
+    const { cartItems, subtotal, total } = location.state || {};
     const { token } = useContext(AuthContext); // Get token from AuthContext
 
     const [userEmail, setUserEmail] = useState(null);
@@ -134,7 +135,7 @@ const Checkout = () => {
                 price: item.priceList?.find(p => p.nazwa === savedContractorName)?.netto || item.priceList?.find(p => p.nazwa === 'End User')?.netto,
             })),
             subtotal,
-            tax,
+            // tax,
             total,
             orderDate: new Date().toISOString(),
             currency: storedPriceCurrency,
@@ -432,10 +433,10 @@ const Checkout = () => {
                             <Typography>Subtotal:</Typography>
                             <Typography>{subtotal.toFixed(2)} {storedPriceCurrency}</Typography>
                         </Box>
-                        <Box display="flex" justifyContent="space-between">
-                            <Typography>Tax (10%):</Typography>
-                            <Typography>{tax.toFixed(2)} {storedPriceCurrency}</Typography>
-                        </Box>
+                        {/*<Box display="flex" justifyContent="space-between">*/}
+                        {/*    <Typography>Tax (10%):</Typography>*/}
+                        {/*    <Typography>{tax.toFixed(2)} {storedPriceCurrency}</Typography>*/}
+                        {/*</Box>*/}
                         <Box display="flex" justifyContent="space-between" sx={{ mt: 2 }}>
                             <Typography variant="h6">Total:</Typography>
                             <Typography variant="h6">{total.toFixed(2)} {storedPriceCurrency}</Typography>

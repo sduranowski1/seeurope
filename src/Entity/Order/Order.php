@@ -51,8 +51,8 @@ class Order
     #[ORM\Column(type: 'float')]
     private ?float $subtotal = null;
 
-    #[ORM\Column(type: 'float')]
-    private ?float $tax = null;
+//    #[ORM\Column(type: 'float')]
+//    private ?float $tax = null;
 
     #[ORM\Column(type: 'float')]
     private ?float $total = null;
@@ -123,15 +123,15 @@ class Order
         $this->total = $total;
     }
 
-    public function getTax(): ?float
-    {
-        return $this->tax;
-    }
-
-    public function setTax(?float $tax): void
-    {
-        $this->tax = $tax;
-    }
+//    public function getTax(): ?float
+//    {
+//        return $this->tax;
+//    }
+//
+//    public function setTax(?float $tax): void
+//    {
+//        $this->tax = $tax;
+//    }
 
     public function getSubtotal(): ?float
     {

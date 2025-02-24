@@ -108,7 +108,7 @@ class EnovaProductsController extends AbstractController
                 $newProduct->setStockStatus($product['stanMagazynowy']);
                 $newProduct->setFeatures($product['listaCechy']);
                 $newProduct->setPriceList($product['listaCen']);
-                $newProduct->setIndividualPrices($product['listaCenIndywidualnych']);
+//                $newProduct->setIndividualPrices($product['listaCenIndywidualnych']);
                 $newProduct->setUpdatedAt(new \DateTime());
                 // Map other fields as needed
 
@@ -125,7 +125,7 @@ class EnovaProductsController extends AbstractController
                 $existingProduct->setStockStatus($product['stanMagazynowy']);
                 $existingProduct->setFeatures($product['listaCechy']);
                 $existingProduct->setPriceList($product['listaCen']);
-                $existingProduct->setIndividualPrices($product['listaCenIndywidualnych']);
+//                $existingProduct->setIndividualPrices($product['listaCenIndywidualnych']);
                 $existingProduct->setUpdatedAt(new \DateTime());
                 // Update other fields as needed
 

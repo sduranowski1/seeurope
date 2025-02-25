@@ -26,7 +26,9 @@ use Doctrine\ORM\Mapping as ORM;
 #[HasLifecycleCallbacks]
 #[ApiResource(
     operations: [
+        new GetCollection(),
         new GetCollection(
+            uriTemplate: '/features_lists/no_pagination',
             paginationEnabled: false,
         ),
 //        new Post(),

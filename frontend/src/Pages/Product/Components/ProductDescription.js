@@ -158,9 +158,9 @@ export const ProductDescription = ({ product }) => {
                                 <div className="product-description">
                                     <h1 className={"description-header"}>
                                         {i18n.language === "en"
-                                            ? product.productInfo?.englishTitle || product.name
+                                            ? product.features?.find(feature => feature.nazwa === "Nazwa w EN")?.wartosc || product.name
                                             : i18n.language === "de"
-                                                ? product.productInfo?.germanTitle || product.name
+                                                ? product.features?.find(feature => feature.nazwa === "Nazwa w DE")?.wartosc || product.name
                                                 : product.name}
                                     </h1>
                                     <hr/>

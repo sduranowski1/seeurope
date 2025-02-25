@@ -11,3 +11,7 @@ submission_auth:
     path: /submission_auth
     methods: ['POST']
     controller: App\Controller\SubmissionAuthController::login
+fetch_enova_products:
+    path: /api/fetch-enova-products
+    methods: ['POST']
+    controller: App\Controller\ProductFetchTrigger\EnovaProductController::fetchEnovaProducts

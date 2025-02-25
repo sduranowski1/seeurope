@@ -345,10 +345,10 @@ export const SubcategoryTable = ({ productsData, onProductClick, lastPartToColla
                             }}
                         >
                             <td>{product.code || ""}</td>
-                            <td>{i18n.language === "en"
-                                ? product.productInfo?.englishTitle || product.name
+                            <td>  {i18n.language === "en"
+                                ? product.features?.find(feature => feature.nazwa === "Nazwa w EN")?.wartosc || product.name
                                 : i18n.language === "de"
-                                    ? product.productInfo?.germanTitle || product.name
+                                    ? product.features?.find(feature => feature.nazwa === "Nazwa w DE")?.wartosc || product.name
                                     : product.name}</td>
                             {/*<td>{product.capacityFeat || ""}</td>*/}
                             {/* Dynamically render the features in their respective columns */}

@@ -148,7 +148,7 @@ export const Dashboard = () => {
                                             {/*<td>{order.name}</td>*/}
                                             {/*<td>{order.address || 'N/A'}</td>*/}
                                             <td>{order.phone || ''}</td>
-                                            <td>{new Date(order.orderDate).toLocaleDateString()}</td>
+                                            <td>{new Date(order.requestedOrderDate).toLocaleDateString('en-GB', { timeZone: 'UTC' })}</td>
                                             {/*<td>{order.subtotal}</td>*/}
                                             {/*<td>{order.tax}</td>*/}
                                             <td>{order.total}</td>

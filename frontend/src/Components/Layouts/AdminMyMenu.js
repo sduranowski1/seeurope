@@ -29,7 +29,7 @@ export const AdminMyMenu = () => (
 
             </Submenu>
         </Submenu>
-        <Menu.ResourceItem name="features_lists" />
+        {/*<Menu.ResourceItem name="features_lists" />*/}
         <Menu.ResourceItem name="submissions" />
         <Menu.ResourceItem name="global_settings" />
     </Menu>

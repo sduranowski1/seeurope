@@ -98,6 +98,91 @@ class Variant
     #[Groups(['variant:read', 'variant:create', 'variant:update'])]
     private string $domainImagePath;
 
+    #[ORM\Column(type: 'boolean')]
+    #[Groups(['variant:read', 'variant:create', 'variant:update'])]
+    private bool $capacity;
+
+    #[ORM\Column(type: 'boolean')]
+    #[Groups(['variant:read', 'variant:create', 'variant:update'])]
+    private bool $depth;
+
+    #[ORM\Column(type: 'boolean')]
+    #[Groups(['variant:read', 'variant:create', 'variant:update'])]
+    private bool $dimension;
+
+    #[ORM\Column(type: 'boolean')]
+    #[Groups(['variant:read', 'variant:create', 'variant:update'])]
+    private bool $equipmentSide;
+
+    #[ORM\Column(type: 'boolean')]
+    #[Groups(['variant:read', 'variant:create', 'variant:update'])]
+    private bool $existingFork;
+
+    #[ORM\Column(type: 'boolean')]
+    #[Groups(['variant:read', 'variant:create', 'variant:update'])]
+    private bool $height;
+
+    #[ORM\Column(type: 'boolean')]
+    #[Groups(['variant:read', 'variant:create', 'variant:update'])]
+    private bool $information;
+
+    #[ORM\Column(type: 'boolean')]
+    #[Groups(['variant:read', 'variant:create', 'variant:update'])]
+    private bool $length;
+
+    #[ORM\Column(type: 'boolean')]
+    #[Groups(['variant:read', 'variant:create', 'variant:update'])]
+    private bool $machineSide;
+
+    #[ORM\Column(type: 'boolean')]
+    #[Groups(['variant:read', 'variant:create', 'variant:update'])]
+    private bool $masaDo;
+
+    #[ORM\Column(type: 'boolean')]
+    #[Groups(['variant:read', 'variant:create', 'variant:update'])]
+    private bool $masaOd;
+
+    #[ORM\Column(type: 'boolean')]
+    #[Groups(['variant:read', 'variant:create', 'variant:update'])]
+    private bool $model;
+
+    #[ORM\Column(type: 'boolean')]
+    #[Groups(['variant:read', 'variant:create', 'variant:update'])]
+    private bool $moreInformation;
+
+    #[ORM\Column(type: 'boolean')]
+    #[Groups(['variant:read', 'variant:create', 'variant:update'])]
+    private bool $opisWC;
+
+    #[ORM\Column(type: 'boolean')]
+    #[Groups(['variant:read', 'variant:create', 'variant:update'])]
+    private bool $product;
+
+    #[ORM\Column(type: 'boolean')]
+    #[Groups(['variant:read', 'variant:create', 'variant:update'])]
+    private bool $recommendedMachineWeight;
+
+    #[ORM\Column(type: 'boolean')]
+    #[Groups(['variant:read', 'variant:create', 'variant:update'])]
+    private bool $type;
+
+    #[ORM\Column(type: 'boolean')]
+    #[Groups(['variant:read', 'variant:create', 'variant:update'])]
+    private bool $variant;
+
+    #[ORM\Column(type: 'boolean')]
+    #[Groups(['variant:read', 'variant:create', 'variant:update'])]
+    private bool $volume;
+
+    #[ORM\Column(type: 'boolean')]
+    #[Groups(['variant:read', 'variant:create', 'variant:update'])]
+    private bool $weight;
+
+    #[ORM\Column(type: 'boolean')]
+    #[Groups(['variant:read', 'variant:create', 'variant:update'])]
+    private bool $width;
+
+
     public function getImagePath(): ?string
     {
         return $this->imagePath;
@@ -208,5 +293,215 @@ class Variant
     {
         $this->brand = $brand;
         return $this;
+    }
+
+    public function isCapacity(): bool
+    {
+        return $this->capacity;
+    }
+
+    public function setCapacity(bool $capacity): void
+    {
+        $this->capacity = $capacity;
+    }
+
+    public function isDepth(): bool
+    {
+        return $this->depth;
+    }
+
+    public function setDepth(bool $depth): void
+    {
+        $this->depth = $depth;
+    }
+
+    public function isDimension(): bool
+    {
+        return $this->dimension;
+    }
+
+    public function setDimension(bool $dimension): void
+    {
+        $this->dimension = $dimension;
+    }
+
+    public function isEquipmentSide(): bool
+    {
+        return $this->equipmentSide;
+    }
+
+    public function setEquipmentSide(bool $equipmentSide): void
+    {
+        $this->equipmentSide = $equipmentSide;
+    }
+
+    public function isHeight(): bool
+    {
+        return $this->height;
+    }
+
+    public function setHeight(bool $height): void
+    {
+        $this->height = $height;
+    }
+
+    public function isExistingFork(): bool
+    {
+        return $this->existingFork;
+    }
+
+    public function setExistingFork(bool $existingFork): void
+    {
+        $this->existingFork = $existingFork;
+    }
+
+    public function isInformation(): bool
+    {
+        return $this->information;
+    }
+
+    public function setInformation(bool $information): void
+    {
+        $this->information = $information;
+    }
+
+    public function isLength(): bool
+    {
+        return $this->length;
+    }
+
+    public function setLength(bool $length): void
+    {
+        $this->length = $length;
+    }
+
+    public function isMachineSide(): bool
+    {
+        return $this->machineSide;
+    }
+
+    public function setMachineSide(bool $machineSide): void
+    {
+        $this->machineSide = $machineSide;
+    }
+
+    public function isMasaDo(): bool
+    {
+        return $this->masaDo;
+    }
+
+    public function setMasaDo(bool $masaDo): void
+    {
+        $this->masaDo = $masaDo;
+    }
+
+    public function isMasaOd(): bool
+    {
+        return $this->masaOd;
+    }
+
+    public function setMasaOd(bool $masaOd): void
+    {
+        $this->masaOd = $masaOd;
+    }
+
+    public function isModel(): bool
+    {
+        return $this->model;
+    }
+
+    public function setModel(bool $model): void
+    {
+        $this->model = $model;
+    }
+
+    public function isMoreInformation(): bool
+    {
+        return $this->moreInformation;
+    }
+
+    public function setMoreInformation(bool $moreInformation): void
+    {
+        $this->moreInformation = $moreInformation;
+    }
+
+    public function isOpisWC(): bool
+    {
+        return $this->opisWC;
+    }
+
+    public function setOpisWC(bool $opisWC): void
+    {
+        $this->opisWC = $opisWC;
+    }
+
+    public function isProduct(): bool
+    {
+        return $this->product;
+    }
+
+    public function setProduct(bool $product): void
+    {
+        $this->product = $product;
+    }
+
+    public function isRecommendedMachineWeight(): bool
+    {
+        return $this->recommendedMachineWeight;
+    }
+
+    public function setRecommendedMachineWeight(bool $recommendedMachineWeight): void
+    {
+        $this->recommendedMachineWeight = $recommendedMachineWeight;
+    }
+
+    public function isType(): bool
+    {
+        return $this->type;
+    }
+
+    public function setType(bool $type): void
+    {
+        $this->type = $type;
+    }
+
+    public function isVariant(): bool
+    {
+        return $this->variant;
+    }
+
+    public function setVariant(bool $variant): void
+    {
+        $this->variant = $variant;
+    }
+
+    public function isVolume(): bool
+    {
+        return $this->volume;
+    }
+
+    public function setVolume(bool $volume): void
+    {
+        $this->volume = $volume;
+    }
+
+    public function isWeight(): bool
+    {
+        return $this->weight;
+    }
+
+    public function setWeight(bool $weight): void
+    {
+        $this->weight = $weight;
+    }
+
+    public function isWidth(): bool
+    {
+        return $this->width;
+    }
+
+    public function setWidth(bool $width): void
+    {
+        $this->width = $width;
     }
 }

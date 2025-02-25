@@ -366,6 +366,7 @@ export const MissingVariantsProducts = ({lastPart, slug}) => {
                         onProductClick={handleProductClick}
                         lastPartToCollapse={lastPart}
                         userDetailsPrice={userDetails}
+                        title={title}
                     />
                 </div>)}
             </section>

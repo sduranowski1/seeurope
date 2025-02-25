@@ -16,13 +16,16 @@ import AuthContext from "../../../AuthContext";
 import {useNavigate} from "react-router-dom";
 import i18n from "i18next";
 
-export const SubcategoryTableBrands = ({ productsData, onProductClick, lastPartToCollapse, displayedItems, checkboxes, userDetailsPrice }) => {
+export const SubcategoryTableBrands = ({ productsData, onProductClick, lastPartToCollapse, displayedItems, checkboxes, userDetailsPrice, title }) => {
     // const [activeFilter, setActiveFilter] = useState("All");
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [filteredProducts, setFilteredProducts] = useState(productsData);  // Manage the filtered products state
     const { token } = useContext(AuthContext);
     const [cart, setCart] = useState([]);
     const navigate = useNavigate();
+    const [brands, setBrands] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     const uniqueCapacities = [
         "All",
@@ -151,6 +154,29 @@ export const SubcategoryTableBrands = ({ productsData, onProductClick, lastPartT
         localStorage.setItem('contractorName', contractorName);
     }
 
+    useEffect(() => {
+        // Set loading to true before fetching the data
+        setLoading(true);
+
+        fetch(`https://se-europe-test.pl/api/brands?name=${title}`)
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then((data) => {
+                setBrands(data[0]);
+                setLoading(false);
+            })
+            .catch((error) => {
+                setError(error.message);
+                setLoading(false);
+            });
+    }, [title]); // This will trigger the effect whenever the title changes
+
+    console.log("rbands or no", brands)
+
     const renderFeatures = (product) => {
         // Define a fallback list of feature names
         const featuresList = [
@@ -197,8 +223,18 @@ export const SubcategoryTableBrands = ({ productsData, onProductClick, lastPartT
             // return value !== 0 && value !== false && value !== "" && value != null && value !== "False" && value !== "0";
         });
 
-        // Return the filtered features (with valid values)
-        return filteredFeatures;
+        // // Return the filtered features (with valid values)
+        // return filteredFeatures;
+
+        // After filtering out invalid values, check against the brands object to decide visibility
+        const displayedFeatures = filteredFeatures.filter((feature) => {
+            const featureKey = feature.nazwa.toLowerCase().replace(' ', ''); // Convert to lowercase and remove spaces
+            // Only display features if corresponding brand value is true
+            return brands[featureKey] === true;
+        });
+
+        // Return the filtered and brand-validated features
+        return displayedFeatures;
     };
 
 

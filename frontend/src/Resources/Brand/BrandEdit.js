@@ -1,6 +1,16 @@
 // src/Resources/UserEdit.js
 import React from 'react';
-import {Edit, SimpleForm, TextInput, BooleanInput, NumberInput, TextField, ImageInput, ImageField} from 'react-admin';
+import {
+    Edit,
+    SimpleForm,
+    TextInput,
+    BooleanInput,
+    NumberInput,
+    TextField,
+    ImageInput,
+    ImageField,
+    Datagrid, ReferenceArrayField
+} from 'react-admin';
 
 import "../../mui_fix.css"
 
@@ -18,6 +28,11 @@ const BrandEdit = (props) => (
               <ImageField source="domainImagePath"/>
           </ImageInput>
           <ImageField source="domainImagePath"/>
+            <ReferenceArrayField reference="featuresLists" source="brand_ids">
+                <Datagrid>
+                    <TextField source="name" />
+                </Datagrid>
+            </ReferenceArrayField>
 
         </SimpleForm>
     </Edit>

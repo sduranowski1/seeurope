@@ -48,16 +48,16 @@ class FeaturesList
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(['featuresList:read', 'brand:read', "productInfo:read"])]
+    #[Groups(['featuresList:read', 'brand:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
-    #[Groups(['featuresList:read', 'brand:read', "productInfo:read", 'enovaProduct:read'])]
+    #[Groups(['featuresList:read', 'brand:read', 'brand:write'])]
     private ?string $name = null;
 
     #[ORM\ManyToOne(targetEntity: Brand::class)]
-    #[ORM\JoinColumn(referencedColumnName: 'id', nullable: true)]
-    #[Groups(['featuresList:read', 'brand:read', "productInfo:read", 'enovaProduct:read'])]
+    #[ORM\JoinColumn(referencedColumnName: 'id', nullable: false)]
+    #[Groups(['featuresList:read', 'featuresList:create', 'featuresList:update', 'brand:read', 'brand:write', "productInfo:read", 'enovaProduct:read'])]
     public ?Brand $brand = null;
 
     #[ORM\ManyToOne(targetEntity: Variant::class)]
@@ -105,9 +105,10 @@ class FeaturesList
         return $this->brand;
     }
 
-    public function setBrand(?Brand $brand): void
+    public function setBrand(?Brand $brand): self
     {
         $this->brand = $brand;
+        return $this;
     }
 
     public function getVariant(): ?Variant

@@ -19,6 +19,7 @@ api_platform:
             standard_put: true
             rfc_7807_compliant_errors: true
         pagination_items_per_page: 10 # Default value
+        enable_max_depth: true
     keep_legacy_inflector: false
     use_symfony_listeners: true
     mapping:
@@ -35,3 +36,5 @@ api_platform:
         jsonproblem: [ 'application/problem+json' ]
         jsonld: [ 'application/ld+json' ]      # Hydra error formats
         jsonapi: [ 'application/vnd.api+json' ]
+    eager_loading:
+        max_joins: 1000 # Increase this value (default is 30)

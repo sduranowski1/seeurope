@@ -47,11 +47,11 @@ class Variant
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['variant:read', "productInfo:read", 'productInfo:create'])]
+    #[Groups(['variant:read', "productInfo:read", 'productInfo:create', 'featuresList:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
-    #[Groups(['variant:read', 'variant:create', 'variant:update', "productInfo:read", 'productInfo:create', 'enovaProduct:read'])]
+    #[Groups(['variant:read', 'variant:create', 'variant:update', "productInfo:read", 'productInfo:create', 'enovaProduct:read', 'featuresList:read', 'featuresList:create', 'featuresList:update'])]
     private ?string $variantname = null;
 
     #[ORM\Column(length: 50)]

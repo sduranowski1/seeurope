@@ -46,11 +46,11 @@ class Category
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(['category:read', 'subcategory:read', "productInfo:read", 'productInfo:create', 'itemType:read',])]
+    #[Groups(['category:read', 'subcategory:read', "productInfo:read", 'productInfo:create', 'itemType:read','featuresList:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
-    #[Groups(['category:read', 'category:create', 'category:update', 'subcategory:read', 'subcategory:create', 'subcategory:update', "productInfo:read", 'productInfo:create', 'enovaProduct:read',  'itemType:read'])]
+    #[Groups(['category:read', 'category:create', 'category:update', 'subcategory:read', 'subcategory:create', 'subcategory:update', "productInfo:read", 'productInfo:create', 'enovaProduct:read',  'itemType:read', 'featuresList:read', 'featuresList:create', 'featuresList:update'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 50)]

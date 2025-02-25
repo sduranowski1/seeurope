@@ -13,8 +13,11 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
+use App\Entity\Enova\FeaturesList\FeaturesList;
 use App\Entity\Traits\Timestampable;
 use App\Repository\BrandRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -87,6 +90,11 @@ class Brand
     #[ORM\Column(type: "string")]
     #[Groups(['brand:read', 'brand:create', 'brand:update'])]
     private string $domainImagePath;
+
+    // Add the One-to-Many relationship to FeaturesList
+    #[ORM\OneToMany(targetEntity: FeaturesList::class, mappedBy: "brand", cascade: ["persist", "remove"])]
+    #[Groups(['brand:read', 'brand:create', 'brand:update'])]
+    private Collection $featuresLists;
 
     public function getImagePath(): ?string
     {
@@ -176,4 +184,36 @@ class Brand
     }
 
 
+    public function __construct()
+    {
+        $this->featuresLists = new ArrayCollection();
+    }
+
+    // Add getter and setter for featuresLists
+    public function getFeaturesLists(): Collection
+    {
+        return $this->featuresLists;
+    }
+
+    public function addFeaturesList(FeaturesList $featuresList): self
+    {
+        if (!$this->featuresLists->contains($featuresList)) {
+            $this->featuresLists[] = $featuresList;
+            $featuresList->setBrand($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFeaturesList(FeaturesList $featuresList): self
+    {
+        if ($this->featuresLists->removeElement($featuresList)) {
+            // set the owning side to null (unless already changed)
+            if ($featuresList->getBrand() === $this) {
+                $featuresList->setBrand(null);
+            }
+        }
+
+        return $this;
+    }
 }

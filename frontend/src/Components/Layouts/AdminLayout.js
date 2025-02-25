@@ -52,6 +52,7 @@ import MachineFilterList from "../../Resources/MachineFilter/MachineFilterList";
 import MachineFilterEdit from "../../Resources/MachineFilter/MachineFilterEdit";
 import MachineFilterCreate from "../../Resources/MachineFilter/MachineFilterCreate";
 import FeaturesList from "../../Resources/Features/FeaturesList";
+import FeaturesEdit from "../../Resources/Features/FeaturesEdit";
 
 
 
@@ -86,7 +87,7 @@ const AdminLayout = () => {
             <Resource name="subcategories" list={SubcategoryList}  edit={SubcategoryEdit} create={SubcategoryCreate}/>
             <Resource name="item_types" list={ItemTypeList} edit={ItemTypeEdit} create={ItemTypeCreate} />
             <Resource name="machine_filters" list={MachineFilterList} edit={MachineFilterEdit} create={MachineFilterCreate} icon={AppsIcon}/>
-            <Resource name="features" list={FeaturesList} icon={AppsIcon}/>
+            <Resource name="features_lists" list={FeaturesList} edit={FeaturesEdit} icon={AppsIcon}/>
             <Resource name="submissions" list={UserList} edit={UserEdit} create={UserCreate} icon={PersonAddAlt1Icon} />
             <Resource name="global_settings" list={SortingList} edit={SortingEdit} icon={PersonAddAlt1Icon}/>
             {/* Other resources... */}

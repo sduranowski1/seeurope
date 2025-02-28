@@ -89,7 +89,12 @@ class EnovaMakeOrderController extends AbstractController
             $enovaOrder = new EnovaOrder();
             $enovaOrder->setIdWWW($data['idWWW'] ?? null);
             $enovaOrder->setIdEnova($data['idEnova'] ?? null);
-            $enovaOrder->setEmail($data['email'] ?? null);
+            $email = null;
+            if (isset($data['lokalizacjaDostawy']) && isset($data['lokalizacjaDostawy']['eMail'])) {
+                $email = $data['lokalizacjaDostawy']['eMail'];
+            }
+
+            $enovaOrder->setEmail($email);
             $enovaOrder->setIdPlatnosciInternetowej($data['idPlatnosciInternetowej'] ?? null);
             $enovaOrder->setNumerWWW($data['numerWWW'] ?? null);
             $enovaOrder->setNumerEnova($data['numerEnova'] ?? null);

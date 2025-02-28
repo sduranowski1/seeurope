@@ -190,7 +190,7 @@ const Checkout = () => {
         //     orderDate: new Date().toISOString(),
         //     currency: storedPriceCurrency,
         // };
-        let currentIdWWW = 9; // Starting from 7
+        let currentIdWWW = 11; // Starting from 7
 
         const orderDataEnova = {
             idWWW: currentIdWWW++, // Assuming this is an auto-increment or placeholder value

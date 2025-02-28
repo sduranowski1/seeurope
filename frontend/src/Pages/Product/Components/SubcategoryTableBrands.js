@@ -15,6 +15,7 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import AuthContext from "../../../AuthContext";
 import {useNavigate} from "react-router-dom";
 import i18n from "i18next";
+import useSortedProducts from "../useSortedProducts";
 
 export const SubcategoryTableBrands = ({ productsData, onProductClick, lastPartToCollapse, displayedItems, checkboxes, userDetailsPrice, title }) => {
     // const [activeFilter, setActiveFilter] = useState("All");
@@ -26,6 +27,8 @@ export const SubcategoryTableBrands = ({ productsData, onProductClick, lastPartT
     const [brands, setBrands] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const { sortedProducts, handleSort, sortColumn, sortOrder } = useSortedProducts(filteredProducts, userDetailsPrice);
+
 
     const uniqueCapacities = [
         "All",
@@ -154,11 +157,25 @@ export const SubcategoryTableBrands = ({ productsData, onProductClick, lastPartT
         localStorage.setItem('contractorName', contractorName);
     }
 
+    const urlPath = window.location.pathname;
+    const parts = urlPath.split('/').filter(part => part !== '');
+    const lastPart = parts[parts.length - 1];  // Last part of the URL path
+    const secondPart = parts[parts.length - 2]; // Second to last part of the URL path
+    let apiUrl;
+
+    if (parts.length === 2) {
+        apiUrl = `https://se-europe-test.pl/api/brands?name=${lastPart}`;
+    } else if (parts.length === 3) {
+        apiUrl = `https://se-europe-test.pl/api/variants?variantname=${lastPart}`;
+    } else {
+        throw new Error("Unsupported URL structure");
+    }
+
     useEffect(() => {
         // Set loading to true before fetching the data
         setLoading(true);
 
-        fetch(`https://se-europe-test.pl/api/brands?name=${title}`)
+        fetch(apiUrl)
             .then((response) => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -239,7 +256,6 @@ export const SubcategoryTableBrands = ({ productsData, onProductClick, lastPartT
 
 
 
-
     return (
         <div style={{paddingTop: "25px"}}>
             {/* Filter Tabs */}
@@ -269,25 +285,26 @@ export const SubcategoryTableBrands = ({ productsData, onProductClick, lastPartT
             <table style={{width: "100%"}}>
                 <thead>
                 <tr style={{textAlign: "left"}}>
-                    <th>Kod</th>
-                    <th>Product Name</th>
+                    <th onClick={() => handleSort("code")} className={sortColumn === "code" ? "active" : ""}>
+                        Kod {sortColumn === "code" ? (sortOrder === "asc" ? "▲" : "▼") : "▶"}
+                    </th>
+                    <th onClick={() => handleSort("productName")}>
+                        Product Name {sortColumn === "productName" ? (sortOrder === "asc" ? "▲" : "▼") : "▶"}
+                    </th>
                     {/*<th>Capacity</th>*/}
                     {/* Replace static columns with dynamic ones */}
                     {/* Dynamically render feature headers, excluding columns with only N/A values */}
                     {filteredProducts.length > 0 &&
                         renderFeatures(filteredProducts[0])
-                            .map((feature, index) => ({ ...feature, index })) // Add index to track position
-                            .filter((feature) => {
-                                // Check if any product has a non-N/A value for this feature
-                                return filteredProducts.some(
-                                    (product) => {
-                                        const value = renderFeatures(product)[feature.index].wartosc;
-                                        return value !== "" && value !== '0'; // Exclude "" and 0
-                                    }
-                                );
-                            })
-                            .map((feature) => (
-                                <th key={feature.index}>{feature.nazwa}</th>
+                            .map((feature, index) => ({ ...feature, index }))
+                            .filter(feature => filteredProducts.some(product => {
+                                const value = renderFeatures(product)[feature.index].wartosc;
+                                return value !== "" && value !== '0';
+                            }))
+                            .map(feature => (
+                                <th key={feature.index} onClick={() => handleSort(feature.nazwa)}>
+                                    {feature.nazwa} {sortColumn === feature.nazwa ? (sortOrder === "asc" ? "▲" : "▼") : "▶"}
+                                </th>
                             ))}
                     {/*<th>Brand</th>*/}
                     {/*<th>Variant</th>*/}
@@ -298,8 +315,12 @@ export const SubcategoryTableBrands = ({ productsData, onProductClick, lastPartT
                                 product.priceList?.some(price =>
                                     price.nazwa === userDetailsPrice?.enovaPerson?.contractor?.cenaKontrahentaNazwa
                                 )
-                            ) && <th>Dedicated Price</th>}
-                            <th>End User Price</th>
+                            ) && <th onClick={() => handleSort("dedicatedPrice")}>
+                                Dedicated Price {sortColumn === "dedicatedPrice" ? (sortOrder === "asc" ? "▲" : "▼") : "▶"}
+                            </th>}
+                            <th onClick={() => handleSort("endUserPrice")}>
+                                End User Price {sortColumn === "endUserPrice" ? (sortOrder === "asc" ? "▲" : "▼") : "▶"}
+                            </th>
                             <th>Add Quantity</th>
                         </>
                     ) : (
@@ -310,8 +331,8 @@ export const SubcategoryTableBrands = ({ productsData, onProductClick, lastPartT
                 </tr>
                 </thead>
                 <tbody>
-                {filteredProducts.length > 0 ? (
-                    filteredProducts.map((product, index) => (
+                {sortedProducts.length > 0 ? (
+                    sortedProducts.map((product, index) => (
                         <tr
                             key={index}
                             onClick={() => handleRowClick(product)}
@@ -350,17 +371,12 @@ export const SubcategoryTableBrands = ({ productsData, onProductClick, lastPartT
                             {/*<td>{product.capacityFeat || ""}</td>*/}
                             {/* Dynamically render the features in their respective columns */}
                             {renderFeatures(product)
-                                .map((feature, index) => ({ ...feature, index })) // Add index to track position
-                                .filter((feature) => {
-                                    // Check if any product has a non-N/A value for this feature
-                                    return filteredProducts.some(
-                                        (product) => {
-                                            const value = renderFeatures(product)[feature.index].wartosc;
-                                            return value !== "" && value !== '0'; // Exclude "" and 0
-                                        }
-                                    );
-                                })
-                                .map((feature) => (
+                                .map((feature, index) => ({ ...feature, index }))
+                                .filter(feature => filteredProducts.some(
+                                    p => renderFeatures(p)[feature.index].wartosc !== "" &&
+                                        renderFeatures(p)[feature.index].wartosc !== '0'
+                                ))
+                                .map(feature => (
                                     <td key={feature.index}>{feature.wartosc || ""}</td>
                                 ))}
                             {/*<td>{product.productInfo?.brand?.name  || ""}</td>*/}

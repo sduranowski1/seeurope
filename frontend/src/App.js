@@ -89,6 +89,9 @@ import Cart from "./Pages/Order/Cart";
 import Checkout from "./Pages/Order/Checkout";
 import Success from "./Pages/Order/Success";
 import ProtectedRoute from "./Components/ProtectedRoute/ProtectedRoute";
+import PrivacyPolicy from "./Pages/PrivacyPolicy/PrivacyPolicy";
+import SearchProduct from "./Pages/SearchProduct/SearchProduct";
+import FoundProduct from "./Pages/SearchProduct/FoundProduct";
 // import BrandEdit from "./Resources/Product/BrandEdit";
 // import {SidebarComponent} from "./Components/SidebarComponent/SidebarComponent";
 // import {FooterComponent} from "./Components/FooterComponent/FooterComponent";
@@ -196,6 +199,9 @@ const App = () => {
           <Route path="/pomoc-dostawa" element={<Layout><Delivery /></Layout>} />
           <Route path="/pomoc-moje-konto" element={<Layout><MyAccount /></Layout>} />
           <Route path="/register" element={<Layout><Register /></Layout>} />
+          <Route path="/privacy-policy" element={<Layout><PrivacyPolicy /></Layout>} />
+          <Route path="/search-product" element={<Layout><SearchProduct /></Layout>} />
+          <Route path="/search-product/:code" element={<Layout><FoundProduct /></Layout>} />
         </Routes>
       </AuthContext.Provider>
       </Context.Provider>

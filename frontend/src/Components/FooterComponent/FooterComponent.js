@@ -13,6 +13,7 @@ import { HowToShop } from "../../Pages/HowToShop/HowToShop";
 import { SecurityCookies } from "../../Pages/SecurityCookies/SecurityCookies";
 import { Delivery } from "../../Pages/Delivery/Delivery";
 import { useTranslation } from 'react-i18next';
+import PrivacyPolicy from "../../Pages/PrivacyPolicy/PrivacyPolicy";
 
 export const FooterComponent = () => {
   const { t } = useTranslation();
@@ -62,6 +63,7 @@ export const FooterComponent = () => {
             <Link to={'/pomoc-moje-konto'} element={<MyAccount />}>{t('my_account')}</Link>
             <Link to={'/pomoc-dostawa'} element={<Delivery />}>{t('delivery')}</Link>
             <Link to={'/pomoc-bezpieczenstwo-cookies'} element={<SecurityCookies />}>{t('security_cookies')}</Link>
+            <Link to={'/privacy-policy'} element={<PrivacyPolicy />}>RODO</Link>
           </div>
         </div>
       </div>

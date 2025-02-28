@@ -15,6 +15,7 @@ import AuthContext from "../../../AuthContext";
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import {useNavigate} from "react-router-dom";
 import i18n from "i18next";
+import useSortedProducts from "../useSortedProducts";
 
 
 // export const SubcategoryTable = (props) => {
@@ -49,7 +50,7 @@ import i18n from "i18next";
 //     );
 // }
 
-export const SubcategoryTable = ({ productsData, onProductClick, lastPartToCollapse, displayedItems, checkboxes, userDetailsPrice }) => {
+export const SubcategoryTable = ({ productsData, onProductClick, lastPartToCollapse, displayedItems, checkboxes, userDetailsPrice, title }) => {
     // const [activeFilter, setActiveFilter] = useState("All");
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [filteredProducts, setFilteredProducts] = useState(productsData);  // Manage the filtered products state
@@ -57,6 +58,11 @@ export const SubcategoryTable = ({ productsData, onProductClick, lastPartToColla
     const [cart, setCart] = useState([]);
     const navigate = useNavigate();
     const [quantity, setQuantity] = useState(1);
+    const [categories, setCategories] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const { sortedProducts, handleSort, sortColumn, sortOrder } = useSortedProducts(filteredProducts, userDetailsPrice);
+
 
 
 
@@ -195,8 +201,50 @@ export const SubcategoryTable = ({ productsData, onProductClick, lastPartToColla
         localStorage.setItem('contractorName', contractorName);
     }
 
+    const urlPath = window.location.pathname;
+    const parts = urlPath.split('/').filter(part => part !== '');
+    const lastPart = parts[parts.length - 1];  // Last part of the URL path
+    const secondPart = parts[parts.length - 2]; // Second to last part of the URL path
+    const thirdPart = parts[parts.length - 3]; // Third to last part of the URL path
+    let apiUrl;
+
+    if (parts.length === 2) {
+        apiUrl = `https://se-europe-test.pl/api/categories?name=${lastPart}`;
+    } else if (parts.length === 3) {
+        apiUrl = `https://se-europe-test.pl/api/subcategories?category.name=${secondPart}&subCatName=${lastPart}`;
+    } else if (parts.length === 4) {
+        apiUrl = `https://se-europe-test.pl/api/item_types?name=${lastPart}`;
+    } else {
+        throw new Error("Unsupported URL structure");
+    }
+
+    console.log(lastPart)
+
+    useEffect(() => {
+        // Set loading to true before fetching the data
+        setLoading(true);
+
+        fetch(apiUrl)
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then((data) => {
+                setCategories(data[0]);
+                setLoading(false);
+            })
+            .catch((error) => {
+                setError(error.message);
+                setLoading(false);
+            });
+    }, [title]); // This will trigger the effect whenever the title changes
+
+    console.log("rbands or no", categories)
+
     const renderFeatures = (product) => {
-        // Define the desired feature names
+        // Define a fallback list of feature names
         const featuresList = [
             'Capacity',
             'Depth',
@@ -221,27 +269,89 @@ export const SubcategoryTable = ({ productsData, onProductClick, lastPartToColla
             "Width"
         ];
 
-        // Map through featuresList and fetch matching feature objects
+        // Map through the featuresList and fetch matching feature objects
         const features = featuresList.map((featureName) => {
             const matchedFeature = product.features.find((feature) => feature.nazwa === featureName);
+
+            // If found, return feature with its value, else return "N/A"
             return {
                 nazwa: featureName,
-                wartosc: matchedFeature ? matchedFeature.wartosc : "",
+                wartosc: matchedFeature ? matchedFeature.wartosc : "", // Default to "N/A" if not found
             };
         });
 
-        // Filter out features with null or empty string for wartosc
-        const filteredFeatures = features.filter(
-            (feature) => {
-                const value = feature.wartosc;
-                // return !(value === 0 || value === false || value === "" || value == null || value === "False" || value === "0");
-                return value !== "krabąszcvx";
+        // Filter out invalid or missing values (null, "", 0, false, etc.)
+        const filteredFeatures = features.filter(feature => {
+            const value = feature.wartosc;
 
-            }
-        );
+            return value !== "krabąszcvx";
+            // Keep feature if its value is valid, otherwise exclude it
+            // return value !== 0 && value !== false && value !== "" && value != null && value !== "False" && value !== "0";
+        });
 
-        return filteredFeatures;
+        // // Return the filtered features (with valid values)
+        // return filteredFeatures;
+
+        // After filtering out invalid values, check against the brands object to decide visibility
+        const displayedFeatures = filteredFeatures.filter((feature) => {
+            const featureKey = feature.nazwa.toLowerCase().replace(' ', ''); // Convert to lowercase and remove spaces
+            // Only display features if corresponding brand value is true
+            return categories[featureKey] === true;
+        });
+
+        // Return the filtered and brand-validated features
+        return displayedFeatures;
     };
+
+    // const renderFeatures = (product) => {
+    //     // Define the desired feature names
+    //     const featuresList = [
+    //         'Capacity',
+    //         'Depth',
+    //         'Dimension',
+    //         'Equipment side',
+    //         'Exisiting fork',
+    //         'Height',
+    //         'Information',
+    //         'Length',
+    //         'Machine side',
+    //         'Masa do',
+    //         'Masa od',
+    //         'Model',
+    //         'More information',
+    //         'OPIS WC',
+    //         'Product',
+    //         "Recommended Machine weight",
+    //         "Type",
+    //         "Variant",
+    //         "Volume",
+    //         "Weight",
+    //         "Width"
+    //     ];
+    //
+    //     // Map through featuresList and fetch matching feature objects
+    //     const features = featuresList.map((featureName) => {
+    //         const matchedFeature = product.features.find((feature) => feature.nazwa === featureName);
+    //         return {
+    //             nazwa: featureName,
+    //             wartosc: matchedFeature ? matchedFeature.wartosc : "",
+    //         };
+    //     });
+    //
+    //     // Filter out features with null or empty string for wartosc
+    //     const filteredFeatures = features.filter(
+    //         (feature) => {
+    //             const value = feature.wartosc;
+    //             // return !(value === 0 || value === false || value === "" || value == null || value === "False" || value === "0");
+    //             return value !== "krabąszcvx";
+    //
+    //         }
+    //     );
+    //
+    //     return filteredFeatures;
+    // };
+
+
 
     return (
         <div style={{paddingTop: "25px"}}>
@@ -273,8 +383,12 @@ export const SubcategoryTable = ({ productsData, onProductClick, lastPartToColla
             <table style={{width: "100%"}}>
                 <thead>
                 <tr style={{textAlign: "left"}}>
-                    <th>Kod</th>
-                    <th>Product Name</th>
+                    <th onClick={() => handleSort("code")} className={sortColumn === "code" ? "active" : ""}>
+                        Kod {sortColumn === "code" ? (sortOrder === "asc" ? "▲" : "▼") : "▶"}
+                    </th>
+                    <th onClick={() => handleSort("productName")}>
+                        Product Name {sortColumn === "productName" ? (sortOrder === "asc" ? "▲" : "▼") : "▶"}
+                    </th>
                     {/*<th>Capacity</th>*/}
                     {/* Replace static columns with dynamic ones */}
                     {/*{filteredProducts.length > 0 && renderFeatures(filteredProducts[0]).map((feature, index) => (*/}
@@ -282,18 +396,15 @@ export const SubcategoryTable = ({ productsData, onProductClick, lastPartToColla
                     {/*))}*/}
                     {filteredProducts.length > 0 &&
                         renderFeatures(filteredProducts[0])
-                            .map((feature, index) => ({ ...feature, index })) // Add index to track position
-                            .filter((feature) => {
-                                // Check if any product has a non-N/A value for this feature
-                                return filteredProducts.some(
-                                    (product) => {
-                                        const value = renderFeatures(product)[feature.index].wartosc;
-                                        return value !== "" && value !== '0'; // Exclude "" and 0
-                                    }
-                                );
-                            })
-                            .map((feature) => (
-                                <th key={feature.index}>{feature.nazwa}</th>
+                            .map((feature, index) => ({ ...feature, index }))
+                            .filter(feature => filteredProducts.some(product => {
+                                const value = renderFeatures(product)[feature.index].wartosc;
+                                return value !== "" && value !== '0';
+                            }))
+                            .map(feature => (
+                                <th key={feature.index} onClick={() => handleSort(feature.nazwa)}>
+                                    {feature.nazwa} {sortColumn === feature.nazwa ? (sortOrder === "asc" ? "▲" : "▼") : "▶"}
+                                </th>
                             ))}
                     {/*<th>Netto</th>*/}
                     {/*<th>Brand</th>*/}
@@ -307,9 +418,14 @@ export const SubcategoryTable = ({ productsData, onProductClick, lastPartToColla
                                 product.priceList?.some(price =>
                                     price.nazwa === userDetailsPrice?.enovaPerson?.contractor?.cenaKontrahentaNazwa
                                 )
-                            ) && <th>Dedicated Price</th>}
+                            ) && <th onClick={() => handleSort("dedicatedPrice")}>
+                                Dedicated
+                                Price {sortColumn === "dedicatedPrice" ? (sortOrder === "asc" ? "▲" : "▼") : "▶"}
+                            </th>}
                             {/*<th>Dedicated Price</th>*/}
-                            <th>End User Price</th>
+                            <th onClick={() => handleSort("endUserPrice")}>
+                                End User Price {sortColumn === "endUserPrice" ? (sortOrder === "asc" ? "▲" : "▼") : "▶"}
+                            </th>
                             <th>Add Quantity</th>
                             {/*<th>Add to cart</th>*/}
                         </>
@@ -320,8 +436,8 @@ export const SubcategoryTable = ({ productsData, onProductClick, lastPartToColla
                 </tr>
                 </thead>
                 <tbody>
-                {filteredProducts.length > 0 ? (
-                    filteredProducts.map((product, index) => (
+                {sortedProducts.length > 0 ? (
+                    sortedProducts.map((product, index) => (
                         <tr
                             key={index}
                             onClick={() => handleRowClick(product)}

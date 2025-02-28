@@ -22,6 +22,7 @@ import i18n from "i18next";
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import ConfirmationDialog from "../../Components/OrderConfirmationModal/ConfirmationDialog";
 // import {Radio, RadioGroup} from "@mui/joy";
 
 const Checkout = () => {
@@ -59,6 +60,15 @@ const Checkout = () => {
     const [contactPerson, setContactPerson] = useState("");
     const [selectedDate, setSelectedDate] = useState(null);
     const [orderNumber, setOrderNumber] = useState("");
+    const [openDialog, setOpenDialog] = useState(false);
+
+    const handleConfirmOpen = () => setOpenDialog(true);
+    const handleConfirmClose = () => setOpenDialog(false);
+
+    const handleConfirmSubmit = () => {
+        setOpenDialog(false);
+        handleOrderSubmission(); // Call the existing order submission function
+    };
 
     const handleCheckboxChange = (event) => {
         setSelectedOption(event.target.value);
@@ -569,11 +579,19 @@ const Checkout = () => {
                             color="primary"
                             fullWidth
                             sx={{ mt: 3 }}
-                            onClick={handleOrderSubmission}
+                            onClick={handleConfirmOpen} // Open confirmation popup
                             disabled={isSubmitting}
                         >
                             {isSubmitting ? 'Placing Order...' : 'Place Order'}
                         </Button>
+                        {/* Confirmation Dialog Component */}
+                        <ConfirmationDialog
+                            open={openDialog}
+                            onClose={handleConfirmClose}
+                            onConfirm={handleConfirmSubmit}
+                            title="Confirm Order"
+                            message="Are you sure you want to place this order?"
+                        />
                     </Paper>
                 </Grid>
             </Grid>

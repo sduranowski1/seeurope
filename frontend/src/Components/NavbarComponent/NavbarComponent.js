@@ -363,16 +363,21 @@ export const NavbarComponent = (props) => {
                 <div className={'nav--bottom text-shadow'}>
 
                     <ul className="nav__menu">
+                        <li className={'icon-item'}>
+                            <Link to="/search-product">
+                                <FontAwesomeIcon className="fa-icon" icon={faMagnifyingGlass} style={{color: "white"}}/>
+                            </Link>
+                        </li>
                         <li className="nav__menu-item">
                             <a className={'link-container'} href={'/my-coupling'}>
                                 {t('my_coupling')}
                                 {loadingCoupling ? (
                                     <div className="loading-spinner">
                                         {/* Replace this with your preferred spinner/loading icon */}
-                                        <FontAwesomeIcon icon={faSpinner} spin className={'loading-icon'} />
+                                        <FontAwesomeIcon icon={faSpinner} spin className={'loading-icon'}/>
                                     </div>
                                 ) : (
-                                    <FontAwesomeIcon icon={faAngleDown} className={'angle-up angle-up--main'} />
+                                    <FontAwesomeIcon icon={faAngleDown} className={'angle-up angle-up--main'}/>
                                 )}
                             </a>
                             <ul className="nav__submenu">
@@ -380,15 +385,15 @@ export const NavbarComponent = (props) => {
                             </ul>
                         </li>
                         <li className="nav__menu-item">
-                            <a className={'link-container'}  href={'/my-machine'}>
+                            <a className={'link-container'} href={'/my-machine'}>
                                 {t('my_machine')}
                                 {loadingMachine ? (
                                     <div className="loading-spinner">
                                         {/* Replace this with your preferred spinner/loading icon */}
-                                        <FontAwesomeIcon icon={faSpinner} spin className={'loading-icon'} />
+                                        <FontAwesomeIcon icon={faSpinner} spin className={'loading-icon'}/>
                                     </div>
                                 ) : (
-                                    <FontAwesomeIcon icon={faAngleDown} className={'angle-up angle-up--main'} />
+                                    <FontAwesomeIcon icon={faAngleDown} className={'angle-up angle-up--main'}/>
                                 )}
                             </a>
                             <ul className="nav__submenu">
@@ -460,7 +465,8 @@ export const NavbarComponent = (props) => {
                         </li>
                         <li className={'icon-item'}>
                             {token ? (
-                                <div className="cart-container" onClick={handleCartClick} onMouseEnter={handleMouseEnter}
+                                <div className="cart-container" onClick={handleCartClick}
+                                     onMouseEnter={handleMouseEnter}
                                      onMouseLeave={handleMouseLeave}>
                                     {cartItemCount > 0 ? (
                                         <>                                    <Tooltip
@@ -495,8 +501,8 @@ export const NavbarComponent = (props) => {
                                             }}
                                         >
 
-                                        <Badge badgeContent={cartItemCount > 0 ? cartItemCount : ''} color="error">
-                                                <FontAwesomeIcon className={'sidebar-icon'} icon={faCartShopping} />
+                                            <Badge badgeContent={cartItemCount > 0 ? cartItemCount : ''} color="error">
+                                                <FontAwesomeIcon className={'sidebar-icon'} icon={faCartShopping}/>
                                             </Badge>
                                         </Tooltip>
 
@@ -513,11 +519,11 @@ export const NavbarComponent = (props) => {
                                             {/*)}*/}
                                         </>
                                     ) : (
-                                        <FontAwesomeIcon className="sidebar-icon" icon={faCartShopping} />
+                                        <FontAwesomeIcon className="sidebar-icon" icon={faCartShopping}/>
                                     )}
                                 </div>
                             ) : (
-                                <a />
+                                <a/>
                             )}
                         </li>
                     </ul>

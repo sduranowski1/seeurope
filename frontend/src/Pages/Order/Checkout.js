@@ -118,6 +118,12 @@ const Checkout = () => {
         fetchUserInfo();
     }, [token]);
 
+    console.log(userDetails?.enovaPerson?.contractor?.idEnova)
+    const contractorId = userDetails?.enovaPerson?.contractor?.idEnova
+
+    console.log(userDetails?.enovaPerson?.contractor?.idEnova)
+    const contractorLocationId = userDetails?.enovaPerson?.contractor?.locations[selectedLocation]?.id
+
     console.log('Current localStorage:', localStorage);
     console.log('Current localStorage:', userEmail);
 
@@ -131,80 +137,118 @@ const Checkout = () => {
 
         setIsSubmitting(true);
 
-        const orderData = {
-            email: userEmail,
-            name: userDetails?.enovaPerson?.imie || "",
-            // address: userDetails?.address || "",
-            address: selectedAddress === 'existing' ? {
-                // voivodeship: userDetails?.enovaPerson?.contractor?.adres?.wojewodztwo || "", // Existing Address Field
-                // region: userDetails?.enovaPerson?.contractor?.adres?.gmina || "", // Existing Address Field
-                // buildingNumber: userDetails?.enovaPerson?.contractor?.adres?.nrDomu || "", // Existing Address Field
-                // apartmentNumber: userDetails?.enovaPerson?.contractor?.adres?.nrLokalu || "", // Existing Address Field
-                // postOffice: userDetails?.enovaPerson?.contractor?.adres?.poczta || "", // Existing Address Field
-                // district: userDetails?.enovaPerson?.contractor?.adres?.powiat || "", // Existing Address Field
-                // regon: userDetails?.enovaPerson?.contractor?.adres?.Regon || "", // Existing Address Field
-                // phone: userDetails?.enovaPerson?.contractor?.adres?.telefon || "", // Existing Address Field
-                // street: userDetails?.enovaPerson?.contractor?.adres?.ulica || "", // Existing Address Field
-                // city: userDetails?.enovaPerson?.contractor?.adres?.miejscowosc || "", // Existing Address Field
-                // zipCode: userDetails?.enovaPerson?.contractor?.adres?.kodPocztowy || "", // Existing Address Field
-                // country: userDetails?.enovaPerson?.contractor?.adres?.kraj || "", // Existing Address Field
-                voivodeship: locations[selectedLocation]?.adresLocation?.wojewodztwo || "",
-                region: locations[selectedLocation]?.adresLocation?.gmina || "",
-                buildingNumber: locations[selectedLocation]?.adresLocation?.nrDomu || "",
-                apartmentNumber: locations[selectedLocation]?.adresLocation?.nrLokalu || "",
-                postOffice: locations[selectedLocation]?.adresLocation?.poczta || "",
-                district: locations[selectedLocation]?.adresLocation?.powiat || "",
-                regon: locations[selectedLocation]?.adresLocation?.Regon || "",
-                phone: locations[selectedLocation]?.adresLocation?.telefon || "",
-                street: locations[selectedLocation]?.adresLocation?.ulica || "",
-                city: locations[selectedLocation]?.adresLocation?.miejscowosc || "",
-                zipCode: locations[selectedLocation]?.adresLocation?.kodPocztowy || "",
-                country: locations[selectedLocation]?.adresLocation?.kraj || "",
-            } : {
-                voivodeship: newAddress?.voivodeship || "", // New Address Field
-                region: newAddress?.region || "", // New Address Field
-                buildingNumber: newAddress?.buildingNumber || "", // New Address Field
-                apartmentNumber: newAddress?.apartmentNumber || "", // New Address Field
-                postOffice: newAddress?.postOffice || "", // New Address Field
-                district: newAddress?.district || "", // New Address Field
-                regon: newAddress?.regon || "", // New Address Field
-                phone: newAddress?.phone || "", // New Address Field
-                street: newAddress?.street || "", // New Address Field
-                city: newAddress?.city || "", // New Address Field
-                zipCode: newAddress?.zipCode || "", // New Address Field
-                country: newAddress?.country || "", // New Address Field
+        // const orderData = {
+        //     email: userEmail,
+        //     name: userDetails?.enovaPerson?.imie || "",
+        //     // address: userDetails?.address || "",
+        //     address: selectedAddress === 'existing' ? {
+        //
+        //         voivodeship: locations[selectedLocation]?.adresLocation?.wojewodztwo || "",
+        //         region: locations[selectedLocation]?.adresLocation?.gmina || "",
+        //         buildingNumber: locations[selectedLocation]?.adresLocation?.nrDomu || "",
+        //         apartmentNumber: locations[selectedLocation]?.adresLocation?.nrLokalu || "",
+        //         postOffice: locations[selectedLocation]?.adresLocation?.poczta || "",
+        //         district: locations[selectedLocation]?.adresLocation?.powiat || "",
+        //         regon: locations[selectedLocation]?.adresLocation?.Regon || "",
+        //         phone: locations[selectedLocation]?.adresLocation?.telefon || "",
+        //         street: locations[selectedLocation]?.adresLocation?.ulica || "",
+        //         city: locations[selectedLocation]?.adresLocation?.miejscowosc || "",
+        //         zipCode: locations[selectedLocation]?.adresLocation?.kodPocztowy || "",
+        //         country: locations[selectedLocation]?.adresLocation?.kraj || "",
+        //     } : {
+        //         voivodeship: newAddress?.voivodeship || "", // New Address Field
+        //         region: newAddress?.region || "", // New Address Field
+        //         buildingNumber: newAddress?.buildingNumber || "", // New Address Field
+        //         apartmentNumber: newAddress?.apartmentNumber || "", // New Address Field
+        //         postOffice: newAddress?.postOffice || "", // New Address Field
+        //         district: newAddress?.district || "", // New Address Field
+        //         regon: newAddress?.regon || "", // New Address Field
+        //         phone: newAddress?.phone || "", // New Address Field
+        //         street: newAddress?.street || "", // New Address Field
+        //         city: newAddress?.city || "", // New Address Field
+        //         zipCode: newAddress?.zipCode || "", // New Address Field
+        //         country: newAddress?.country || "", // New Address Field
+        //     },
+        //     phone: userDetails?.enovaPerson?.telKomorkowy || "",
+        //     contactPerson: contactPerson,
+        //     requestedOrderDate: selectedDate ? selectedDate.toISOString() : "",
+        //     orderNumber: orderNumber,
+        //     shippingMethod: selectedOption,
+        //     items: cartItems.map((item) => ({
+        //         id: item.id,
+        //         name: i18n.language === "en"
+        //                 ? item.productInfo?.englishTitle || item.name
+        //                 : i18n.language === "de"
+        //                     ? item.productInfo?.germanTitle || item.name
+        //                     : item.name,
+        //         quantity: item.quantity,
+        //         price: item.priceList?.find(p => p.nazwa === savedContractorName)?.netto || item.priceList?.find(p => p.nazwa === 'End User')?.netto,
+        //     })),
+        //     subtotal,
+        //     // tax,
+        //     total,
+        //     orderDate: new Date().toISOString(),
+        //     currency: storedPriceCurrency,
+        // };
+        let currentIdWWW = 7; // Starting from 7
+
+        const orderDataEnova = {
+            idWWW: currentIdWWW++, // Assuming this is an auto-increment or placeholder value
+            idEnova: 112250, // Assuming this is an auto-increment or placeholder value
+            idPlatnosciInternetowej: "string", // Add the payment method ID as a string
+            numerWWW: "numer WWW", // Add the WWW number (order number)
+            numerEnova: "SE/000005/9", // Add the Enova number (order reference)
+            wartosc: total, // Assuming total is the total order value
+            wartoscWaluta: total, // Assuming the same value for currency (can be adjusted if needed)
+            platnik: contractorId, // Assuming the payer ID (if applicable)
+            odbiorca: contractorId, // Assuming the recipient ID (if applicable)
+            lokalizacjaDostawy: {
+                kod: "string", // Add a string for location code
+                nazwa: "string", // Add a string for location name
+                eMail: userEmail, // Add email from user details
+                id: contractorLocationId, // Assuming the location ID (can be adjusted if applicable)
+                idWWW: 0, // Assuming this is a placeholder or related to the order
+                adres: {
+                    id: "1",
+                    wojewodztwo: selectedAddress === 'existing' ? locations[selectedLocation]?.adresLocation?.wojewodztwo || "" : newAddress?.voivodeship || "", // Voivodeship
+                    gmina: selectedAddress === 'existing' ? locations[selectedLocation]?.adresLocation?.gmina || "" : newAddress?.region || "", // Region
+                    nrDomu: selectedAddress === 'existing' ? locations[selectedLocation]?.adresLocation?.nrDomu || "" : newAddress?.buildingNumber || "", // Building number
+                    nrLokalu: selectedAddress === 'existing' ? locations[selectedLocation]?.adresLocation?.nrLokalu || "" : newAddress?.apartmentNumber || "", // Apartment number
+                    poczta: selectedAddress === 'existing' ? locations[selectedLocation]?.adresLocation?.poczta || "" : newAddress?.postOffice || "", // Post office
+                    powiat: selectedAddress === 'existing' ? locations[selectedLocation]?.adresLocation?.powiat || "" : newAddress?.district || "", // District
+                    regon: selectedAddress === 'existing' ? locations[selectedLocation]?.adresLocation?.Regon || "" : newAddress?.regon || "", // REGON
+                    telefon: selectedAddress === 'existing' ? locations[selectedLocation]?.adresLocation?.telefon || "" : newAddress?.phone || "", // Phone
+                    ulica: selectedAddress === 'existing' ? locations[selectedLocation]?.adresLocation?.ulica || "" : newAddress?.street || "", // Street
+                    miejscowosc: selectedAddress === 'existing' ? locations[selectedLocation]?.adresLocation?.miejscowosc || "" : newAddress?.city || "", // City
+                    kodPocztowy: selectedAddress === 'existing' ? locations[selectedLocation]?.adresLocation?.kodPocztowy || "" : newAddress?.zipCode || "", // Zip Code
+                    kraj: selectedAddress === 'existing' ? locations[selectedLocation]?.adresLocation?.kraj || "" : newAddress?.country || "" // Country
+                }
             },
-            phone: userDetails?.enovaPerson?.telKomorkowy || "",
-            contactPerson: contactPerson,
-            requestedOrderDate: selectedDate ? selectedDate.toISOString() : "",
-            orderNumber: orderNumber,
-            shippingMethod: selectedOption,
-            items: cartItems.map((item) => ({
-                id: item.id,
-                name: i18n.language === "en"
-                        ? item.productInfo?.englishTitle || item.name
-                        : i18n.language === "de"
-                            ? item.productInfo?.germanTitle || item.name
-                            : item.name,
-                quantity: item.quantity,
-                price: item.priceList?.find(p => p.nazwa === savedContractorName)?.netto || item.priceList?.find(p => p.nazwa === 'End User')?.netto,
+            data: new Date().toISOString(), // Current date
+            opis: "string", // Add a description (if applicable)
+            pozycjeDokHandlowego: cartItems.map(item => ({
+                towarEnovaId: item.id, // Assuming item ID corresponds to the Enova ID
+                ilosc: item.quantity, // Quantity
+                cena: item.priceList?.find(p => p.nazwa === savedContractorName)?.netto || item.priceList?.find(p => p.nazwa === 'End User')?.netto, // Price
+                wartosc: item.priceList?.find(p => p.nazwa === savedContractorName)?.netto * item.quantity || item.priceList?.find(p => p.nazwa === 'End User')?.netto * item.quantity, // Total value per item
+                jednostka: "szt", // Add unit (if applicable)
+                symbolWaluty: storedPriceCurrency // Add the currency symbol
             })),
-            subtotal,
-            // tax,
-            total,
-            orderDate: new Date().toISOString(),
-            currency: storedPriceCurrency,
+            terminPlatnosci: selectedDate ? selectedDate.toISOString() : "", // Payment due date
         };
 
-        console.log(orderData);
+
+        // console.log(orderData);
+        console.log(JSON.stringify(orderDataEnova));
 
         try {
-            const response = await fetch('https://se-europe-test.pl/api/orders', {
+            // const response = await fetch('https://se-europe-test.pl/api/orders', {
+            const response = await fetch('https://se-europe-test.pl/api/enova_orders/enova_call', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(orderData),
+                body: JSON.stringify(orderDataEnova),
             });
 
             if (response.ok) {

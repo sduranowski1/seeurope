@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Psr\Log\LoggerInterface;
 
 class EnovaMakeOrderController extends AbstractController
 {
@@ -17,18 +18,22 @@ class EnovaMakeOrderController extends AbstractController
     private HttpClientInterface $client;
     private TokenRepository $tokenRepository;
     private TokenService $tokenService;
+    private LoggerInterface $logger;  // Inject LoggerInterface
+
 
     public function __construct(
         EntityManagerInterface $entityManager,
         HttpClientInterface $client,
         TokenRepository     $tokenRepository,
-        TokenService        $tokenService
+        TokenService        $tokenService,
+        LoggerInterface     $logger
     )
     {
         $this->entityManager = $entityManager;
         $this->client = $client;
         $this->tokenRepository = $tokenRepository;
         $this->tokenService = $tokenService;
+        $this->logger = $logger;
     }
 
     public function __invoke(Request $request): JsonResponse
@@ -102,6 +107,11 @@ class EnovaMakeOrderController extends AbstractController
 
             return new JsonResponse($data, $response->getStatusCode());
         } catch (\Exception $e) {
+            // Log the error here as well
+            $this->logger->error('Error making order request: ' . $e->getMessage(), [
+                'exception' => $e,
+                'request_data' => $request->request->all(), // Optionally log request data
+            ]);
             return new JsonResponse(['error' => $e->getMessage()], 500);
         }
     }

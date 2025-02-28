@@ -108,6 +108,27 @@ class EnovaMakeOrderController extends AbstractController
             $enovaOrder->setPozycjeDokHandlowego($data['pozycjeDokHandlowego'] ?? []);
             $enovaOrder->setTerminPlatnosci(new \DateTime($data['terminPlatnosci'] ?? 'now'));
 
+            // Process 'pozycjeDokHandlowego' and extract 'productName'
+            $pozycjeDokHandlowego = [];
+            if (isset($data['pozycjeDokHandlowego']) && is_array($data['pozycjeDokHandlowego'])) {
+                foreach ($data['pozycjeDokHandlowego'] as $pozycja) {
+                    $pozycjaDok = [
+                        'towarEnovaId' => $pozycja['towarEnovaId'] ?? null,
+                        'ilosc' => $pozycja['ilosc'] ?? null,
+                        'cena' => $pozycja['cena'] ?? null,
+                        'wartosc' => $pozycja['wartosc'] ?? null,
+                        'jednostka' => $pozycja['jednostka'] ?? null,
+                        'symbolWaluty' => $pozycja['symbolWaluty'] ?? null,
+                        'productName' => $pozycja['productName'] ?? null // Capture product name
+                    ];
+                    $pozycjeDokHandlowego[] = $pozycjaDok;
+                }
+            }
+
+            // Save updated list with product names
+            $enovaOrder->setPozycjeDokHandlowego($pozycjeDokHandlowego);
+
+
             $this->entityManager->persist($enovaOrder);
             $this->entityManager->flush();
 

@@ -44,7 +44,7 @@ export const Dashboard = () => {
                 if (email) {
                     setUserEmail(email);
 
-                    const response = await fetch(`https://se-europe-test.pl/api/orders?email=${encodeURIComponent(email)}&page=${page}&order[id]=desc`, {
+                    const response = await fetch(`https://se-europe-test.pl/api/enova_orders?email=${encodeURIComponent(email)}&page=${page}&order[id]=desc`, {
                         headers: {
                             'Accept': 'application/ld+json'
                         }
@@ -90,12 +90,12 @@ export const Dashboard = () => {
     const [currentOrderItems, setCurrentOrderItems] = useState([]);
     const [currentOrderAddress, setCurrentOrderAddress] = useState([]);
 
-    const handleOpenModal = (items) => {
-        setCurrentOrderItems(items);
+    const handleOpenModal = (pozycjeDokHandlowego) => {
+        setCurrentOrderItems(pozycjeDokHandlowego);
         setModalOpen(true);
     };
-    const handleOpenModalAddress = (address) => {
-        setCurrentOrderAddress(address);
+    const handleOpenModalAddress = (lokalizacjaDostawy) => {
+        setCurrentOrderAddress(lokalizacjaDostawy);
         setModalAddressOpen(true);
     };
 
@@ -147,17 +147,17 @@ export const Dashboard = () => {
                                             <td>{order.email}</td>
                                             {/*<td>{order.name}</td>*/}
                                             {/*<td>{order.address || 'N/A'}</td>*/}
-                                            <td>{order.phone || ''}</td>
+                                            <td>{order?.lokalizacjaDostawy?.adres?.telefon || ""}</td>
                                             <td>{new Date(order.requestedOrderDate).toLocaleDateString('en-GB', { timeZone: 'UTC' })}</td>
                                             {/*<td>{order.subtotal}</td>*/}
                                             {/*<td>{order.tax}</td>*/}
-                                            <td>{order.total}</td>
-                                            <td>{order.currency}</td>
+                                            <td>{order.wartosc}</td>
+                                            <td>{order.pozycjeDokHandlowego[0]?.symbolWaluty}</td>
                                             <td>
                                                 <Button
                                                     variant="text"  // Set the variant to 'text' for a text-style button
                                                     color="primary" // Use the primary color (usually blue in Material UI)
-                                                    onClick={() => handleOpenModal(order.items)}
+                                                    onClick={() => handleOpenModal(order.pozycjeDokHandlowego)}
                                                     style={{
                                                         padding: 0,
                                                         textTransform: 'none',
@@ -174,7 +174,7 @@ export const Dashboard = () => {
                                                 <Button
                                                     variant="text"  // Set the variant to 'text' for a text-style button
                                                     color="primary" // Use the primary color (usually blue in Material UI)
-                                                    onClick={() => handleOpenModalAddress(order.address)}
+                                                    onClick={() => handleOpenModalAddress(order.lokalizacjaDostawy)}
                                                     style={{
                                                         padding: 0,
                                                         textTransform: 'none',

@@ -190,7 +190,7 @@ const Checkout = () => {
         //     orderDate: new Date().toISOString(),
         //     currency: storedPriceCurrency,
         // };
-        let currentIdWWW = 11; // Starting from 7
+        let currentIdWWW = 16; // Starting from 7
 
         const orderDataEnova = {
             idWWW: currentIdWWW++, // Assuming this is an auto-increment or placeholder value
@@ -229,6 +229,11 @@ const Checkout = () => {
             opis: "string", // Add a description (if applicable)
             pozycjeDokHandlowego: cartItems.map(item => ({
                 towarEnovaId: item.id, // Assuming item ID corresponds to the Enova ID
+                name: i18n.language === "en"
+                        ? item.productInfo?.englishTitle || item.name
+                        : i18n.language === "de"
+                            ? item.productInfo?.germanTitle || item.name
+                            : item.name,
                 ilosc: item.quantity, // Quantity
                 cena: item.priceList?.find(p => p.nazwa === savedContractorName)?.netto || item.priceList?.find(p => p.nazwa === 'End User')?.netto, // Price
                 wartosc: item.priceList?.find(p => p.nazwa === savedContractorName)?.netto * item.quantity || item.priceList?.find(p => p.nazwa === 'End User')?.netto * item.quantity, // Total value per item

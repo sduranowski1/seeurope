@@ -28,7 +28,7 @@ const OrderItemsModal = ({ open, onClose, items }) => {
                                     ? item.productInfo?.englishTitle || item.name
                                     : i18n.language === "de"
                                         ? item.productInfo?.germanTitle || item.name
-                                        : item.name}</strong> - {item.quantity} x {item.price}
+                                        : item.name}</strong> - {item.ilosc} x {item.cena}
                             </li>
                         ))}
                     </ul>

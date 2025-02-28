@@ -2,6 +2,10 @@
 
 namespace App\Entity\Enova;
 
+use ApiPlatform\Doctrine\Common\Filter\SearchFilterInterface;
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
@@ -29,12 +33,22 @@ use Doctrine\ORM\Mapping as ORM;
         new Delete()
     ]
 )]
+#[ApiFilter(
+    SearchFilter::class,
+    properties: [
+        'email' => SearchFilterInterface::STRATEGY_PARTIAL
+    ]
+)]
+#[ApiFilter(OrderFilter::class, properties: ['id'])]
 class EnovaOrder
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
+
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $email = null;
 
     #[ORM\Column(type: 'integer')]
     private int $idWWW;
@@ -117,6 +131,18 @@ class EnovaOrder
     {
         $this->idEnova = $idEnova;
     }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(?string $email): void
+    {
+        $this->email = $email;
+    }
+
+
 
     public function getNumerWWW(): string
     {

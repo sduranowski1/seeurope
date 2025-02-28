@@ -190,11 +190,12 @@ const Checkout = () => {
         //     orderDate: new Date().toISOString(),
         //     currency: storedPriceCurrency,
         // };
-        let currentIdWWW = 7; // Starting from 7
+        let currentIdWWW = 9; // Starting from 7
 
         const orderDataEnova = {
             idWWW: currentIdWWW++, // Assuming this is an auto-increment or placeholder value
             idEnova: 112250, // Assuming this is an auto-increment or placeholder value
+            email: userEmail, // Assuming this is an auto-increment or placeholder value
             idPlatnosciInternetowej: "string", // Add the payment method ID as a string
             numerWWW: "numer WWW", // Add the WWW number (order number)
             numerEnova: "SE/000005/9", // Add the Enova number (order reference)

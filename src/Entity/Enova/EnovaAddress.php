@@ -51,11 +51,11 @@ class EnovaAddress
     private ?string $miejscowosc = null;
 
     #[ORM\Column(type: 'string', nullable: true)]
-    #[Groups(['enovaContractor:read', 'enovaContractor:create', 'enovaContractor:update', 'enovaLocation:read', 'enovaLocation:write', 'enovaLocation:update', 'enovaPerson:read', 'enovaPerson:create', 'enovaPerson:update'])]
+    #[Groups(['enovaContractor:read', 'enovaContractor:create', 'enovaContractor:update', 'enovaLocation:read', 'enovaLocation:write', 'enovaLocation:update', 'enovaPerson:read', 'enovaPerson:create', 'enovaPerson:update', 'userEnova:read', 'userEnova:create', 'userEnova:update'])]
     private ?string $kodPocztowy = null;
 
     #[ORM\Column(type: 'string', nullable: true)]
-    #[Groups(['enovaContractor:read', 'enovaContractor:create', 'enovaContractor:update', 'enovaLocation:read', 'enovaLocation:write', 'enovaLocation:update', 'enovaPerson:read', 'enovaPerson:create', 'enovaPerson:update'])]
+    #[Groups(['enovaContractor:read', 'enovaContractor:create', 'enovaContractor:update', 'enovaLocation:read', 'enovaLocation:write', 'enovaLocation:update', 'enovaPerson:read', 'enovaPerson:create', 'enovaPerson:update', 'userEnova:read', 'userEnova:create', 'userEnova:update'])]
     private ?string $kraj = null;
 
     public function getId(): ?string

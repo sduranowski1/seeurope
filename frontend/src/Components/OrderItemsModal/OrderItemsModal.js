@@ -1,9 +1,39 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import Modal from '@mui/material/Modal';
 import { Button, Box } from '@mui/material';
 import i18n from "i18next";
 
 const OrderItemsModal = ({ open, onClose, items }) => {
+    const [productData, setProductData] = useState({});
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        if (!open || items.length === 0) return;
+
+        setLoading(true);
+        const fetchProductNames = async () => {
+            try {
+                const response = await fetch('https://se-europe-test.pl/api/enova_products/no_pagination');
+                const data = await response.json();
+
+                // Convert API response into a lookup object { id: name }
+                const productMap = {};
+                data.forEach(product => {
+                    productMap[product.id] = product.name;
+                });
+
+                setProductData(productMap);
+            } catch (error) {
+                console.error("Error fetching products:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchProductNames();
+    }, [open, items]);
+
+    console.log(productData)
 
     console.log(items)
     return (
@@ -24,11 +54,9 @@ const OrderItemsModal = ({ open, onClose, items }) => {
                     <ul>
                         {items.map((item, index) => (
                             <li key={index}>
-                                <strong>{i18n.language === "en"
-                                    ? item.productInfo?.englishTitle || item.name
-                                    : i18n.language === "de"
-                                        ? item.productInfo?.germanTitle || item.name
-                                        : item.name} {item.towarEnovaId}</strong> - {item.ilosc} x {item.cena}
+                                <strong>
+                                    {productData[item.towarEnovaId] || "Unknown Product"} ({item.towarEnovaId})
+                                </strong> - {item.ilosc} x {item.cena}
                             </li>
                         ))}
                     </ul>

@@ -129,6 +129,8 @@ const Checkout = () => {
 
     const savedContractorName = localStorage.getItem('contractorName');
 
+    console.log(Math.floor(Date.now() / 1000)); // Example: 1709456734123
+
     const handleOrderSubmission = async () => {
         if (!cartItems || cartItems.length === 0) {
             alert('No items in the cart!');
@@ -194,9 +196,10 @@ const Checkout = () => {
         // let currentIdWWW = 21; // Starting from 7
 
         const orderDataEnova = {
-            idWWW: Date.now(), // Assuming this is an auto-increment or placeholder value
+            idWWW: Math.floor(Date.now() / 1000), // Assuming this is an auto-increment or placeholder value
             idEnova: 112250, // Assuming this is an auto-increment or placeholder value
             email: userEmail, // Assuming this is an auto-increment or placeholder value
+            idOsobaKontaktowa: userDetails.id,
             idPlatnosciInternetowej: "string", // Add the payment method ID as a string
             numerWWW: "numer WWW", // Add the WWW number (order number)
             numerEnova: "SE/000005/9", // Add the Enova number (order reference)
@@ -209,7 +212,7 @@ const Checkout = () => {
                 nazwa: "string", // Add a string for location name
                 eMail: userEmail, // Add email from user details
                 id: contractorLocationId, // Assuming the location ID (can be adjusted if applicable)
-                idWWW: 0, // Assuming this is a placeholder or related to the order
+                // idWWW: 0, // Assuming this is a placeholder or related to the order
                 adres: {
                     id: "1",
                     wojewodztwo: selectedAddress === 'existing' ? locations[selectedLocation]?.adresLocation?.wojewodztwo || "" : newAddress?.voivodeship || "", // Voivodeship

@@ -50,8 +50,8 @@ class EnovaOrder
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $email = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private ?string $idWWW = null;
+    #[ORM\Column(type: 'integer')]
+    private int $idWWW;
 
     #[ORM\Column(type: 'integer')]
     private int $idEnova;
@@ -102,27 +102,15 @@ class EnovaOrder
         $this->id = $id;
     }
 
-    public function getIdWWW(): ?string
+    public function getIdWWW(): int
     {
         return $this->idWWW;
     }
 
-    public function setIdWWW(?string $idWWW): void
+    public function setIdWWW(int $idWWW): void
     {
         $this->idWWW = $idWWW;
     }
-
-//    public function getIdWWW(): int
-//    {
-//        return $this->idWWW;
-//    }
-//
-//    public function setIdWWW(int $idWWW): void
-//    {
-//        $this->idWWW = $idWWW;
-//    }
-
-
 
     public function getIdPlatnosciInternetowej(): string
     {

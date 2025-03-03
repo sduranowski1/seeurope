@@ -64,6 +64,16 @@ class EnovaMakeOrderController extends AbstractController
             return new JsonResponse(['error' => 'Invalid JSON payload'], 400);
         }
 
+        // ✅ Preserve `productName` from the request body BEFORE making the API call
+        $productNames = [];
+        if (!empty($requestBody['pozycjeDokHandlowego'])) {
+            foreach ($requestBody['pozycjeDokHandlowego'] as $index => $position) {
+                if (isset($position['productName'])) {
+                    $productNames[$index] = $position['productName'];
+                }
+            }
+        }
+
         // Add timestamps dynamically if missing
         if (!isset($requestBody['data'])) {
             $requestBody['data'] = (new \DateTime())->format('c');
@@ -84,6 +94,15 @@ class EnovaMakeOrderController extends AbstractController
             ]);
 
             $data = $response->toArray();
+
+            // ✅ Restore `productName` to `pozycjeDokHandlowego`
+            if (!empty($data['pozycjeDokHandlowego'])) {
+                foreach ($data['pozycjeDokHandlowego'] as $index => &$position) {
+                    if (isset($productNames[$index])) {
+                        $position['productName'] = $productNames[$index];
+                    }
+                }
+            }
 
             // Save response to database
             $enovaOrder = new EnovaOrder();
@@ -107,6 +126,23 @@ class EnovaMakeOrderController extends AbstractController
             $enovaOrder->setOpis($data['opis'] ?? null);
             $enovaOrder->setPozycjeDokHandlowego($data['pozycjeDokHandlowego'] ?? []);
             $enovaOrder->setTerminPlatnosci(new \DateTime($data['terminPlatnosci'] ?? 'now'));
+
+            // ✅ Save `pozycjeDokHandlowego` with product names
+            $pozycjeDokHandlowego = [];
+            if (!empty($data['pozycjeDokHandlowego'])) {
+                foreach ($data['pozycjeDokHandlowego'] as $index => $pozycja) {
+                    $pozycjaDok = [
+                        'towarEnovaId' => $pozycja['towarEnovaId'] ?? null,
+                        'ilosc' => $pozycja['ilosc'] ?? null,
+                        'cena' => $pozycja['cena'] ?? null,
+                        'wartosc' => $pozycja['wartosc'] ?? null,
+                        'jednostka' => $pozycja['jednostka'] ?? null,
+                        'symbolWaluty' => $pozycja['symbolWaluty'] ?? null,
+                        'productName' => $pozycja['productName'] ?? null, // ✅ This now includes the correct product name
+                    ];
+                    $pozycjeDokHandlowego[] = $pozycjaDok;
+                }
+            }
 
             $this->entityManager->persist($enovaOrder);
             $this->entityManager->flush();

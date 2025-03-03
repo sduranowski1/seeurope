@@ -148,7 +148,7 @@ export const Dashboard = () => {
                                             {/*<td>{order.name}</td>*/}
                                             {/*<td>{order.address || 'N/A'}</td>*/}
                                             <td>{order?.lokalizacjaDostawy?.adres?.telefon || ""}</td>
-                                            <td>{new Date(order.requestedOrderDate).toLocaleDateString('en-GB', { timeZone: 'UTC' })}</td>
+                                            <td>{new Date(order.terminPlatnosci).toLocaleDateString('en-GB', { timeZone: 'UTC' })}</td>
                                             {/*<td>{order.subtotal}</td>*/}
                                             {/*<td>{order.tax}</td>*/}
                                             <td>{order.wartosc}</td>
@@ -174,7 +174,7 @@ export const Dashboard = () => {
                                                 <Button
                                                     variant="text"  // Set the variant to 'text' for a text-style button
                                                     color="primary" // Use the primary color (usually blue in Material UI)
-                                                    onClick={() => handleOpenModalAddress(order.lokalizacjaDostawy)}
+                                                    onClick={() => handleOpenModalAddress(order.lokalizacjaDostawy.adres)}
                                                     style={{
                                                         padding: 0,
                                                         textTransform: 'none',

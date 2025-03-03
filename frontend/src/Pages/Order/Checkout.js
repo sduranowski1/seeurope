@@ -190,10 +190,11 @@ const Checkout = () => {
         //     orderDate: new Date().toISOString(),
         //     currency: storedPriceCurrency,
         // };
-        let currentIdWWW = 16; // Starting from 7
+
+        // let currentIdWWW = 21; // Starting from 7
 
         const orderDataEnova = {
-            idWWW: currentIdWWW++, // Assuming this is an auto-increment or placeholder value
+            idWWW: Date.now(), // Assuming this is an auto-increment or placeholder value
             idEnova: 112250, // Assuming this is an auto-increment or placeholder value
             email: userEmail, // Assuming this is an auto-increment or placeholder value
             idPlatnosciInternetowej: "string", // Add the payment method ID as a string
@@ -229,7 +230,7 @@ const Checkout = () => {
             opis: "string", // Add a description (if applicable)
             pozycjeDokHandlowego: cartItems.map(item => ({
                 towarEnovaId: item.id, // Assuming item ID corresponds to the Enova ID
-                name: i18n.language === "en"
+                productName: i18n.language === "en"
                         ? item.productInfo?.englishTitle || item.name
                         : i18n.language === "de"
                             ? item.productInfo?.germanTitle || item.name

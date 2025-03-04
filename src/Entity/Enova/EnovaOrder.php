@@ -92,6 +92,18 @@ class EnovaOrder
     #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTimeInterface $terminPlatnosci = null;
 
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $contactPerson = null;
+
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $phone = null;
+
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $orderNumber = null;
+
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $shipping = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -252,6 +264,46 @@ class EnovaOrder
     public function setTerminPlatnosci(?\DateTimeInterface $terminPlatnosci): void
     {
         $this->terminPlatnosci = $terminPlatnosci;
+    }
+
+    public function getContactPerson(): ?string
+    {
+        return $this->contactPerson;
+    }
+
+    public function setContactPerson(?string $contactPerson): void
+    {
+        $this->contactPerson = $contactPerson;
+    }
+
+    public function getPhone(): ?string
+    {
+        return $this->phone;
+    }
+
+    public function setPhone(?string $phone): void
+    {
+        $this->phone = $phone;
+    }
+
+    public function getOrderNumber(): ?string
+    {
+        return $this->orderNumber;
+    }
+
+    public function setOrderNumber(?string $orderNumber): void
+    {
+        $this->orderNumber = $orderNumber;
+    }
+
+    public function getShipping(): ?string
+    {
+        return $this->shipping;
+    }
+
+    public function setShipping(?string $shipping): void
+    {
+        $this->shipping = $shipping;
     }
 
 

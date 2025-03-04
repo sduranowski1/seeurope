@@ -64,6 +64,26 @@ class EnovaMakeOrderController extends AbstractController
             return new JsonResponse(['error' => 'Invalid JSON payload'], 400);
         }
 
+        $contactPerson = null;
+        if (isset($requestBody['contactPerson'])) {
+            $contactPerson = $requestBody['contactPerson'];
+        }
+
+        $phone = null;
+        if (isset($requestBody['phone'])) {
+            $phone = $requestBody['phone'];
+        }
+
+        $orderNumber = null;
+        if (isset($requestBody['orderNumber'])) {
+            $orderNumber = $requestBody['orderNumber'];
+        }
+
+        $shipping = null;
+        if (isset($requestBody['shipping'])) {
+            $shipping = $requestBody['shipping'];
+        }
+
         // ✅ Preserve `productName` from the request body BEFORE making the API call
         $productNames = [];
         if (!empty($requestBody['pozycjeDokHandlowego'])) {
@@ -126,10 +146,10 @@ class EnovaMakeOrderController extends AbstractController
             $enovaOrder->setOpis($data['opis'] ?? null);
             $enovaOrder->setPozycjeDokHandlowego($data['pozycjeDokHandlowego'] ?? []);
             $enovaOrder->setTerminPlatnosci(new \DateTime($data['terminPlatnosci'] ?? 'now'));
-            $enovaOrder->setContactPerson($data['contactPerson'] ?? null);
-            $enovaOrder->setPhone($data['phone'] ?? null);
-            $enovaOrder->setOrderNumber($data['orderNumber'] ?? null);
-            $enovaOrder->setShipping($data['shipping'] ?? null);
+            $enovaOrder->setContactPerson($contactPerson ?? null);
+            $enovaOrder->setPhone($phone ?? null);
+            $enovaOrder->setOrderNumber($orderNumber ?? null);
+            $enovaOrder->setShipping($shipping ?? null);
 
             // ✅ Save `pozycjeDokHandlowego` with product names
             $pozycjeDokHandlowego = [];

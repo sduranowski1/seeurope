@@ -16,15 +16,15 @@ class EnovaLocation
     #[ORM\Id]
 //    #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups([ 'enovaLocation:read', 'enovaContractor:read', 'userEnova:read'])]
+    #[Groups([ 'enovaLocation:read', 'enovaContractor:read', 'userEnova:read', 'enovaPerson:read'])]
     private ?int $id = null;
 
     #[ORM\Column(type: 'string', length: 50, nullable: true)] // Made nullable
-    #[Groups(['enovaLocation:read', 'enovaLocation:write', 'enovaContractor:read', 'userEnova:read'])]
+    #[Groups(['enovaLocation:read', 'enovaLocation:write', 'enovaContractor:read', 'userEnova:read', 'enovaPerson:read'])]
     private ?string $kod = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)] // Made nullable
-    #[Groups(['enovaLocation:read', 'enovaLocation:write', 'enovaContractor:read', 'userEnova:read'])]
+    #[Groups(['enovaLocation:read', 'enovaLocation:write', 'enovaContractor:read', 'userEnova:read', 'enovaPerson:read'])]
     private ?string $nazwa = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]

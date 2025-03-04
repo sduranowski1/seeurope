@@ -126,6 +126,10 @@ class EnovaMakeOrderController extends AbstractController
             $enovaOrder->setOpis($data['opis'] ?? null);
             $enovaOrder->setPozycjeDokHandlowego($data['pozycjeDokHandlowego'] ?? []);
             $enovaOrder->setTerminPlatnosci(new \DateTime($data['terminPlatnosci'] ?? 'now'));
+            $enovaOrder->setContactPerson($data['contactPerson'] ?? null);
+            $enovaOrder->setPhone($data['phone'] ?? null);
+            $enovaOrder->setOrderNumber($data['orderNumber'] ?? null);
+            $enovaOrder->setShipping($data['shipping'] ?? null);
 
             // ✅ Save `pozycjeDokHandlowego` with product names
             $pozycjeDokHandlowego = [];

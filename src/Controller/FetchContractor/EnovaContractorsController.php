@@ -63,7 +63,11 @@ class EnovaContractorsController extends AbstractController
         $contractorsUrl = 'http://extranet.seequipment.pl:9010/api/PanelWWW_API/DajKontrahentow';
         $response = $this->client->request('POST', $contractorsUrl, [
             'json' => [
-                'pokazOsoby' => true
+                    'strona' => 1,
+//                    'limit' => 50,
+                    'pokazCeny' => true,
+                    'poleSortowane' => 'ID',
+                    'czyRosnaco' => 1
             ],
             'headers' => [
                 'Authorization' => 'Bearer ' . $token,
@@ -75,14 +79,49 @@ class EnovaContractorsController extends AbstractController
 
         $data = $response->toArray();
 
+//        // Define the path to save the JSON file
+//        $filePath = 'contractors_data.json';
+//
+//        // Convert the data to JSON
+//        $jsonData = json_encode($data['elementy'], JSON_PRETTY_PRINT);
+//
+//        // Save the JSON data to a file
+//        file_put_contents($filePath, $jsonData);
+
         if (!isset($data['elementy']) || empty($data['elementy'])) {
             return new JsonResponse(['status' => 'success', 'message' => 'No contractors found.']);
         }
 
-        foreach ($data['elementy'] as $contractor) {
-            // Find contractor by idEnova
-            $existingContractor = $this->enovaContractorRepository->findOneBy(['idEnova' => $contractor['idEnova']]);
+        // Debugging: Check if 'elementy' exists and is an array
+        if (!isset($data['elementy']) || !is_array($data['elementy'])) {
+            error_log("Invalid data structure: 'elementy' key is missing or not an array.");
+            return new JsonResponse(['status' => 'error', 'message' => "'elementy' data is missing or invalid."], 400);
+        }
 
+        foreach ($data['elementy'] as $contractor) {
+            // Ensure that each contractor is an array and contains 'idEnova'
+            if (!is_array($contractor)) {
+                error_log("Skipping entry : Not an array");
+                continue;
+            }
+
+            if (!isset($contractor['idEnova'])) {
+                error_log("Skipping entry : Missing 'idEnova'");
+                continue;
+            }
+
+            error_log("Processing contractor  with idEnova: " . $contractor['idEnova']);
+
+            if (!is_array($contractor) || !isset($contractor['idEnova'])) {
+                continue; // Skip this contractor if 'idEnova' is missing
+            }
+            // Find contractor by idEnova
+            try {
+                $existingContractor = $this->enovaContractorRepository->findOneBy(['idEnova' => $contractor['idEnova']]);
+            } catch (\Exception $e) {
+                error_log("Database error on contractor: " . $e->getMessage());
+                continue;
+            }
             // Process primary address
             $adres = $this->processAddress($contractor['adres']);
             if ($existingContractor) {
@@ -110,7 +149,7 @@ class EnovaContractorsController extends AbstractController
 
                 foreach ($contractor['listaLokalizacje'] as $locationData) {
                     $location = $this->processLocation($locationData);
-                    $newContractor->addLocation($location);
+//                    $newContractor->addLocation($location);
                 }
 
                 foreach ($contractor['listaOsobyKontrahenta'] as $personData) {
@@ -133,7 +172,7 @@ class EnovaContractorsController extends AbstractController
                 // Update or add locations
                 foreach ($contractor['listaLokalizacje'] as $locationData) {
                     $location = $this->processLocation($locationData);
-                    $existingContractor->addLocation($location);
+//                    $existingContractor->addLocation($location);
                 }
 
                 // Update or add persons

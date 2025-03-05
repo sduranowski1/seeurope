@@ -59,9 +59,9 @@ class EnovaContractor
     #[Groups(['enovaContractor:read', 'enovaContractor:create', 'enovaContractor:update'])]
     private ?EnovaAddress $adresKorespondencyjny = null;
 
-//    #[ORM\OneToMany(mappedBy: 'contractor', targetEntity: EnovaLocation::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
-//    #[Groups(['enovaContractor:read', 'enovaContractor:write', 'enovaPerson:read', 'enovaPerson:create', 'enovaPerson:update', 'userEnova:read'])]
-//    private Collection $locations;
+    #[ORM\OneToMany(mappedBy: 'contractor', targetEntity: EnovaLocation::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[Groups(['enovaContractor:read', 'enovaContractor:write', 'enovaPerson:read', 'enovaPerson:create', 'enovaPerson:update', 'userEnova:read'])]
+    private Collection $locations;
 
     #[ORM\OneToMany(targetEntity: EnovaPerson::class, mappedBy: 'contractor', cascade: ['persist', 'remove'])]
     #[Groups(['enovaContractor:read', 'enovaContractor:create', 'enovaContractor:update'])]
@@ -74,7 +74,7 @@ class EnovaContractor
     public function __construct()
     {
         $this->listaOsobyKontrahenta = new ArrayCollection();
-//        $this->locations = new ArrayCollection();
+        $this->locations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -173,32 +173,32 @@ class EnovaContractor
         $this->adresKorespondencyjny = $adresKorespondencyjny;
     }
 
-//    public function getLocations(): Collection
-//    {
-//        return $this->locations;
-//    }
-//
-//    public function addLocation(EnovaLocation $location): self
-//    {
-//        if (!$this->locations->contains($location)) {
-//            $this->locations[] = $location;
-//            $location->setContractor($this);
-//        }
-//
-//        return $this;
-//    }
-//
-//    public function removeLocation(EnovaLocation $location): self
-//    {
-//        if ($this->locations->removeElement($location)) {
-//            // Set the owning side to null (unless already changed)
-//            if ($location->getContractor() === $this) {
-//                $location->setContractor(null);
-//            }
-//        }
-//
-//        return $this;
-//    }
+    public function getLocations(): Collection
+    {
+        return $this->locations;
+    }
+
+    public function addLocation(EnovaLocation $location): self
+    {
+        if (!$this->locations->contains($location)) {
+            $this->locations[] = $location;
+            $location->setContractor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLocation(EnovaLocation $location): self
+    {
+        if ($this->locations->removeElement($location)) {
+            // Set the owning side to null (unless already changed)
+            if ($location->getContractor() === $this) {
+                $location->setContractor(null);
+            }
+        }
+
+        return $this;
+    }
 
 
 

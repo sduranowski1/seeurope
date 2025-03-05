@@ -149,7 +149,7 @@ class EnovaContractorsController extends AbstractController
 
                 foreach ($contractor['listaLokalizacje'] as $locationData) {
                     $location = $this->processLocation($locationData);
-//                    $newContractor->addLocation($location);
+                    $newContractor->addLocation($location);
                 }
 
                 foreach ($contractor['listaOsobyKontrahenta'] as $personData) {
@@ -172,7 +172,7 @@ class EnovaContractorsController extends AbstractController
                 // Update or add locations
                 foreach ($contractor['listaLokalizacje'] as $locationData) {
                     $location = $this->processLocation($locationData);
-//                    $existingContractor->addLocation($location);
+                    $existingContractor->addLocation($location);
                 }
 
                 // Update or add persons

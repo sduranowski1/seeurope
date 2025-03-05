@@ -26,7 +26,7 @@ class EnovaContractor
 
     #[ORM\Id]
     #[ORM\Column(type: 'integer', unique: true)]
-    #[Groups(["enovaContractor:read"])]
+    #[Groups(["enovaContractor:read", 'enovaLocation:read'])]
     private ?int $id = null;
 
     #[ORM\Column(type: 'string')]

@@ -7,9 +7,7 @@ security:
     # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
     providers:
         users:
-            entity:
-                class: App\Entity\Enova\UserEnova
-                property: email
+            id: App\Security\UserEnovaProvider # Use custom provider
         submissions:
             entity:
                 class: App\Entity\Submission

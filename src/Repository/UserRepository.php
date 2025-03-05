@@ -56,4 +56,20 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
         $this->save($user, true);
     }
+
+    /**
+     * Load user by username (or email) from EnovaPerson entity.
+     *
+     * @param string $email
+     * @return UserEnova|null
+     */
+    public function loadUserByUsername(string $email): ?UserEnova
+    {
+        return $this->createQueryBuilder('u')
+            ->innerJoin('u.enovaPerson', 'e')
+            ->where('e.email = :email')
+            ->setParameter('email', $email)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }

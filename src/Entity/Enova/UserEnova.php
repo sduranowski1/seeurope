@@ -58,7 +58,8 @@ ApiFilter(
 )]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 //#[ORM\Table(name: '`user`')]
-#[UniqueEntity('email')]
+//#[UniqueEntity('email')]
+#[UniqueEntity('enovaPerson.email')]  // Ensure uniqueness is on EnovaPerson's email
 class UserEnova implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[Groups(['userEnova:read'])]
@@ -105,15 +106,18 @@ class UserEnova implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getEmail(): ?string
     {
-        return $this->email;
+        dump($this->enovaPerson); // Check if enovaPerson is set
+        dump($this->enovaPerson?->getEmail()); // Check the email value
+        return $this->enovaPerson?->getEmail();
     }
 
-    public function setEmail(string $email): self
-    {
-        $this->email = $email;
 
-        return $this;
-    }
+//    public function setEmail(string $email): self
+//    {
+//        $this->email = $email;
+//
+//        return $this;
+//    }
 
     /**
      * @see PasswordAuthenticatedUserInterface

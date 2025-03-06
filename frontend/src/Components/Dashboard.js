@@ -21,11 +21,11 @@ import OrderAddressModal from "./OrderAddressModal/OrderAddressModal";
 export const Dashboard = () => {
     const [orders, setOrders] = useState([]);
     const { token } = useContext(AuthContext); // Get token from AuthContext
-    const [userEmail, setUserEmail] = useState(null);
+    const [userId, setUserId] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
 
-
+    console.log(JSON.parse(atob(token.split('.')[1])))
     // const fetchData = [
     //     {itemNo: 0, product: 'ŁADOWARKA KOŁOWA', dateChange: '03.03.2024', info: 'abcdef'},
     //     {itemNo: 1, product: 'KOPARKA', dateChange: '01.03.2024', info: 'ijghkl'},
@@ -39,12 +39,22 @@ export const Dashboard = () => {
         try {
             if (token) {
                 const decodedToken = jwtDecode(token);
-                const email = decodedToken?.username;
+                const id = decodedToken?.id;
 
-                if (email) {
-                    setUserEmail(email);
+                if (id) {
+                    setUserId(id);
 
-                    const response = await fetch(`https://se-europe-test.pl/api/enova_orders?email=${encodeURIComponent(email)}&page=${page}&order[id]=desc`, {
+                    const response_user = await fetch(`https://se-europe-test.pl/api/enova_people/${encodeURIComponent(id)}`, {
+                        headers: {
+                            'Accept': 'application/ld+json'
+                        }
+                    });
+
+                    const userData = await response_user.json();
+                    const email = userData?.email
+
+
+                    const response = await fetch(`https://se-europe-test.pl/api/enova_orders?email=${email}&page=${page}&order[id]=desc`, {
                         headers: {
                             'Accept': 'application/ld+json'
                         }
@@ -126,6 +136,7 @@ export const Dashboard = () => {
                                 <table className="ordersTable" style={{width: "100%"}}>
                                     <thead>
                                     <tr>
+                                        <th>Index</th>
                                         <th>Order ID</th>
                                         <th>Email</th>
                                         {/*<th>Name</th>*/}
@@ -144,10 +155,11 @@ export const Dashboard = () => {
                                     {orders.slice().map((order, index) => (
                                         <tr key={index}>
                                             <td>{order.id}</td>
+                                            <td>{order.orderNumber}</td>
                                             <td>{order.email}</td>
                                             {/*<td>{order.name}</td>*/}
                                             {/*<td>{order.address || 'N/A'}</td>*/}
-                                            <td>{order?.lokalizacjaDostawy?.adres?.telefon || ""}</td>
+                                            <td>{order?.lokalizacjaDostawy?.adres?.telefon || order?.phone || ''}</td>
                                             <td>{new Date(order.terminPlatnosci).toLocaleDateString('en-GB', { timeZone: 'UTC' })}</td>
                                             {/*<td>{order.subtotal}</td>*/}
                                             {/*<td>{order.tax}</td>*/}

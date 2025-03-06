@@ -19,12 +19,17 @@ class UserEnovaProvider implements UserProviderInterface
 
     public function loadUserByIdentifier(string $identifier): UserInterface
     {
-        $user = $this->entityManager->getRepository(UserEnova::class)->createQueryBuilder('u')
-            ->leftJoin('u.enovaPerson', 'e') // Ensure it's a LEFT JOIN to include null values
-            ->where('u.email = :identifier OR e.email = :identifier')
-            ->setParameter('identifier', $identifier)
-            ->getQuery()
-            ->getOneOrNullResult();
+        $qb = $this->entityManager->createQueryBuilder();
+        $qb->select('u')
+            ->from(UserEnova::class, 'u')
+            ->leftJoin('u.enovaPerson', 'e') // Ensure enovaPerson is joined
+            ->where($qb->expr()->orX(
+                $qb->expr()->eq('u.email', ':identifier'),
+                $qb->expr()->eq('e.email', ':identifier')
+            ))
+            ->setParameter('identifier', $identifier);
+
+        $user = $qb->getQuery()->getOneOrNullResult();
 
         if (!$user) {
             throw new UserNotFoundException(sprintf('User with email "%s" not found.', $identifier));
@@ -32,6 +37,7 @@ class UserEnovaProvider implements UserProviderInterface
 
         return $user;
     }
+
 
 
     public function refreshUser(UserInterface $user): UserInterface

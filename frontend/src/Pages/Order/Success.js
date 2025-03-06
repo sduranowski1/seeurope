@@ -25,7 +25,7 @@ const Success = () => {
                     Order Placed Successfully!
                 </Typography>
                 <Typography variant="body1" gutterBottom>
-                    Your order ID is: <strong>{orderId || 'N/A'}</strong>
+                    {/*Your order ID is: <strong>{orderId || 'N/A'}</strong>*/}
                 </Typography>
                 <Button
                     variant="contained"

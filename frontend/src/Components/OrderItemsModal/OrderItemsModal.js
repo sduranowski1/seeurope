@@ -1,39 +1,9 @@
-import React, {useEffect, useState} from 'react';
+import React, { useState } from 'react';
 import Modal from '@mui/material/Modal';
 import { Button, Box } from '@mui/material';
 import i18n from "i18next";
 
 const OrderItemsModal = ({ open, onClose, items }) => {
-    const [productData, setProductData] = useState({});
-    const [loading, setLoading] = useState(false);
-
-    useEffect(() => {
-        if (!open || items.length === 0) return;
-
-        setLoading(true);
-        const fetchProductNames = async () => {
-            try {
-                const response = await fetch('https://se-europe-test.pl/api/enova_products/no_pagination');
-                const data = await response.json();
-
-                // Convert API response into a lookup object { id: name }
-                const productMap = {};
-                data.forEach(product => {
-                    productMap[product.id] = product.name;
-                });
-
-                setProductData(productMap);
-            } catch (error) {
-                console.error("Error fetching products:", error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchProductNames();
-    }, [open, items]);
-
-    console.log(productData)
 
     console.log(items)
     return (
@@ -50,13 +20,17 @@ const OrderItemsModal = ({ open, onClose, items }) => {
                 width: '300px'
             }}>
                 <h3>Order Items</h3>
+                <hr/>
                 {items.length > 0 ? (
-                    <ul>
+                    <ul   style={{color: "gray", listStyleType: "disc", paddingLeft: "20px"}}>
                         {items.map((item, index) => (
-                            <li key={index}>
-                                <strong>
-                                    {productData[item.towarEnovaId] || "Unknown Product"} ({item.towarEnovaId})
-                                </strong> - {item.ilosc} x {item.cena}
+                            <li key={index} style={{paddingBottom: "15px"}}>
+                                <strong style={{color: "black"}}>{i18n.language === "en"
+                                    ? item.productInfo?.englishTitle || item.name
+                                    : i18n.language === "de"
+                                        ? item.productInfo?.germanTitle || item.name
+                                        // : item.name} {item.towarEnovaId}</strong> - {item.ilosc} x {item.cena}
+                                        : item.name} {item.productName}</strong>  -  {item.ilosc} x {item.cena}
                             </li>
                         ))}
                     </ul>

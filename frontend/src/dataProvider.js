@@ -12,8 +12,14 @@ const dataProvider = {
         const { field, order } = params.sort; // Extract sorting parameters
         const filterQuery = new URLSearchParams(params.filter).toString();
 
-        // Convert sorting format to match API requirements
-        const sortQuery = `order[${field}]=${order.toLowerCase()}`;
+        // Check if the resource is 'enova_orders' and apply specific sorting for that resource
+        let sortQuery;
+        if (resource === 'enova_orders') {
+            sortQuery = 'order[id]=desc'; // Special sorting for enova_orders
+        } else {
+            // Convert sorting format to match API requirements for other resources
+            sortQuery = `order[${field}]=${order.toLowerCase()}`;
+        }
 
         const url = `${apiUrl}/${resource}?page=${page}&${sortQuery}&${filterQuery}`;
 

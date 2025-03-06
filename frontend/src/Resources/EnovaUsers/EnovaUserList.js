@@ -15,7 +15,7 @@ const EnovaUserList = () => (
         {/*<TextField source="contractor.idEnova" />*/}
         <TextField source="imie" />
         <TextField source="nazwisko" />
-        {/*<TextField source="contractor.nazwa" />*/}
+        <TextField source="contractor.nazwa" />
         {/*<TextField source="productInfo.brand.name" label="Brand" />*/}
         {/*<TextField source="productInfo.variant.variantname" label="Variant" />*/}
         {/*<TextField source="productInfo.category.name" label="Category" />*/}

@@ -39,7 +39,7 @@ const EnovaUserEdit = () => {
         pl: '', // Polish description
     });
 
-
+    console.log('Current localStorage:', localStorage);
 
     useEffect(() => {
         const fetchProductData = async () => {
@@ -149,11 +149,11 @@ const EnovaUserEdit = () => {
                 {/* Sticky Section */}
                 <Box sx={{flex: 1, maxWidth: 600, position: 'sticky', top: 16}}>
                     <Box component="form" sx={{maxWidth: '100%'}}>
-                        <FormControl fullWidth margin="normal">
-                            {/*<InputLabel id="brand-label">Email</InputLabel>*/}
-                            <TextField id="filled-basic" name="email" value={product?.email || ''}   onChange={handleChange} // Connect the change handler
-                                        label="Login Email" variant="filled" />
-                        </FormControl>
+                        {/*<FormControl fullWidth margin="normal">*/}
+                        {/*    /!*<InputLabel id="brand-label">Email</InputLabel>*!/*/}
+                        {/*    <TextField id="filled-basic" name="email" value={product?.email || ''}   onChange={handleChange} // Connect the change handler*/}
+                        {/*                label="Login Email" variant="filled" />*/}
+                        {/*</FormControl>*/}
 
                         <FormControl fullWidth margin="normal">
                             {/*<InputLabel id="brand-label">Email</InputLabel>*/}

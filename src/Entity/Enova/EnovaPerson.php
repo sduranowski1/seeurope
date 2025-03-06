@@ -2,6 +2,7 @@
 
 namespace App\Entity\Enova;
 
+use ApiPlatform\Doctrine\Common\Filter\SearchFilterInterface;
 use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
@@ -15,6 +16,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 )]
 #[ApiFilter(SearchFilter::class, properties: [
+    'id' => SearchFilterInterface::STRATEGY_PARTIAL,
     'imie' => 'partial',
     'nazwisko' => 'partial'])]
 #[ORM\Entity]

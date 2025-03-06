@@ -33,19 +33,20 @@ const EnovaProductEdit = () => {
         const fetchData = async () => {
             try {
                 // Fetch the token first
-                const token = await fetchToken();
-                setToken(token);
+                // const token = await fetchToken();
+                // setToken(token);
 
                 // Use the token to fetch the actual data
-                const response = await fetch('https://se-europe-test.pl/api/PanelWWW_API/DajLudziKontrahentaWgId', {
-                    method: 'POST',
+                // const response = await fetch('https://se-europe-test.pl/api/PanelWWW_API/DajLudziKontrahentaWgId', {
+                const response = await fetch(`https://se-europe-test.pl/api/enova_people/${id}`, {
+                    method: 'GET',
                     headers: {
                         'accept': 'application/json',
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({
-                        parametr: id,
-                    }),
+                    // body: JSON.stringify({
+                    //     parametr: id,
+                    // }),
                 });
 
 

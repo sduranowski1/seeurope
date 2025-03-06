@@ -108,7 +108,7 @@ class UserEnova implements UserInterface, PasswordAuthenticatedUserInterface
     {
 //        dump($this->enovaPerson); // Check if enovaPerson is set
 //        dump($this->enovaPerson?->getEmail()); // Check the email value
-        return $this->enovaPerson?->getEmail();
+        return $this->email;
     }
 
 

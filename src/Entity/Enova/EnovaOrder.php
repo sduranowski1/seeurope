@@ -36,6 +36,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ApiFilter(
     SearchFilter::class,
     properties: [
+        'id' => SearchFilterInterface::STRATEGY_PARTIAL,
         'email' => SearchFilterInterface::STRATEGY_PARTIAL
     ]
 )]

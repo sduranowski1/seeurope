@@ -53,6 +53,7 @@ import MachineFilterEdit from "../../Resources/MachineFilter/MachineFilterEdit";
 import MachineFilterCreate from "../../Resources/MachineFilter/MachineFilterCreate";
 import FeaturesList from "../../Resources/Features/FeaturesList";
 import FeaturesEdit from "../../Resources/Features/FeaturesEdit";
+import EnovaOrderList from "../../Resources/EnovaOrders/EnovaOrderList";
 
 
 
@@ -80,6 +81,7 @@ const AdminLayout = () => {
             <Resource name="enova_products" list={EnovaProductList} edit={EnovaProductEdit} icon={InventoryIcon} />
             <Resource name="enova_contractors" list={EnovaContractorList} edit={EnovaContractorEdit} icon={GroupIcon}/>
             <Resource name="enova_people" list={EnovaUserList} edit={EnovaUserEdit} icon={PermIdentityIcon}/>
+            <Resource name="enova_orders" list={EnovaOrderList}/>
             <Resource name="brands" list={BrandList} edit={BrandEdit} create={BrandCreate} icon={AppsIcon}/>
             <Resource name="variants" list={VariantList} edit={VariantEdit} create={VariantCreate} />
             <Resource name="coupling_filters" list={CouplingFilterList} edit={CouplingFilterEdit} create={CouplingFilterCreate} icon={AppsIcon}/>

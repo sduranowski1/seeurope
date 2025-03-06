@@ -20,9 +20,9 @@ class UserEnovaProvider implements UserProviderInterface
     public function loadUserByIdentifier(string $identifier): UserInterface
     {
         $user = $this->entityManager->getRepository(UserEnova::class)->createQueryBuilder('u')
-            ->innerJoin('u.enovaPerson', 'e') // Join EnovaPerson
-            ->where('e.email = :email')
-            ->setParameter('email', $identifier)
+            ->leftJoin('u.enovaPerson', 'e') // Ensure it's a LEFT JOIN to include null values
+            ->where('u.email = :identifier OR e.email = :identifier')
+            ->setParameter('identifier', $identifier)
             ->getQuery()
             ->getOneOrNullResult();
 
@@ -32,6 +32,7 @@ class UserEnovaProvider implements UserProviderInterface
 
         return $user;
     }
+
 
     public function refreshUser(UserInterface $user): UserInterface
     {

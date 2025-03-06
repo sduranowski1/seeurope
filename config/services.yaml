@@ -33,3 +33,6 @@ services:
             $userEnovaProvider: '@security.user.provider.concrete.users'
             $submissionProvider: '@security.user.provider.concrete.submissions'
             $passwordHasher: '@security.password_hasher'
+    App\EventListener\JWTCreatedListener:
+        tags:
+            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_created }

@@ -23,7 +23,24 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import ConfirmationDialog from "../../Components/OrderConfirmationModal/ConfirmationDialog";
-// import {Radio, RadioGroup} from "@mui/joy";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { useForm, Controller } from "react-hook-form";
+import dayjs from "dayjs";
+import {FormHelperText} from "@mui/joy";
+import {countries} from "../../utils/countries";
+
+
+// Zod Schema
+const schema = z.object({
+    selectedDate: z
+        .date({ invalid_type_error: "Expected date but received none. Please select a valid date.", required_error: "Expected date but received none. Please select a valid date." })
+        .min(new Date(), "Date cannot be in the past"),
+    // orderNumber: z.string().min(1, "Order number is required"),
+    selectedOption: z.enum(["shipping", "collection"], {
+        errorMap: () => ({ message: "Please select either shipping or collection" }),
+    }),
+});
 
 const Checkout = () => {
     const location = useLocation();
@@ -53,6 +70,10 @@ const Checkout = () => {
         country: '',
     });
 
+    const [locationDetails, setLocationDetails] = useState({
+        nazwa: '',
+    });
+
     const [selectedLocation, setSelectedLocation] = useState("");
     const [date, setDate] = useState(null);
 
@@ -60,12 +81,35 @@ const Checkout = () => {
     const [contactPerson, setContactPerson] = useState("");
     const [selectedDate, setSelectedDate] = useState(null);
     const [orderNumber, setOrderNumber] = useState("");
+    const [phone, setPhone] = useState("");
     const [openDialog, setOpenDialog] = useState(false);
+    const [error, setError] = useState(false);
+    const [dialogError, setDialogError] = useState(""); // State for dialog error message
+
 
     const handleConfirmOpen = () => setOpenDialog(true);
     const handleConfirmClose = () => setOpenDialog(false);
 
     const handleConfirmSubmit = () => {
+        // Validate form fields using Zod
+        // const validationResult = schema.safeParse({
+        //     selectedDate,
+        //     orderNumber,
+        //     selectedOption
+        // });
+        //
+        // if (!validationResult.success) {
+        //     alert(validationResult.error.issues.map(issue => issue.message).join("\n"));
+        //     return; // Stop submission if validation fails
+        // }
+        if (!selectedOption) {
+            setError(true); // Set error state if no option is selected
+            setDialogError("Please select either shipping or collection");
+
+            return;
+        }
+        setDialogError(""); // Clear error if selection is valid
+
         setOpenDialog(false);
         handleOrderSubmission(); // Call the existing order submission function
     };
@@ -120,9 +164,12 @@ const Checkout = () => {
 
     console.log(userDetails?.enovaPerson?.contractor?.idEnova)
     const contractorId = userDetails?.enovaPerson?.contractor?.idEnova
+    const contractorPersonId = userDetails?.enovaPerson?.id
 
     console.log(userDetails?.enovaPerson?.contractor?.idEnova)
     const contractorLocationId = userDetails?.enovaPerson?.contractor?.locations[selectedLocation]?.id
+    const contractorLocationKod = userDetails?.enovaPerson?.contractor?.locations[selectedLocation]?.kod
+    const contractorLocationNazwa = userDetails?.enovaPerson?.contractor?.locations[selectedLocation]?.nazwa
 
     console.log('Current localStorage:', localStorage);
     console.log('Current localStorage:', userEmail);
@@ -130,6 +177,19 @@ const Checkout = () => {
     const savedContractorName = localStorage.getItem('contractorName');
 
     console.log(Math.floor(Date.now() / 1000)); // Example: 1709456734123
+
+    const {
+        control,
+        handleSubmit,
+        register,
+        formState: { errors },
+    } = useForm({
+        resolver: zodResolver(schema),
+        defaultValues: {
+            // selectedDate: new Date(),
+            // selectedOption: undefined,
+        },
+    });
 
     const handleOrderSubmission = async () => {
         if (!cartItems || cartItems.length === 0) {
@@ -198,19 +258,22 @@ const Checkout = () => {
         const orderDataEnova = {
             idWWW: Math.floor(Date.now() / 1000), // Assuming this is an auto-increment or placeholder value
             idEnova: 112250, // Assuming this is an auto-increment or placeholder value
-            email: userEmail, // Assuming this is an auto-increment or placeholder value
+            email: userDetails?.enovaPerson?.email, // Assuming this is an auto-increment or placeholder value
             idOsobaKontaktowa: userDetails.id,
             idPlatnosciInternetowej: "string", // Add the payment method ID as a string
             numerWWW: "numer WWW", // Add the WWW number (order number)
+            numerZamowieniaKontrahenta: orderNumber, // Add the WWW number (order number)
             numerEnova: "SE/000005/9", // Add the Enova number (order reference)
+            czyOdbiorWlasny: selectedOption === "shipping",
             wartosc: total, // Assuming total is the total order value
             wartoscWaluta: total, // Assuming the same value for currency (can be adjusted if needed)
             platnik: contractorId, // Assuming the payer ID (if applicable)
             odbiorca: contractorId, // Assuming the recipient ID (if applicable)
             lokalizacjaDostawy: {
-                kod: "string", // Add a string for location code
-                nazwa: "string", // Add a string for location name
-                eMail: userEmail, // Add email from user details
+                kod: contractorLocationKod, // Add a string for location code
+                nazwa: selectedAddress === 'existing' ? locations[selectedLocation]?.nazwa || "" : locationDetails?.nazwa || "", // Voivodeship
+                eMail: userDetails?.enovaPerson?.email, // Add email from user details
+                nazwaOdbierajacego: userDetails?.enovaPerson?.imie + " " + userDetails?.enovaPerson?.nazwisko,
                 id: contractorLocationId, // Assuming the location ID (can be adjusted if applicable)
                 // idWWW: 0, // Assuming this is a placeholder or related to the order
                 adres: {
@@ -222,7 +285,7 @@ const Checkout = () => {
                     poczta: selectedAddress === 'existing' ? locations[selectedLocation]?.adresLocation?.poczta || "" : newAddress?.postOffice || "", // Post office
                     powiat: selectedAddress === 'existing' ? locations[selectedLocation]?.adresLocation?.powiat || "" : newAddress?.district || "", // District
                     regon: selectedAddress === 'existing' ? locations[selectedLocation]?.adresLocation?.Regon || "" : newAddress?.regon || "", // REGON
-                    telefon: selectedAddress === 'existing' ? locations[selectedLocation]?.adresLocation?.telefon || "" : newAddress?.phone || "", // Phone
+                    telefon: selectedAddress === 'existing' ? phone || "" : locations[selectedLocation]?.adresLocation?.telefon || "", // Phone
                     ulica: selectedAddress === 'existing' ? locations[selectedLocation]?.adresLocation?.ulica || "" : newAddress?.street || "", // Street
                     miejscowosc: selectedAddress === 'existing' ? locations[selectedLocation]?.adresLocation?.miejscowosc || "" : newAddress?.city || "", // City
                     kodPocztowy: selectedAddress === 'existing' ? locations[selectedLocation]?.adresLocation?.kodPocztowy || "" : newAddress?.zipCode || "", // Zip Code
@@ -230,6 +293,7 @@ const Checkout = () => {
                 }
             },
             data: new Date().toISOString(), // Current date
+            dataDostawy: selectedDate ? selectedDate.toISOString() : "", // Payment due date
             opis: "string", // Add a description (if applicable)
             pozycjeDokHandlowego: cartItems.map(item => ({
                 towarEnovaId: item.id, // Assuming item ID corresponds to the Enova ID
@@ -245,6 +309,10 @@ const Checkout = () => {
                 symbolWaluty: storedPriceCurrency // Add the currency symbol
             })),
             terminPlatnosci: selectedDate ? selectedDate.toISOString() : "", // Payment due date
+            contactPerson: contactPerson, //
+            phone: phone, //
+            orderNumber: orderNumber,
+            shipping: selectedOption,
         };
 
 
@@ -290,6 +358,13 @@ const Checkout = () => {
         setSelectedAddress(newValue === 0 ? 'existing' : 'new');
     };
 
+    const handleLocationChange = (field, value) => {
+        setLocationDetails((prevState) => ({
+            ...prevState,
+            [field]: value
+        }));
+    };
+
     const handleAddressChange = (field, value) => {
         setNewAddress((prevState) => ({
             ...prevState,
@@ -316,6 +391,8 @@ const Checkout = () => {
 
     const locations = userDetails?.enovaPerson?.contractor?.locations || [];
 
+    console.log(userDetails)
+
     return (
         <Container maxWidth="md" sx={{ mt: 4, marginBottom: 3 }}>
             <Typography variant="h4" gutterBottom>
@@ -330,7 +407,7 @@ const Checkout = () => {
                         </Typography>
                         <Box>
                             <Typography variant="body1">
-                                <strong>Email:</strong> {userEmail}
+                                <strong>Email:</strong> {userDetails?.enovaPerson?.email}
                             </Typography>
                             {userDetails && (
                                 <>
@@ -393,8 +470,9 @@ const Checkout = () => {
                                                     label="Select Location"
                                                 >
                                                     {locations.map((location, index) => (
-                                                        <MenuItem key={index} value={index}>
-                                                            {location.nazwa || `Location ${index + 1}`}
+                                                        <MenuItem key={index} value={index} sx={{ display: "flex", justifyContent: "space-between" }}>
+                                                            <span>{location.nazwa || `Location ${index + 1}`}</span>
+                                                            <span style={{ marginLeft: "auto" }}>{location.adresLocation.miejscowosc || ``}</span>
                                                         </MenuItem>
                                                     ))}
                                                 </Select>
@@ -402,35 +480,73 @@ const Checkout = () => {
                                         )}
 
                                         {/* Display Selected Location Address */}
+                                        {/* Display Selected Location Address */}
                                         {selectedLocation !== "" && (
                                             <Box mt={2}>
                                                 <Typography variant="h6">Selected Location Address</Typography>
-                                                <Typography variant="body1">
-                                                    <strong>Voivodeship:</strong> {locations[selectedLocation]?.adresLocation?.wojewodztwo || 'N/A'}
-                                                </Typography>
-                                                <Typography variant="body1">
-                                                    <strong>Region:</strong> {locations[selectedLocation]?.adresLocation?.gmina || 'N/A'}
-                                                </Typography>
-                                                <Typography variant="body1">
-                                                    <strong>Building Number:</strong> {locations[selectedLocation]?.adresLocation?.nrDomu || 'N/A'}
-                                                </Typography>
-                                                <Typography variant="body1">
-                                                    <strong>Apartment Number:</strong> {locations[selectedLocation]?.adresLocation?.nrLokalu || 'N/A'}
-                                                </Typography>
-                                                <Typography variant="body1">
-                                                    <strong>Post office:</strong> {locations[selectedLocation]?.adresLocation?.poczta || 'N/A'}
-                                                </Typography>
-                                                <Typography variant="body1">
-                                                    <strong>District:</strong> {locations[selectedLocation]?.adresLocation?.powiat || 'N/A'}
-                                                </Typography>
-                                                <Typography variant="body1">
-                                                    <strong>Street:</strong> {locations[selectedLocation]?.adresLocation?.ulica || 'N/A'}
-                                                </Typography>
-                                                <Typography variant="body1">
-                                                    <strong>City:</strong> {locations[selectedLocation]?.adresLocation?.miejscowosc || 'N/A'}
-                                                </Typography>
+                                                {/*{locations[selectedLocation]?.adresLocation?.wojewodztwo &&*/}
+                                                {/*    locations[selectedLocation]?.adresLocation?.wojewodztwo !== "N/A" && (*/}
+                                                {/*        <Typography variant="body1">*/}
+                                                {/*            <strong>Voivodeship:</strong> {locations[selectedLocation]?.adresLocation?.wojewodztwo}*/}
+                                                {/*        </Typography>*/}
+                                                {/*    )}*/}
+                                                {/*{locations[selectedLocation]?.adresLocation?.gmina &&*/}
+                                                {/*    locations[selectedLocation]?.adresLocation?.gmina !== "N/A" && (*/}
+                                                {/*        <Typography variant="body1">*/}
+                                                {/*            <strong>Region:</strong> {locations[selectedLocation]?.adresLocation?.gmina}*/}
+                                                {/*        </Typography>*/}
+                                                {/*    )}*/}
+                                                {locations[selectedLocation]?.adresLocation?.ulica &&
+                                                    locations[selectedLocation]?.adresLocation?.ulica !== "N/A" && (
+                                                        <Typography variant="body1">
+                                                            <strong>Street:</strong> {locations[selectedLocation]?.adresLocation?.ulica}
+                                                        </Typography>
+                                                    )}
+                                                {locations[selectedLocation]?.adresLocation?.nrDomu &&
+                                                    locations[selectedLocation]?.adresLocation?.nrDomu !== "N/A" && (
+                                                        <Typography variant="body1">
+                                                            <strong>Building Number:</strong> {locations[selectedLocation]?.adresLocation?.nrDomu}
+                                                        </Typography>
+                                                    )}
+                                                {locations[selectedLocation]?.adresLocation?.nrLokalu &&
+                                                    locations[selectedLocation]?.adresLocation?.nrLokalu !== "N/A" && (
+                                                        <Typography variant="body1">
+                                                            <strong>Apartment Number:</strong> {locations[selectedLocation]?.adresLocation?.nrLokalu}
+                                                        </Typography>
+                                                    )}
+                                                {/*{locations[selectedLocation]?.adresLocation?.poczta &&*/}
+                                                {/*    locations[selectedLocation]?.adresLocation?.poczta !== "N/A" && (*/}
+                                                {/*        <Typography variant="body1">*/}
+                                                {/*            <strong>Post office:</strong> {locations[selectedLocation]?.adresLocation?.poczta}*/}
+                                                {/*        </Typography>*/}
+                                                {/*    )}*/}
+                                                {/*{locations[selectedLocation]?.adresLocation?.powiat &&*/}
+                                                {/*    locations[selectedLocation]?.adresLocation?.powiat !== "N/A" && (*/}
+                                                {/*        <Typography variant="body1">*/}
+                                                {/*            <strong>District:</strong> {locations[selectedLocation]?.adresLocation?.powiat}*/}
+                                                {/*        </Typography>*/}
+                                                {/*    )}*/}
+                                                {locations[selectedLocation]?.adresLocation?.kodPocztowy &&
+                                                    locations[selectedLocation]?.adresLocation?.kodPocztowy !== "N/A" && (
+                                                        <Typography variant="body1">
+                                                            <strong>Zip code:</strong> {locations[selectedLocation]?.adresLocation?.kodPocztowy}
+                                                        </Typography>
+                                                    )}
+                                                {locations[selectedLocation]?.adresLocation?.miejscowosc &&
+                                                    locations[selectedLocation]?.adresLocation?.miejscowosc !== "N/A" && (
+                                                        <Typography variant="body1">
+                                                            <strong>City:</strong> {locations[selectedLocation]?.adresLocation?.miejscowosc}
+                                                        </Typography>
+                                                    )}
+                                                {locations[selectedLocation]?.adresLocation?.kraj &&
+                                                    locations[selectedLocation]?.adresLocation?.kraj !== "N/A" && (
+                                                        <Typography variant="body1">
+                                                            <strong>Country:</strong> {locations[selectedLocation]?.adresLocation?.kraj}
+                                                        </Typography>
+                                                    )}
                                             </Box>
                                         )}
+
                                     </>
                                 )}
                             </Box>
@@ -442,20 +558,20 @@ const Checkout = () => {
                                 {/*    New Address*/}
                                 {/*</Typography>*/}
                                 <Grid container spacing={2}>
-                                    <Grid item xs={12} sm={6}>
+                                    <Grid item xs={12} sm={12}>
                                         <TextField
-                                            label="Voivodeship"
+                                            label="Company Name"
                                             fullWidth
-                                            value={newAddress?.voivodeship || ""}
-                                            onChange={(e) => handleAddressChange('voivodeship', e.target.value)}
+                                            value={locationDetails?.nazwa || ""}
+                                            onChange={(e) => handleLocationChange('nazwa', e.target.value)}
                                         />
                                     </Grid>
                                     <Grid item xs={12} sm={6}>
                                         <TextField
-                                            label="Region"
+                                            label="Street"
                                             fullWidth
-                                            value={newAddress?.region || ""}
-                                            onChange={(e) => handleAddressChange('region', e.target.value)}
+                                            value={newAddress?.street || ""}
+                                            onChange={(e) => handleAddressChange('street', e.target.value)}
                                         />
                                     </Grid>
                                     <Grid item xs={12} sm={6}>
@@ -476,44 +592,56 @@ const Checkout = () => {
                                     </Grid>
                                     <Grid item xs={12} sm={6}>
                                         <TextField
-                                            label="Post office"
+                                            label="Zip Code"
                                             fullWidth
-                                            value={newAddress?.postOffice || ""}
-                                            onChange={(e) => handleAddressChange('postOffice', e.target.value)}
+                                            value={newAddress?.zipCode || ""}
+                                            onChange={(e) => handleAddressChange('zipCode', e.target.value)}
                                         />
                                     </Grid>
-                                    <Grid item xs={12} sm={6}>
-                                        <TextField
-                                            label="District"
-                                            fullWidth
-                                            value={newAddress?.district || ""}
-                                            onChange={(e) => handleAddressChange('district', e.target.value)}
-                                        />
-                                    </Grid>
-                                    <Grid item xs={12} sm={6}>
-                                        <TextField
-                                            label="Regon"
-                                            fullWidth
-                                            value={newAddress?.regon || ""}
-                                            onChange={(e) => handleAddressChange('regon', e.target.value)}
-                                        />
-                                    </Grid>
-                                    <Grid item xs={12} sm={6}>
-                                        <TextField
-                                            label="Phone"
-                                            fullWidth
-                                            value={newAddress?.phone || ""}
-                                            onChange={(e) => handleAddressChange('phone', e.target.value)}
-                                        />
-                                    </Grid>
-                                    <Grid item xs={12} sm={6}>
-                                        <TextField
-                                            label="Street"
-                                            fullWidth
-                                            value={newAddress?.street || ""}
-                                            onChange={(e) => handleAddressChange('street', e.target.value)}
-                                        />
-                                    </Grid>
+                                    {/*<Grid item xs={12} sm={6}>*/}
+                                    {/*    <TextField*/}
+                                    {/*        label="Voivodeship"*/}
+                                    {/*        fullWidth*/}
+                                    {/*        value={newAddress?.voivodeship || ""}*/}
+                                    {/*        onChange={(e) => handleAddressChange('voivodeship', e.target.value)}*/}
+                                    {/*    />*/}
+                                    {/*</Grid>*/}
+                                    {/*<Grid item xs={12} sm={6}>*/}
+                                    {/*    <TextField*/}
+                                    {/*        label="Region"*/}
+                                    {/*        fullWidth*/}
+                                    {/*        value={newAddress?.region || ""}*/}
+                                    {/*        onChange={(e) => handleAddressChange('region', e.target.value)}*/}
+                                    {/*    />*/}
+                                    {/*</Grid>*/}
+
+
+                                    {/*<Grid item xs={12} sm={6}>*/}
+                                    {/*    <TextField*/}
+                                    {/*        label="Post office"*/}
+                                    {/*        fullWidth*/}
+                                    {/*        value={newAddress?.postOffice || ""}*/}
+                                    {/*        onChange={(e) => handleAddressChange('postOffice', e.target.value)}*/}
+                                    {/*    />*/}
+                                    {/*</Grid>*/}
+                                    {/*<Grid item xs={12} sm={6}>*/}
+                                    {/*    <TextField*/}
+                                    {/*        label="District"*/}
+                                    {/*        fullWidth*/}
+                                    {/*        value={newAddress?.district || ""}*/}
+                                    {/*        onChange={(e) => handleAddressChange('district', e.target.value)}*/}
+                                    {/*    />*/}
+                                    {/*</Grid>*/}
+                                    {/*<Grid item xs={12} sm={6}>*/}
+                                    {/*    <TextField*/}
+                                    {/*        label="Regon"*/}
+                                    {/*        fullWidth*/}
+                                    {/*        value={newAddress?.regon || ""}*/}
+                                    {/*        onChange={(e) => handleAddressChange('regon', e.target.value)}*/}
+                                    {/*    />*/}
+                                    {/*</Grid>*/}
+
+
                                     <Grid item xs={12} sm={6}>
                                         <TextField
                                             label="City"
@@ -522,22 +650,34 @@ const Checkout = () => {
                                             onChange={(e) => handleAddressChange('city', e.target.value)}
                                         />
                                     </Grid>
+
                                     <Grid item xs={12} sm={6}>
-                                        <TextField
-                                            label="Zip Code"
-                                            fullWidth
-                                            value={newAddress?.zipCode || ""}
-                                            onChange={(e) => handleAddressChange('zipCode', e.target.value)}
-                                        />
-                                    </Grid>
-                                    <Grid item xs={12} sm={6}>
-                                        <TextField
+
+                                    <FormControl fullWidth>
+                                        <InputLabel id="country-label">Country</InputLabel>
+                                        <Select
+                                            labelId="country-label"
                                             label="Country"
-                                            fullWidth
+                                            placeholder="Country"
                                             value={newAddress?.country || ""}
                                             onChange={(e) => handleAddressChange('country', e.target.value)}
-                                        />
+                                        >
+                                            {countries.map((country) => (
+                                                <MenuItem key={country.code} value={country.code}>
+                                                    {country.name} ({country.code})
+                                                </MenuItem>
+                                            ))}
+                                        </Select>
+                                    </FormControl>
                                     </Grid>
+                                    {/*<Grid item xs={12} sm={6}>*/}
+                                    {/*    <TextField*/}
+                                    {/*        label="Phone"*/}
+                                    {/*        fullWidth*/}
+                                    {/*        value={newAddress?.phone || ""}*/}
+                                    {/*        onChange={(e) => handleAddressChange('phone', e.target.value)}*/}
+                                    {/*    />*/}
+                                    {/*</Grid>*/}
                                 </Grid>
                             </Box>
                         )}
@@ -551,7 +691,16 @@ const Checkout = () => {
                             onChange={(e) => setContactPerson(e.target.value)}
                         />
                         <Grid container spacing={2}>
+                            <Grid item xs={12} sm={12}>
+                                <TextField
+                                    label="Phone"
+                                    fullWidth
+                                    value={phone}
+                                    onChange={(e) => setPhone(e.target.value)}
+                                />
+                            </Grid>
 
+                            {/* DatePicker */}
                             <Grid item xs={12} sm={6}>
                                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                                     <DatePicker
@@ -562,6 +711,7 @@ const Checkout = () => {
                                     />
                                 </LocalizationProvider>
                             </Grid>
+
                             <Grid item xs={12} sm={6}>
                                 <TextField
                                     label="My Order Number"
@@ -570,17 +720,17 @@ const Checkout = () => {
                                     onChange={(e) => setOrderNumber(e.target.value)}
                                 />
                             </Grid>
+                            {/* Radio Group */}
                             <Grid item xs={12} sm={6}>
-                                <FormControl>
-                                    <RadioGroup
-                                        value={selectedOption}
-                                        onChange={handleCheckboxChange}
-                                    >
+                                <FormControl error={!selectedOption}>
+                                    <RadioGroup value={selectedOption} onChange={handleCheckboxChange}>
                                         <FormControlLabel value="shipping" control={<Radio />} label="Shipping" />
                                         <FormControlLabel value="collection" control={<Radio />} label="Collection" />
                                     </RadioGroup>
+                                    {!selectedOption && <FormHelperText>Please select an option</FormHelperText>}
                                 </FormControl>
                             </Grid>
+
                         </Grid>
 
                     </Paper>
@@ -645,6 +795,7 @@ const Checkout = () => {
                             onConfirm={handleConfirmSubmit}
                             title="Confirm Order"
                             message="Are you sure you want to place this order?"
+                            errorMessage={dialogError} // Pass error message to dialog
                         />
                     </Paper>
                 </Grid>

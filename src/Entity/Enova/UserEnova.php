@@ -58,8 +58,8 @@ ApiFilter(
 )]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 //#[ORM\Table(name: '`user`')]
-//#[UniqueEntity('email')]
-#[UniqueEntity('enovaPerson.email')]  // Ensure uniqueness is on EnovaPerson's email
+#[UniqueEntity('email')]
+//#[UniqueEntity('enovaPerson.email')]  // Ensure uniqueness is on EnovaPerson's email
 class UserEnova implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[Groups(['userEnova:read'])]

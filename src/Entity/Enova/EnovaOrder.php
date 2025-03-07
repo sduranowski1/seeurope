@@ -107,7 +107,7 @@ class EnovaOrder
     private ?string $shipping = null;
 
     #[ORM\ManyToMany(targetEntity: EnovaProduct::class)]
-    #[ORM\JoinTable(name: "enova_order_products")]
+    #[ORM\JoinTable(name: "orders")]
     private Collection $relatedProducts;
 
     public function __construct()

@@ -13,6 +13,8 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use App\Controller\EnovaMakeOrder\EnovaMakeOrderController;
 use App\Repository\EnovaOrderRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: EnovaOrderRepository::class)]
@@ -103,6 +105,33 @@ class EnovaOrder
 
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $shipping = null;
+
+    #[ORM\ManyToMany(targetEntity: EnovaProduct::class)]
+    #[ORM\JoinTable(name: "enova_order_products")]
+    private Collection $relatedProducts;
+
+    public function __construct()
+    {
+        $this->relatedProducts = new ArrayCollection();
+    }
+
+    public function getRelatedProducts(): Collection
+    {
+        return $this->relatedProducts;
+    }
+
+    public function mapProducts(Collection $products): void
+    {
+        $this->relatedProducts->clear();
+
+        foreach ($this->pozycjeDokHandlowego as $pozycja) {
+            $product = $products->filter(fn(EnovaProduct $p) => $p->getId() === $pozycja['towarEnovaId'])->first();
+
+            if ($product) {
+                $this->relatedProducts->add($product);
+            }
+        }
+    }
 
     public function getId(): ?int
     {

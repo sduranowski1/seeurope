@@ -3,6 +3,7 @@
 namespace App\Controller\EnovaMakeOrder;
 
 use App\Entity\Enova\EnovaOrder;
+use App\Entity\Enova\EnovaOrderItem;
 use App\Repository\TokenRepository;
 use App\Service\TokenService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -36,12 +37,12 @@ class EnovaMakeOrderController extends AbstractController
         $this->logger = $logger;
     }
 
-    public function __invoke(Request $request): JsonResponse
+    public function __invoke(Request $request,  EntityManagerInterface $entityManager): JsonResponse
     {
-        return $this->postAndSaveContractors($request);
+        return $this->postAndSaveContractors($request, $entityManager);
     }
 
-    public function postAndSaveContractors(Request $request): JsonResponse
+    public function postAndSaveContractors(Request $request, EntityManagerInterface $entityManager): JsonResponse
     {
         try {
             $token = $this->tokenService->fetchAndStoreToken();
@@ -144,7 +145,21 @@ class EnovaMakeOrderController extends AbstractController
             $enovaOrder->setLokalizacjaDostawy($data['lokalizacjaDostawy'] ?? []);
             $enovaOrder->setData(new \DateTime($data['data'] ?? 'now'));
             $enovaOrder->setOpis($data['opis'] ?? null);
-            $enovaOrder->setPozycjeDokHandlowego($data['pozycjeDokHandlowego'] ?? []);
+//            $enovaOrder->setPozycjeDokHandlowego($data['pozycjeDokHandlowego'] ?? []);
+            if (!empty($data['pozycjeDokHandlowego'])) {
+                foreach ($data['pozycjeDokHandlowego'] as $itemData) {
+                    $item = new EnovaOrderItem();
+                    $item->setEnovaOrder($enovaOrder); // Set the relationship
+                    $item->setTowarEnovaId($itemData['towarEnovaId'] ?? null);
+                    $item->setProductName($itemData['productName'] ?? '');
+                    $item->setPrice($itemData['price'] ?? 0.0);
+                    $item->setQuantity($itemData['quantity'] ?? 1);
+                    $item->setCurrency($itemData['currency'] ?? 'PLN');
+
+                    $enovaOrder->setPozycjeDokHandlowego($item); // Assuming you have this method in EnovaOrder
+                    $entityManager->persist($item);
+                }
+            }
             $enovaOrder->setTerminPlatnosci(new \DateTime($data['terminPlatnosci'] ?? 'now'));
             $enovaOrder->setContactPerson($contactPerson ?? null);
             $enovaOrder->setPhone($phone ?? null);

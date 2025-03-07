@@ -89,7 +89,7 @@ class EnovaOrder
     private ?string $opis = null;
 
     #[ORM\Column(type: 'json', nullable: true, options: ['jsonb' => true])]
-    private array $pozycjeDokHandlowego = [];
+    private array $oldPozycjeDokHandlowego = [];
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTimeInterface $terminPlatnosci = null;
@@ -106,31 +106,37 @@ class EnovaOrder
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $shipping = null;
 
-    #[ORM\ManyToMany(targetEntity: EnovaProduct::class)]
-    #[ORM\JoinTable(name: "orders")]
-    private Collection $relatedProducts;
+    // Define the relationship
+    #[ORM\OneToMany(mappedBy: 'enovaOrder', targetEntity: EnovaOrderItem::class, cascade: ['persist', 'remove'])]
+    private Collection $pozycjeDokHandlowego;
 
     public function __construct()
     {
-        $this->relatedProducts = new ArrayCollection();
+        $this->pozycjeDokHandlowego = new ArrayCollection();
     }
 
-    public function getRelatedProducts(): Collection
+    public function getPozycjeDokHandlowego(): Collection
     {
-        return $this->relatedProducts;
+        return $this->pozycjeDokHandlowego;
     }
 
-    public function mapProducts(Collection $products): void
+    public function setPozycjeDokHandlowego(EnovaOrderItem $item): self
     {
-        $this->relatedProducts->clear();
+        if (!$this->pozycjeDokHandlowego->contains($item)) {
+            $this->pozycjeDokHandlowego->add($item);
+            $item->setEnovaOrder($this);
+        }
+        return $this;
+    }
 
-        foreach ($this->pozycjeDokHandlowego as $pozycja) {
-            $product = $products->filter(fn(EnovaProduct $p) => $p->getId() === $pozycja['towarEnovaId'])->first();
-
-            if ($product) {
-                $this->relatedProducts->add($product);
+    public function removePozycjaDokHandlowego(EnovaOrderItem $item): self
+    {
+        if ($this->pozycjeDokHandlowego->removeElement($item)) {
+            if ($item->getEnovaOrder() === $this) {
+                $item->setEnovaOrder(null);
             }
         }
+        return $this;
     }
 
     public function getId(): ?int
@@ -275,15 +281,6 @@ class EnovaOrder
         $this->opis = $opis;
     }
 
-    public function getPozycjeDokHandlowego(): array
-    {
-        return $this->pozycjeDokHandlowego;
-    }
-
-    public function setPozycjeDokHandlowego(array $pozycjeDokHandlowego): void
-    {
-        $this->pozycjeDokHandlowego = $pozycjeDokHandlowego;
-    }
 
     public function getTerminPlatnosci(): ?\DateTimeInterface
     {

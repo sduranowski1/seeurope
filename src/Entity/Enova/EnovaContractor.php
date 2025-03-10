@@ -34,7 +34,7 @@ class EnovaContractor
     private ?string $kod = null;
 
     #[ORM\Column(type: 'string')]
-    #[Groups(['enovaContractor:read', 'enovaContractor:create', 'enovaContractor:update', 'enovaPerson:read', 'enovaPerson:create', 'enovaPerson:update'])]
+    #[Groups(['enovaContractor:read', 'enovaContractor:create', 'enovaContractor:update', 'enovaPerson:read', 'enovaPerson:create', 'enovaPerson:update', 'userEnova:read'])]
     private ?string $nazwa = null;
 
     #[ORM\Column(type: 'string')]

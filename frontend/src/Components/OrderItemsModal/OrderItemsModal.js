@@ -30,7 +30,7 @@ const OrderItemsModal = ({ open, onClose, items }) => {
                                     : i18n.language === "de"
                                         ? item.productInfo?.germanTitle || item.name
                                         // : item.name} {item.towarEnovaId}</strong> - {item.ilosc} x {item.cena}
-                                        : item.name} {item?.enovaProduct?.name}</strong>  -  {item.ilosc} x {item.cena}
+                                        : item.name} {item?.enovaProduct?.code} - {item?.enovaProduct?.name}</strong>  -  {item.quantity} x {item.price}
                             </li>
                         ))}
                     </ul>

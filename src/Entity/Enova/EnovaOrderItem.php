@@ -63,9 +63,9 @@ class EnovaOrderItem
 
 
     #[ORM\ManyToOne(targetEntity: EnovaProduct::class)]
-    #[ORM\JoinColumn(name: 'towar_enova_id', referencedColumnName: 'id', nullable: true)]
+    #[ORM\JoinColumn(name: 'towar_enova_id', referencedColumnName: 'id', nullable: false)]
     #[Groups(['enovaOrderItem:read', 'enovaOrderItem:create', 'enovaOrderItem:update', 'enovaOrder:read', 'enovaOrder:create', 'enovaOrder:update'])]
-    public ?EnovaProduct $enovaProduct = null;
+    public ?EnovaProduct $enovaProduct;
 
     public function getId(): ?int
     {
@@ -136,6 +136,20 @@ class EnovaOrderItem
     {
         $this->price = $price;
     }
+
+    public function getEnovaProduct(): ?\App\Entity\Enova\EnovaProduct
+    {
+        return $this->enovaProduct;
+    }
+
+    public function setEnovaProduct(?\App\Entity\Enova\EnovaProduct $enovaProduct): void
+    {
+        $this->enovaProduct = $enovaProduct;
+    }
+
+
+
+
 
     // Getters and Setters for each property...
 

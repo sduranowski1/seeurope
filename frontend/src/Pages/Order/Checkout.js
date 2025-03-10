@@ -297,6 +297,9 @@ const Checkout = () => {
             opis: "string", // Add a description (if applicable)
             pozycjeDokHandlowego: cartItems.map(item => ({
                 towarEnovaId: item.id, // Assuming item ID corresponds to the Enova ID
+                enovaProduct: {
+                    id: item.id // Assuming item ID corresponds to the Enova ID
+                },
                 productName: i18n.language === "en"
                         ? item.productInfo?.englishTitle || item.name
                         : i18n.language === "de"

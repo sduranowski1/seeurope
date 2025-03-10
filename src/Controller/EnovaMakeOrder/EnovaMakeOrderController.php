@@ -4,6 +4,7 @@ namespace App\Controller\EnovaMakeOrder;
 
 use App\Entity\Enova\EnovaOrder;
 use App\Entity\Enova\EnovaOrderItem;
+use App\Entity\Enova\EnovaProduct;
 use App\Repository\TokenRepository;
 use App\Service\TokenService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -150,11 +151,19 @@ class EnovaMakeOrderController extends AbstractController
                 foreach ($data['pozycjeDokHandlowego'] as $itemData) {
                     $item = new EnovaOrderItem();
                     $item->setEnovaOrder($enovaOrder); // Set the relationship
-                    $item->setTowarEnovaId($itemData['towarEnovaId'] ?? null);
-                    $item->setProductName($itemData['productName'] ?? '');
+
+                    // Fetch EnovaProduct from the database
+                    $enovaProduct = $entityManager->getRepository(EnovaProduct::class)->find($itemData['towarEnovaId'] ?? null);
+
+                    if ($enovaProduct) {
+                        $item->setEnovaProduct($enovaProduct); // Set the relationship
+                    } else {
+                        throw new \Exception("Product with ID {$itemData['towarEnovaId']} not found.");
+                    }                    $item->setProductName($itemData['productName'] ?? '');
                     $item->setPrice($itemData['price'] ?? 0.0);
                     $item->setQuantity($itemData['quantity'] ?? 1);
                     $item->setCurrency($itemData['currency'] ?? 'PLN');
+
 
                     $enovaOrder->setPozycjeDokHandlowego($item); // Assuming you have this method in EnovaOrder
                     $entityManager->persist($item);

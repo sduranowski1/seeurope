@@ -16,6 +16,7 @@ use App\Repository\EnovaOrderRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: EnovaOrderRepository::class)]
 #[ApiResource(
@@ -33,7 +34,9 @@ use Doctrine\ORM\Mapping as ORM;
 //        new Put(),
 //        new Patch(),
         new Delete()
-    ]
+    ],
+    normalizationContext: ['groups' => ['enovaOrder:read']],
+    denormalizationContext: ['groups' => ['enovaOrder:create']]
 )]
 #[ApiFilter(
     SearchFilter::class,
@@ -47,67 +50,87 @@ class EnovaOrder
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['enovaOrder:read'])]
     private ?int $id = null;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Groups(['enovaOrder:read', 'enovaOrder:create', 'enovaOrder:update'])]
     private ?string $email = null;
 
     #[ORM\Column(type: 'integer')]
+    #[Groups(['enovaOrder:read', 'enovaOrder:create', 'enovaOrder:update'])]
     private int $idWWW;
 
     #[ORM\Column(type: 'integer')]
+    #[Groups(['enovaOrder:read', 'enovaOrder:create', 'enovaOrder:update'])]
     private int $idEnova;
 
     #[ORM\Column(type: 'string')]
+    #[Groups(['enovaOrder:read', 'enovaOrder:create', 'enovaOrder:update'])]
     private string $idPlatnosciInternetowej;
 
     #[ORM\Column(type: 'string')]
+    #[Groups(['enovaOrder:read', 'enovaOrder:create', 'enovaOrder:update'])]
     private string $numerWWW;
 
     #[ORM\Column(type: 'string')]
+    #[Groups(['enovaOrder:read', 'enovaOrder:create', 'enovaOrder:update'])]
     private string $numerEnova;
 
     #[ORM\Column(type: 'decimal', precision: 10, scale: 2)]
+    #[Groups(['enovaOrder:read', 'enovaOrder:create', 'enovaOrder:update'])]
     private float $wartosc;
 
     #[ORM\Column(type: 'decimal', precision: 10, scale: 2)]
+    #[Groups(['enovaOrder:read', 'enovaOrder:create', 'enovaOrder:update'])]
     private float $wartoscWaluta;
 
     #[ORM\Column(type: 'integer')]
+    #[Groups(['enovaOrder:read', 'enovaOrder:create', 'enovaOrder:update'])]
     private int $platnik;
 
     #[ORM\Column(type: 'integer')]
+    #[Groups(['enovaOrder:read', 'enovaOrder:create', 'enovaOrder:update'])]
     private int $odbiorca;
 
     #[ORM\Column(type: 'json', nullable: true, options: ['jsonb' => true])]
+    #[Groups(['enovaOrder:read', 'enovaOrder:create', 'enovaOrder:update'])]
     private array $lokalizacjaDostawy = [];
 
     #[ORM\Column(type: 'datetime')]
+    #[Groups(['enovaOrder:read', 'enovaOrder:create', 'enovaOrder:update'])]
     private \DateTimeInterface $data;
 
     #[ORM\Column(type: 'string', nullable: true)]
+    #[Groups(['enovaOrder:read', 'enovaOrder:create', 'enovaOrder:update'])]
     private ?string $opis = null;
 
     #[ORM\Column(type: 'json', nullable: true, options: ['jsonb' => true])]
     private array $oldPozycjeDokHandlowego = [];
 
     #[ORM\Column(type: 'datetime', nullable: true)]
+    #[Groups(['enovaOrder:read', 'enovaOrder:create', 'enovaOrder:update'])]
     private ?\DateTimeInterface $terminPlatnosci = null;
 
     #[ORM\Column(type: 'string', nullable: true)]
+    #[Groups(['enovaOrder:read', 'enovaOrder:create', 'enovaOrder:update'])]
     private ?string $contactPerson = null;
 
     #[ORM\Column(type: 'string', nullable: true)]
+    #[Groups(['enovaOrder:read', 'enovaOrder:create', 'enovaOrder:update'])]
     private ?string $phone = null;
 
     #[ORM\Column(type: 'string', nullable: true)]
+    #[Groups(['enovaOrder:read', 'enovaOrder:create', 'enovaOrder:update'])]
     private ?string $orderNumber = null;
 
     #[ORM\Column(type: 'string', nullable: true)]
+    #[Groups(['enovaOrder:read', 'enovaOrder:create', 'enovaOrder:update'])]
     private ?string $shipping = null;
 
     // Define the relationship
     #[ORM\OneToMany(mappedBy: 'enovaOrder', targetEntity: EnovaOrderItem::class, cascade: ['persist', 'remove'])]
+    #[Groups(['enovaOrder:read', 'enovaOrder:create', 'enovaOrder:update'])]
     private Collection $pozycjeDokHandlowego;
 
     public function __construct()

@@ -155,7 +155,7 @@ class EnovaProduct
     #[ORM\Id]
 //    #[ORM\GeneratedValue(strategy: "AUTO")]
     #[ORM\Column(type: "integer")]
-    #[Groups(['enovaProduct:read'])]
+    #[Groups(['enovaProduct:read', 'enovaOrderItem:read', 'enovaOrder:read'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: ProductInfo::class, cascade: ['persist', 'remove'])]
@@ -164,11 +164,11 @@ class EnovaProduct
     private ?ProductInfo $productInfo = null;
 
     #[ORM\Column(type: "string", length: 255, nullable: true)]
-    #[Groups(['enovaProduct:read', 'enovaProduct:create', 'enovaProduct:update'])]
+    #[Groups(['enovaProduct:read', 'enovaProduct:create', 'enovaProduct:update', 'enovaOrderItem:read', 'enovaOrderItem:create', 'enovaOrderItem:update', 'enovaOrder:read', 'enovaOrder:create', 'enovaOrder:update'])]
     private ?string $name = null;
 
     #[ORM\Column(type: "string", length: 255, nullable: true)]
-    #[Groups(['enovaProduct:read', 'enovaProduct:create', 'enovaProduct:update'])]
+    #[Groups(['enovaProduct:read', 'enovaProduct:create', 'enovaProduct:update', 'enovaOrderItem:read', 'enovaOrderItem:create', 'enovaOrderItem:update', 'enovaOrder:read', 'enovaOrder:create', 'enovaOrder:update'])]
     private ?string $code = null;
 
     #[ORM\Column(type: "string", length: 255, nullable: true)]

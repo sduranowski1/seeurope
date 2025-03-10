@@ -160,9 +160,9 @@ class EnovaMakeOrderController extends AbstractController
                     } else {
                         throw new \Exception("Product with ID {$itemData['towarEnovaId']} not found.");
                     }                    $item->setProductName($itemData['productName'] ?? '');
-                    $item->setPrice($itemData['price'] ?? 0.0);
-                    $item->setQuantity($itemData['quantity'] ?? 1);
-                    $item->setCurrency($itemData['currency'] ?? 'PLN');
+                    $item->setPrice($itemData['cena'] ?? 0.0);
+                    $item->setQuantity($itemData['ilosc'] ?? 1);
+                    $item->setCurrency($itemData['symbolWaluty'] ?? 'PLN');
 
 
                     $enovaOrder->setPozycjeDokHandlowego($item); // Assuming you have this method in EnovaOrder

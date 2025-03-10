@@ -129,7 +129,7 @@ class EnovaOrder
     private ?string $shipping = null;
 
     // Define the relationship
-    #[ORM\OneToMany(mappedBy: 'enovaOrder', targetEntity: EnovaOrderItem::class, cascade: ['persist', 'remove'])]
+    #[ORM\OneToMany(targetEntity: EnovaOrderItem::class, mappedBy: 'enovaOrder', cascade: ['persist', 'remove'], fetch: 'EXTRA_LAZY')]
     #[Groups(['enovaOrder:read', 'enovaOrder:create', 'enovaOrder:update'])]
     private Collection $pozycjeDokHandlowego;
 

@@ -50,7 +50,8 @@ class EnovaOrderItem
 //    private ?int $towarEnovaId = null;
 
     #[ORM\Column(type: 'decimal', precision: 10, scale: 2)]
-    #[Groups(['enovaOrderItem:read', 'enovaOrderItem:create', 'enovaOrderItem:update', 'enovaOrder:read', 'enovaOrder:create', 'enovaOrder:update'])]    private ?float $price = null;
+    #[Groups(['enovaOrderItem:read', 'enovaOrderItem:create', 'enovaOrderItem:update', 'enovaOrder:read', 'enovaOrder:create', 'enovaOrder:update'])]
+    private ?float $price = null;
 
     #[ORM\Column(type: 'integer')]
     #[Groups(['enovaOrderItem:read', 'enovaOrderItem:create', 'enovaOrderItem:update', 'enovaOrder:read', 'enovaOrder:create', 'enovaOrder:update'])]

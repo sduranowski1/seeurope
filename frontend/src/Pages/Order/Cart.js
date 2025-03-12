@@ -30,6 +30,19 @@ const Cart = () => {
 
     console.log(cartItems)
 
+    useEffect(() => {
+        const handleLanguageChange = () => {
+            setCartItems([...cartItems]); // Trigger re-render
+        };
+
+        i18n.on('languageChanged', handleLanguageChange);
+
+        return () => {
+            i18n.off('languageChanged', handleLanguageChange);
+        };
+    }, [cartItems]); // Listen for cartItems to keep UI updated
+
+
     // Update quantity for a cart item
     const updateQuantity = (id, quantity) => {
         const updatedCart = cartItems.map((item) =>
@@ -60,16 +73,8 @@ const Cart = () => {
 
     // const TAX_RATE = 0.1; // 10% tax
     const subtotal = calculateSubtotal();
-    // const tax = subtotal * TAX_RATE;
-    // const total = subtotal + tax;
     const total = subtotal;
-
-
     const storedPriceCurrency = localStorage.getItem("priceCurrency");
-    console.log(storedPriceCurrency)
-
-
-
 
     return (
         <Container maxWidth="lg" sx={{ mt: 4, marginBottom: 3 }}>
@@ -112,14 +117,25 @@ const Cart = () => {
                                                         style={{ width: '50px', marginRight: '10px' }}
                                                     />
                                                     {i18n.language === "en"
-                                                        ? item.productInfo?.englishTitle || item.name
+                                                        ? item.features?.find(feature => feature.nazwa === "Nazwa w EN")?.wartosc || item.name
                                                         : i18n.language === "de"
-                                                            ? item.productInfo?.germanTitle || item.name
+                                                            ? item.features?.find(feature => feature.nazwa === "Nazwa w DE")?.wartosc || item.name
                                                             : item.name}
                                                 </Box>
                                             </TableCell>
                                             <TableCell align="right">{price.toFixed(2)} {storedPriceCurrency}</TableCell>
-                                            <TableCell align="right">{item.quantity}</TableCell>
+                                            {/* Editable Quantity Field */}
+                                            <TableCell align="center">
+                                                <TextField
+                                                    type="number"
+                                                    variant="outlined"
+                                                    size="small"
+                                                    value={quantity}
+                                                    onChange={(e) => updateQuantity(item.id, e.target.value)}
+                                                    inputProps={{ min: 1 }}
+                                                    sx={{ width: "70px" }}
+                                                />
+                                            </TableCell>
 
                                             <TableCell align="right">
                                                 {(price * quantity).toFixed(2)} {storedPriceCurrency}

@@ -273,7 +273,7 @@ const Checkout = () => {
                 kod: contractorLocationKod, // Add a string for location code
                 nazwa: selectedAddress === 'existing' ? locations[selectedLocation]?.nazwa || "" : locationDetails?.nazwa || "", // Voivodeship
                 eMail: userDetails?.enovaPerson?.email, // Add email from user details
-                nazwaOdbierajacego: userDetails?.enovaPerson?.imie + " " + userDetails?.enovaPerson?.nazwisko,
+                nazwaOdbierajacego: contactPerson,
                 id: contractorLocationId, // Assuming the location ID (can be adjusted if applicable)
                 // idWWW: 0, // Assuming this is a placeholder or related to the order
                 adres: {
@@ -285,7 +285,7 @@ const Checkout = () => {
                     poczta: selectedAddress === 'existing' ? locations[selectedLocation]?.adresLocation?.poczta || "" : newAddress?.postOffice || "", // Post office
                     powiat: selectedAddress === 'existing' ? locations[selectedLocation]?.adresLocation?.powiat || "" : newAddress?.district || "", // District
                     regon: selectedAddress === 'existing' ? locations[selectedLocation]?.adresLocation?.Regon || "" : newAddress?.regon || "", // REGON
-                    telefon: selectedAddress === 'existing' ? phone || "" : locations[selectedLocation]?.adresLocation?.telefon || "", // Phone
+                    telefon: phone, // Phone
                     ulica: selectedAddress === 'existing' ? locations[selectedLocation]?.adresLocation?.ulica || "" : newAddress?.street || "", // Street
                     miejscowosc: selectedAddress === 'existing' ? locations[selectedLocation]?.adresLocation?.miejscowosc || "" : newAddress?.city || "", // City
                     kodPocztowy: selectedAddress === 'existing' ? locations[selectedLocation]?.adresLocation?.kodPocztowy || "" : newAddress?.zipCode || "", // Zip Code

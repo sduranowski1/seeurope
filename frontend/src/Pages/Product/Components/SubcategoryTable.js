@@ -62,7 +62,7 @@ export const SubcategoryTable = ({ productsData, onProductClick, lastPartToColla
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const { sortedProducts, handleSort, sortColumn, sortOrder } = useSortedProducts(filteredProducts, userDetailsPrice);
-
+    const [updatedCart, setUpdatedCart] = useState([]); // Store updates locally
 
 
 
@@ -149,35 +149,21 @@ export const SubcategoryTable = ({ productsData, onProductClick, lastPartToColla
                 if (product.id === productId) {
                     const updatedQuantity = Math.max(0, (product.quantity || 0) + change);
 
-                    // Retrieve the cart from localStorage
-                    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
-                    const productIndex = cart.findIndex((item) => item.id === productId);
+                    setUpdatedCart((prevCart) => {
+                        const existingCart = [...prevCart];
+                        const productIndex = existingCart.findIndex((item) => item.id === productId);
 
-                    if (productIndex === -1 && updatedQuantity > 0) {
-                        cart.push({ ...product, quantity: updatedQuantity });
-                    } else if (productIndex !== -1) {
-                        if (updatedQuantity > 0) {
-                            cart[productIndex].quantity = updatedQuantity;
-                        } else {
-                            cart.splice(productIndex, 1); // Remove product if quantity is 0
+                        if (productIndex === -1 && updatedQuantity > 0) {
+                            existingCart.push({ ...product, quantity: updatedQuantity });
+                        } else if (productIndex !== -1) {
+                            if (updatedQuantity > 0) {
+                                existingCart[productIndex].quantity = updatedQuantity;
+                            } else {
+                                existingCart.splice(productIndex, 1); // Remove if quantity is 0
+                            }
                         }
-                    }
-
-                    localStorage.setItem('cart', JSON.stringify(cart));
-
-                    // Update priceCurrency in localStorage safely
-                    const priceCurrency = product.priceList?.length
-                        ? product.priceList.find((price) => price.nazwa === userDetailsPrice?.enovaPerson?.contractor?.cenaKontrahentaNazwa)?.waluta || "EUR"
-                        : "EUR";
-
-                    if (localStorage.getItem("priceCurrency") !== priceCurrency) {
-                        localStorage.setItem("priceCurrency", priceCurrency);
-                    }
-
-                    console.log(priceCurrency)
-
-                    // Dispatch the custom event to update badge
-                    window.dispatchEvent(new Event('cartUpdated'));
+                        return existingCart;
+                    });
 
                     return { ...product, quantity: updatedQuantity };
                 }
@@ -188,8 +174,41 @@ export const SubcategoryTable = ({ productsData, onProductClick, lastPartToColla
 
 
     const handleAddToCart = () => {
-        // Redirect to the cart page without modifying the cart
+        // Retrieve existing cart from localStorage and merge it with updatedCart
+        const existingCart = JSON.parse(localStorage.getItem('cart') || '[]');
+
+        // Merge the existing cart with updatedCart (avoiding duplicates)
+        const mergedCart = [...existingCart];
+
+        updatedCart.forEach((newItem) => {
+            const index = mergedCart.findIndex((item) => item.id === newItem.id);
+            if (index !== -1) {
+                mergedCart[index].quantity = newItem.quantity;
+            } else {
+                mergedCart.push(newItem);
+            }
+        });
+
+        // Save merged cart to localStorage
+        localStorage.setItem('cart', JSON.stringify(mergedCart));
+
+        // Update priceCurrency safely
+        const priceCurrency = mergedCart.length
+            ? mergedCart[0]?.priceList?.find((price) => price.nazwa === userDetailsPrice?.enovaPerson?.contractor?.cenaKontrahentaNazwa)?.waluta || "EUR"
+            : "EUR";
+
+        if (localStorage.getItem("priceCurrency") !== priceCurrency) {
+            localStorage.setItem("priceCurrency", priceCurrency);
+        }
+
+        // Dispatch the custom event to update badge
+        window.dispatchEvent(new Event('cartUpdated'));
+
+        // Navigate to the cart page
         navigate('/dashboard/cart');
+
+        // Clear updatedCart so future changes only affect new items
+        setUpdatedCart([]);
     };
 
     console.log(userDetailsPrice?.enovaPerson?.contractor?.cenaKontrahentaNazwa)
@@ -565,7 +584,7 @@ export const SubcategoryTable = ({ productsData, onProductClick, lastPartToColla
                             sx={{mt: 2}}
                             onClick={handleAddToCart}
                         >
-                            Go to Cart
+                            Add to Cart
                         </Button>
                     ) : (
                         <a/>
@@ -576,7 +595,7 @@ export const SubcategoryTable = ({ productsData, onProductClick, lastPartToColla
             {selectedProduct && (
                 // <div style={{ marginTop: "1rem" }}>
                 <div>
-                    <ProductDescription product={selectedProduct}/>
+                    <ProductDescription product={selectedProduct} addToCart={handleAddToCart}/>
                 </div>
             )}
         </div>

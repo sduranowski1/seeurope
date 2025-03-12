@@ -7,7 +7,7 @@ import ErrorIcon from "@mui/icons-material/Error";
 import {useNavigate} from "react-router-dom";
 import AuthContext from "../../../AuthContext";
 
-export const ProductDescription = ({ product }) => {
+export const ProductDescription = ({ product, addToCart }) => {
     // const [token, setToken] = useState(null);
     const { token } = useContext(AuthContext);
     const [data, setData] = useState(null);
@@ -199,6 +199,24 @@ export const ProductDescription = ({ product }) => {
                                             data.stockStatus || "made to order"
                                         )} {data.stockStatus}
                                     </div>
+                                    {/* Global Redirect to Cart Button */}
+                                    {token && (
+                                        <div style={{textAlign: "right", marginTop: "20px"}}>
+                                            {token ? (
+                                                <Button
+                                                    variant="contained"
+                                                    color="primary"
+                                                    size="large"
+                                                    sx={{mt: 2}}
+                                                    onClick={addToCart}
+                                                >
+                                                    Add to Cart
+                                                </Button>
+                                            ) : (
+                                                <a/>
+                                            )}
+                                        </div>
+                                    )}
                                     <br/>
                                 </div>
                                 <div className="product-image">

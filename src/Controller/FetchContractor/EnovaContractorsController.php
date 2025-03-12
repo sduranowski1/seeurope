@@ -11,6 +11,7 @@ use App\Repository\EnovaLocationRepository;
 use App\Repository\EnovaPersonRepository;
 use App\Repository\EnovaAddressRepository;  // Added repository for EnovaAddress
 use App\Repository\TokenRepository;
+use App\Repository\UserRepository;
 use App\Service\TokenService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -25,6 +26,7 @@ class EnovaContractorsController extends AbstractController
     private EnovaPersonRepository $enovaPersonRepository;
     private EnovaLocationRepository $enovaLocationRepository;
     private EnovaAddressRepository $enovaAddressRepository;  // Added property for EnovaAddressRepository
+    private UserRepository $userRepository;  // Added property for EnovaAddressRepository
 
     public function __construct(
         HttpClientInterface $client,
@@ -33,7 +35,8 @@ class EnovaContractorsController extends AbstractController
         EnovaContractorRepository $enovaContractorRepository,
         EnovaPersonRepository $enovaPersonRepository,
         EnovaLocationRepository $enovaLocationRepository,
-        EnovaAddressRepository $enovaAddressRepository  // Inject EnovaAddressRepository
+        EnovaAddressRepository $enovaAddressRepository,  // Inject EnovaAddressRepository
+        UserRepository $userRepository  // Inject EnovaAddressRepository
     )
     {
         $this->client = $client;
@@ -43,6 +46,7 @@ class EnovaContractorsController extends AbstractController
         $this->enovaPersonRepository = $enovaPersonRepository;
         $this->enovaLocationRepository = $enovaLocationRepository;
         $this->enovaAddressRepository = $enovaAddressRepository;  // Assign to the property
+        $this->userRepository = $userRepository;  // Assign to the property
     }
 
     public function fetchAndSaveContractors(): JsonResponse
@@ -263,6 +267,15 @@ class EnovaContractorsController extends AbstractController
         $person->setTelKomorkowy($personData['telKomorkowy'] ?? '');
         $person->setDostepDoWWW($personData['dostepDoWWW'] ?? false);
         $person->setPrawoDoZamowien($personData['prawoDoZamowien'] ?? false);
+
+        // Update the email in the UserEnova entity
+        if (isset($personData['email'])) {
+            $userEnova = $this->userRepository->find($personData['id']);
+            if ($userEnova) {
+                $userEnova->setEmail($personData['email']);
+                $this->userRepository->save($userEnova, true);
+            }
+        }
 
         $this->enovaPersonRepository->save($person, true);
 

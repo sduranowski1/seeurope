@@ -15,6 +15,7 @@ use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Controller\Admin\UserRoleChangeAction;
+use App\Controller\PasswordReset\PasswordResetRequestAction;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
 use App\State\UserPasswordHasher;
@@ -35,6 +36,14 @@ use Symfony\Component\Validator\Constraints as Assert;
         ),
         new Delete(
             security: 'is_granted("ROLE_ADMIN") or object == user' // Allow admins or the user themselves to delete
+        ),
+                // Forgot Password Request
+        new Post(
+            uriTemplate: '/forgot-password',
+            controller: PasswordResetRequestAction::class,
+//            security: "is_granted('ROLE_USER')",
+            input: false,
+            output: false,
         ),
         // Toggle Role
         new Patch(
@@ -112,12 +121,12 @@ class UserEnova implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
 
-//    public function setEmail(string $email): self
-//    {
-//        $this->email = $email;
-//
-//        return $this;
-//    }
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
+
+        return $this;
+    }
 
     /**
      * @see PasswordAuthenticatedUserInterface

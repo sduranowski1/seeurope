@@ -17,13 +17,17 @@ import AuthContext from "../AuthContext";
 import {Button} from "@mui/material";
 import OrderItemsModal from "./OrderItemsModal/OrderItemsModal";
 import OrderAddressModal from "./OrderAddressModal/OrderAddressModal";
+import {useTranslation} from "react-i18next";
 
 export const Dashboard = () => {
     const [orders, setOrders] = useState([]);
     const { token } = useContext(AuthContext); // Get token from AuthContext
     const [userId, setUserId] = useState(null);
+    const [userData, setUserData] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
+    const { t } = useTranslation();
+
 
     console.log(JSON.parse(atob(token.split('.')[1])))
     // const fetchData = [
@@ -50,8 +54,11 @@ export const Dashboard = () => {
                         }
                     });
 
-                    const userData = await response_user.json();
-                    const email = userData?.email
+                    const userDataFetched = await response_user.json();
+                    console.log(userDataFetched)
+
+                    setUserData(userDataFetched)
+                    const email = userDataFetched?.email
 
 
                     const response = await fetch(`https://se-europe-test.pl/api/enova_orders?email=${email}&page=${page}&order[id]=desc`, {
@@ -127,7 +134,7 @@ export const Dashboard = () => {
                         aria-controls="panel1-content"
                         id="panel1-header"
                     >
-                        <Link className={'aside__line aside__line--narrow'} >Purchases</Link>
+                        <Link className={'aside__line aside__line--narrow'} >{t('purchases')}</Link>
                     </AccordionSummary>
                     <AccordionDetails>
                         <div className={'productData'}>
@@ -136,7 +143,7 @@ export const Dashboard = () => {
                                 <table className="ordersTable" style={{width: "100%"}}>
                                     <thead>
                                     <tr>
-                                        <th>Index</th>
+                                        <th>Code</th>
                                         <th>Order ID</th>
                                         <th>Email</th>
                                         {/*<th>Name</th>*/}
@@ -154,7 +161,7 @@ export const Dashboard = () => {
                                     <tbody>
                                     {orders.slice().map((order, index) => (
                                         <tr key={index}>
-                                            <td>{order.id}</td>
+                                            <td>{order.numerEnova}</td>
                                             <td>{order.orderNumber}</td>
                                             <td>{order.email}</td>
                                             {/*<td>{order.name}</td>*/}
@@ -164,7 +171,7 @@ export const Dashboard = () => {
                                             {/*<td>{order.subtotal}</td>*/}
                                             {/*<td>{order.tax}</td>*/}
                                             <td>{order.wartosc}</td>
-                                            <td>{order.pozycjeDokHandlowego[0]?.symbolWaluty}</td>
+                                            <td>{order.pozycjeDokHandlowego[0]?.currency}</td>
                                             <td>
                                                 <Button
                                                     variant="text"  // Set the variant to 'text' for a text-style button
@@ -237,7 +244,7 @@ export const Dashboard = () => {
                         aria-controls="panel1-content"
                         id="panel1-header"
                     >
-                        <Link className={'aside__line aside__line--narrow'} >Lista cen</Link>
+                        <Link className={'aside__line aside__line--narrow'} >{t('price_list')}</Link>
                     </AccordionSummary>
                     <AccordionDetails>
                         <ul>
@@ -323,12 +330,14 @@ export const Dashboard = () => {
                         aria-controls="panel1-content"
                         id="panel1-header"
                     >
-                        <Link className={'aside__line aside__line--narrow'} >Moje dane</Link>
+                        <Link className={'aside__line aside__line--narrow'} >{t('my_details')}</Link>
                     </AccordionSummary>
                     <AccordionDetails>
                         <ul >
                             <li>
-                                <a href='/dashboard/my-details'>Zmień swoje dane</a>
+                                <Link to={{ pathname: '/dashboard/my-details', state: { userData } }}>
+                                    Zmień swoje dane
+                                </Link>
                             </li>
                         </ul>
 
@@ -340,7 +349,7 @@ export const Dashboard = () => {
                         aria-controls="panel1-content"
                         id="panel1-header"
                     >
-                        <Link className={'aside__line aside__line--narrow'} >Dokumenty</Link>
+                        <Link className={'aside__line aside__line--narrow'} >{t('documents')}</Link>
                     </AccordionSummary>
                     <AccordionDetails>
                         <ul >
@@ -357,7 +366,7 @@ export const Dashboard = () => {
                         aria-controls="panel1-content"
                         id="panel1-header"
                     >
-                        <Link className={'aside__line aside__line--narrow'} >Bank zdjęć</Link>
+                        <Link className={'aside__line aside__line--narrow'} >{t('gallery')}</Link>
                     </AccordionSummary>
                     <AccordionDetails>
                     <div className={'vehicles-list'}>

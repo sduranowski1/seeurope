@@ -70,6 +70,12 @@
 
 
   "tractor_equipment_intro": "Tutaj znajdziesz pełną standardową gamę sprzętu SE Equipment do ciągników. Oferujemy szeroki wybór osprzętu, od łyżek po sprzęt do podnoszenia.",
-  "find_tool_prompt": "Kliknij na wybrany produkt poniżej, aby znaleźć odpowiednie narzędzie dla siebie."
+  "find_tool_prompt": "Kliknij na wybrany produkt poniżej, aby znaleźć odpowiednie narzędzie dla siebie.",
 
+
+  "purchases": "Zamówienia",
+  "price_list": "Lista cen",
+  "my_details": "Moje dane",
+  "documents": "Dokumenty",
+  "gallery": "Bank zdjęć"
 }

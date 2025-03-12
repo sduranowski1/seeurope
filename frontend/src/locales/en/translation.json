@@ -71,5 +71,11 @@
 
 
   "tractor_equipment_intro": "Here you will find the full standard range of SE Equipment for tractors. We offer a wide selection of equipment, from buckets to lifting gear.",
-  "find_tool_prompt": "Click on the selected product below to find the right tool for you."
+  "find_tool_prompt": "Click on the selected product below to find the right tool for you.",
+
+  "purchases": "Purchases",
+  "price_list": "Price List",
+  "my_details": "My Details",
+  "documents": "Documents",
+  "gallery": "Gallery"
 }

@@ -7,6 +7,11 @@ export const MyDetails = () => {
     const { token } = useContext(AuthContext); // Get token from AuthContext
     const [userId, setUserId] = useState(null);
     const [userData, setUserData] = useState(null);
+    const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [message, setMessage] = useState(""); // Success or error message
 
     const fetchUser = async () => {
         try {
@@ -41,6 +46,48 @@ export const MyDetails = () => {
     useEffect(() => {
         fetchUser();
     }, []);
+
+    const validateForm = () => {
+        if (password.length < 6 || password.length > 20) {
+            setMessage("Hasło musi mieć od 6 do 20 znaków.");
+            return false;
+        }
+        if (password !== confirmPassword) {
+            setMessage("Hasła nie pasują do siebie.");
+            return false;
+        }
+        setMessage(""); // Clear previous messages if validation passes
+        return true;
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (!validateForm()) return;
+
+        setLoading(true);
+        try {
+            const response = await fetch(`https://se-europe-test.pl/api/user_enovas/${encodeURIComponent(userId)}`, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/merge-patch+json",
+                    "Authorization": `Bearer ${token}`, // Ensure you include the token for authentication
+                },
+                body: JSON.stringify({ plainPassword: password }),
+            });
+
+            if (!response.ok) {
+                throw new Error("Nie udało się zaktualizować hasła.");
+            }
+
+            setMessage("✅ Hasło zostało pomyślnie zaktualizowane!");
+            setPassword("");
+            setConfirmPassword("");
+        } catch (error) {
+            setMessage("❌ Wystąpił błąd podczas aktualizacji hasła.");
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <main>
@@ -112,50 +159,85 @@ export const MyDetails = () => {
                             <a>{userData?.contractor?.adres?.kraj}</a>
                         </div>
                     )}
-                    <div className={'field-container'}>
-                        <label htmlFor={'company_phone_number'}>Numer telefonu:</label>
-                        <a>{userData?.telKomorkowy}</a>
-                    </div>
+                    {userData?.telKomorkowy && (
+
+                        <div className={'field-container'}>
+                            <label htmlFor={'company_phone_number'}>Numer telefonu:</label>
+                            <a>{userData?.contractor?.Telefon}</a>
+                        </div>
+                    )}
+
                     {/*<div className={'field-container'}>*/}
                     {/*    <label htmlFor={'company_email'}>Numer faksu:</label>*/}
                     {/*    <input type="text" id={'company_email'} />*/}
                     {/*</div>*/}
 
-                    <form className={'form'}>
-                        <br/>
-                        <h2 className={'page-title'}>Moje dane</h2>
-                        <br/>
-                        <div className={'field-container'}>
-                            <label htmlFor={'first_name'}>Imię*:</label>
-                            <input required={true} type="text" id={'first_name'} placeholder={'Wpisz imię'}/>
-                        </div>
-                        <div className={'field-container'}>
-                            <label htmlFor={'last_name'}>Nazwisko*:</label>
-                            <input type="text" id={'last_name'} placeholder={'Wpisz nazwisko'}/>
-                        </div>
-                        <div className={'field-container'}>
-                            <label htmlFor={'phone_number'}>Numer telefonu*:</label>
-                            <input required={true} type="number" id={'phone_number'}
-                                   placeholder={'Wpisz numer telefonu'}/>
-                        </div>
-                        <div className={'field-container'}>
-                            <label htmlFor={'email'}>Email*:</label>
-                            <input required={true} type="text" id={'email'} placeholder={'Wpisz email'}/>
-                        </div>
-                        <div className={'field-container'}>
-                            <label htmlFor={'address'}>Adres:</label>
-                            <input type="text" id={'address'} placeholder={'Wpisz adres'}/>
-                        </div>
-                        <div className={'field-container'}>
-                            <label htmlFor={'postal_code'}>Kod pocztowy:</label>
-                            <input type="text" id={'postal_code'} placeholder={'Wpisz kod pocztowy'}/>
-                        </div>
-                        <div className={'field-container'}>
-                            <label htmlFor={'country'}>Kraj:</label>
-                            <input type="text" id={'country'} placeholder={'Wpisz kraj'}/>
-                        </div>
+                    <br/>
+                    <br/>
+                    <h2 className={'page-title'}>Moje dane</h2>
+                    <br/>
+                    {userData?.imie && (
 
-                        <br/>
+                        <div className={'field-container'}>
+                            <label htmlFor={'first_name'}>Imię:</label>
+                            <a>{userData?.imie}</a>
+                        </div>
+                    )}
+                    {userData?.nazwisko && (
+
+                        <div className={'field-container'}>
+                            <label htmlFor={'last_name'}>Nazwisko:</label>
+                            <a>{userData?.nazwisko}</a>
+                        </div>
+                    )}
+                    {userData?.telKomorkowy && (
+
+                        <div className={'field-container'}>
+                            <label htmlFor={'phone_number'}>Numer telefonu:</label>
+                            <a>{userData?.telKomorkowy}</a>
+                        </div>
+                    )}
+                    {/*<div className={'field-container'}>*/}
+                    {/*    <label htmlFor={'first_name'}>Imię*:</label>*/}
+                    {/*    <input required={true} type="text" id={'first_name'} placeholder={'Wpisz imię'}/>*/}
+                    {/*</div>*/}
+                    {/*<div className={'field-container'}>*/}
+                    {/*    <label htmlFor={'last_name'}>Nazwisko*:</label>*/}
+                    {/*    <input type="text" id={'last_name'} placeholder={'Wpisz nazwisko'}/>*/}
+                    {/*</div>*/}
+                    {/*<div className={'field-container'}>*/}
+                    {/*    <label htmlFor={'phone_number'}>Numer telefonu*:</label>*/}
+                    {/*    <input required={true} type="number" id={'phone_number'}*/}
+                    {/*           placeholder={'Wpisz numer telefonu'}/>*/}
+                    {/*</div>*/}
+                    {userData?.email && (
+
+                        <div className={'field-container'}>
+                            <label htmlFor={'email'}>Email:</label>
+                            <a>{userData?.email}</a>
+                        </div>
+                    )}
+                    {/*<div className={'field-container'}>*/}
+                    {/*    <label htmlFor={'email'}>Email*:</label>*/}
+                    {/*    <input required={true} type="text" id={'email'} placeholder={'Wpisz email'}/>*/}
+                    {/*</div>*/}
+                    {/*<div className={'field-container'}>*/}
+                    {/*    <label htmlFor={'address'}>Adres:</label>*/}
+                    {/*    <input type="text" id={'address'} placeholder={'Wpisz adres'}/>*/}
+                    {/*</div>*/}
+                    {/*<div className={'field-container'}>*/}
+                    {/*    <label htmlFor={'postal_code'}>Kod pocztowy:</label>*/}
+                    {/*    <input type="text" id={'postal_code'} placeholder={'Wpisz kod pocztowy'}/>*/}
+                    {/*</div>*/}
+                    {/*<div className={'field-container'}>*/}
+                    {/*    <label htmlFor={'country'}>Kraj:</label>*/}
+                    {/*    <input type="text" id={'country'} placeholder={'Wpisz kraj'}/>*/}
+                    {/*</div>*/}
+
+                    <br/>
+                    <br/>
+                    <form onSubmit={handleSubmit}>
+
                         <h2 className={'page-title'}>Zmień moje dane do logowania</h2>
                         <br/>
                         <p className={'paragraph paragraph--medium'}>
@@ -163,21 +245,60 @@ export const MyDetails = () => {
                             pamiętaj o tych nowych szczegółach! Nazwa użytkownika musi zawierać minimum 6 i
                             nie więcej niż 40 znaków, hasło minimum 6 i nie więcej niż 20 znaków.
                         </p>
+                        <br/>
 
-                        <div className={'field-container'}>
-                            <label htmlFor={'login'}>Login:</label>
-                            <input type="text" id={'login'} placeholder={'Wpisz login'}/>
+                        {/*<div className={'field-container'}>*/}
+                        {/*    <label htmlFor={'login'}>Login:</label>*/}
+                        {/*    <input type="text" id={'login'} placeholder={'Wpisz login'}/>*/}
+                        {/*</div>*/}
+                        <div className="field-container">
+                            <label htmlFor="password">Hasło:</label>
+                            <input
+                                type="password"
+                                id="password"
+                                placeholder="Wpisz hasło"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                            />
                         </div>
-                        <div className={'field-container'}>
-                            <label htmlFor={'password'}>Hasło:</label>
-                            <input type="text" id={'password'} placeholder={'Wpisz hasło'}/>
-                        </div>
-                        <div className={'field-container'}>
-                            <label htmlFor={'confirm_password'}>Potwierdź hasło:</label>
-                            <input type="text" id={'confirm_password'} placeholder={'Potwierdź hasło'}/>
+                        <div className="field-container">
+                            <label htmlFor="confirm_password">Potwierdź hasło:</label>
+                            <input
+                                type="password"
+                                id="confirm_password"
+                                placeholder="Potwierdź hasło"
+                                value={confirmPassword}
+                                onChange={(e) => setConfirmPassword(e.target.value)}
+                                required
+                            />
                         </div>
 
-                        <input type="submit"/>
+                        {/* Success/Error Message */}
+                        {message && (
+                            <p style={{ color: message.startsWith("✅") ? "green" : "red", fontSize: "14px", marginTop: "10px" }}>
+                                {message}
+                            </p>
+                        )}
+
+                        <button
+                            type="submit"
+                            disabled={loading}
+                            style={{
+                                backgroundColor: "#1d6cc1", // Green background
+                                color: "white", // White text color
+                                padding: "10px 20px", // Padding around the text
+                                border: "none", // No border
+                                borderRadius: "5px", // Rounded corners
+                                cursor: loading ? "not-allowed" : "pointer", // Change cursor on loading
+                                fontSize: "16px", // Font size
+                                fontWeight: "bold", // Bold text
+                                marginTop: "20px"
+                            }}
+                        >
+                            {loading ? "Aktualizowanie..." : "Zapisz zmiany"}
+                        </button>
+
                     </form>
                 </div>
             </section>

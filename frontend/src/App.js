@@ -92,6 +92,8 @@ import ProtectedRoute from "./Components/ProtectedRoute/ProtectedRoute";
 import PrivacyPolicy from "./Pages/PrivacyPolicy/PrivacyPolicy";
 import SearchProduct from "./Pages/SearchProduct/SearchProduct";
 import FoundProduct from "./Pages/SearchProduct/FoundProduct";
+import PasswordRecovery from "./Pages/PasswordRecovery/PasswordRecovery";
+import RecoveryEmailSent from "./Pages/PasswordRecovery/RecoveryEmailSent";
 // import BrandEdit from "./Resources/Product/BrandEdit";
 // import {SidebarComponent} from "./Components/SidebarComponent/SidebarComponent";
 // import {FooterComponent} from "./Components/FooterComponent/FooterComponent";
@@ -135,12 +137,16 @@ const App = () => {
           <Route path="/login" element={
             !token ? <Layout><Login setToken={handleLogin} /></Layout> : <Navigate to="/dashboard" replace />
           } />          <Route path="/logout" element={<Logout />} />
-                      <Route path="dashboard" element={<PrivateRoute />}>
+                        <Route path="password-recovery" element={<Layout><PasswordRecovery /></Layout>} />
+            <Route path="/recovery-email-sent" element={<Layout><RecoveryEmailSent /></Layout>} />
+
+            <Route path="dashboard" element={<PrivateRoute />}>
                           <Route path="" element={<Layout><Dashboard /></Layout>} />
                           <Route path="my-details" element={<Layout><MyDetails /></Layout>} />
                           <Route path="cart" element={<Layout><Cart /></Layout>} />
                           <Route path="checkout" element={<Layout><Checkout /></Layout>} />
                           <Route path="success" element={<Layout><Success /></Layout>} />
+
             </Route>
 
             {/*<Route path="/admin/*" element={<ProtectedRoute roles={['ROLE_ADMIN']}>*/}

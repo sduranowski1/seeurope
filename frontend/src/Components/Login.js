@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import Box from "@mui/material/Box";
 import {Button, Card, CardActions, CardContent, Typography, TextField} from "@mui/material";
 
@@ -79,6 +79,11 @@ const Login = ({ setToken }) => {
                 Login
               </Button>
             </CardActions>
+            <Typography variant="body2" align="center" marginTop={2}>
+              <Link to="/password-recovery" variant="body2">
+                Forgot your password?
+              </Link>
+            </Typography>
           </form>
         </CardContent>
       </Card>

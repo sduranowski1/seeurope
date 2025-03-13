@@ -48,7 +48,7 @@ export const Dashboard = () => {
                 if (id) {
                     setUserId(id);
 
-                    const response_user = await fetch(`https://se-europe-test.pl/api/enova_people/${encodeURIComponent(id)}`, {
+                    const response_user = await fetch(`https://seequipment.pl/api/enova_people/${encodeURIComponent(id)}`, {
                         headers: {
                             'Accept': 'application/ld+json'
                         }
@@ -61,7 +61,7 @@ export const Dashboard = () => {
                     const email = userDataFetched?.email
 
 
-                    const response = await fetch(`https://se-europe-test.pl/api/enova_orders?email=${email}&page=${page}&order[id]=desc`, {
+                    const response = await fetch(`https://seequipment.pl/api/enova_orders?email=${email}&page=${page}&order[id]=desc`, {
                         headers: {
                             'Accept': 'application/ld+json'
                         }

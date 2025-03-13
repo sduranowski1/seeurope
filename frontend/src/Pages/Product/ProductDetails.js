@@ -28,7 +28,7 @@ export const ProductDetails = ({currentSlug}) => {
     useEffect(() => {
         async function fetchSubcategoryData() {
             try {
-                const response = await fetch("https://se-europe-test.pl/api/item_types");
+                const response = await fetch("https://seequipment.pl/api/item_types");
                 const data = await response.json();
 
                 // Check if the subcategory has values

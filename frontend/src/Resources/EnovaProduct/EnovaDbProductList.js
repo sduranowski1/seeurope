@@ -50,11 +50,11 @@ const EnovaDbProductList = () => {
     // const fetchAdditionalData = async () => {
     //     try {
     //         const [brandsResponse, variantsResponse, categoriesResponse, subcategoriesResponse, itemTypesResponse] = await Promise.all([
-    //             fetch('https://se-europe-test.pl/api/brands'),
-    //             fetch('https://se-europe-test.pl/api/variants'),
-    //             fetch('https://se-europe-test.pl/api/categories'),
-    //             fetch('https://se-europe-test.pl/api/subcategories'),
-    //             fetch('https://se-europe-test.pl/api/item_types'),
+    //             fetch('https://seequipment.pl/api/brands'),
+    //             fetch('https://seequipment.pl/api/variants'),
+    //             fetch('https://seequipment.pl/api/categories'),
+    //             fetch('https://seequipment.pl/api/subcategories'),
+    //             fetch('https://seequipment.pl/api/item_types'),
     //         ]);
     //
     //         if (!brandsResponse.ok || !variantsResponse.ok || !categoriesResponse.ok ) {
@@ -90,7 +90,7 @@ const EnovaDbProductList = () => {
                 code: searchCode,
             }).toString();
 
-            const response = await fetch(`https://se-europe-test.pl/api/enova_products?${queryString}` // Add page and limit params
+            const response = await fetch(`https://seequipment.pl/api/enova_products?${queryString}` // Add page and limit params
                 , {
                 method: 'GET',
                 headers: {

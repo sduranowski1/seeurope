@@ -135,7 +135,7 @@ const Checkout = () => {
 
                         // Fetch additional user details using the email
                         const response = await fetch(
-                            `https://se-europe-test.pl/api/user_enovas?email=${encodeURIComponent(email)}`,
+                            `https://seequipment.pl/api/user_enovas?email=${encodeURIComponent(email)}`,
                             {
                                 method: 'GET',
                                 headers: {
@@ -325,8 +325,8 @@ const Checkout = () => {
         console.log(JSON.stringify(orderDataEnova));
 
         try {
-            // const response = await fetch('https://se-europe-test.pl/api/orders', {
-            const response = await fetch('https://se-europe-test.pl/api/enova_orders/enova_call', {
+            // const response = await fetch('https://seequipment.pl/api/orders', {
+            const response = await fetch('https://seequipment.pl/api/enova_orders/enova_call', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -112,9 +112,9 @@ const Cart = () => {
                                                 <Box display="flex" alignItems="center">
                                                     <img
                                                         src={
-                                                            item.productInfo?.imagePath && item.productInfo.imagePath !== "https://www.se-europe-test.pl"
-                                                                ? `https://www.se-europe-test.pl${item.productInfo.imagePath}`
-                                                                : 'https://www.se-europe-test.pl/media/item_types/landscape-placeholder.svg'
+                                                            item.productInfo?.imagePath && item.productInfo.imagePath !== "https://www.seequipment.pl"
+                                                                ? `https://www.seequipment.pl${item.productInfo.imagePath}`
+                                                                : 'https://www.seequipment.pl/media/item_types/landscape-placeholder.svg'
                                                         }
                                                         // Fallback to a placeholder image
                                                         alt={item.name || 'Unnamed Product'} // Fallback to a generic name

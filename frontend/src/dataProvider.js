@@ -1,8 +1,8 @@
 // Example of a custom data provider
 import { fetchUtils } from 'react-admin';
 
-const apiUrl = 'https://se-europe-test.pl/api';
-const domainUrl = 'https://se-europe-test.pl';
+const apiUrl = 'https://seequipment.pl/api';
+const domainUrl = 'https://seequipment.pl';
 // const apiUrl = 'https://127.0.0.1:8000/api';
 const httpClient = fetchUtils.fetchJson
 

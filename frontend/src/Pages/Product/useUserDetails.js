@@ -17,7 +17,7 @@ const useUserDetails = () => {
                     if (email) {
                         // Fetch additional user details using the email
                         const response = await fetch(
-                            `https://se-europe-test.pl/api/user_enovas?email=${encodeURIComponent(email)}`,
+                            `https://seequipment.pl/api/user_enovas?email=${encodeURIComponent(email)}`,
                             {
                                 method: 'GET',
                                 headers: {

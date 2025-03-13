@@ -187,9 +187,9 @@ export const SubcategoryTableBrands = ({ productsData, onProductClick, lastPartT
     let apiUrl;
 
     if (parts.length === 2) {
-        apiUrl = `https://se-europe-test.pl/api/brands?name=${lastPart}`;
+        apiUrl = `https://seequipment.pl/api/brands?name=${lastPart}`;
     } else if (parts.length === 3) {
-        apiUrl = `https://se-europe-test.pl/api/variants?variantname=${lastPart}`;
+        apiUrl = `https://seequipment.pl/api/variants?variantname=${lastPart}`;
     } else {
         throw new Error("Unsupported URL structure");
     }

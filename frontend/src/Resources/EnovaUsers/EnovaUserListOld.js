@@ -41,7 +41,7 @@ const EnovaUserListOld = () => {
       });
 
       // Fetch the second set of data (products) using query parameters
-      const response2 = await fetch(`https://se-europe-test.pl/api/enova_people?${queryParams}`, {
+      const response2 = await fetch(`https://seequipment.pl/api/enova_people?${queryParams}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/ld+json',

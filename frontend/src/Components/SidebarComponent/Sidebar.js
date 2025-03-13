@@ -32,7 +32,7 @@ const Sidebar = ({ setToken }) => {
     e.preventDefault();
     try {
       // const response = await fetch('https://127.0.0.1:8000/auth', {
-      const response = await fetch('https://se-europe-test.pl/auth', {
+      const response = await fetch('https://seequipment.pl/auth', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -66,7 +66,7 @@ const Sidebar = ({ setToken }) => {
   useEffect(() => {
     const fetchMachine = async () => {
       try {
-        const categoryResponse = await fetch('https://se-europe-test.pl/api/categories');
+        const categoryResponse = await fetch('https://seequipment.pl/api/categories');
         const categoriesData = await categoryResponse.json();
 
         setCategories(categoriesData);
@@ -79,7 +79,7 @@ const Sidebar = ({ setToken }) => {
 
     const fetchCoupling = async () => {
       try {
-        const brandResponse = await fetch('https://se-europe-test.pl/api/brands');
+        const brandResponse = await fetch('https://seequipment.pl/api/brands');
         const brandsData = await brandResponse.json();
 
         setBrands(brandsData);

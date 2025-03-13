@@ -16,7 +16,7 @@ const Login = ({ setToken }) => {
     e.preventDefault();
     try {
       // const response = await fetch('https://127.0.0.1:8000/auth', {
-      const response = await fetch('https://se-europe-test.pl/auth', {
+      const response = await fetch('https://seequipment.pl/auth', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

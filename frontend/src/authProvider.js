@@ -4,7 +4,7 @@ const authProvider = {
     login: async ({ username, password }) => {
         try {
             // Step 1: Make a POST request to the login endpoint to get the token
-            const response = await fetch('https://se-europe-test.pl/auth', {
+            const response = await fetch('https://seequipment.pl/auth', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

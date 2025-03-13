@@ -37,8 +37,8 @@ const EnovaProductEdit = () => {
                 // setToken(token);
 
                 // Use the token to fetch the actual data
-                // const response = await fetch('https://se-europe-test.pl/api/PanelWWW_API/DajLudziKontrahentaWgId', {
-                const response = await fetch(`https://se-europe-test.pl/api/enova_people/${id}`, {
+                // const response = await fetch('https://seequipment.pl/api/PanelWWW_API/DajLudziKontrahentaWgId', {
+                const response = await fetch(`https://seequipment.pl/api/enova_people/${id}`, {
                     method: 'GET',
                     headers: {
                         'accept': 'application/json',

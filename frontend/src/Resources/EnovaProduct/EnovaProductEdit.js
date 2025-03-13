@@ -48,19 +48,19 @@ const EnovaProductEdit = () => {
         const fetchProductData = async () => {
             try {
                 // Fetch the product details by ID
-                const response = await fetch(`https://se-europe-test.pl/api/product_infos/${id}`);
+                const response = await fetch(`https://seequipment.pl/api/product_infos/${id}`);
                 const productData = await response.json();
                 setProduct(productData);
 
                 // Fetch brands and variants data
                 const [brandsResponse, variantsResponse, categoriesResponse, subcategoriesResponse, itemTypesResponse, couplingFiltersResponse, machineFiltersResponse] = await Promise.all([
-                    fetch('https://se-europe-test.pl/api/brands/no_pagination'),
-                    fetch('https://se-europe-test.pl/api/variants/no_pagination'),
-                    fetch('https://se-europe-test.pl/api/categories/no_pagination'),
-                    fetch('https://se-europe-test.pl/api/subcategories/no_pagination'),
-                    fetch('https://se-europe-test.pl/api/item_types/no_pagination'),
-                    fetch('https://se-europe-test.pl/api/coupling_filters/no_pagination'),
-                    fetch('https://se-europe-test.pl/api/machine_filters/no_pagination'),
+                    fetch('https://seequipment.pl/api/brands/no_pagination'),
+                    fetch('https://seequipment.pl/api/variants/no_pagination'),
+                    fetch('https://seequipment.pl/api/categories/no_pagination'),
+                    fetch('https://seequipment.pl/api/subcategories/no_pagination'),
+                    fetch('https://seequipment.pl/api/item_types/no_pagination'),
+                    fetch('https://seequipment.pl/api/coupling_filters/no_pagination'),
+                    fetch('https://seequipment.pl/api/machine_filters/no_pagination'),
                 ]);
                 const brandsData = await brandsResponse.json();
                 const variantsData = await variantsResponse.json();
@@ -151,7 +151,7 @@ const EnovaProductEdit = () => {
                 const formData = new FormData();
                 formData.append('file', image);
 
-                const imageUploadResponse = await fetch('https://se-europe-test.pl/api/products_media_objects', {
+                const imageUploadResponse = await fetch('https://seequipment.pl/api/products_media_objects', {
                     method: 'POST',
                     headers: {
                         'Accept': 'application/json',
@@ -186,7 +186,7 @@ const EnovaProductEdit = () => {
             };
 
             // Send the PUT request
-            const productUpdateResponse = await fetch(`https://se-europe-test.pl/api/product_infos/${id}`, {
+            const productUpdateResponse = await fetch(`https://seequipment.pl/api/product_infos/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Accept': 'application/json',
@@ -486,7 +486,7 @@ const EnovaProductEdit = () => {
                                     />
                                 ) : product?.imagePath ? (
                                     <img
-                                        src={`https://se-europe-test.pl${product.imagePath}`}
+                                        src={`https://seequipment.pl${product.imagePath}`}
                                         alt="Existing product image"
                                         style={{maxWidth: '100%', maxHeight: '200px', borderRadius: '15px'}}
                                     />

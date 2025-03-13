@@ -20,7 +20,7 @@ export const Forklift = () => {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await fetch('https://se-europe-test.pl/api/subcategories');
+                const response = await fetch('https://seequipment.pl/api/subcategories');
                 if (!response.ok) {
                     throw new Error('Failed to fetch data');
                 }

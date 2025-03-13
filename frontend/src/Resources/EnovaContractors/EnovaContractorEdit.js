@@ -23,7 +23,7 @@ const EnovaContractorEdit = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch(`https://se-europe-test.pl/api/enova_contractors/${id}`);
+                const response = await fetch(`https://seequipment.pl/api/enova_contractors/${id}`);
                 if (!response.ok) throw new Error(`Error: ${response.statusText}`);
                 const result = await response.json();
                 setData(result);

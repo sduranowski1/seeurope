@@ -45,7 +45,7 @@ const EnovaUserEdit = () => {
         const fetchProductData = async () => {
             try {
                 // Fetch the product details by ID
-                const response = await fetch(`https://se-europe-test.pl/api/user_enovas/${id}`);
+                const response = await fetch(`https://seequipment.pl/api/user_enovas/${id}`);
                 const productData = await response.json();
                 setProduct(productData);
 
@@ -86,7 +86,7 @@ const EnovaUserEdit = () => {
             console.log("Payload being sent:", JSON.stringify(updatedProduct));
 
             // Send the PATCH request
-            const productUpdateResponse = await fetch(`https://se-europe-test.pl/api/user_enovas/${id}`, {
+            const productUpdateResponse = await fetch(`https://seequipment.pl/api/user_enovas/${id}`, {
                 method: 'PATCH',
                 headers: {
                     'Accept': 'application/json',

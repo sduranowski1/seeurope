@@ -45,7 +45,7 @@ export const Brand = () => {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await fetch(`https://se-europe-test.pl/api/variants/no_pagination?brand.name=${currentSlugFilter}`);
+                const response = await fetch(`https://seequipment.pl/api/variants/no_pagination?brand.name=${currentSlugFilter}`);
                 if (!response.ok) {
                     throw new Error('Failed to fetch data');
                 }

@@ -9,7 +9,7 @@ const SortingSelect = ({ onSortChange }) => {
     useEffect(() => {
         const fetchSortingSettings = async () => {
             try {
-                const response = await fetch("https://se-europe-test.pl/api/global_settings");
+                const response = await fetch("https://seequipment.pl/api/global_settings");
                 const data = await response.json();
                 console.log("Fetched Sorting Settings:", data);
                 setSortField(data.sortField || "id");

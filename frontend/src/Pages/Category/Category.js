@@ -47,7 +47,7 @@ export const Category = () => {
         const fetchProducts = async () => {
             setIsLoading(true); // Ensure loading state is true before starting the fetch
             try {
-                const response = await fetch(`https://se-europe-test.pl/api/subcategories/no_pagination?category.name=${currentSlugFilter}`);
+                const response = await fetch(`https://seequipment.pl/api/subcategories/no_pagination?category.name=${currentSlugFilter}`);
                 if (!response.ok) {
                     throw new Error('Failed to fetch data');
                 }

@@ -20,7 +20,7 @@ const PasswordRecovery = () => {
         const body = { email };
 
         try {
-            const response = await fetch('https://se-europe-test.pl/api/forgot-password', {
+            const response = await fetch('https://seequipment.pl/api/forgot-password', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

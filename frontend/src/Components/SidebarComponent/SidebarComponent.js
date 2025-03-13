@@ -24,7 +24,7 @@ export const SidebarComponent = () => {
     async function onAuthSet(event) {
         event.preventDefault();
         try {
-            const response = await fetch("http://se-europe-test.pl/api/login", {
+            const response = await fetch("http://seequipment.pl/api/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

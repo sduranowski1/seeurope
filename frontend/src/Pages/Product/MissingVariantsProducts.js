@@ -74,10 +74,10 @@ export const MissingVariantsProducts = ({lastPart, slug}) => {
     const fetchAdditionalData = async () => {
         try {
             const [brandsResponse, variantsResponse] = await Promise.all([
-                fetch(`https://se-europe-test.pl/api/brands`),
-                fetch('https://se-europe-test.pl/api/variants'),
-                // fetch('https://se-europe-test.pl/api/categories'),
-                // fetch('https://se-europe-test.pl/api/subcategories'),
+                fetch(`https://seequipment.pl/api/brands`),
+                fetch('https://seequipment.pl/api/variants'),
+                // fetch('https://seequipment.pl/api/categories'),
+                // fetch('https://seequipment.pl/api/subcategories'),
             ]);
 
             if (!brandsResponse.ok || !variantsResponse.ok ) {
@@ -99,8 +99,8 @@ export const MissingVariantsProducts = ({lastPart, slug}) => {
     const fetchProductData = useCallback(async () => {
         setLoading(true); // Set loading true at the start of the request
         try {
-            // const response = await fetch('https://se-europe-test.pl/api/PanelWWW_API/DajTowary?nazwa=Koszt', {
-            const response = await fetch(`https://se-europe-test.pl/api/enova_products/no_pagination?productInfo.brand.name=${lastPart}`, {
+            // const response = await fetch('https://seequipment.pl/api/PanelWWW_API/DajTowary?nazwa=Koszt', {
+            const response = await fetch(`https://seequipment.pl/api/enova_products/no_pagination?productInfo.brand.name=${lastPart}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -229,7 +229,7 @@ export const MissingVariantsProducts = ({lastPart, slug}) => {
 
                         // Fetch additional user details using the email
                         const response = await fetch(
-                            `https://se-europe-test.pl/api/user_enovas?email=${encodeURIComponent(email)}`,
+                            `https://seequipment.pl/api/user_enovas?email=${encodeURIComponent(email)}`,
                             {
                                 method: 'GET',
                                 headers: {

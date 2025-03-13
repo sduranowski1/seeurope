@@ -23,7 +23,7 @@ export const ProductDescription = ({ product, addToCart }) => {
         const fetchData = async () => {
             try {
                 // Use the token to fetch the actual data
-                const response = await fetch(`https://se-europe-test.pl/api/enova_products?code=${product.code}`, {
+                const response = await fetch(`https://seequipment.pl/api/enova_products?code=${product.code}`, {
                     method: 'GET',
                     headers: {
                         'accept': 'application/json',
@@ -224,7 +224,7 @@ export const ProductDescription = ({ product, addToCart }) => {
                                     <br/>
                                 </div>
                                 <div className="product-image">
-                                    <img src={`https://se-europe-test.pl${data.productInfo?.imagePath}`} alt="Product"/>
+                                    <img src={`https://seequipment.pl${data.productInfo?.imagePath}`} alt="Product"/>
                                 </div>
                             </div>
 

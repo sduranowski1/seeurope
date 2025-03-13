@@ -24,7 +24,7 @@ const SearchProduct = () => {
             setErrorMessage('');
             try {
                 // Fetch the product by code using the dynamic parameter
-                const response = await fetch(`https://se-europe-test.pl/api/enova_products?code=${code}`, {
+                const response = await fetch(`https://seequipment.pl/api/enova_products?code=${code}`, {
                     headers: {
                         'Accept': 'application/json', // Specify the expected response format
                     },
@@ -205,7 +205,7 @@ const SearchProduct = () => {
                                 <br/>
                             </div>
                             <div className="product-image">
-                                <img src={`https://se-europe-test.pl${data.productInfo?.imagePath}`} alt="Product"/>
+                                <img src={`https://seequipment.pl${data.productInfo?.imagePath}`} alt="Product"/>
                             </div>
                         </div>
 

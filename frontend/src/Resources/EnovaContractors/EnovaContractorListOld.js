@@ -40,7 +40,7 @@ const EnovaContractorListOld = () => {
         nazwa: searchNazwa,
       });
       // Construct the URL with query parameters for pagination
-      const url = `https://se-europe-test.pl/api/enova_contractors?${queryParams}`;
+      const url = `https://seequipment.pl/api/enova_contractors?${queryParams}`;
 
       const response = await fetch(url, {
         method: 'GET',

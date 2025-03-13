@@ -37,7 +37,7 @@ const EnovaProductEdit = () => {
                 // setToken(token);
 
                 // Use the token to fetch the actual data
-                // const response = await fetch('https://se-europe-test.pl/api/PanelWWW_API/DajTowarWgId', {
+                // const response = await fetch('https://seequipment.pl/api/PanelWWW_API/DajTowarWgId', {
                 //     method: 'POST',
                 //     headers: {
                 //         'accept': 'application/json',
@@ -48,7 +48,7 @@ const EnovaProductEdit = () => {
                 //     }),
                 // });
 
-                const response = await fetch(`https://se-europe-test.pl/api/enova_products/${id}`, {
+                const response = await fetch(`https://seequipment.pl/api/enova_products/${id}`, {
                     method: 'GET',
                     headers: {
                         'accept': 'application/json',

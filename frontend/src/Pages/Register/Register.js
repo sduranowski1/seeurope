@@ -53,7 +53,7 @@ export const Register = () => {
 
         try {
             // const response = await fetch('https://127.0.0.1:8000/api/users', {
-            const response = await fetch('https://se-europe-test.pl/api/users', {
+            const response = await fetch('https://seequipment.pl/api/users', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

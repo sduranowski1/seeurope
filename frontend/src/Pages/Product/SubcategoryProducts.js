@@ -52,11 +52,11 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
     const fetchAdditionalData = async () => {
         try {
             const [brandsResponse, variantsResponse, categoriesResponse, subcategoriesResponse, itemTypesResponse] = await Promise.all([
-                fetch('https://se-europe-test.pl/api/brands'),
-                fetch('https://se-europe-test.pl/api/variants'),
-                fetch('https://se-europe-test.pl/api/categories'),
-                fetch('https://se-europe-test.pl/api/subcategories'),
-                fetch('https://se-europe-test.pl/api/item_types'),
+                fetch('https://seequipment.pl/api/brands'),
+                fetch('https://seequipment.pl/api/variants'),
+                fetch('https://seequipment.pl/api/categories'),
+                fetch('https://seequipment.pl/api/subcategories'),
+                fetch('https://seequipment.pl/api/item_types'),
             ]);
 
             if (!brandsResponse.ok || !variantsResponse.ok || !categoriesResponse.ok ) {
@@ -99,18 +99,18 @@ export const SubcategoryProducts = ({lastPart, slug}) => {
             let apiUrl;
 
             if (parts.length === 2) {
-                apiUrl = `https://se-europe-test.pl/api/enova_products/no_pagination?productInfo.category.name=${lastPart}`;
+                apiUrl = `https://seequipment.pl/api/enova_products/no_pagination?productInfo.category.name=${lastPart}`;
             } else if (parts.length === 3) {
-                apiUrl = `https://se-europe-test.pl/api/enova_products/no_pagination?productInfo.category.name=${secondPart}&productInfo.subcategory.subCatName=${lastPart}`;
+                apiUrl = `https://seequipment.pl/api/enova_products/no_pagination?productInfo.category.name=${secondPart}&productInfo.subcategory.subCatName=${lastPart}`;
             } else if (parts.length === 4) {
-                apiUrl = `https://se-europe-test.pl/api/enova_products/no_pagination?productInfo.category.name=${thirdPart}&productInfo.subcategory.subCatName=${secondPart}&productInfo.itemType.name=${lastPart}`;
+                apiUrl = `https://seequipment.pl/api/enova_products/no_pagination?productInfo.category.name=${thirdPart}&productInfo.subcategory.subCatName=${secondPart}&productInfo.itemType.name=${lastPart}`;
             } else {
                 throw new Error("Unsupported URL structure");
             }
 
             console.log(apiUrl)
 
-            // const response = await fetch(`https://se-europe-test.pl/api/enova_products?productInfo.subcategory.subCatName=${lastPart}`, {
+            // const response = await fetch(`https://seequipment.pl/api/enova_products?productInfo.subcategory.subCatName=${lastPart}`, {
             const response = await fetch(apiUrl, {
                 method: 'GET',
                 headers: {

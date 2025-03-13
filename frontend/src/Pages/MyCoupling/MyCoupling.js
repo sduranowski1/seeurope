@@ -82,7 +82,7 @@ export const MyCoupling = () => {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await fetch('https://se-europe-test.pl/api/brands/no_pagination');
+                const response = await fetch('https://seequipment.pl/api/brands/no_pagination');
                 if (!response.ok) {
                     throw new Error('Failed to fetch data');
                 }

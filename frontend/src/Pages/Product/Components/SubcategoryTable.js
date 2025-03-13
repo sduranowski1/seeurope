@@ -230,11 +230,11 @@ export const SubcategoryTable = ({ productsData, onProductClick, lastPartToColla
     let apiUrl;
 
     if (parts.length === 2) {
-        apiUrl = `https://se-europe-test.pl/api/categories?name=${lastPart}`;
+        apiUrl = `https://seequipment.pl/api/categories?name=${lastPart}`;
     } else if (parts.length === 3) {
-        apiUrl = `https://se-europe-test.pl/api/subcategories?category.name=${secondPart}&subCatName=${lastPart}`;
+        apiUrl = `https://seequipment.pl/api/subcategories?category.name=${secondPart}&subCatName=${lastPart}`;
     } else if (parts.length === 4) {
-        apiUrl = `https://se-europe-test.pl/api/item_types?name=${lastPart}`;
+        apiUrl = `https://seequipment.pl/api/item_types?name=${lastPart}`;
     } else {
         throw new Error("Unsupported URL structure");
     }

@@ -22,7 +22,7 @@ export const MyDetails = () => {
                 if (id) {
                     setUserId(id);
 
-                    const response_user = await fetch(`https://se-europe-test.pl/api/enova_people/${encodeURIComponent(id)}`, {
+                    const response_user = await fetch(`https://seequipment.pl/api/enova_people/${encodeURIComponent(id)}`, {
                         headers: {
                             'Accept': 'application/ld+json'
                         }
@@ -66,7 +66,7 @@ export const MyDetails = () => {
 
         setLoading(true);
         try {
-            const response = await fetch(`https://se-europe-test.pl/api/user_enovas/${encodeURIComponent(userId)}`, {
+            const response = await fetch(`https://seequipment.pl/api/user_enovas/${encodeURIComponent(userId)}`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/merge-patch+json",

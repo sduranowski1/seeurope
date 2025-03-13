@@ -98,7 +98,7 @@ export const NavbarComponent = (props) => {
     // Fetch sorting settings
     useEffect(() => {
         const fetchSortingSettings = async () => {
-            const response = await fetch('https://se-europe-test.pl/api/global_settings');
+            const response = await fetch('https://seequipment.pl/api/global_settings');
             const data = await response.json();
             console.log('Fetched Sorting Settings:', data);
             setSortField(data[0].sortField);
@@ -125,7 +125,7 @@ export const NavbarComponent = (props) => {
                         : sortField;
 
                 // Fetch brands and apply sorting
-                const brandResponse = await fetch(`https://se-europe-test.pl/api/brands/no_pagination?order[${adjustedSortField}]=${sortOrder}`);
+                const brandResponse = await fetch(`https://seequipment.pl/api/brands/no_pagination?order[${adjustedSortField}]=${sortOrder}`);
                 const brandsData = await brandResponse.json();
                 console.log('Fetched Brands:', brandsData);
 
@@ -133,7 +133,7 @@ export const NavbarComponent = (props) => {
                 // const filteredBrands = brandsData.filter(brand => brand.name);
 
                 // Fetch variants
-                const variantResponse = await fetch(`https://se-europe-test.pl/api/variants/no_pagination?order[variantname]=asc`);
+                const variantResponse = await fetch(`https://seequipment.pl/api/variants/no_pagination?order[variantname]=asc`);
                 const variantsData = await variantResponse.json();
 
                 // Adjust name based on language
@@ -160,7 +160,7 @@ export const NavbarComponent = (props) => {
     }, [sortField, sortOrder, i18n.language]); // Trigger re-fetch when language changes
 
 
-    console.log(`Fetching from: https://se-europe-test.pl/api/brands/no_pagination?order[${sortField}]=${sortOrder}`);
+    console.log(`Fetching from: https://seequipment.pl/api/brands/no_pagination?order[${sortField}]=${sortOrder}`);
 
 
     useEffect(() => {
@@ -178,7 +178,7 @@ export const NavbarComponent = (props) => {
                         : sortField;
 
                 // Fetch categories and apply sorting
-                const categoryResponse = await fetch(`https://se-europe-test.pl/api/categories/no_pagination?order[${adjustedSortField}]=${sortOrder}`);
+                const categoryResponse = await fetch(`https://seequipment.pl/api/categories/no_pagination?order[${adjustedSortField}]=${sortOrder}`);
                 const categoriesData = await categoryResponse.json();
 
                 setCategories(categoriesData);

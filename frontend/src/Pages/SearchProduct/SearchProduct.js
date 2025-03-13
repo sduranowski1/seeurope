@@ -32,7 +32,7 @@ const SearchBar = () => {
 
         try {
             // Fetch filtered products based on the search term
-            const response = await fetch(`https://se-europe-test.pl/api/enova_products/no_pagination?name=${searchTerm}`, {
+            const response = await fetch(`https://seequipment.pl/api/enova_products/no_pagination?name=${searchTerm}`, {
                 headers: {
                     'Accept': 'application/ld+json', // Specify the expected response format
                 },

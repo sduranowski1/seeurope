@@ -45,11 +45,11 @@ const EnovaProductListOld = () => {
   const fetchAdditionalData = async () => {
     try {
       const [brandsResponse, variantsResponse, categoriesResponse, subcategoriesResponse, itemTypesResponse] = await Promise.all([
-        fetch('https://se-europe-test.pl/api/brands'),
-        fetch('https://se-europe-test.pl/api/variants'),
-        fetch('https://se-europe-test.pl/api/categories'),
-        fetch('https://se-europe-test.pl/api/subcategories'),
-        fetch('https://se-europe-test.pl/api/item_types'),
+        fetch('https://seequipment.pl/api/brands'),
+        fetch('https://seequipment.pl/api/variants'),
+        fetch('https://seequipment.pl/api/categories'),
+        fetch('https://seequipment.pl/api/subcategories'),
+        fetch('https://seequipment.pl/api/item_types'),
       ]);
 
       if (!brandsResponse.ok || !variantsResponse.ok || !categoriesResponse.ok ) {
@@ -80,7 +80,7 @@ const EnovaProductListOld = () => {
       const token = await fetchToken();
       setToken(token);
 
-      const response = await fetch('https://se-europe-test.pl/api/PanelWWW_API/DajTowary?nazwa=Koszt', {
+      const response = await fetch('https://seequipment.pl/api/PanelWWW_API/DajTowary?nazwa=Koszt', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -18,7 +18,7 @@ const EnovaProductList = () => {
         setLoading(true);  // Set loading to true when the request starts
         try {
             // Replace with your actual fetch logic
-            const response = await fetch('https://se-europe-test.pl/api/fetch-enova-products', { method: 'POST' });
+            const response = await fetch('https://seequipment.pl/api/fetch-enova-products', { method: 'POST' });
 
             if (response.ok) {
                 notify('Enova products fetched successfully', 'info');

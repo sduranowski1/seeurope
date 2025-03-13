@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import Box from "@mui/material/Box";
-import { Button, Card, CardActions, CardContent, Typography, TextField, Alert } from "@mui/material";
-import {useNavigate} from "react-router-dom";
+import { Box, Card, CardContent, Typography, TextField, Button, CardActions, Alert } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next'; // Import i18n hook
 
 const PasswordRecovery = () => {
     const [email, setEmail] = useState('');
@@ -9,7 +9,7 @@ const PasswordRecovery = () => {
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();  // Initialize navigate
-
+    const { t } = useTranslation();  // Use the translation hook
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -31,17 +31,17 @@ const PasswordRecovery = () => {
             const data = await response.json();
 
             if (response.ok) {
-                setMessage(data.message || 'Password recovery instructions have been sent to your email.');
+                setMessage(data.message || t('passwordRecovery.successMessage'));
 
                 // Redirect to the "Recovery Email Sent" page
                 setTimeout(() => {
                     navigate('/recovery-email-sent');
                 }, 2000); // 2-second delay before redirecting
             } else {
-                setError(data.error || 'Something went wrong. Please try again.');
+                setError(data.error || t('passwordRecovery.errorMessage'));
             }
         } catch (error) {
-            setError('Network error. Please try again later.');
+            setError(t('passwordRecovery.networkError'));
         } finally {
             setLoading(false);
         }
@@ -58,14 +58,14 @@ const PasswordRecovery = () => {
             <Card sx={{ minWidth: 275, maxWidth: 400 }}>
                 <CardContent>
                     <Typography variant="h5" component="div" gutterBottom>
-                        Password Recovery
+                        {t('passwordRecovery.title')} {/* Translated title */}
                     </Typography>
                     <form onSubmit={handleSubmit}>
                         <TextField
                             type="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            label="Email"
+                            label={t('passwordRecovery.emailLabel')}
                             variant="outlined"
                             fullWidth
                             margin="normal"
@@ -79,7 +79,7 @@ const PasswordRecovery = () => {
                                 fullWidth
                                 disabled={loading}
                             >
-                                {loading ? 'Sending...' : 'Submit'}
+                                {loading ? t('passwordRecovery.sendingButton') : t('passwordRecovery.submitButton')} {/* Translated button text */}
                             </Button>
                         </CardActions>
                     </form>

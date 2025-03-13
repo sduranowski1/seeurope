@@ -6,6 +6,8 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import ErrorIcon from "@mui/icons-material/Error";
 import {useNavigate} from "react-router-dom";
 import AuthContext from "../../../AuthContext";
+import {useTranslation} from "react-i18next";
+import {StockStatus} from "../../../Components/DynamicTranslations/StockStatus";
 
 export const ProductDescription = ({ product, addToCart }) => {
     // const [token, setToken] = useState(null);
@@ -14,6 +16,7 @@ export const ProductDescription = ({ product, addToCart }) => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
 
     useEffect(() => {
@@ -64,7 +67,7 @@ export const ProductDescription = ({ product, addToCart }) => {
             'Model',
             'More information',
             // 'My Machine',
-            'OPIS WC',
+            // 'OPIS WC',
             'Product',
             "Recommended Machine weight",
             "Type",
@@ -81,7 +84,7 @@ export const ProductDescription = ({ product, addToCart }) => {
         const features = featuresList.map((featureName) => {
             const matchedFeature = product.features.find((feature) => feature.nazwa === featureName);
             return {
-                nazwa: featureName,
+                nazwa: t(`productList.features.${featureName}`, featureName), // Translate the feature name
                 wartosc: matchedFeature ? matchedFeature.wartosc : null,
             };
         });
@@ -179,25 +182,26 @@ export const ProductDescription = ({ product, addToCart }) => {
                                         )}
                                     </div>
                                     <br/>
-                                    <h3 className={"description-header tech-data-header"}>DANE TECHNICZNE</h3>
+                                    <h3 className={"description-header tech-data-header"}>{t("productList.technicalData")}</h3>
                                     <div>{renderFeatures(data)}</div>
                                     <br/>
                                     <div className={"hr-price"}></div>
                                     <br/>
                                     <div className={"in-stock"}>
                                         {data.stockStatus === "instock" ? (
-                                            <Tooltip title="In Stock: This product is available.">
+                                            <Tooltip title={t("productList.instockTooltip")}>
                                                 <CheckCircleIcon
                                                     style={{color: "green", cursor: "pointer", paddingTop: "9px"}}/>
                                             </Tooltip>
                                         ) : data.stockStatus === "onbackorder" ? (
-                                            <Tooltip title="On Backorder: This product is not currently available.">
+                                            <Tooltip title={t("productList.onbackorderTooltip")}>
                                                 <ErrorIcon
                                                     style={{color: "orange", cursor: "pointer", paddingTop: "9px"}}/>
                                             </Tooltip>
                                         ) : (
-                                            data.stockStatus || "made to order"
-                                        )} {data.stockStatus}
+                                            data.stockStatus || t("productList.notAvailable")
+                                        )}
+                                        <StockStatus stockStatus={data.stockStatus} />
                                     </div>
                                     {/* Global Redirect to Cart Button */}
                                     {token && (
@@ -210,7 +214,7 @@ export const ProductDescription = ({ product, addToCart }) => {
                                                     sx={{mt: 2}}
                                                     onClick={addToCart}
                                                 >
-                                                    Add to Cart
+                                                    {t('productList.addToCart')}
                                                 </Button>
                                             ) : (
                                                 <a/>

@@ -15,6 +15,7 @@ import {
 } from '@mui/material';
 import { useNavigate } from "react-router-dom";
 import i18n from "i18next";
+import { useTranslation } from "react-i18next";
 
 const Cart = () => {
     const navigate = useNavigate();
@@ -76,24 +77,27 @@ const Cart = () => {
     const total = subtotal;
     const storedPriceCurrency = localStorage.getItem("priceCurrency");
 
+    const { t } = useTranslation();
+
+
     return (
         <Container maxWidth="lg" sx={{ mt: 4, marginBottom: 3 }}>
             <Typography variant="h4" gutterBottom>
-                Shopping Cart
+                {t("cart.title")}
             </Typography>
             {cartItems.length === 0 ? (
-                <Typography variant="h6">Your cart is empty.</Typography>
+                <Typography variant="h6">{t("cart.empty")}</Typography>
             ) : (
                 <>
                     <TableContainer component={Paper}>
                         <Table>
                             <TableHead>
                                 <TableRow>
-                                    <TableCell>Product</TableCell>
-                                    <TableCell align="right">Price</TableCell>
-                                    <TableCell align="center">Quantity</TableCell>
-                                    <TableCell align="right">Total</TableCell>
-                                    <TableCell align="center">Action</TableCell>
+                                    <TableCell>{t("cart.product")}</TableCell>
+                                    <TableCell align="right">{t("cart.price")}</TableCell>
+                                    <TableCell align="center">{t("cart.quantity")}</TableCell>
+                                    <TableCell align="right">{t("cart.total")}</TableCell>
+                                    <TableCell align="center">{t("cart.action")}</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -146,7 +150,7 @@ const Cart = () => {
                                                     color="error"
                                                     onClick={() => removeItem(item.id)}
                                                 >
-                                                    Remove
+                                                    {t('cart.remove')}
                                                 </Button>
                                             </TableCell>
                                         </TableRow>
@@ -158,9 +162,9 @@ const Cart = () => {
                     </TableContainer>
 
                     <Box mt={3} textAlign="right">
-                        <Typography variant="body1">Subtotal: {subtotal.toFixed(2)} {storedPriceCurrency}</Typography>
+                        <Typography variant="body1">{t("cart.subtotal")}: {subtotal.toFixed(2)} {storedPriceCurrency}</Typography>
                         {/*<Typography variant="body1">Tax (10%): {tax.toFixed(2)} {storedPriceCurrency}</Typography>*/}
-                        <Typography variant="h6">Total: {total.toFixed(2)} {storedPriceCurrency}</Typography>
+                        <Typography variant="h6">{t("cart.total")}: {total.toFixed(2)} {storedPriceCurrency}</Typography>
                         <Button
                             variant="contained"
                             color="primary"
@@ -169,7 +173,7 @@ const Cart = () => {
                             onClick={() => navigate('/dashboard/checkout', { state: { cartItems, subtotal, total } })}
                             // onClick={() => navigate('/dashboard/checkout', { state: { cartItems, subtotal, tax, total } })}
                         >
-                            Proceed to Checkout
+                            {t("cart.checkout")}
                         </Button>
                     </Box>
 
@@ -182,7 +186,7 @@ const Cart = () => {
                     size="large"
                     onClick={() => navigate(-1)} // Navigate back to the previous page
                 >
-                    Return
+                    {t("cart.return")}
                 </Button>
             </Box>
         </Container>

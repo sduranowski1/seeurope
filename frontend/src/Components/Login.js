@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import {Link, useNavigate} from "react-router-dom";
 import Box from "@mui/material/Box";
 import {Button, Card, CardActions, CardContent, Typography, TextField} from "@mui/material";
+import {useTranslation} from "react-i18next";
 
 
 const Login = ({ setToken }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+  const { t } = useTranslation(); // Use the translation hook
 
 
   const handleSubmit = async (e) => {
@@ -46,42 +48,42 @@ const Login = ({ setToken }) => {
       <Card sx={{ minWidth: 275, maxWidth: 400 }}>
         <CardContent>
           <Typography variant="h5" component="div" gutterBottom>
-            Login
+            {t('loginCart.title')} {/* Translated title */}
           </Typography>
           <form onSubmit={handleSubmit}>
             <TextField
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              label="Email"
-              variant="outlined"
-              fullWidth
-              margin="normal"
-              required
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                label={t('loginCart.email')}
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                required
             />
             <TextField
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              label="Password"
-              variant="outlined"
-              fullWidth
-              margin="normal"
-              required
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                label={t('loginCart.password')}
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                required
             />
             <CardActions>
               <Button
-                type="submit"
-                variant="contained"
-                color="primary"
-                fullWidth
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  fullWidth
               >
-                Login
+                {t('loginCart.button')} {/* Translated button text */}
               </Button>
             </CardActions>
             <Typography variant="body2" align="center" marginTop={2}>
               <Link to="/password-recovery" variant="body2">
-                Forgot your password?
+                {t('loginCart.forgotPassword')} {/* Translated forgot password link */}
               </Link>
             </Typography>
           </form>

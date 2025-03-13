@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import Modal from '@mui/material/Modal';
 import { Button, Box } from '@mui/material';
 import i18n from "i18next";
+import {useTranslation} from "react-i18next";
 
 const OrderAddressModal = ({ openAddress, onCloseAddress, addresses }) => {
+    const { t } = useTranslation();
 
     console.log(addresses)
     return (
@@ -30,7 +32,7 @@ const OrderAddressModal = ({ openAddress, onCloseAddress, addresses }) => {
                         </li>
                     </ul>
                 ))}
-                <Button onClick={onCloseAddress}>Close</Button>
+                <Button onClick={onCloseAddress}>{t('ordersPanel.close')}</Button>
             </Box>
         </Modal>
     );

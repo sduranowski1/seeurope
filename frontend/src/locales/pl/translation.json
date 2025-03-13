@@ -77,5 +77,190 @@
   "price_list": "Lista cen",
   "my_details": "Moje dane",
   "documents": "Dokumenty",
-  "gallery": "Bank zdjęć"
+  "gallery": "Bank zdjęć",
+
+  "cart": {
+    "title": "Koszyk",
+    "product": "Produkt",
+    "price": "Cena",
+    "quantity": "Ilość",
+    "total": "Suma",
+    "action": "Akcja",
+    "remove": "Usuń",
+    "subtotal": "Suma częściowa",
+    "checkout": "Przejdź do kasy",
+    "return": "Powrót",
+    "empty": "Twój koszyk jest pusty."
+  },
+
+  "checkout": {
+    "title": "Kasa",
+    "personalInfo": "Informacje osobiste",
+    "email": "Email",
+    "name": "Imię",
+    "surname": "Nazwisko",
+    "phone": "Telefon",
+    "existingAddress": "Istniejący adres",
+    "newAddress": "Nowy adres",
+    "selectLocation": "Wybierz lokalizację",
+    "location": "Lokalizacja",
+    "selectedLocationAddress": "Wybrany adres lokalizacji",
+    "street": "Ulica",
+    "buildingNumber": "Numer budynku",
+    "apartmentNumber": "Numer mieszkania",
+    "zipCode": "Kod pocztowy",
+    "city": "Miasto",
+    "country": "Kraj",
+    "companyName": "Nazwa firmy",
+    "contactPerson": "Osoba kontaktowa",
+    "selectDate": "Wybierz datę",
+    "myOrderNumber": "Mój numer zamówienia",
+    "shipping": "Wysyłka",
+    "collection": "Odbiór",
+    "selectOption": "Proszę wybrać opcję",
+    "orderSummary": "Podsumowanie zamówienia",
+    "placeOrder": "Złóż Zamówienie",
+    "placingOrder": "Składanie Zamówienia...",
+    "confirmOrderTitle": "Potwierdź Zamówienie",
+    "confirmOrderMessage": "Czy na pewno chcesz złożyć to zamówienie?",
+    "cancel": "Odrzuć",
+    "confirm": "Potwierdź"
+  },
+  "success": {
+    "thanks": "Dziękujemy!",
+    "orderPlaced": "Zamówienie Złożone Pomyślnie!",
+    "backToHome": "Wróć do Strony Głównej"
+  },
+
+
+  "contactPeople": {
+    "pageTitle": "SE Equipment Polska",
+    "ceo": {
+      "title": "CEO",
+      "name": "Marcin Waniołka",
+      "email": "marcin.waniolka@se-europe.com",
+      "phone": "+48 606 424 443"
+    },
+    "coOwner": {
+      "title": "Współwłaściciel / Główny Księgowy",
+      "name": "Joanna Waniołka",
+      "email": "joanna.waniolka@se-europe.com",
+      "phone": "+48 696 382 192"
+    },
+    "salesManager": {
+      "title": "Kierownik Sprzedaży",
+      "name": "Antoni Jabłoński",
+      "email": "antoni.jablonski@se-europe.com",
+      "phone": "+48 696 131 009"
+    },
+    "sales": {
+      "title": "Sprzedaż",
+      "name": "Radosław Stawowy",
+      "email": "radoslaw.stawowy@se-europe.com",
+      "phone": "+48 696 103 140"
+    },
+    "salesSupport1": {
+      "title": "Wsparcie Sprzedaży",
+      "name": "Anna Chęczkiewicz",
+      "email": "anna.checzkiewicz@se-europe.com",
+      "phone": "+48 600 779 335"
+    },
+    "salesSupport2": {
+      "title": "Wsparcie Sprzedaży",
+      "name": "Andrzej Adamski",
+      "email": "andrzej.adamski@se-europe.com",
+      "phone": "+48 696 577 001"
+    },
+    "purchasingManager": {
+      "title": "Menadżer Zakupów",
+      "name": "Paulina Rychta",
+      "email": "paulina.rychta@se-europe.com",
+      "phone": "+48 664 154 787"
+    },
+    "warehouse": {
+      "title": "Magazyn",
+      "name": "Arkadiusz Grzywacz",
+      "email": "arkadiusz.grzywacz@se-europe.com",
+      "phone": "+48 662 890 029"
+    },
+    "sales2": {
+      "title": "Sprzedaż",
+      "name": "Natalia Kaczmarek",
+      "email": "natalia.kaczmarek@se-europe.com",
+      "phone": "+48 664 779 558"
+    }
+  },
+  "loginCart": {
+    "title": "Zaloguj się",
+    "email": "E-mail",
+    "password": "Hasło",
+    "button": "Zaloguj",
+    "forgotPassword": "Zapomniałeś hasła?"
+  },
+  "passwordRecovery": {
+    "title": "Odzyskiwanie hasła",
+    "emailLabel": "E-mail",
+    "submitButton": "Wyślij",
+    "sendingButton": "Wysyłanie...",
+    "successMessage": "Instrukcje odzyskiwania hasła zostały wysłane na Twój adres e-mail.",
+    "errorMessage": "Coś poszło nie tak. Spróbuj ponownie.",
+    "networkError": "Błąd sieciowy. Spróbuj ponownie później.",
+    "sent": "Wiadomość o odzyskaniu hasła została wysłana. Proszę sprawdzić swoją skrzynkę odbiorczą."
+  },
+  "productList": {
+    "code": "Kod",
+    "productName": "Nazwa produktu",
+    "dedicatedPrice": "Cena dedykowana",
+    "endUserPrice": "Cena dla klienta końcowego",
+    "addQuantity": "Dodaj ilość",
+    "instockTooltip": "W magazynie: Ten produkt jest dostępny.",
+    "onbackorderTooltip": "Na zamówienie: Ten produkt jest obecnie niedostępny.",
+    "notAvailable": "Brak danych",
+    "noItemsFound": "Nie znaleziono produktów",
+    "addToCart": "Dodaj do koszyka",
+    "technicalData": "DANE TECHNICZNE",
+    "stockStatus": {
+      "instock": "W magazynie",
+      "onbackorder": "Na zamówienie",
+      "notAvailable": "Brak dostępności"
+    },
+    "features": {
+      "Capacity": "Pojemność",
+      "Depth": "Głębokość",
+      "Dimension": "Wymiary",
+      "Equipment side": "Strona wyposażenia",
+      "Exisiting fork": "Istniejący widelec",
+      "Height": "Wysokość",
+      "Information": "Informacja",
+      "Length": "Długość",
+      "Machine side": "Strona maszyny",
+      "Masa do": "Masa do",
+      "Masa od": "Masa od",
+      "Model": "Model",
+      "More information": "Więcej informacji",
+      "Product": "Produkt",
+      "Recommended Machine weight": "Zalecana masa maszyny",
+      "Type": "Typ",
+      "Variant": "Wariant",
+      "Volume": "Objętość",
+      "Weight": "Waga",
+      "Width": "Szerokość"
+    }
+  },
+  "ordersPanel": {
+    "orderId": "Numer zamówienia",
+    "orderDate": "Data zamówienia",
+    "currency": "Waluta",
+    "items": "Pozycje",
+    "address": "Adres",
+    "viewItems": "Zobacz pozycje",
+    "viewAddress": "Zobacz adres",
+    "previous": "Poprzednia",
+    "next": "Następna",
+    "noOrders": "Brak zamówień",
+    "page": "Strona",
+    "of": "z",
+    "orderItems": "Pozycje zamówienia",
+    "close": "Zamknij"
+  }
 }

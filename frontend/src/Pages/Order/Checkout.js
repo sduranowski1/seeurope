@@ -29,6 +29,7 @@ import { useForm, Controller } from "react-hook-form";
 import dayjs from "dayjs";
 import {FormHelperText} from "@mui/joy";
 import {countries} from "../../utils/countries";
+import {useTranslation} from "react-i18next";
 
 
 // Zod Schema
@@ -85,6 +86,7 @@ const Checkout = () => {
     const [openDialog, setOpenDialog] = useState(false);
     const [error, setError] = useState(false);
     const [dialogError, setDialogError] = useState(""); // State for dialog error message
+    const { t } = useTranslation();
 
 
     const handleConfirmOpen = () => setOpenDialog(true);
@@ -399,37 +401,37 @@ const Checkout = () => {
     return (
         <Container maxWidth="md" sx={{ mt: 4, marginBottom: 3 }}>
             <Typography variant="h4" gutterBottom>
-                Checkout
+                {t("checkout.title")}
             </Typography>
             <Grid container spacing={4}>
                 {/* User Information */}
                 <Grid item xs={12} md={7}>
                     <Paper sx={{p: 3}} elevation={3}>
                         <Typography variant="h6" gutterBottom>
-                            Personal Information
+                            {t("checkout.personalInfo")}
                         </Typography>
                         <Box>
                             <Typography variant="body1">
-                                <strong>Email:</strong> {userDetails?.enovaPerson?.email}
+                                <strong>{t("checkout.email")}:</strong> {userDetails?.enovaPerson?.email}
                             </Typography>
                             {userDetails && (
                                 <>
                                     <Typography variant="body1">
-                                        <strong>Name:</strong> {userDetails?.enovaPerson?.imie || 'N/A'}
+                                        <strong>{t("checkout.name")}:</strong> {userDetails?.enovaPerson?.imie || 'N/A'}
                                     </Typography>
                                     <Typography variant="body1">
-                                        <strong>Surname:</strong> {userDetails?.enovaPerson?.nazwisko || 'N/A'}
+                                        <strong>{t("checkout.surname")}:</strong> {userDetails?.enovaPerson?.nazwisko || 'N/A'}
                                     </Typography>
                                     <Typography variant="body1">
-                                        <strong>Phone:</strong> {userDetails?.enovaPerson?.telKomorkowy || 'N/A'}
+                                        <strong>{t("checkout.phone")}:</strong> {userDetails?.enovaPerson?.telKomorkowy || 'N/A'}
                                     </Typography>
                                 </>
                             )}
                         </Box>
                         <Divider sx={{ my: 2 }} />
                         <Tabs value={value} onChange={handleChange} aria-label="address tabs">
-                            <Tab label="Existing Address"/>
-                            <Tab label="New Address"/>
+                            <Tab label={t("checkout.existingAddress")} />
+                            <Tab label={t("checkout.newAddress")} />
                         </Tabs>
                         <br/>
                         {value === 0 && (
@@ -466,85 +468,59 @@ const Checkout = () => {
                                         {/* Locations Dropdown */}
                                         {locations.length > 0 && (
                                             <FormControl fullWidth sx={{ mt: 2 }}>
-                                                <InputLabel>Select Location</InputLabel>
+                                                <InputLabel>{t("checkout.selectLocation")}</InputLabel>
                                                 <Select
                                                     value={selectedLocation}
                                                     onChange={(e) => setSelectedLocation(e.target.value)}
-                                                    label="Select Location"
+                                                    label={t("checkout.selectLocation")}
                                                 >
                                                     {locations.map((location, index) => (
                                                         <MenuItem key={index} value={index} sx={{ display: "flex", justifyContent: "space-between" }}>
-                                                            <span>{location.nazwa || `Location ${index + 1}`}</span>
+                                                            <span>{location.nazwa || `${t("checkout.location")} ${index + 1}`}</span>
                                                             <span style={{ marginLeft: "auto" }}>{location.adresLocation.miejscowosc || ``}</span>
                                                         </MenuItem>
                                                     ))}
                                                 </Select>
                                             </FormControl>
                                         )}
-
-                                        {/* Display Selected Location Address */}
                                         {/* Display Selected Location Address */}
                                         {selectedLocation !== "" && (
                                             <Box mt={2}>
-                                                <Typography variant="h6">Selected Location Address</Typography>
-                                                {/*{locations[selectedLocation]?.adresLocation?.wojewodztwo &&*/}
-                                                {/*    locations[selectedLocation]?.adresLocation?.wojewodztwo !== "N/A" && (*/}
-                                                {/*        <Typography variant="body1">*/}
-                                                {/*            <strong>Voivodeship:</strong> {locations[selectedLocation]?.adresLocation?.wojewodztwo}*/}
-                                                {/*        </Typography>*/}
-                                                {/*    )}*/}
-                                                {/*{locations[selectedLocation]?.adresLocation?.gmina &&*/}
-                                                {/*    locations[selectedLocation]?.adresLocation?.gmina !== "N/A" && (*/}
-                                                {/*        <Typography variant="body1">*/}
-                                                {/*            <strong>Region:</strong> {locations[selectedLocation]?.adresLocation?.gmina}*/}
-                                                {/*        </Typography>*/}
-                                                {/*    )}*/}
+                                                <Typography variant="h6">{t("checkout.selectedLocationAddress")}</Typography>
                                                 {locations[selectedLocation]?.adresLocation?.ulica &&
                                                     locations[selectedLocation]?.adresLocation?.ulica !== "N/A" && (
                                                         <Typography variant="body1">
-                                                            <strong>Street:</strong> {locations[selectedLocation]?.adresLocation?.ulica}
+                                                            <strong>{t("checkout.street")}:</strong> {locations[selectedLocation]?.adresLocation?.ulica}
                                                         </Typography>
                                                     )}
                                                 {locations[selectedLocation]?.adresLocation?.nrDomu &&
                                                     locations[selectedLocation]?.adresLocation?.nrDomu !== "N/A" && (
                                                         <Typography variant="body1">
-                                                            <strong>Building Number:</strong> {locations[selectedLocation]?.adresLocation?.nrDomu}
+                                                            <strong>{t("checkout.buildingNumber")}:</strong> {locations[selectedLocation]?.adresLocation?.nrDomu}
                                                         </Typography>
                                                     )}
                                                 {locations[selectedLocation]?.adresLocation?.nrLokalu &&
                                                     locations[selectedLocation]?.adresLocation?.nrLokalu !== "N/A" && (
                                                         <Typography variant="body1">
-                                                            <strong>Apartment Number:</strong> {locations[selectedLocation]?.adresLocation?.nrLokalu}
+                                                            <strong>{t("checkout.apartmentNumber")}:</strong> {locations[selectedLocation]?.adresLocation?.nrLokalu}
                                                         </Typography>
                                                     )}
-                                                {/*{locations[selectedLocation]?.adresLocation?.poczta &&*/}
-                                                {/*    locations[selectedLocation]?.adresLocation?.poczta !== "N/A" && (*/}
-                                                {/*        <Typography variant="body1">*/}
-                                                {/*            <strong>Post office:</strong> {locations[selectedLocation]?.adresLocation?.poczta}*/}
-                                                {/*        </Typography>*/}
-                                                {/*    )}*/}
-                                                {/*{locations[selectedLocation]?.adresLocation?.powiat &&*/}
-                                                {/*    locations[selectedLocation]?.adresLocation?.powiat !== "N/A" && (*/}
-                                                {/*        <Typography variant="body1">*/}
-                                                {/*            <strong>District:</strong> {locations[selectedLocation]?.adresLocation?.powiat}*/}
-                                                {/*        </Typography>*/}
-                                                {/*    )}*/}
                                                 {locations[selectedLocation]?.adresLocation?.kodPocztowy &&
                                                     locations[selectedLocation]?.adresLocation?.kodPocztowy !== "N/A" && (
                                                         <Typography variant="body1">
-                                                            <strong>Zip code:</strong> {locations[selectedLocation]?.adresLocation?.kodPocztowy}
+                                                            <strong>{t("checkout.zipCode")}:</strong> {locations[selectedLocation]?.adresLocation?.kodPocztowy}
                                                         </Typography>
                                                     )}
                                                 {locations[selectedLocation]?.adresLocation?.miejscowosc &&
                                                     locations[selectedLocation]?.adresLocation?.miejscowosc !== "N/A" && (
                                                         <Typography variant="body1">
-                                                            <strong>City:</strong> {locations[selectedLocation]?.adresLocation?.miejscowosc}
+                                                            <strong>{t("checkout.city")}:</strong> {locations[selectedLocation]?.adresLocation?.miejscowosc}
                                                         </Typography>
                                                     )}
                                                 {locations[selectedLocation]?.adresLocation?.kraj &&
                                                     locations[selectedLocation]?.adresLocation?.kraj !== "N/A" && (
                                                         <Typography variant="body1">
-                                                            <strong>Country:</strong> {locations[selectedLocation]?.adresLocation?.kraj}
+                                                            <strong>{t("checkout.country")}:</strong> {locations[selectedLocation]?.adresLocation?.kraj}
                                                         </Typography>
                                                     )}
                                             </Box>
@@ -557,146 +533,95 @@ const Checkout = () => {
                         {/* New Address Tab */}
                         {value === 1 && (
                             <Box>
-                                {/*<Typography variant="h6" gutterBottom>*/}
-                                {/*    New Address*/}
-                                {/*</Typography>*/}
                                 <Grid container spacing={2}>
-                                    <Grid item xs={12} sm={12}>
+                                    <Grid item xs={12}>
                                         <TextField
-                                            label="Company Name"
+                                            label={t('checkout.companyName')}
                                             fullWidth
-                                            value={locationDetails?.nazwa || ""}
-                                            onChange={(e) => handleLocationChange('nazwa', e.target.value)}
-                                        />
-                                    </Grid>
-                                    <Grid item xs={12} sm={6}>
-                                        <TextField
-                                            label="Street"
-                                            fullWidth
-                                            value={newAddress?.street || ""}
-                                            onChange={(e) => handleAddressChange('street', e.target.value)}
-                                        />
-                                    </Grid>
-                                    <Grid item xs={12} sm={6}>
-                                        <TextField
-                                            label="Building Number"
-                                            fullWidth
-                                            value={newAddress?.buildingNumber || ""}
-                                            onChange={(e) => handleAddressChange('buildingNumber', e.target.value)}
-                                        />
-                                    </Grid>
-                                    <Grid item xs={12} sm={6}>
-                                        <TextField
-                                            label="Apartment Number"
-                                            fullWidth
-                                            value={newAddress?.apartmentNumber || ""}
-                                            onChange={(e) => handleAddressChange('apartmentNumber', e.target.value)}
-                                        />
-                                    </Grid>
-                                    <Grid item xs={12} sm={6}>
-                                        <TextField
-                                            label="Zip Code"
-                                            fullWidth
-                                            value={newAddress?.zipCode || ""}
-                                            onChange={(e) => handleAddressChange('zipCode', e.target.value)}
-                                        />
-                                    </Grid>
-                                    {/*<Grid item xs={12} sm={6}>*/}
-                                    {/*    <TextField*/}
-                                    {/*        label="Voivodeship"*/}
-                                    {/*        fullWidth*/}
-                                    {/*        value={newAddress?.voivodeship || ""}*/}
-                                    {/*        onChange={(e) => handleAddressChange('voivodeship', e.target.value)}*/}
-                                    {/*    />*/}
-                                    {/*</Grid>*/}
-                                    {/*<Grid item xs={12} sm={6}>*/}
-                                    {/*    <TextField*/}
-                                    {/*        label="Region"*/}
-                                    {/*        fullWidth*/}
-                                    {/*        value={newAddress?.region || ""}*/}
-                                    {/*        onChange={(e) => handleAddressChange('region', e.target.value)}*/}
-                                    {/*    />*/}
-                                    {/*</Grid>*/}
-
-
-                                    {/*<Grid item xs={12} sm={6}>*/}
-                                    {/*    <TextField*/}
-                                    {/*        label="Post office"*/}
-                                    {/*        fullWidth*/}
-                                    {/*        value={newAddress?.postOffice || ""}*/}
-                                    {/*        onChange={(e) => handleAddressChange('postOffice', e.target.value)}*/}
-                                    {/*    />*/}
-                                    {/*</Grid>*/}
-                                    {/*<Grid item xs={12} sm={6}>*/}
-                                    {/*    <TextField*/}
-                                    {/*        label="District"*/}
-                                    {/*        fullWidth*/}
-                                    {/*        value={newAddress?.district || ""}*/}
-                                    {/*        onChange={(e) => handleAddressChange('district', e.target.value)}*/}
-                                    {/*    />*/}
-                                    {/*</Grid>*/}
-                                    {/*<Grid item xs={12} sm={6}>*/}
-                                    {/*    <TextField*/}
-                                    {/*        label="Regon"*/}
-                                    {/*        fullWidth*/}
-                                    {/*        value={newAddress?.regon || ""}*/}
-                                    {/*        onChange={(e) => handleAddressChange('regon', e.target.value)}*/}
-                                    {/*    />*/}
-                                    {/*</Grid>*/}
-
-
-                                    <Grid item xs={12} sm={6}>
-                                        <TextField
-                                            label="City"
-                                            fullWidth
-                                            value={newAddress?.city || ""}
-                                            onChange={(e) => handleAddressChange('city', e.target.value)}
+                                            value={newAddress?.nazwa || ""}
+                                            onChange={(e) => handleAddressChange('nazwa', e.target.value)}
                                         />
                                     </Grid>
 
                                     <Grid item xs={12} sm={6}>
-
-                                    <FormControl fullWidth>
-                                        <InputLabel id="country-label">Country</InputLabel>
-                                        <Select
-                                            labelId="country-label"
-                                            label="Country"
-                                            placeholder="Country"
-                                            value={newAddress?.country || ""}
-                                            onChange={(e) => handleAddressChange('country', e.target.value)}
-                                        >
-                                            {countries.map((country) => (
-                                                <MenuItem key={country.code} value={country.code}>
-                                                    {country.name} ({country.code})
-                                                </MenuItem>
-                                            ))}
-                                        </Select>
-                                    </FormControl>
+                                        <TextField
+                                            label={t('checkout.street')}
+                                            fullWidth
+                                            value={newAddress?.ulica || ""}
+                                            onChange={(e) => handleAddressChange('ulica', e.target.value)}
+                                        />
                                     </Grid>
-                                    {/*<Grid item xs={12} sm={6}>*/}
-                                    {/*    <TextField*/}
-                                    {/*        label="Phone"*/}
-                                    {/*        fullWidth*/}
-                                    {/*        value={newAddress?.phone || ""}*/}
-                                    {/*        onChange={(e) => handleAddressChange('phone', e.target.value)}*/}
-                                    {/*    />*/}
-                                    {/*</Grid>*/}
+
+                                    <Grid item xs={12} sm={6}>
+                                        <TextField
+                                            label={t('checkout.buildingNumber')}
+                                            fullWidth
+                                            value={newAddress?.nrDomu || ""}
+                                            onChange={(e) => handleAddressChange('nrDomu', e.target.value)}
+                                        />
+                                    </Grid>
+
+                                    <Grid item xs={12} sm={6}>
+                                        <TextField
+                                            label={t('checkout.apartmentNumber')}
+                                            fullWidth
+                                            value={newAddress?.nrLokalu || ""}
+                                            onChange={(e) => handleAddressChange('nrLokalu', e.target.value)}
+                                        />
+                                    </Grid>
+
+                                    <Grid item xs={12} sm={6}>
+                                        <TextField
+                                            label={t('checkout.zipCode')}
+                                            fullWidth
+                                            value={newAddress?.kodPocztowy || ""}
+                                            onChange={(e) => handleAddressChange('kodPocztowy', e.target.value)}
+                                        />
+                                    </Grid>
+
+                                    <Grid item xs={12} sm={6}>
+                                        <TextField
+                                            label={t('checkout.city')}
+                                            fullWidth
+                                            value={newAddress?.miejscowosc || ""}
+                                            onChange={(e) => handleAddressChange('miejscowosc', e.target.value)}
+                                        />
+                                    </Grid>
+
+                                    <Grid item xs={12} sm={6}>
+                                        <FormControl fullWidth>
+                                            <InputLabel id="country-label">{t('checkout.country')}</InputLabel>
+                                            <Select
+                                                labelId="country-label"
+                                                label={t('checkout.country')}
+                                                value={newAddress?.kraj || ""}
+                                                onChange={(e) => handleAddressChange('kraj', e.target.value)}
+                                            >
+                                                {countries.map((country) => (
+                                                    <MenuItem key={country.code} value={country.code}>
+                                                        {country.name} ({country.code})
+                                                    </MenuItem>
+                                                ))}
+                                            </Select>
+                                        </FormControl>
+                                    </Grid>
                                 </Grid>
                             </Box>
                         )}
                         <Divider sx={{ my: 2 }} />
                         <Textarea
                             minRows={2}
-                            placeholder="Contact person"
+                            placeholder={t('checkout.contactPerson')}
                             fullWidth
-                            sx={{marginBottom: "15px"}}
+                            sx={{ marginBottom: "15px" }}
                             value={contactPerson}
                             onChange={(e) => setContactPerson(e.target.value)}
                         />
+
                         <Grid container spacing={2}>
                             <Grid item xs={12} sm={12}>
                                 <TextField
-                                    label="Phone"
+                                    label={t('checkout.phone')}
                                     fullWidth
                                     value={phone}
                                     onChange={(e) => setPhone(e.target.value)}
@@ -707,7 +632,7 @@ const Checkout = () => {
                             <Grid item xs={12} sm={6}>
                                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                                     <DatePicker
-                                        label="Select Date"
+                                        label={t('checkout.selectDate')}
                                         value={selectedDate}
                                         onChange={(newDate) => setSelectedDate(newDate)}
                                         renderInput={(params) => <TextField {...params} />}
@@ -717,23 +642,23 @@ const Checkout = () => {
 
                             <Grid item xs={12} sm={6}>
                                 <TextField
-                                    label="My Order Number"
+                                    label={t('checkout.myOrderNumber')}
                                     fullWidth
                                     value={orderNumber}
                                     onChange={(e) => setOrderNumber(e.target.value)}
                                 />
                             </Grid>
+
                             {/* Radio Group */}
                             <Grid item xs={12} sm={6}>
                                 <FormControl error={!selectedOption}>
                                     <RadioGroup value={selectedOption} onChange={handleCheckboxChange}>
-                                        <FormControlLabel value="shipping" control={<Radio />} label="Shipping" />
-                                        <FormControlLabel value="collection" control={<Radio />} label="Collection" />
+                                        <FormControlLabel value="shipping" control={<Radio />} label={t('checkout.shipping')} />
+                                        <FormControlLabel value="collection" control={<Radio />} label={t('checkout.collection')} />
                                     </RadioGroup>
-                                    {!selectedOption && <FormHelperText>Please select an option</FormHelperText>}
+                                    {!selectedOption && <FormHelperText>{t('checkout.selectOption')}</FormHelperText>}
                                 </FormControl>
                             </Grid>
-
                         </Grid>
 
                     </Paper>
@@ -743,7 +668,7 @@ const Checkout = () => {
                 <Grid item xs={12} md={5}>
                     <Paper sx={{ p: 3 }} elevation={3}>
                         <Typography variant="h6" gutterBottom>
-                            Order Summary
+                            {t('checkout.orderSummary')}
                         </Typography>
                         {cartItems &&
                             cartItems.map((item) => {
@@ -769,7 +694,7 @@ const Checkout = () => {
                             })}
                         <Divider sx={{ my: 2 }} />
                         <Box display="flex" justifyContent="space-between">
-                            <Typography>Subtotal:</Typography>
+                            <Typography>{t('cart.subtotal')}:</Typography>
                             <Typography>{subtotal.toFixed(2)} {storedPriceCurrency}</Typography>
                         </Box>
                         {/*<Box display="flex" justifyContent="space-between">*/}
@@ -777,7 +702,7 @@ const Checkout = () => {
                         {/*    <Typography>{tax.toFixed(2)} {storedPriceCurrency}</Typography>*/}
                         {/*</Box>*/}
                         <Box display="flex" justifyContent="space-between" sx={{ mt: 2 }}>
-                            <Typography variant="h6">Total:</Typography>
+                            <Typography variant="h6">{t('cart.total')}:</Typography>
                             <Typography variant="h6">{total.toFixed(2)} {storedPriceCurrency}</Typography>
                         </Box>
                         <Button
@@ -789,15 +714,16 @@ const Checkout = () => {
                             onClick={handleConfirmOpen} // Open confirmation popup
                             disabled={isSubmitting}
                         >
-                            {isSubmitting ? 'Placing Order...' : 'Place Order'}
+                            {isSubmitting ? t('checkout.placingOrder') : t('checkout.placeOrder')}
                         </Button>
+
                         {/* Confirmation Dialog Component */}
                         <ConfirmationDialog
                             open={openDialog}
                             onClose={handleConfirmClose}
                             onConfirm={handleConfirmSubmit}
-                            title="Confirm Order"
-                            message="Are you sure you want to place this order?"
+                            title={t('checkout.confirmOrderTitle')}
+                            message={t('checkout.confirmOrderMessage')}
                             errorMessage={dialogError} // Pass error message to dialog
                         />
                     </Paper>
@@ -810,7 +736,7 @@ const Checkout = () => {
                     size="large"
                     onClick={() => navigate(-1)} // Navigate back to the previous page
                 >
-                    Return
+                    {t('cart.return')}
                 </Button>
             </Box>
         </Container>

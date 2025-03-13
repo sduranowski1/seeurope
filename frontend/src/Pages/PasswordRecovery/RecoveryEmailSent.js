@@ -2,8 +2,11 @@
 import React from 'react';
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import {useTranslation} from "react-i18next";
 
 const RecoveryEmailSent = () => {
+    const { t } = useTranslation();  // Use the translation hook
+
     return (
         <Box
             display="flex"
@@ -13,7 +16,7 @@ const RecoveryEmailSent = () => {
             bgcolor="#f5f5f5"
         >
             <Typography variant="h6">
-                A password recovery email has been sent. Please check your inbox.
+                {t('passwordRecovery.sent')}
             </Typography>
         </Box>
     );

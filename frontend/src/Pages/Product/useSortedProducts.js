@@ -40,6 +40,23 @@ const useSortedProducts = (filteredProducts, userDetailsPrice) => {
                 valB = b.priceList?.find(price => price.nazwa === userDetailsPrice?.enovaPerson?.contractor?.cenaKontrahentaNazwa)?.netto || 0;
             }
 
+            // if (sortColumn === "endUserPrice") {
+            //     valA = i18n.language === "en"
+            //         ? a.priceList?.find(price => price.nazwa === "End User")?.netto || 0
+            //         : i18n.language === "de"
+            //             ? a.priceList?.find(price => price.nazwa === "Użytkownik końcowy")?.netto || 0
+            //             : i18n.language === "pl"
+            //                 ? b.features?.find(feature => feature.nazwa === "End User")?.wartosc || b.name
+            //                 : b.name;
+            //     valB = i18n.language === "en"
+            //         ? a.priceList?.find(price => price.nazwa === "End User")?.netto || 0
+            //         : i18n.language === "de"
+            //             ? a.priceList?.find(price => price.nazwa === "Użytkownik końcowy")?.netto || 0
+            //             : i18n.language === "pl"
+            //                 ? b.features?.find(feature => feature.nazwa === "End User")?.wartosc || b.name
+            //                 : b.name;
+            // }
+
             if (sortColumn === "endUserPrice") {
                 valA = a.priceList?.find(price => price.nazwa === "End User")?.netto || 0;
                 valB = b.priceList?.find(price => price.nazwa === "End User")?.netto || 0;
@@ -110,10 +127,10 @@ const useSortedProducts = (filteredProducts, userDetailsPrice) => {
                 valB = b.features?.find(feature => feature.nazwa === "More information")?.wartosc || 0;
             }
 
-            if (sortColumn === "OPIS WC") {
-                valA = a.features?.find(feature => feature.nazwa === "OPIS WC")?.wartosc || 0;
-                valB = b.features?.find(feature => feature.nazwa === "OPIS WC")?.wartosc || 0;
-            }
+            // if (sortColumn === "OPIS WC") {
+            //     valA = a.features?.find(feature => feature.nazwa === "OPIS WC")?.wartosc || 0;
+            //     valB = b.features?.find(feature => feature.nazwa === "OPIS WC")?.wartosc || 0;
+            // }
 
             if (sortColumn === "Product") {
                 valA = a.features?.find(feature => feature.nazwa === "Product")?.wartosc || 0;

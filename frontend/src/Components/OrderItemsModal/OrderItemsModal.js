@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import Modal from '@mui/material/Modal';
 import { Button, Box } from '@mui/material';
 import i18n from "i18next";
+import {useTranslation} from "react-i18next";
 
 const OrderItemsModal = ({ open, onClose, items }) => {
+    const { t } = useTranslation();
 
     console.log(items)
     return (
@@ -19,25 +21,25 @@ const OrderItemsModal = ({ open, onClose, items }) => {
                 p: 4,
                 width: '300px'
             }}>
-                <h3>Order Items</h3>
+                <h3>{t('ordersPanel.orderItems')}</h3>
                 <hr/>
                 {items.length > 0 ? (
                     <ul   style={{color: "gray", listStyleType: "disc", paddingLeft: "20px"}}>
                         {items.map((item, index) => (
                             <li key={index} style={{paddingBottom: "15px"}}>
-                                <strong style={{color: "black"}}>{i18n.language === "en"
-                                    ? item.productInfo?.englishTitle || item.name
-                                    : i18n.language === "de"
-                                        ? item.productInfo?.germanTitle || item.name
-                                        // : item.name} {item.towarEnovaId}</strong> - {item.ilosc} x {item.cena}
-                                        : item.name} {item?.enovaProduct?.code} - {item?.enovaProduct?.name}</strong>  -  {item.quantity} x {item.price}
+                                <strong style={{color: "black"}}>
+                                    {item?.enovaProduct?.code} - {i18n.language === "en"
+                                        ? item?.enovaProduct?.features?.find(feature => feature.nazwa === "Nazwa w EN")?.wartosc || item?.enovaProduct?.name
+                                        : i18n.language === "de"
+                                            ? item?.enovaProduct?.features?.find(feature => feature.nazwa === "Nazwa w DE")?.wartosc || item?.enovaProduct?.name
+                                            : item?.enovaProduct?.name} </strong>  -  {item.quantity} x {item.price}
                             </li>
                         ))}
                     </ul>
                 ) : (
                     <p>No items in this order</p>
                 )}
-                <Button onClick={onClose}>Close</Button>
+                <Button onClick={onClose}>{t('ordersPanel.close')}</Button>
             </Box>
         </Modal>
     );

@@ -143,19 +143,15 @@ export const Dashboard = () => {
                                 <table className="ordersTable" style={{width: "100%"}}>
                                     <thead>
                                     <tr>
-                                        <th>Code</th>
-                                        <th>Order ID</th>
+                                        <th>{t('productList.code')}</th>
+                                        <th>{t('ordersPanel.orderId')}</th>
                                         <th>Email</th>
-                                        {/*<th>Name</th>*/}
-                                        {/*<th>Address</th>*/}
-                                        <th>Phone</th>
-                                        <th>Order Date</th>
-                                        {/*<th>Subtotal</th>*/}
-                                        {/*<th>Tax</th>*/}
-                                        <th>Total</th>
-                                        <th>Currency</th>
-                                        <th>Items</th>
-                                        <th>Address</th>
+                                        <th>{t('checkout.phone')}</th>
+                                        <th>{t('ordersPanel.orderDate')}</th>
+                                        <th>{t('cart.total')}</th>
+                                        <th>{t('ordersPanel.currency')}</th>
+                                        <th>{t('ordersPanel.items')}</th>
+                                        <th>{t('ordersPanel.address')}</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -164,12 +160,8 @@ export const Dashboard = () => {
                                             <td>{order.numerEnova}</td>
                                             <td>{order.orderNumber}</td>
                                             <td>{order.email}</td>
-                                            {/*<td>{order.name}</td>*/}
-                                            {/*<td>{order.address || 'N/A'}</td>*/}
                                             <td>{order?.lokalizacjaDostawy?.adres?.telefon || order?.phone || ''}</td>
                                             <td>{new Date(order.terminPlatnosci).toLocaleDateString('en-GB', { timeZone: 'UTC' })}</td>
-                                            {/*<td>{order.subtotal}</td>*/}
-                                            {/*<td>{order.tax}</td>*/}
                                             <td>{order.wartosc}</td>
                                             <td>{order.pozycjeDokHandlowego[0]?.currency}</td>
                                             <td>
@@ -186,7 +178,7 @@ export const Dashboard = () => {
                                                         backgroundColor: 'transparent', // Make background transparent
                                                     }}
                                                 >
-                                                    View Items
+                                                    {t('ordersPanel.viewItems')}
                                                 </Button>
                                             </td>
                                             <td>
@@ -203,7 +195,7 @@ export const Dashboard = () => {
                                                         backgroundColor: 'transparent', // Make background transparent
                                                     }}
                                                 >
-                                                    View Address
+                                                    {t('ordersPanel.viewAddress')}
                                                 </Button>
                                             </td>
                                         </tr>
@@ -217,22 +209,22 @@ export const Dashboard = () => {
                                             onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                                             disabled={currentPage === 1}
                                         >
-                                            Previous
+                                            {t('ordersPanel.previous')}
                                         </button>
 
-                                        <span>Page {currentPage} of {totalPages}</span>
+                                        <span>{t('ordersPanel.page')} {currentPage} {t('ordersPanel.of')} {totalPages}</span>
 
                                         <button
                                             onClick={() => setCurrentPage(prev => (prev < totalPages ? prev + 1 : prev))}
                                             disabled={currentPage === totalPages}
                                         >
-                                            Next
+                                            {t('ordersPanel.next')}
                                         </button>
                                     </div>
 
                                 </>
                             ) : (
-                                <p>No orders available</p>
+                                <p>{t('ordersPanel.noOrders')}</p>
                             )}
                         </div>
                     </AccordionDetails>

@@ -77,5 +77,189 @@
   "price_list": "Price List",
   "my_details": "My Details",
   "documents": "Documents",
-  "gallery": "Gallery"
+  "gallery": "Gallery",
+
+  "cart": {
+    "title": "Shopping Cart",
+    "product": "Product",
+    "price": "Price",
+    "quantity": "Quantity",
+    "total": "Total",
+    "action": "Action",
+    "remove": "Remove",
+    "subtotal": "Subtotal",
+    "checkout": "Proceed to Checkout",
+    "return": "Return",
+    "empty": "Your cart is empty."
+  },
+
+  "checkout": {
+    "title": "Checkout",
+    "personalInfo": "Personal Information",
+    "email": "Email",
+    "name": "Name",
+    "surname": "Surname",
+    "phone": "Phone",
+    "existingAddress": "Existing Address",
+    "newAddress": "New Address",
+    "selectLocation": "Select Location",
+    "location": "Location",
+    "selectedLocationAddress": "Selected Location Address",
+    "street": "Street",
+    "buildingNumber": "Building Number",
+    "apartmentNumber": "Apartment Number",
+    "zipCode": "Zip Code",
+    "city": "City",
+    "country": "Country",
+    "companyName": "Company Name",
+    "contactPerson": "Contact person",
+    "selectDate": "Select Date",
+    "myOrderNumber": "My Order Number",
+    "shipping": "Shipping",
+    "collection": "Collection",
+    "selectOption": "Please select an option",
+    "orderSummary": "Order Summary",
+    "placeOrder": "Place Order",
+    "placingOrder": "Placing Order...",
+    "confirmOrderTitle": "Confirm Order",
+    "confirmOrderMessage": "Are you sure you want to place this order?",
+    "cancel": "Cancel",
+    "confirm": "Confirm"
+  },
+  "success": {
+    "thanks": "Thanks!",
+    "orderPlaced": "Order Placed Successfully!",
+    "backToHome": "Back to Home"
+  },
+
+  "contactPeople": {
+    "pageTitle": "SE Equipment Polska",
+    "ceo": {
+      "title": "CEO",
+      "name": "Marcin Waniołka",
+      "email": "marcin.waniolka@se-europe.com",
+      "phone": "+48 606 424 443"
+    },
+    "coOwner": {
+      "title": "Co-Owner / Main Accountant",
+      "name": "Joanna Waniołka",
+      "email": "joanna.waniolka@se-europe.com",
+      "phone": "+48 696 382 192"
+    },
+    "salesManager": {
+      "title": "Sales Manager",
+      "name": "Antoni Jabłoński",
+      "email": "antoni.jablonski@se-europe.com",
+      "phone": "+48 696 131 009"
+    },
+    "sales": {
+      "title": "Sales",
+      "name": "Radosław Stawowy",
+      "email": "radoslaw.stawowy@se-europe.com",
+      "phone": "+48 696 103 140"
+    },
+    "salesSupport1": {
+      "title": "Sales support",
+      "name": "Anna Chęczkiewicz",
+      "email": "anna.checzkiewicz@se-europe.com",
+      "phone": "+48 600 779 335"
+    },
+    "salesSupport2": {
+      "title": "Sales support",
+      "name": "Andrzej Adamski",
+      "email": "andrzej.adamski@se-europe.com",
+      "phone": "+48 696 577 001"
+    },
+    "purchasingManager": {
+      "title": "Purchasing manager",
+      "name": "Paulina Rychta",
+      "email": "paulina.rychta@se-europe.com",
+      "phone": "+48 664 154 787"
+    },
+    "warehouse": {
+      "title": "Warehouse",
+      "name": "Arkadiusz Grzywacz",
+      "email": "arkadiusz.grzywacz@se-europe.com",
+      "phone": "+48 662 890 029"
+    },
+    "sales2": {
+      "title": "Sales",
+      "name": "Natalia Kaczmarek",
+      "email": "natalia.kaczmarek@se-europe.com",
+      "phone": "+48 664 779 558"
+    }
+  },
+  "loginCart": {
+    "title": "Login",
+    "email": "Email",
+    "password": "Password",
+    "button": "Login",
+    "forgotPassword": "Forgot your password?"
+  },
+  "passwordRecovery": {
+    "title": "Password Recovery",
+    "emailLabel": "Email",
+    "submitButton": "Submit",
+    "sendingButton": "Sending...",
+    "successMessage": "Password recovery instructions have been sent to your email.",
+    "errorMessage": "Something went wrong. Please try again.",
+    "networkError": "Network error. Please try again later.",
+    "sent": "A password recovery email has been sent. Please check your inbox."
+  },
+  "productList": {
+    "code": "Code",
+    "productName": "Product Name",
+    "dedicatedPrice": "Dedicated Price",
+    "endUserPrice": "End User Price",
+    "addQuantity": "Add Quantity",
+    "instockTooltip": "In Stock: This product is available.",
+    "onbackorderTooltip": "On Backorder: This product is not currently available.",
+    "notAvailable": "N/A",
+    "noItemsFound": "No Items Found",
+    "addToCart": "Add to Cart",
+    "technicalData": "SPECIFICATION",
+    "stockStatus": {
+      "instock": "In Stock",
+      "onbackorder": "On Backorder",
+      "notAvailable": "Not Available"
+    },
+    "features": {
+      "Capacity": "Capacity",
+      "Depth": "Depth",
+      "Dimension": "Dimension",
+      "Equipment side": "Equipment Side",
+      "Exisiting fork": "Existing Fork",
+      "Height": "Height",
+      "Information": "Information",
+      "Length": "Length",
+      "Machine side": "Machine Side",
+      "Masa do": "Mass Up To",
+      "Masa od": "Mass From",
+      "Model": "Model",
+      "More information": "More Information",
+      "Product": "Product",
+      "Recommended Machine weight": "Recommended Machine Weight",
+      "Type": "Type",
+      "Variant": "Variant",
+      "Volume": "Volume",
+      "Weight": "Weight",
+      "Width": "Width"
+    }
+  },
+  "ordersPanel": {
+    "orderId": "Order ID",
+    "orderDate": "Order Date",
+    "currency": "Currency",
+    "items": "Items",
+    "address": "Address",
+    "viewItems": "View Items",
+    "viewAddress": "View Address",
+    "previous": "Previous",
+    "next": "Next",
+    "noOrders": "No orders available",
+    "page": "Page",
+    "of": "of",
+    "orderItems": "Order Items",
+    "close": "Close"
+  }
 }

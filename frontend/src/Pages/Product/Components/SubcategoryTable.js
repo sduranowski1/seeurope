@@ -16,6 +16,7 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import {useNavigate} from "react-router-dom";
 import i18n from "i18next";
 import useSortedProducts from "../useSortedProducts";
+import {useTranslation} from "react-i18next";
 
 
 // export const SubcategoryTable = (props) => {
@@ -63,6 +64,7 @@ export const SubcategoryTable = ({ productsData, onProductClick, lastPartToColla
     const [error, setError] = useState(null);
     const { sortedProducts, handleSort, sortColumn, sortOrder } = useSortedProducts(filteredProducts, userDetailsPrice);
     const [updatedCart, setUpdatedCart] = useState([]); // Store updates locally
+    const { t } = useTranslation();
 
 
 
@@ -403,10 +405,10 @@ export const SubcategoryTable = ({ productsData, onProductClick, lastPartToColla
                 <thead>
                 <tr style={{textAlign: "left"}}>
                     <th onClick={() => handleSort("code")} className={sortColumn === "code" ? "active" : ""}>
-                        Kod {sortColumn === "code" ? (sortOrder === "asc" ? "▲" : "▼") : "▶"}
+                        {t("productList.code")} {sortColumn === "code" ? (sortOrder === "asc" ? "▲" : "▼") : "▶"}
                     </th>
                     <th onClick={() => handleSort("productName")}>
-                        Product Name {sortColumn === "productName" ? (sortOrder === "asc" ? "▲" : "▼") : "▶"}
+                        {t("productList.productName")} {sortColumn === "productName" ? (sortOrder === "asc" ? "▲" : "▼") : "▶"}
                     </th>
                     {/*<th>Capacity</th>*/}
                     {/* Replace static columns with dynamic ones */}
@@ -415,16 +417,20 @@ export const SubcategoryTable = ({ productsData, onProductClick, lastPartToColla
                     {/*))}*/}
                     {filteredProducts.length > 0 &&
                         renderFeatures(filteredProducts[0])
-                            .map((feature, index) => ({ ...feature, index }))
-                            .filter(feature => filteredProducts.some(product => {
-                                const value = renderFeatures(product)[feature.index].wartosc;
-                                return value !== "" && value !== '0';
-                            }))
+                            .map((feature, index) => ({ ...feature, index }))  // Add index for later filtering
+                            .filter(feature =>
+                                filteredProducts.some(product => {
+                                    const value = renderFeatures(product)[feature.index].wartosc;  // Get the value for this feature
+                                    return value !== "" && value !== "0";  // Filter out invalid values
+                                })
+                            )
                             .map(feature => (
                                 <th key={feature.index} onClick={() => handleSort(feature.nazwa)}>
-                                    {feature.nazwa} {sortColumn === feature.nazwa ? (sortOrder === "asc" ? "▲" : "▼") : "▶"}
+                                    {t(`productList.features.${feature.nazwa}`, feature.nazwa)} {  // Apply translation here
+                                    sortColumn === feature.nazwa ? (sortOrder === "asc" ? "▲" : "▼") : "▶"}
                                 </th>
-                            ))}
+                            ))
+                    }
                     {/*<th>Netto</th>*/}
                     {/*<th>Brand</th>*/}
                     {/*<th>Variant</th>*/}
@@ -438,14 +444,12 @@ export const SubcategoryTable = ({ productsData, onProductClick, lastPartToColla
                                     price.nazwa === userDetailsPrice?.enovaPerson?.contractor?.cenaKontrahentaNazwa
                                 )
                             ) && <th onClick={() => handleSort("dedicatedPrice")}>
-                                Dedicated
-                                Price {sortColumn === "dedicatedPrice" ? (sortOrder === "asc" ? "▲" : "▼") : "▶"}
+                                {t("productList.dedicatedPrice")} {sortColumn === "dedicatedPrice" ? (sortOrder === "asc" ? "▲" : "▼") : "▶"}
                             </th>}
-                            {/*<th>Dedicated Price</th>*/}
                             <th onClick={() => handleSort("endUserPrice")}>
-                                End User Price {sortColumn === "endUserPrice" ? (sortOrder === "asc" ? "▲" : "▼") : "▶"}
+                                {t("productList.endUserPrice")} {sortColumn === "endUserPrice" ? (sortOrder === "asc" ? "▲" : "▼") : "▶"}
                             </th>
-                            <th>Add Quantity</th>
+                            <th>{t('productList.addQuantity')}</th>
                             {/*<th>Add to cart</th>*/}
                         </>
                     ) : (
@@ -548,16 +552,15 @@ export const SubcategoryTable = ({ productsData, onProductClick, lastPartToColla
                             )}
                             <td>
                                 {product.stockStatus === "instock" ? (
-                                    <Tooltip title="In Stock: This product is available.">
-                                        <CheckCircleIcon
-                                            style={{color: "green", cursor: "pointer", paddingTop: "9px"}}/>
+                                    <Tooltip title={t("productList.instockTooltip")}>
+                                        <CheckCircleIcon style={{ color: "green", cursor: "pointer", paddingTop: "9px" }} />
                                     </Tooltip>
                                 ) : product.stockStatus === "onbackorder" ? (
-                                    <Tooltip title="On Backorder: This product is not currently available.">
-                                        <ErrorIcon style={{color: "orange", cursor: "pointer", paddingTop: "9px"}}/>
+                                    <Tooltip title={t("productList.onbackorderTooltip")}>
+                                        <ErrorIcon style={{ color: "orange", cursor: "pointer", paddingTop: "9px" }} />
                                     </Tooltip>
                                 ) : (
-                                    product.stockStatus || "made to order"
+                                    product.stockStatus || t("productList.notAvailable")
                                 )}
                             </td>
                         </tr>
@@ -566,7 +569,7 @@ export const SubcategoryTable = ({ productsData, onProductClick, lastPartToColla
                 ) : (
                     <tr>
                         <td colSpan="8" style={{textAlign: "center", padding: "20px"}}>
-                            No Items Found
+                            {t("productList.noItemsFound")}
                         </td>
                     </tr>
                 )}
@@ -584,7 +587,7 @@ export const SubcategoryTable = ({ productsData, onProductClick, lastPartToColla
                             sx={{mt: 2}}
                             onClick={handleAddToCart}
                         >
-                            Add to Cart
+                            {t("productList.addToCart")}
                         </Button>
                     ) : (
                         <a/>

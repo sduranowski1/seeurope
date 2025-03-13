@@ -1,7 +1,10 @@
 import React from 'react';
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button } from '@mui/material';
+import {useTranslation} from "react-i18next";
 
 const ConfirmationDialog = ({ open, onClose, onConfirm, title, message, errorMessage }) => {
+    const { t } = useTranslation();
+
     return (
         <Dialog open={open} onClose={onClose}>
             <DialogTitle>{title || "Confirm Action"}</DialogTitle>
@@ -11,10 +14,10 @@ const ConfirmationDialog = ({ open, onClose, onConfirm, title, message, errorMes
             </DialogContent>
             <DialogActions>
                 <Button onClick={onClose} color="secondary">
-                    Cancel
+                    {t('checkout.cancel')}
                 </Button>
                 <Button onClick={onConfirm} color="primary" autoFocus>
-                    Confirm
+                    {t('checkout.confirm')}
                 </Button>
             </DialogActions>
         </Dialog>

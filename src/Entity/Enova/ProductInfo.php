@@ -119,7 +119,7 @@ class ProductInfo
 
     public function setImagePath(string $imagePath): void
     {
-        $this->imagePath = $imagePath;
+        $this->imagePath = $imagePath ?? '';
     }
 
 

@@ -15,3 +15,7 @@ fetch_enova_products:
     path: /api/fetch-enova-products
     methods: ['POST']
     controller: App\Controller\ProductFetchTrigger\EnovaProductController::fetchEnovaProducts
+fetch_enova_contractors:
+    path: /api/fetch-enova-contractors
+    methods: ['POST']
+    controller: App\Controller\ProductFetchTrigger\EnovaProductController::fetchEnovaProducts

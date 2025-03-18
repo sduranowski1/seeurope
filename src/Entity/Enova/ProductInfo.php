@@ -169,12 +169,20 @@ class ProductInfo
     public function getVariant(): ?Variant
     {
         return $this->variant;
+
     }
 
-    public function setVariant(?Variant $variant): void
+    public function setVariant($variant): void
     {
-        $this->variant = $variant;
+        if ($variant === 0) {
+            $this->variant = null;  // Or assign a default variant object if needed
+        } elseif ($variant instanceof Variant) {
+            $this->variant = $variant;
+        } else {
+            throw new \InvalidArgumentException('Expected a Variant object or 0');
+        }
     }
+
 
     public function getCouplingFilter(): ?CouplingFilter
     {
@@ -214,9 +222,15 @@ class ProductInfo
         return $this->subcategory;
     }
 
-    public function setSubcategory(?Subcategory $subcategory): void
+    public function setSubcategory($subcategory): void
     {
-        $this->subcategory = $subcategory;
+        if ($subcategory === 0) {
+            $this->subcategory = null;  // Or assign a default subcategory object if needed
+        } elseif ($subcategory instanceof Subcategory) {
+            $this->subcategory = $subcategory;
+        } else {
+            throw new \InvalidArgumentException('Expected a Subcategory object or 0');
+        }
     }
 
 //    public function getScatid(): int
@@ -234,9 +248,15 @@ class ProductInfo
         return $this->category;
     }
 
-    public function setCategory(?Category $category): void
+    public function setCategory($category): void
     {
-        $this->category = $category;
+        if ($category === 0) {
+            $this->category = null;  // Or assign a default category object if needed
+        } elseif ($category instanceof Category) {
+            $this->category = $category;
+        } else {
+            throw new \InvalidArgumentException('Expected a Category object or 0');
+        }
     }
 
 
@@ -256,9 +276,15 @@ class ProductInfo
         return $this->itemType;
     }
 
-    public function setItemType(?ItemType $itemType): void
+    public function setItemType($itemType): void
     {
-        $this->itemType = $itemType;
+        if ($itemType === 0) {
+            $this->itemType = null;  // Or assign a default itemType object if needed
+        } elseif ($itemType instanceof ItemType) {
+            $this->itemType = $itemType;
+        } else {
+            throw new \InvalidArgumentException('Expected an ItemType object or 0');
+        }
     }
 
     public function getEnglishTitle(): ?string

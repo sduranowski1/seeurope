@@ -24,7 +24,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 class ProductInfo
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: "AUTO")]
+//    #[ORM\GeneratedValue(strategy: "AUTO")]
     #[ORM\Column(type: "integer")]
     #[Groups(['enovaProduct:read', "productInfo:read"])]
     private int $id;

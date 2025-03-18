@@ -102,7 +102,7 @@ class EnovaProductsController extends AbstractController
                 $productInfo->setVariant($product['varid'] ?? 0);  // Default value 0 for int
                 $productInfo->setCategory($product['catid'] ?? 0);  // Default value 0 for int
 //                $productInfo->setImageId($product['image_id'] ?? null);  // Default value NULL for nullable field
-                $productInfo->setImagePath($product['image_path'] ?? null);  // Default value NULL for nullable string
+                $productInfo->setImagePath($product['image_path'] ?? '/media/item_types/landscape-placeholder.svg');  // Default value NULL for nullable string
                 $productInfo->setSubcategory($product['scatid'] ?? 0);  // Default value 0 for int
                 $productInfo->setItemType($product['itypeid'] ?? 0);  // Default value 0 for int
                 $productInfo->setDescription($product['description'] ?? null);  // Default value NULL for nullable string

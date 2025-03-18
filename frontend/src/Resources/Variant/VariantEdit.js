@@ -22,6 +22,14 @@ const VariantEdit = (props) => (
             <TextInput source="description" />
             <TextInput source="polishDescription" />
             <TextInput source="germanDescription" />
+            <ReferenceInput reference="brands" source="brand.id">
+                <SelectInput
+                    label="Brand"
+                    source="brand.id"
+                    optionText={(record) => record?.name}
+                    validate={required()}
+                />
+            </ReferenceInput>
             {/* Add Boolean Inputs for each of the boolean fields */}
             <BooleanInput source="capacity" label="Capacity" />
             <BooleanInput source="depth" label="Depth" />
@@ -44,14 +52,7 @@ const VariantEdit = (props) => (
             <BooleanInput source="volume" label="Volume" />
             <BooleanInput source="weight" label="Weight" />
             <BooleanInput source="width" label="Width" />
-            <ReferenceInput reference="brands" source="brand.id">
-                <SelectInput
-                    label="Brand"
-                    source="brand.id"
-                    optionText={(record) => record?.name}
-                    validate={required()}
-                />
-            </ReferenceInput>
+
             <ImageInput source="pictures" label="Related pictures">
                 <ImageField source="domainImagePath"/>
             </ImageInput>

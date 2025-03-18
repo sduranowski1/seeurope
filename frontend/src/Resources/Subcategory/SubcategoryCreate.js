@@ -9,7 +9,7 @@ import {
     SelectInput,
     DateInput,
     ImageField,
-    ImageInput
+    ImageInput, BooleanInput
 } from 'react-admin';
 import { required } from 'react-admin';
 
@@ -19,9 +19,36 @@ const SubcategoryCreate = (props) => (
             <TextInput source="subCatName" />
             <TextInput source="polishSubCatName" />
             <TextInput source="germanSubCatName" />
-            <ReferenceInput source="cid" reference="categories/no_pagination">
-                <SelectInput optionText="name" validate={required()}/>
+            <ReferenceInput reference="categories/no_pagination" source="category.id">
+                <SelectInput
+                    label="Category"
+                    source="category.id"
+                    optionText={(record) => record?.name}
+                    validate={required()}
+                />
             </ReferenceInput>
+            <BooleanInput source="capacity" label="Capacity" />
+            <BooleanInput source="depth" label="Depth" />
+            <BooleanInput source="dimension" label="Dimension" />
+            <BooleanInput source="equipmentSide" label="Equipment side" />
+            <BooleanInput source="existingFork" label="Existing fork" />
+            <BooleanInput source="height" label="Height" />
+            <BooleanInput source="information" label="Information" />
+            <BooleanInput source="length" label="Length" />
+            <BooleanInput source="machineSide" label="Machine side" />
+            <BooleanInput source="masaDo" label="Masa do" />
+            <BooleanInput source="masaOd" label="Masa od" />
+            <BooleanInput source="model" label="Model" />
+            <BooleanInput source="moreInformation" label="More information" />
+            <BooleanInput source="opisWC" label="OPIS WC" />
+            <BooleanInput source="product" label="Product" />
+            <BooleanInput source="recommendedMachineWeight" label="Recommended Machine weight" />
+            <BooleanInput source="type" label="Type" />
+            <BooleanInput source="variant" label="Variant" />
+            <BooleanInput source="volume" label="Volume" />
+            <BooleanInput source="weight" label="Weight" />
+            <BooleanInput source="width" label="Width" />
+
             {/*<DateInput source="createdAt" />*/}
             {/*<DateInput source="updatedAt" />*/}
             <ImageInput source="pictures" label="Related pictures">

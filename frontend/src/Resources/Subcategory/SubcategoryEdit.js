@@ -22,6 +22,14 @@ const SubcategoryEdit = (props) => (
             <TextInput source="description" />
             <TextInput source="polishDescription" />
             <TextInput source="germanDescription" />
+            <ReferenceInput reference="categories/no_pagination" source="category.id">
+                <SelectInput
+                    label="Category"
+                    source="category.id"
+                    optionText={(record) => record?.name}
+                    validate={required()}
+                />
+            </ReferenceInput>
             {/* Add Boolean Inputs for each of the boolean fields */}
             <BooleanInput source="capacity" label="Capacity" />
             <BooleanInput source="depth" label="Depth" />
@@ -44,14 +52,7 @@ const SubcategoryEdit = (props) => (
             <BooleanInput source="volume" label="Volume" />
             <BooleanInput source="weight" label="Weight" />
             <BooleanInput source="width" label="Width" />
-            <ReferenceInput reference="categories/no_pagination" source="category.id">
-                <SelectInput
-                    label="Category"
-                    source="category.id"
-                    optionText={(record) => record?.name}
-                    validate={required()}
-                />
-            </ReferenceInput>
+
             <ImageInput source="pictures" label="Related pictures">
                 <ImageField source="domainImagePath"/>
             </ImageInput>

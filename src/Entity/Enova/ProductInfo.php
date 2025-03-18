@@ -141,10 +141,17 @@ class ProductInfo
         return $this->brand;
     }
 
-    public function setBrand(?Brand $brand): void
+    public function setBrand($brand): void
     {
-        $this->brand = $brand;
+        if ($brand === 0) {
+            $this->brand = null;  // Or you can assign a default brand object if needed
+        } elseif ($brand instanceof Brand) {
+            $this->brand = $brand;
+        } else {
+            throw new \InvalidArgumentException('Expected a Brand object or 0');
+        }
     }
+
 
 
 

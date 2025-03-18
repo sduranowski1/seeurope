@@ -117,9 +117,10 @@ class ProductInfo
         return $this->imagePath;
     }
 
-    public function setImagePath(string $imagePath): void
+    public function setImagePath(?string $imagePath): void
     {
-        $this->imagePath = $imagePath ?? '';
+        // Use the default placeholder if the image path is null
+        $this->imagePath = $imagePath ?? '/media/item_types/landscape-placeholder.svg';
     }
 
 

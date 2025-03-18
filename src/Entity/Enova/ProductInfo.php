@@ -189,9 +189,15 @@ class ProductInfo
         return $this->couplingFilter;
     }
 
-    public function setCouplingFilter(?CouplingFilter $couplingFilter): void
+    public function setCouplingFilter($couplingFilter): void
     {
-        $this->couplingFilter = $couplingFilter;
+        if ($couplingFilter === 0) {
+            $this->couplingFilter = null;  // Or assign a default coupling object if needed
+        } elseif ($couplingFilter instanceof CouplingFilter) {
+            $this->couplingFilter = $couplingFilter;
+        } else {
+            throw new \InvalidArgumentException('Expected a Coupling object or 0');
+        }
     }
 
     public function getMachineFilter(): ?MachineFilter
@@ -199,9 +205,15 @@ class ProductInfo
         return $this->machineFilter;
     }
 
-    public function setMachineFilter(?MachineFilter $machineFilter): void
+    public function setMachineFilter($machineFilter): void
     {
-        $this->machineFilter = $machineFilter;
+        if ($machineFilter === 0) {
+            $this->machineFilter = null;  // Or assign a default machine filter object if needed
+        } elseif ($machineFilter instanceof MachineFilter) {
+            $this->machineFilter = $machineFilter;
+        } else {
+            throw new \InvalidArgumentException('Expected a MachineFilter object or 0');
+        }
     }
 
 

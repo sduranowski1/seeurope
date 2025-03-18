@@ -3,6 +3,7 @@
 namespace App\Controller\FetchProduct;
 
 use App\Entity\Enova\EnovaProduct;
+use App\Entity\Enova\ProductInfo;
 use App\Repository\EnovaProductRepository;
 use App\Repository\ProductInfoRepository;
 use App\Repository\TokenRepository;
@@ -93,7 +94,26 @@ class EnovaProductsController extends AbstractController
             $productInfo = $this->productInfoRepository->find($product['id']);
 
             if (!$productInfo) {
-                continue;
+                $productInfo = new ProductInfo(); // Create a new ProductInfo if not found
+
+                // Assign default values for each field based on its type
+                $productInfo->setId($product['id']);
+                $productInfo->setBrand($product['braid'] ?? 0);  // Default value 0 for int
+                $productInfo->setVariant($product['varid'] ?? 0);  // Default value 0 for int
+                $productInfo->setCategory($product['catid'] ?? 0);  // Default value 0 for int
+//                $productInfo->setImageId($product['image_id'] ?? null);  // Default value NULL for nullable field
+                $productInfo->setImagePath($product['image_path'] ?? null);  // Default value NULL for nullable string
+                $productInfo->setSubcategory($product['scatid'] ?? 0);  // Default value 0 for int
+                $productInfo->setItemType($product['itypeid'] ?? 0);  // Default value 0 for int
+                $productInfo->setDescription($product['description'] ?? null);  // Default value NULL for nullable string
+                $productInfo->setPolishDescription($product['polish_description'] ?? null);  // Default value NULL for nullable string
+                $productInfo->setGermanDescription($product['german_description'] ?? null);  // Default value NULL for nullable string
+                $productInfo->setEnglishTitle($product['english_title'] ?? null);  // Default value NULL for nullable string
+                $productInfo->setGermanTitle($product['german_title'] ?? null);  // Default value NULL for nullable string
+                $productInfo->setCouplingFilter($product['coupling_filter_id'] ?? 0);  // Default value 0 for int
+                $productInfo->setMachineFilter($product['machine_filter_id'] ?? 0);  // Default value 0 for int
+
+                $this->productInfoRepository->save($productInfo, true); // Save new ProductInfo
             }
 
             $existingProduct = $this->enovaProductRepository->findOneBy(['id' => $product['id']]);

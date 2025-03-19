@@ -158,7 +158,10 @@ class EnovaContractorsController extends AbstractController
 
                 foreach ($contractor['listaOsobyKontrahenta'] as $personData) {
                     $person = $this->processPerson($personData);
-                    $newContractor->addListaOsobyKontrahenta($person);
+
+                    if (!$existingContractor->getListaOsobyKontrahenta()->contains($person)) {
+                        $existingContractor->addListaOsobyKontrahenta($person);
+                    }
                 }
 
                 $this->enovaContractorRepository->save($newContractor, true);
@@ -182,7 +185,10 @@ class EnovaContractorsController extends AbstractController
                 // Update or add persons
                 foreach ($contractor['listaOsobyKontrahenta'] as $personData) {
                     $person = $this->processPerson($personData);
-                    $existingContractor->addListaOsobyKontrahenta($person);
+
+                    if (!$existingContractor->getListaOsobyKontrahenta()->contains($person)) {
+                        $existingContractor->addListaOsobyKontrahenta($person);
+                    }
                 }
 
                 $this->enovaContractorRepository->save($existingContractor, true);

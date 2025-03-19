@@ -259,7 +259,14 @@ class EnovaContractorsController extends AbstractController
 
         // Retrieve existing person or create a new one
         $person = $this->enovaPersonRepository->find($personData['id']) ?? new EnovaPerson();
-        $person->setId($personData['id']);  // Ensure ID is set correctly
+
+        if (!$person) {
+            // If not found, create a new instance
+            $person = new EnovaPerson();
+            $person->setId($personData['id']);
+        }
+
+//        $person->setId($personData['id']);  // Ensure ID is set correctly
         $person->setImie($personData['imie'] ?? '');
         $person->setNazwisko($personData['nazwisko'] ?? '');
         $person->setStanowisko($personData['stanowisko'] ?? '');

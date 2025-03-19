@@ -192,6 +192,9 @@ class EnovaContractorsController extends AbstractController
                 }
 
                 $this->enovaContractorRepository->save($existingContractor, true);
+
+                // Clear the entity manager to prevent duplicate objects in the identity map
+                $this->enovaContractorRepository->getEntityManager()->clear();
             }
         }
 

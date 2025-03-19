@@ -158,10 +158,7 @@ class EnovaContractorsController extends AbstractController
 
                 foreach ($contractor['listaOsobyKontrahenta'] as $personData) {
                     $person = $this->processPerson($personData);
-
-                    if (!$existingContractor->getListaOsobyKontrahenta()->contains($person)) {
-                        $existingContractor->addListaOsobyKontrahenta($person);
-                    }
+                    $newContractor->addListaOsobyKontrahenta($person);
                 }
 
                 $this->enovaContractorRepository->save($newContractor, true);
@@ -185,16 +182,10 @@ class EnovaContractorsController extends AbstractController
                 // Update or add persons
                 foreach ($contractor['listaOsobyKontrahenta'] as $personData) {
                     $person = $this->processPerson($personData);
-
-                    if (!$existingContractor->getListaOsobyKontrahenta()->contains($person)) {
-                        $existingContractor->addListaOsobyKontrahenta($person);
-                    }
+                    $existingContractor->addListaOsobyKontrahenta($person);
                 }
 
                 $this->enovaContractorRepository->save($existingContractor, true);
-
-                // Clear the entity manager to prevent duplicate objects in the identity map
-                $this->enovaContractorRepository->getEntityManager()->clear();
             }
         }
 
@@ -267,14 +258,7 @@ class EnovaContractorsController extends AbstractController
         }
 
         // Retrieve existing person or create a new one
-        $person = $this->enovaPersonRepository->find($personData['id']);
-
-        if (!$person) {
-            // If not found, create a new instance
-            $person = new EnovaPerson();
-            $person->setId($personData['id']);
-        }
-
+        $person = $this->enovaPersonRepository->find($personData['id']) ?? new EnovaPerson();
         $person->setId($personData['id']);  // Ensure ID is set correctly
         $person->setImie($personData['imie'] ?? '');
         $person->setNazwisko($personData['nazwisko'] ?? '');

@@ -68,7 +68,7 @@ class EnovaContractorsController extends AbstractController
         $response = $this->client->request('POST', $contractorsUrl, [
             'json' => [
                     'strona' => 1,
-                    'limit' => 2,
+//                    'limit' => 50,
                     'pokazCeny' => true,
                     'poleSortowane' => 'ID',
                     'czyRosnaco' => 1
@@ -151,21 +151,17 @@ class EnovaContractorsController extends AbstractController
                 $newContractor->setAdres($adres);
                 $newContractor->setAdresKorespondencyjny($adresKorespondencyjny);
 
-                $this->enovaContractorRepository->save($newContractor, true);
-
                 foreach ($contractor['listaLokalizacje'] as $locationData) {
                     $location = $this->processLocation($locationData);
                     $newContractor->addLocation($location);
                 }
 
                 foreach ($contractor['listaOsobyKontrahenta'] as $personData) {
-                    $person = $this->processPerson($personData, $newContractor);
-//                    $newContractor->addListaOsobyKontrahenta($person);
-                    $this->enovaPersonRepository->save($person, true);
-
+                    $person = $this->processPerson($personData);
+                    $newContractor->addListaOsobyKontrahenta($person);
                 }
 
-
+                $this->enovaContractorRepository->save($newContractor, true);
             } else {
                 // Update the existing contractor
                 $existingContractor->setId($contractor['idEnova']);
@@ -180,15 +176,13 @@ class EnovaContractorsController extends AbstractController
                 // Update or add locations
                 foreach ($contractor['listaLokalizacje'] as $locationData) {
                     $location = $this->processLocation($locationData);
-                    $existingContractor->addLocation($location);
+//                    $existingContractor->addLocation($location);
                 }
 
                 // Update or add persons
                 foreach ($contractor['listaOsobyKontrahenta'] as $personData) {
-                    $person = $this->processPerson($personData, $existingContractor);
-//                    $existingContractor->addListaOsobyKontrahenta($person);
-                    $this->enovaPersonRepository->save($person, true);
-
+                    $person = $this->processPerson($personData);
+                    $existingContractor->addListaOsobyKontrahenta($person);
                 }
 
                 $this->enovaContractorRepository->save($existingContractor, true);
@@ -257,7 +251,7 @@ class EnovaContractorsController extends AbstractController
 
 
 
-    private function processPerson(array $personData, EnovaContractor $contractor): EnovaPerson
+    private function processPerson(array $personData): EnovaPerson
     {
         if (!isset($personData['id'])) {
             throw new \Exception('Person ID is missing.');
@@ -282,10 +276,6 @@ class EnovaContractorsController extends AbstractController
                 $this->userRepository->save($userEnova, true);
             }
         }
-
-
-        // Set the contractor relationship
-        $person->setContractor($contractor);
 
         $this->enovaPersonRepository->save($person, true);
 

@@ -54,6 +54,10 @@ import MachineFilterCreate from "../../Resources/MachineFilter/MachineFilterCrea
 import FeaturesList from "../../Resources/Features/FeaturesList";
 import FeaturesEdit from "../../Resources/Features/FeaturesEdit";
 import EnovaOrderList from "../../Resources/EnovaOrders/EnovaOrderList";
+import FixedEnovaContractorList from "../../Resources/FixedEnovaContractors/FixedEnovaContractorList";
+import FixedEnovaContractorEdit from "../../Resources/FixedEnovaContractors/FixedEnovaContractorEdit";
+import FixedEnovaUserList from "../../Resources/FixedEnovaUsers/FixedEnovaUserList";
+import FixedEnovaUserEdit from "../../Resources/FixedEnovaUsers/FixedEnovaUserEdit";
 
 
 
@@ -81,6 +85,8 @@ const AdminLayout = () => {
             <Resource name="enova_products" list={EnovaProductList} edit={EnovaProductEdit} icon={InventoryIcon} />
             <Resource name="enova_contractors" list={EnovaContractorList} edit={EnovaContractorEdit} icon={GroupIcon}/>
             <Resource name="enova_people" list={EnovaUserList} edit={EnovaUserEdit} icon={PermIdentityIcon}/>
+            <Resource name="test_enova_contractors" list={FixedEnovaContractorList} edit={FixedEnovaContractorEdit} icon={GroupIcon}/>
+            <Resource name="test_enova_contact_people" list={FixedEnovaUserList} edit={FixedEnovaUserEdit} icon={PermIdentityIcon}/>
             <Resource name="enova_orders" list={EnovaOrderList}/>
             <Resource name="brands" list={BrandList} edit={BrandEdit} create={BrandCreate} icon={AppsIcon}/>
             <Resource name="variants" list={VariantList} edit={VariantEdit} create={VariantCreate} />

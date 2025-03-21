@@ -16,6 +16,8 @@ export const AdminMyMenu = () => (
         <Menu.ResourceItem name="enova_products" />
         <Menu.ResourceItem name="enova_contractors" />
         <Menu.ResourceItem name="enova_people" />
+        <Menu.ResourceItem name="test_enova_contractors" />
+        <Menu.ResourceItem name="test_enova_contact_people" />
         <Menu.ResourceItem name="enova_orders" />
         {/*<Menu.ResourceItem name="brands" icon={<AppsIcon />}/>*/}
         <Submenu text="Brands" name="brands" icon={<AppsIcon />}>

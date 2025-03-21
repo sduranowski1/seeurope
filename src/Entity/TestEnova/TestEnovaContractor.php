@@ -41,7 +41,7 @@ class TestEnovaContractor
     private ?string $kod = null;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(["testEnovaContractor:read", 'testEnovaLocation:read'])]
+    #[Groups(["testEnovaContractor:read", 'testEnovaLocation:read', 'testEnovaPerson:read'])]
     private ?string $nazwa = null;
 
     #[ORM\Column(type: 'string', length: 20, nullable: true)]

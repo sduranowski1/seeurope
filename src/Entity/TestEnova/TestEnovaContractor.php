@@ -33,15 +33,15 @@ class TestEnovaContractor
     private ?int $id = null;
 
     #[ORM\Column(type: 'integer')]
-    #[Groups(["testEnovaContractor:read"])]
+    #[Groups(["testEnovaContractor:read", 'testEnovaPerson:read',  'userEnova:read'])]
     private ?int $idEnova = null;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(["testEnovaContractor:read"])]
+    #[Groups(["testEnovaContractor:read", 'testEnovaLocation:read'])]
     private ?string $kod = null;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(["testEnovaContractor:read"])]
+    #[Groups(["testEnovaContractor:read", 'testEnovaLocation:read'])]
     private ?string $nazwa = null;
 
     #[ORM\Column(type: 'string', length: 20, nullable: true)]
@@ -53,15 +53,15 @@ class TestEnovaContractor
     private ?string $regon = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    #[Groups(["testEnovaContractor:read"])]
+    #[Groups(["testEnovaContractor:read", 'testEnovaPerson:read'])]
     private ?string $email = null;
 
     #[ORM\Column(type: 'string', length: 50, nullable: true)]
-    #[Groups(["testEnovaContractor:read"])]
+    #[Groups(["testEnovaContractor:read, 'testEnovaPerson:read'"])]
     private ?string $telefon = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    #[Groups(["testEnovaContractor:read"])]
+    #[Groups(["testEnovaContractor:read, 'testEnovaPerson:read'"])]
     private ?string $cenaKontrahentaNazwa = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
@@ -81,11 +81,11 @@ class TestEnovaContractor
     private Collection $contactPersons;
 
     #[ORM\OneToMany(targetEntity: TestEnovaLocation::class, mappedBy: 'contractor', cascade: ['persist'])]
-    #[Groups(["testEnovaContractor:read"])]
+    #[Groups(["testEnovaContractor:read, 'testEnovaPerson:read'"])]
     private Collection $locations;
 
     #[ORM\ManyToOne(targetEntity: TestEnovaAddress::class, cascade: ['persist'])]
-    #[Groups(["testEnovaContractor:read"])]
+    #[Groups(["testEnovaContractor:read, 'testEnovaPerson:read'"])]
     #[ORM\JoinColumn(name: 'adres_id', referencedColumnName: 'id')]
     private ?TestEnovaAddress $adres = null;
 

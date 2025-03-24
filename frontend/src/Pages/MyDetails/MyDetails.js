@@ -22,9 +22,11 @@ export const MyDetails = () => {
                 if (id) {
                     setUserId(id);
 
-                    const response_user = await fetch(`https://seequipment.pl/api/enova_people/${encodeURIComponent(id)}`, {
+                    // const response_user = await fetch(`https://seequipment.pl/api/enova_people/${encodeURIComponent(id)}`, {
+                    const response_user = await fetch(`https://seequipment.pl/api/test_enova_contact_peoples/by_uuid?uuid=${encodeURIComponent(id)}`, {
+                        method: 'GET', // Explicitly using GET method (this is the default, but it's good to clarify)
                         headers: {
-                            'Accept': 'application/ld+json'
+                            'Accept': 'application/json'
                         }
                     });
 

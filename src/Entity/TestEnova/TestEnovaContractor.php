@@ -57,11 +57,11 @@ class TestEnovaContractor
     private ?string $email = null;
 
     #[ORM\Column(type: 'string', length: 50, nullable: true)]
-    #[Groups(["testEnovaContractor:read, 'testEnovaPerson:read'"])]
+    #[Groups(["testEnovaContractor:read", 'testEnovaPerson:read'])]
     private ?string $telefon = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    #[Groups(["testEnovaContractor:read, 'testEnovaPerson:read'"])]
+    #[Groups(["testEnovaContractor:read", 'testEnovaPerson:read'])]
     private ?string $cenaKontrahentaNazwa = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
@@ -81,11 +81,11 @@ class TestEnovaContractor
     private Collection $contactPersons;
 
     #[ORM\OneToMany(targetEntity: TestEnovaLocation::class, mappedBy: 'contractor', cascade: ['persist'])]
-    #[Groups(["testEnovaContractor:read, 'testEnovaPerson:read'"])]
+    #[Groups(["testEnovaContractor:read", 'testEnovaPerson:read'])]
     private Collection $locations;
 
     #[ORM\ManyToOne(targetEntity: TestEnovaAddress::class, cascade: ['persist'])]
-    #[Groups(["testEnovaContractor:read, 'testEnovaPerson:read'"])]
+    #[Groups(["testEnovaContractor:read", 'testEnovaPerson:read'])]
     #[ORM\JoinColumn(name: 'adres_id', referencedColumnName: 'id')]
     private ?TestEnovaAddress $adres = null;
 

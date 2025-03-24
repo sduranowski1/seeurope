@@ -23,7 +23,7 @@ export const MyDetails = () => {
                     setUserId(id);
 
                     // const response_user = await fetch(`https://seequipment.pl/api/enova_people/${encodeURIComponent(id)}`, {
-                    const response_user = await fetch(`https://seequipment.pl/api/test_enova_contact_peoples/by_uuid?uuid=${encodeURIComponent(id)}`, {
+                    const response_user = await fetch(`https://seequipment.pl/api/test_enova_contact_people/by_uuid?uuid=${encodeURIComponent(id)}`, {
                         method: 'GET', // Explicitly using GET method (this is the default, but it's good to clarify)
                         headers: {
                             'Accept': 'application/json'
@@ -31,8 +31,8 @@ export const MyDetails = () => {
                     });
 
                     const userDataFetched = await response_user.json();
-                    console.log(userDataFetched)
-                    setUserData(userDataFetched)
+                    console.log(userDataFetched[0])
+                    setUserData(userDataFetched[0])
 
                 } else {
                     console.error('Email not found in the token');
@@ -161,11 +161,11 @@ export const MyDetails = () => {
                             <a>{userData?.contractor?.adres?.kraj}</a>
                         </div>
                     )}
-                    {userData?.telKomorkowy && (
+                    {userData?.contractor?.telefon && (
 
                         <div className={'field-container'}>
                             <label htmlFor={'company_phone_number'}>Numer telefonu:</label>
-                            <a>{userData?.contractor?.Telefon}</a>
+                            <a>{userData?.contractor?.telefon}</a>
                         </div>
                     )}
 

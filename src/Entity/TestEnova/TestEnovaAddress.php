@@ -14,39 +14,39 @@ class TestEnovaAddress
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(['testEnovaContractor:read', 'testEnovaLocation:read', 'userEnova:read'])]
+    #[Groups(['testEnovaContractor:read', 'testEnovaLocation:read', 'userEnova:read', 'testEnovaPerson:read'])]
     private ?int $id = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    #[Groups(['testEnovaContractor:read', 'testEnovaLocation:read', 'userEnova:read'])]
+    #[Groups(['testEnovaContractor:read', 'testEnovaLocation:read', 'userEnova:read', 'testEnovaPerson:read'])]
     private ?string $wojewodztwo = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    #[Groups(['testEnovaContractor:read', 'testEnovaLocation:read', 'userEnova:read'])]
+    #[Groups(['testEnovaContractor:read', 'testEnovaLocation:read', 'userEnova:read', 'testEnovaPerson:read'])]
     private ?string $gmina = null;
 
     #[ORM\Column(type: 'string', length: 50, nullable: true)]
-    #[Groups(['testEnovaContractor:read', 'testEnovaLocation:read', 'userEnova:read'])]
+    #[Groups(['testEnovaContractor:read', 'testEnovaLocation:read', 'userEnova:read', 'testEnovaPerson:read'])]
     private ?string $nrDomu = null;
 
     #[ORM\Column(type: 'string', length: 50, nullable: true)]
-    #[Groups(['testEnovaContractor:read', 'testEnovaLocation:read', 'userEnova:read'])]
+    #[Groups(['testEnovaContractor:read', 'testEnovaLocation:read', 'userEnova:read', 'testEnovaPerson:read'])]
     private ?string $nrLokalu = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    #[Groups(['testEnovaContractor:read', 'testEnovaLocation:read', 'userEnova:read'])]
+    #[Groups(['testEnovaContractor:read', 'testEnovaLocation:read', 'userEnova:read', 'testEnovaPerson:read'])]
     private ?string $poczta = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    #[Groups(['testEnovaContractor:read', 'testEnovaLocation:read', 'userEnova:read'])]
+    #[Groups(['testEnovaContractor:read', 'testEnovaLocation:read', 'userEnova:read', 'testEnovaPerson:read'])]
     private ?string $powiat = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    #[Groups(['testEnovaContractor:read', 'testEnovaLocation:read', 'userEnova:read'])]
+    #[Groups(['testEnovaContractor:read', 'testEnovaLocation:read', 'userEnova:read', 'testEnovaPerson:read'])]
     private ?string $ulica = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    #[Groups(['testEnovaContractor:read', 'testEnovaLocation:read', 'userEnova:read'])]
+    #[Groups(['testEnovaContractor:read', 'testEnovaLocation:read', 'userEnova:read', 'testEnovaPerson:read'])]
     private ?string $miejscowosc = null;
 
     #[ORM\Column(type: 'string', length: 20, nullable: true)]

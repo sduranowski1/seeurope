@@ -50,7 +50,7 @@ class TestEnovaContactPerson
     #[Groups(["testEnovaPerson:read", "testEnovaContractor:read", 'userEnova:read'])]
     private ?int $id = null;
 
-    #[ORM\Column(type: 'integer', unique: true)]
+    #[ORM\Column(type: 'integer')]
     #[Groups(["testEnovaPerson:read", "testEnovaContractor:read", 'userEnova:read'])]
     private ?int $uuid = null;
 

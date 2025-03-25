@@ -2,6 +2,7 @@ import {useLocation} from "react-router-dom";
 import {useContext, useEffect, useState} from "react";
 import AuthContext from "../../AuthContext";
 import {jwtDecode} from "jwt-decode";
+import {FormControl, InputLabel, MenuItem, Select} from "@mui/material";
 
 export const MyDetails = () => {
     const { token } = useContext(AuthContext); // Get token from AuthContext
@@ -176,6 +177,20 @@ export const MyDetails = () => {
 
                     <br/>
                     <br/>
+                    <h2 className={'page-title'}>Lokalizacje</h2>
+                    <br/>
+                    <FormControl  sx={{ m: 1, minWidth: 120, maxWidth: 300 }}>
+                        <Select labelId="location-label" id="location-select">
+                            {userData?.contractor?.locations?.map((location: any, index: number) => (
+                                <MenuItem key={index} value={location.id}>
+                                    {location?.nazwa}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
+                    <br/>
+                    <br/>
+                    <br/>
                     <h2 className={'page-title'}>Moje dane</h2>
                     <br/>
                     {userData?.imie && (
@@ -278,7 +293,11 @@ export const MyDetails = () => {
 
                         {/* Success/Error Message */}
                         {message && (
-                            <p style={{ color: message.startsWith("✅") ? "green" : "red", fontSize: "14px", marginTop: "10px" }}>
+                            <p style={{
+                                color: message.startsWith("✅") ? "green" : "red",
+                                fontSize: "14px",
+                                marginTop: "10px"
+                            }}>
                                 {message}
                             </p>
                         )}

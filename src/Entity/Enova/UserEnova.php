@@ -16,7 +16,6 @@ use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Controller\Admin\UserRoleChangeAction;
 use App\Controller\PasswordReset\PasswordResetRequestAction;
-use App\Entity\TestEnova\TestEnovaContactPerson;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
 use App\State\UserPasswordHasher;
@@ -91,14 +90,10 @@ class UserEnova implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['userEnova:create', 'userEnova:update'])]
     private ?string $plainPassword = null;
 
-//    #[ORM\ManyToOne(targetEntity: EnovaPerson::class)]
-//    #[ORM\JoinColumn(name: 'enova_person_id', referencedColumnName: 'id', nullable: true)]
-//    #[Groups(['userEnova:read', 'userEnova:create', 'userEnova:update'])]
-//    private ?EnovaPerson $enovaPerson = null;
-    #[ORM\ManyToOne(targetEntity: TestEnovaContactPerson::class)]
-    #[ORM\JoinColumn(name: 'enova_person_id', referencedColumnName: 'uuid', nullable: true)]
+    #[ORM\ManyToOne(targetEntity: EnovaPerson::class)]
+    #[ORM\JoinColumn(name: 'enova_person_id', referencedColumnName: 'id', nullable: true)]
     #[Groups(['userEnova:read', 'userEnova:create', 'userEnova:update'])]
-    private ?TestEnovaContactPerson $enovaPerson = null;
+    private ?EnovaPerson $enovaPerson = null;
 
     #[ORM\Column(type: 'json')]
     #[Groups(['userEnova:read', 'userEnova:update'])]
@@ -160,12 +155,12 @@ class UserEnova implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getEnovaPerson(): ?TestEnovaContactPerson
+    public function getEnovaPerson(): ?EnovaPerson
     {
         return $this->enovaPerson;
     }
 
-    public function setEnovaPerson(?TestEnovaContactPerson $enovaPerson): self
+    public function setEnovaPerson(?EnovaPerson $enovaPerson): self
     {
         $this->enovaPerson = $enovaPerson;
         return $this;
@@ -213,8 +208,8 @@ class UserEnova implements UserInterface, PasswordAuthenticatedUserInterface
     public function syncEnovaPersonId(): void
     {
         if ($this->id !== null) {
-            $this->enovaPerson = new TestEnovaContactPerson();
-            $this->enovaPerson->setUuid($this->id); // Ensure the EnovaPerson entity has this ID
+            $this->enovaPerson = new EnovaPerson();
+            $this->enovaPerson->setId($this->id); // Ensure the EnovaPerson entity has this ID
         }
     }
 }

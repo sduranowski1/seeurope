@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20250325150938 extends AbstractMigration
+final class Version20250325152229 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -35,8 +35,7 @@ final class Version20250325150938 extends AbstractMigration
 //        $this->addSql('CREATE INDEX IDX_466113F63632DFC5 ON product_info (catid)');
 //        $this->addSql('CREATE INDEX IDX_466113F6CC64F614 ON product_info (scatid)');
 //        $this->addSql('CREATE INDEX IDX_466113F63CF0C7D9 ON product_info (itypeid)');
-        $this->addSql('ALTER TABLE user_enova DROP FOREIGN KEY FK_AE9077EB1DEF328D');
-        $this->addSql('ALTER TABLE user_enova ADD CONSTRAINT FK_AE9077EB1DEF328D FOREIGN KEY (enova_person_id) REFERENCES test_enova_contact_person (uuid)');
+        $this->addSql('ALTER TABLE user_enova ADD CONSTRAINT FK_AE9077EB1DEF328D FOREIGN KEY (enova_person_id) REFERENCES test_enova_contact_person (id)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_AE9077EBE7927C74 ON user_enova (email)');
     }
 
@@ -60,6 +59,5 @@ final class Version20250325150938 extends AbstractMigration
         $this->addSql('ALTER TABLE product_info CHANGE id id INT AUTO_INCREMENT NOT NULL');
         $this->addSql('ALTER TABLE user_enova DROP FOREIGN KEY FK_AE9077EB1DEF328D');
         $this->addSql('DROP INDEX UNIQ_AE9077EBE7927C74 ON user_enova');
-        $this->addSql('ALTER TABLE user_enova ADD CONSTRAINT FK_AE9077EB1DEF328D FOREIGN KEY (enova_person_id) REFERENCES enova_person (id) ON UPDATE CASCADE ON DELETE CASCADE');
     }
 }

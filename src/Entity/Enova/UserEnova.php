@@ -16,6 +16,7 @@ use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Controller\Admin\UserRoleChangeAction;
 use App\Controller\PasswordReset\PasswordResetRequestAction;
+use App\Entity\TestEnova\TestEnovaContactPerson;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
 use App\State\UserPasswordHasher;
@@ -94,10 +95,10 @@ class UserEnova implements UserInterface, PasswordAuthenticatedUserInterface
 //    #[ORM\JoinColumn(name: 'enova_person_id', referencedColumnName: 'id', nullable: true)]
 //    #[Groups(['userEnova:read', 'userEnova:create', 'userEnova:update'])]
 //    private ?EnovaPerson $enovaPerson = null;
-    #[ORM\ManyToOne(targetEntity: EnovaPerson::class)]
+    #[ORM\ManyToOne(targetEntity: TestEnovaContactPerson::class)]
     #[ORM\JoinColumn(name: 'enova_person_id', referencedColumnName: 'id', nullable: true)]
     #[Groups(['userEnova:read', 'userEnova:create', 'userEnova:update'])]
-    private ?EnovaPerson $enovaPerson = null;
+    private ?TestEnovaContactPerson $enovaPerson = null;
 
     #[ORM\Column(type: 'json')]
     #[Groups(['userEnova:read', 'userEnova:update'])]
@@ -159,12 +160,12 @@ class UserEnova implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getEnovaPerson(): ?EnovaPerson
+    public function getEnovaPerson(): ?TestEnovaContactPerson
     {
         return $this->enovaPerson;
     }
 
-    public function setEnovaPerson(?EnovaPerson $enovaPerson): self
+    public function setEnovaPerson(?TestEnovaContactPerson $enovaPerson): self
     {
         $this->enovaPerson = $enovaPerson;
         return $this;

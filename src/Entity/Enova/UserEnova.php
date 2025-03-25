@@ -92,7 +92,7 @@ class UserEnova implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $plainPassword = null;
 
     #[ORM\ManyToOne(targetEntity: TestEnovaContactPerson::class)]
-    #[ORM\JoinColumn(name: 'enova_person_id', referencedColumnName: 'id', nullable: true)]
+    #[ORM\JoinColumn(name: 'enova_person_id', referencedColumnName: 'uuid', nullable: true)]
     #[Groups(['userEnova:read', 'userEnova:create', 'userEnova:update'])]
     private ?TestEnovaContactPerson $enovaPerson = null;
 

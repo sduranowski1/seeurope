@@ -47,47 +47,47 @@ class TestEnovaContactPerson
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(["testEnovaPerson:read", "testEnovaContractor:read"])]
+    #[Groups(["testEnovaPerson:read", "testEnovaContractor:read", 'userEnova:read'])]
     private ?int $id = null;
 
     #[ORM\Column(type: 'integer')]
-    #[Groups(["testEnovaPerson:read", "testEnovaContractor:read"])]
+    #[Groups(["testEnovaPerson:read", "testEnovaContractor:read", 'userEnova:read'])]
     private ?int $uuid = null;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(["testEnovaPerson:read", "testEnovaContractor:read"])]
+    #[Groups(["testEnovaPerson:read", "testEnovaContractor:read", 'userEnova:read'])]
     private ?string $imie = null;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(["testEnovaPerson:read", "testEnovaContractor:read"])]
+    #[Groups(["testEnovaPerson:read", "testEnovaContractor:read", 'userEnova:read'])]
     private ?string $nazwisko = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    #[Groups(["testEnovaPerson:read", "testEnovaContractor:read"])]
+    #[Groups(["testEnovaPerson:read", "testEnovaContractor:read", 'userEnova:read'])]
     private ?string $stanowisko = null;
 
 //    #[ORM\Column(type: 'integer')]
 //    private ?int $idKontrahent = null;
 //
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    #[Groups(["testEnovaPerson:read", "testEnovaContractor:read"])]
+    #[Groups(["testEnovaPerson:read", "testEnovaContractor:read", 'userEnova:read'])]
     private ?string $email = null;
 
     #[ORM\Column(type: 'string', length: 50, nullable: true)]
-    #[Groups(["testEnovaPerson:read", "testEnovaContractor:read"])]
+    #[Groups(["testEnovaPerson:read", "testEnovaContractor:read", 'userEnova:read'])]
     private ?string $telKomorkowy = null;
 
     #[ORM\Column(type: 'boolean')]
-    #[Groups(["testEnovaPerson:read", "testEnovaContractor:read"])]
+    #[Groups(["testEnovaPerson:read", "testEnovaContractor:read", 'userEnova:read'])]
     private ?bool $dostepDoWWW = false;
 
     #[ORM\Column(type: 'boolean')]
-    #[Groups(["testEnovaPerson:read", "testEnovaContractor:read"])]
+    #[Groups(["testEnovaPerson:read", "testEnovaContractor:read", 'userEnova:read'])]
     private ?bool $prawoDoZamowien = false;
 
     #[ORM\ManyToOne(targetEntity: TestEnovaContractor::class, inversedBy: 'contactPersons')]
     #[ORM\JoinColumn(name: 'contractor_id', referencedColumnName: 'id')]
-    #[Groups(["testEnovaPerson:read"])]
+    #[Groups(["testEnovaPerson:read", 'userEnova:read'])]
     private ?TestEnovaContractor $contractor = null;
 
     #[ORM\ManyToOne(targetEntity: TestEnovaAddress::class, cascade: ['persist'])]

@@ -29,7 +29,7 @@ class TestEnovaContractor
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(["testEnovaContractor:read"])]
+    #[Groups(["testEnovaContractor:read", 'userEnova:read'])]
     private ?int $id = null;
 
     #[ORM\Column(type: 'integer')]
@@ -41,7 +41,7 @@ class TestEnovaContractor
     private ?string $kod = null;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(["testEnovaContractor:read", 'testEnovaLocation:read', 'testEnovaPerson:read'])]
+    #[Groups(["testEnovaContractor:read", 'testEnovaLocation:read', 'testEnovaPerson:read', 'userEnova:read'])]
     private ?string $nazwa = null;
 
     #[ORM\Column(type: 'string', length: 20, nullable: true)]
@@ -61,7 +61,7 @@ class TestEnovaContractor
     private ?string $telefon = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    #[Groups(["testEnovaContractor:read", 'testEnovaPerson:read'])]
+    #[Groups(["testEnovaContractor:read", 'testEnovaPerson:read', 'userEnova:read'])]
     private ?string $cenaKontrahentaNazwa = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]

@@ -16,6 +16,7 @@ use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Controller\Admin\UserRoleChangeAction;
 use App\Controller\PasswordReset\PasswordResetRequestAction;
+use App\Entity\TestEnova\TestEnovaContractor;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
 use App\State\UserPasswordHasher;
@@ -90,10 +91,15 @@ class UserEnova implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['userEnova:create', 'userEnova:update'])]
     private ?string $plainPassword = null;
 
-    #[ORM\ManyToOne(targetEntity: EnovaPerson::class)]
-    #[ORM\JoinColumn(name: 'enova_person_id', referencedColumnName: 'id', nullable: true)]
+//    #[ORM\ManyToOne(targetEntity: EnovaPerson::class)]
+//    #[ORM\JoinColumn(name: 'enova_person_id', referencedColumnName: 'id', nullable: true)]
+//    #[Groups(['userEnova:read', 'userEnova:create', 'userEnova:update'])]
+//    private ?EnovaPerson $enovaPerson = null;
+
+    #[ORM\ManyToOne(targetEntity: TestEnovaContractor::class)]
+    #[ORM\JoinColumn(name: 'enova_person_id', referencedColumnName: 'uuid', nullable: true)]
     #[Groups(['userEnova:read', 'userEnova:create', 'userEnova:update'])]
-    private ?EnovaPerson $enovaPerson = null;
+    private ?TestEnovaContractor $enovaPerson = null;
 
     #[ORM\Column(type: 'json')]
     #[Groups(['userEnova:read', 'userEnova:update'])]
@@ -155,16 +161,28 @@ class UserEnova implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getEnovaPerson(): ?EnovaPerson
+//    public function getEnovaPerson(): ?EnovaPerson
+//    {
+//        return $this->enovaPerson;
+//    }
+//
+//    public function setEnovaPerson(?EnovaPerson $enovaPerson): self
+//    {
+//        $this->enovaPerson = $enovaPerson;
+//        return $this;
+//    }
+
+    public function getEnovaPerson(): ?TestEnovaContractor
     {
         return $this->enovaPerson;
     }
 
-    public function setEnovaPerson(?EnovaPerson $enovaPerson): self
+    public function setEnovaPerson(?TestEnovaContractor $enovaPerson): self
     {
         $this->enovaPerson = $enovaPerson;
         return $this;
     }
+
 
     /**
      * @see UserInterface
@@ -203,13 +221,13 @@ class UserEnova implements UserInterface, PasswordAuthenticatedUserInterface
         $this->plainPassword = null;
     }
 
-    #[ORM\PrePersist]
-    #[ORM\PreUpdate]
-    public function syncEnovaPersonId(): void
-    {
-        if ($this->id !== null) {
-            $this->enovaPerson = new EnovaPerson();
-            $this->enovaPerson->setId($this->id); // Ensure the EnovaPerson entity has this ID
-        }
-    }
+//    #[ORM\PrePersist]
+//    #[ORM\PreUpdate]
+//    public function syncEnovaPersonId(): void
+//    {
+//        if ($this->id !== null) {
+//            $this->enovaPerson = new EnovaPerson();
+//            $this->enovaPerson->setId($this->id); // Ensure the EnovaPerson entity has this ID
+//        }
+//    }
 }

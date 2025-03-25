@@ -44,12 +44,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ORM\Table(name: "test_enova_contact_person")]
 class TestEnovaContactPerson
 {
-    #[ORM\GeneratedValue]
+    #[ORM\Id]
+//    #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     #[Groups(["testEnovaPerson:read", "testEnovaContractor:read", 'userEnova:read'])]
     private ?int $id = null;
 
-    #[ORM\Id]
     #[ORM\Column(type: 'integer')]
     #[Groups(["testEnovaPerson:read", "testEnovaContractor:read", 'userEnova:read'])]
     private ?int $uuid = null;
@@ -112,6 +112,13 @@ class TestEnovaContactPerson
     {
         return $this->id;
     }
+
+    public function setId(?int $id): void
+    {
+        $this->id = $id;
+    }
+
+
 
     public function getUuid(): ?int
     {

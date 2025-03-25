@@ -200,11 +200,20 @@ class TestEnovaContractorController extends AbstractController
     private function saveContactPersons(TestEnovaContractor $contractor, array $contactPersonsData): void
     {
         foreach ($contactPersonsData as $contactPersonData) {
-            $contactPerson = new TestEnovaContactPerson();
+            // Check if the contact person with the given ID already exists
+            $existingContactPerson = $this->entityManager->find(TestEnovaContactPerson::class, $contactPersonData['id']);
+
+            // If it exists, use the existing one, otherwise create a new one
+            if ($existingContactPerson) {
+                $contactPerson = $existingContactPerson;
+            } else {
+                $contactPerson = new TestEnovaContactPerson();
+            }
 
             // Update contact person fields
             $contactPerson->setImie($contactPersonData['imie']);
             $contactPerson->setUuid($contactPersonData['id']);
+            $contactPerson->setId($contactPersonData['id']);
             $contactPerson->setNazwisko($contactPersonData['nazwisko']);
             $contactPerson->setStanowisko($contactPersonData['stanowisko']);
             $contactPerson->setEmail($contactPersonData['email'] ?? '');
@@ -234,8 +243,15 @@ class TestEnovaContractorController extends AbstractController
                     $this->userRepository->save($userEnova, true);
                 }
             }
+
+            // Optionally, you can clear the EntityManager here to prevent memory issues
+            $this->entityManager->clear(); // Clear the identity map
         }
+
+        // Finally, flush once after processing all contact persons
+        $this->entityManager->flush();
     }
+
 
     private function saveLocations(TestEnovaContractor $contractor, array $locationsData): void
     {

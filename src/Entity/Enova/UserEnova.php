@@ -213,8 +213,8 @@ class UserEnova implements UserInterface, PasswordAuthenticatedUserInterface
     public function syncEnovaPersonId(): void
     {
         if ($this->id !== null) {
-            $this->enovaPerson = new EnovaPerson();
-            $this->enovaPerson->setId($this->id); // Ensure the EnovaPerson entity has this ID
+            $this->enovaPerson = new TestEnovaContactPerson();
+            $this->enovaPerson->setUuid($this->id); // Ensure the EnovaPerson entity has this ID
         }
     }
 }

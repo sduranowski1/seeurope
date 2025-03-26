@@ -164,6 +164,8 @@ const Checkout = () => {
         fetchUserInfo();
     }, [token]);
 
+    console.log(userDetails?.enovaPerson)
+
     console.log(userDetails?.enovaPerson?.contractor?.idEnova)
     const contractorId = userDetails?.enovaPerson?.contractor?.idEnova
     const contractorPersonId = userDetails?.enovaPerson?.id
@@ -280,18 +282,18 @@ const Checkout = () => {
                 // idWWW: 0, // Assuming this is a placeholder or related to the order
                 adres: {
                     id: "1",
-                    wojewodztwo: selectedAddress === 'existing' ? locations[selectedLocation]?.adresLocation?.wojewodztwo || "" : newAddress?.voivodeship || "", // Voivodeship
-                    gmina: selectedAddress === 'existing' ? locations[selectedLocation]?.adresLocation?.gmina || "" : newAddress?.region || "", // Region
-                    nrDomu: selectedAddress === 'existing' ? locations[selectedLocation]?.adresLocation?.nrDomu || "" : newAddress?.buildingNumber || "", // Building number
-                    nrLokalu: selectedAddress === 'existing' ? locations[selectedLocation]?.adresLocation?.nrLokalu || "" : newAddress?.apartmentNumber || "", // Apartment number
-                    poczta: selectedAddress === 'existing' ? locations[selectedLocation]?.adresLocation?.poczta || "" : newAddress?.postOffice || "", // Post office
-                    powiat: selectedAddress === 'existing' ? locations[selectedLocation]?.adresLocation?.powiat || "" : newAddress?.district || "", // District
-                    regon: selectedAddress === 'existing' ? locations[selectedLocation]?.adresLocation?.Regon || "" : newAddress?.regon || "", // REGON
+                    wojewodztwo: selectedAddress === 'existing' ? locations[selectedLocation]?.adres?.wojewodztwo || "" : newAddress?.voivodeship || "", // Voivodeship
+                    gmina: selectedAddress === 'existing' ? locations[selectedLocation]?.adres?.gmina || "" : newAddress?.region || "", // Region
+                    nrDomu: selectedAddress === 'existing' ? locations[selectedLocation]?.adres?.nrDomu || "" : newAddress?.buildingNumber || "", // Building number
+                    nrLokalu: selectedAddress === 'existing' ? locations[selectedLocation]?.adres?.nrLokalu || "" : newAddress?.apartmentNumber || "", // Apartment number
+                    poczta: selectedAddress === 'existing' ? locations[selectedLocation]?.adres?.poczta || "" : newAddress?.postOffice || "", // Post office
+                    powiat: selectedAddress === 'existing' ? locations[selectedLocation]?.adres?.powiat || "" : newAddress?.district || "", // District
+                    regon: selectedAddress === 'existing' ? locations[selectedLocation]?.adres?.Regon || "" : newAddress?.regon || "", // REGON
                     telefon: phone, // Phone
-                    ulica: selectedAddress === 'existing' ? locations[selectedLocation]?.adresLocation?.ulica || "" : newAddress?.street || "", // Street
-                    miejscowosc: selectedAddress === 'existing' ? locations[selectedLocation]?.adresLocation?.miejscowosc || "" : newAddress?.city || "", // City
-                    kodPocztowy: selectedAddress === 'existing' ? locations[selectedLocation]?.adresLocation?.kodPocztowy || "" : newAddress?.zipCode || "", // Zip Code
-                    kraj: selectedAddress === 'existing' ? locations[selectedLocation]?.adresLocation?.kraj || "" : newAddress?.country || "" // Country
+                    ulica: selectedAddress === 'existing' ? locations[selectedLocation]?.adres?.ulica || "" : newAddress?.street || "", // Street
+                    miejscowosc: selectedAddress === 'existing' ? locations[selectedLocation]?.adres?.miejscowosc || "" : newAddress?.city || "", // City
+                    kodPocztowy: selectedAddress === 'existing' ? locations[selectedLocation]?.adres?.kodPocztowy || "" : newAddress?.zipCode || "", // Zip Code
+                    kraj: selectedAddress === 'existing' ? locations[selectedLocation]?.adres?.kraj || "" : newAddress?.country || "" // Country
                 }
             },
             data: new Date().toISOString(), // Current date
@@ -477,7 +479,7 @@ const Checkout = () => {
                                                     {locations.map((location, index) => (
                                                         <MenuItem key={index} value={index} sx={{ display: "flex", justifyContent: "space-between" }}>
                                                             <span>{location.nazwa || `${t("checkout.location")} ${index + 1}`}</span>
-                                                            <span style={{ marginLeft: "auto" }}>{location.adresLocation.miejscowosc || ``}</span>
+                                                            <span style={{ marginLeft: "auto" }}>{location?.adres?.miejscowosc || ``}</span>
                                                         </MenuItem>
                                                     ))}
                                                 </Select>
@@ -487,40 +489,40 @@ const Checkout = () => {
                                         {selectedLocation !== "" && (
                                             <Box mt={2}>
                                                 <Typography variant="h6">{t("checkout.selectedLocationAddress")}</Typography>
-                                                {locations[selectedLocation]?.adresLocation?.ulica &&
-                                                    locations[selectedLocation]?.adresLocation?.ulica !== "N/A" && (
+                                                {locations[selectedLocation]?.adres?.ulica &&
+                                                    locations[selectedLocation]?.adres?.ulica !== "N/A" && (
                                                         <Typography variant="body1">
-                                                            <strong>{t("checkout.street")}:</strong> {locations[selectedLocation]?.adresLocation?.ulica}
+                                                            <strong>{t("checkout.street")}:</strong> {locations[selectedLocation]?.adres?.ulica}
                                                         </Typography>
                                                     )}
-                                                {locations[selectedLocation]?.adresLocation?.nrDomu &&
-                                                    locations[selectedLocation]?.adresLocation?.nrDomu !== "N/A" && (
+                                                {locations[selectedLocation]?.adres?.nrDomu &&
+                                                    locations[selectedLocation]?.adres?.nrDomu !== "N/A" && (
                                                         <Typography variant="body1">
-                                                            <strong>{t("checkout.buildingNumber")}:</strong> {locations[selectedLocation]?.adresLocation?.nrDomu}
+                                                            <strong>{t("checkout.buildingNumber")}:</strong> {locations[selectedLocation]?.adres?.nrDomu}
                                                         </Typography>
                                                     )}
-                                                {locations[selectedLocation]?.adresLocation?.nrLokalu &&
-                                                    locations[selectedLocation]?.adresLocation?.nrLokalu !== "N/A" && (
+                                                {locations[selectedLocation]?.adres?.nrLokalu &&
+                                                    locations[selectedLocation]?.adres?.nrLokalu !== "N/A" && (
                                                         <Typography variant="body1">
-                                                            <strong>{t("checkout.apartmentNumber")}:</strong> {locations[selectedLocation]?.adresLocation?.nrLokalu}
+                                                            <strong>{t("checkout.apartmentNumber")}:</strong> {locations[selectedLocation]?.adres?.nrLokalu}
                                                         </Typography>
                                                     )}
-                                                {locations[selectedLocation]?.adresLocation?.kodPocztowy &&
-                                                    locations[selectedLocation]?.adresLocation?.kodPocztowy !== "N/A" && (
+                                                {locations[selectedLocation]?.adres?.kodPocztowy &&
+                                                    locations[selectedLocation]?.adres?.kodPocztowy !== "N/A" && (
                                                         <Typography variant="body1">
-                                                            <strong>{t("checkout.zipCode")}:</strong> {locations[selectedLocation]?.adresLocation?.kodPocztowy}
+                                                            <strong>{t("checkout.zipCode")}:</strong> {locations[selectedLocation]?.adres?.kodPocztowy}
                                                         </Typography>
                                                     )}
-                                                {locations[selectedLocation]?.adresLocation?.miejscowosc &&
-                                                    locations[selectedLocation]?.adresLocation?.miejscowosc !== "N/A" && (
+                                                {locations[selectedLocation]?.adres?.miejscowosc &&
+                                                    locations[selectedLocation]?.adres?.miejscowosc !== "N/A" && (
                                                         <Typography variant="body1">
-                                                            <strong>{t("checkout.city")}:</strong> {locations[selectedLocation]?.adresLocation?.miejscowosc}
+                                                            <strong>{t("checkout.city")}:</strong> {locations[selectedLocation]?.adres?.miejscowosc}
                                                         </Typography>
                                                     )}
-                                                {locations[selectedLocation]?.adresLocation?.kraj &&
-                                                    locations[selectedLocation]?.adresLocation?.kraj !== "N/A" && (
+                                                {locations[selectedLocation]?.adres?.kraj &&
+                                                    locations[selectedLocation]?.adres?.kraj !== "N/A" && (
                                                         <Typography variant="body1">
-                                                            <strong>{t("checkout.country")}:</strong> {locations[selectedLocation]?.adresLocation?.kraj}
+                                                            <strong>{t("checkout.country")}:</strong> {locations[selectedLocation]?.adres?.kraj}
                                                         </Typography>
                                                     )}
                                             </Box>

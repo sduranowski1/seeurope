@@ -218,6 +218,7 @@
     "noItemsFound": "No Items Found",
     "addToCart": "Add to Cart",
     "technicalData": "SPECIFICATION",
+    "unit": "Unit",
     "stockStatus": {
       "instock": "In Stock",
       "onbackorder": "On Backorder",

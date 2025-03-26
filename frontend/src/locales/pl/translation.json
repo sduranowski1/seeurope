@@ -219,6 +219,7 @@
     "noItemsFound": "Nie znaleziono produktów",
     "addToCart": "Dodaj do koszyka",
     "technicalData": "DANE TECHNICZNE",
+    "unit": "Jednostka",
     "stockStatus": {
       "instock": "W magazynie",
       "onbackorder": "Na zamówienie",

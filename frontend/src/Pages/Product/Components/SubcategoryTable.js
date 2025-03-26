@@ -438,6 +438,9 @@ export const SubcategoryTable = ({ productsData, onProductClick, lastPartToColla
                     {/*<th>Subcategory</th>*/}
                     {token ? (
                         <>
+                            <th onClick={() => handleSort("unit")}>
+                                {t("productList.unit")} {sortColumn === "unit" ? (sortOrder === "asc" ? "▲" : "▼") : "▶"}
+                            </th>
                             {/* Check if at least one product has a dedicated price */}
                             {filteredProducts.some(product =>
                                 product.priceList?.some(price =>
@@ -519,6 +522,7 @@ export const SubcategoryTable = ({ productsData, onProductClick, lastPartToColla
 
                             {token ? (
                                 <>
+                                    <td>{product.unit}</td>
                                     {product.priceList?.some(price => price.nazwa === userDetailsPrice?.enovaPerson?.contractor?.cenaKontrahentaNazwa) && (
                                         <td>
                                             {product.priceList?.find(price => price.nazwa === userDetailsPrice?.enovaPerson?.contractor?.cenaKontrahentaNazwa)?.netto || ""}

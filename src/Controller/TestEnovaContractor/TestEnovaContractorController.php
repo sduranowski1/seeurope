@@ -181,7 +181,16 @@ class TestEnovaContractorController extends AbstractController
 
     private function saveAddress(array $addressData): TestEnovaAddress
     {
-        $address = new TestEnovaAddress();
+        // Try to find existing address by its ID (assuming addressData has an 'id' field)
+        $address = $this->entityManager->find(TestEnovaAddress::class, $addressData['id']);
+
+        // If not found, create new address
+        if (!$address) {
+            $address = new TestEnovaAddress();
+            $address->setId($addressData['id']); // Set the ID from the data
+        }
+
+        // Update address fields
         $address->setWojewodztwo($addressData['wojewodztwo']);
         $address->setGmina($addressData['gmina']);
         $address->setNrDomu($addressData['nrDomu']);
@@ -201,35 +210,29 @@ class TestEnovaContractorController extends AbstractController
     {
         foreach ($contactPersonsData as $contactPersonData) {
             // Check if the contact person with the given ID already exists
-            $existingContactPerson = $this->entityManager->find(TestEnovaContactPerson::class, $contactPersonData['id']);
+            $contactPerson = $this->entityManager->find(TestEnovaContactPerson::class, $contactPersonData['id']);
 
             // If it exists, use the existing one, otherwise create a new one
-            if ($existingContactPerson) {
-                $contactPerson = $existingContactPerson;
-            } else {
+            if (!$contactPerson) {
                 $contactPerson = new TestEnovaContactPerson();
+                $contactPerson->setId($contactPersonData['id']); // Set ID for new entity
             }
 
             // Update contact person fields
             $contactPerson->setImie($contactPersonData['imie']);
             $contactPerson->setUuid($contactPersonData['id']);
-            $contactPerson->setId($contactPersonData['id']);
             $contactPerson->setNazwisko($contactPersonData['nazwisko']);
             $contactPerson->setStanowisko($contactPersonData['stanowisko']);
             $contactPerson->setEmail($contactPersonData['email'] ?? '');
             $contactPerson->setTelKomorkowy($contactPersonData['telKomorkowy'] ?? '');
             $contactPerson->setDostepDoWWW($contactPersonData['dostepDoWWW'] ?? false);
             $contactPerson->setPrawoDoZamowien($contactPersonData['prawoDoZamowien'] ?? false);
-            // Set other fields...
 
             // Save contact person address
             if (isset($contactPersonData['adres'])) {
                 $contactPersonAdres = $this->saveAddress($contactPersonData['adres']);
                 $contactPerson->setAdres($contactPersonAdres);
             }
-
-            // Ensure the contractor is persisted
-            $this->entityManager->persist($contractor);
 
             // Link the contact person to the contractor
             $contactPerson->setContractor($contractor);
@@ -243,20 +246,19 @@ class TestEnovaContractorController extends AbstractController
                     $this->userRepository->save($userEnova, true);
                 }
             }
-
-            // Optionally, you can clear the EntityManager here to prevent memory issues
-            $this->entityManager->clear(); // Clear the identity map
         }
-
-        // Finally, flush once after processing all contact persons
-        $this->entityManager->flush();
     }
-
 
     private function saveLocations(TestEnovaContractor $contractor, array $locationsData): void
     {
         foreach ($locationsData as $locationData) {
-            $location = new TestEnovaLocation();
+            // Try to find existing location by ID
+            $location = $this->entityManager->find(TestEnovaLocation::class, $locationData['id']);
+
+            if (!$location) {
+                $location = new TestEnovaLocation();
+                $location->setId($locationData['id']); // Set ID for new entity
+            }
 
             // Update location fields
             $location->setUuid($locationData['id']);

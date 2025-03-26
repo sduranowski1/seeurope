@@ -12,10 +12,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
 class TestEnovaAddress
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+//    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'string')]
     #[Groups(['testEnovaContractor:read', 'testEnovaLocation:read', 'userEnova:read', 'testEnovaPerson:read'])]
-    private ?int $id = null;
+    private ?string $id = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     #[Groups(['testEnovaContractor:read', 'testEnovaLocation:read', 'userEnova:read', 'testEnovaPerson:read'])]
@@ -57,11 +57,24 @@ class TestEnovaAddress
     #[Groups(['testEnovaContractor:read', 'testEnovaLocation:read', 'userEnova:read', 'testEnovaPerson:read'])]
     private ?string $kraj = null;
 
-    // Getters and Setters
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
+
+    public function setId(?string $id): void
+    {
+        $this->id = $id;
+    }
+
+
+
+    // Getters and Setters
+//    public function getId(): ?int
+//    {
+//        return $this->id;
+//    }
+
 
     public function getWojewodztwo(): ?string
     {

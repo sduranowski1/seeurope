@@ -85,7 +85,7 @@ class TestEnovaContactPerson
     #[Groups(["testEnovaPerson:read", "testEnovaContractor:read", 'userEnova:read'])]
     private ?bool $prawoDoZamowien = false;
 
-    #[ORM\ManyToOne(targetEntity: TestEnovaContractor::class, inversedBy: 'contactPersons')]
+    #[ORM\ManyToOne(targetEntity: TestEnovaContractor::class, cascade: ['persist'], inversedBy: 'contactPersons')]
     #[ORM\JoinColumn(name: 'contractor_id', referencedColumnName: 'id')]
     #[Groups(["testEnovaPerson:read", 'userEnova:read'])]
     private ?TestEnovaContractor $contractor = null;

@@ -72,6 +72,13 @@ class TestEnovaLocation
         return $this->id;
     }
 
+    public function setId(?int $id): void
+    {
+        $this->id = $id;
+    }
+
+
+
     public function getUuid(): ?int
     {
         return $this->uuid;

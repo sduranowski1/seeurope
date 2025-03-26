@@ -81,7 +81,7 @@ class TestEnovaContractor
     private Collection $contactPersons;
 
     #[ORM\OneToMany(targetEntity: TestEnovaLocation::class, mappedBy: 'contractor', cascade: ['persist'])]
-    #[Groups(["testEnovaContractor:read", 'testEnovaPerson:read'])]
+    #[Groups(["testEnovaContractor:read", 'testEnovaPerson:read', 'userEnova:read'])]
     private Collection $locations;
 
     #[ORM\ManyToOne(targetEntity: TestEnovaAddress::class, cascade: ['persist'])]

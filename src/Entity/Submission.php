@@ -18,6 +18,8 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\SubmissionRepository;
 use App\State\UserPasswordHasher;
+use Ramsey\Uuid\Guid\Guid;
+use Ramsey\Uuid\Uuid;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -45,9 +47,9 @@ class Submission implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[Groups(['submission:read'])]
     #[ORM\Id]
-    #[ORM\Column(type: 'integer')]
-    #[ORM\GeneratedValue]
-    private ?int $id = null;
+    #[ORM\Column(type: 'string', unique: true)]
+//    #[ORM\GeneratedValue]
+    private ?string $id;
 
     #[Assert\NotBlank]
     #[Assert\Email]
@@ -110,7 +112,13 @@ class Submission implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['submission:read', 'submission:create', 'submission:update'])]
     private bool $enabled = false;
 
-    public function getId(): ?int
+    public function __construct()
+    {
+        $this->id = Guid::uuid4()->toString();
+    }
+
+
+    public function getId(): ?string
     {
         return $this->id;
     }

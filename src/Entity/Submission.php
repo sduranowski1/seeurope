@@ -114,7 +114,9 @@ class Submission implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function __construct()
     {
-        $this->id = Guid::uuid4()->toString();
+        $timestamp = date('YmdHis'); // Current time: YYYYMMDDHHmmss
+        $randomPart = substr(Uuid::uuid4()->getHex(), 0, 6); // 6 random hex chars
+        $this->id = "{$timestamp}-{$randomPart}"; // Example: 20240327123845-a1b2c3
     }
 
 

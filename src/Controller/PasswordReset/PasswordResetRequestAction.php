@@ -58,7 +58,7 @@ class PasswordResetRequestAction extends AbstractController
 
         // Prepare email with temporary password
         $emailMessage = (new Email())
-            ->from('szymon@grupalucrum.pl')
+            ->from('webservice@seequipment.pl')
             ->to($email)
             ->subject('Tymczasowe hasło dla twojego konta')
 //            ->html("<p>Your temporary password is: <strong>{$temporaryPassword}</strong></p><p>Please log in with this password and change it once logged in.</p>");

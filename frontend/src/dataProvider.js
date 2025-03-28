@@ -10,7 +10,21 @@ const dataProvider = {
     getList: (resource, params) => {
         const { page, perPage } = params.pagination;
         const { field, order } = params.sort; // Extract sorting parameters
-        const filterQuery = new URLSearchParams(params.filter).toString();
+
+        // Flatten filters to avoid nested object issues
+        let flatFilters = {};
+        Object.entries(params.filter).forEach(([key, value]) => {
+            if (typeof value === 'object' && value !== null) {
+                // Convert nested objects (e.g., brand: { name: "tt" }) into "brand.name=tt"
+                Object.entries(value).forEach(([subKey, subValue]) => {
+                    flatFilters[`${key}.${subKey}`] = subValue;
+                });
+            } else {
+                flatFilters[key] = value;
+            }
+        });
+
+        const filterQuery = new URLSearchParams(flatFilters).toString();
 
         // Check if the resource is 'enova_orders' and apply specific sorting for that resource
         let sortQuery;

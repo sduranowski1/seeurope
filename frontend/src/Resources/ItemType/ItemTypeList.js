@@ -1,9 +1,14 @@
 import * as React from 'react';
-import {List, Datagrid, TextField, ReferenceField, TextInput, DateField} from 'react-admin';
+import {List, Datagrid, TextField, ReferenceField, TextInput, DateField, SearchInput} from 'react-admin';
 import {AdminPagination} from "../../Components/AdminPagination/AdminPagination";
 
+const postFilters = [
+    <SearchInput source="name" placeholder="Search by name" alwaysOn/>,
+    <SearchInput source="subcategory.subCatName" placeholder="Search by subcategory name" alwaysOn/>
+];
+
 const ItemTypeList = () => (
-    <List resource="item_types"  pagination={<AdminPagination />}>
+    <List resource="item_types"  filters={postFilters}  pagination={<AdminPagination />}>
         <Datagrid>
             <TextField source="id" />
             <TextField source="name" />

@@ -59,16 +59,16 @@ const Checkout = () => {
     const [newAddress, setNewAddress] = useState({
         voivodeship: '',
         region: '',
-        buildingNumber: '',
-        apartmentNumber: '',
+        nrDomu: '',
+        nrLokalu: '',
         postOffice: '',
         district: '',
         regon: '',
         phone: '',
-        street: '',
-        city: '',
-        zipCode: '',
-        country: '',
+        ulica: '',
+        miejscowosc: '',
+        kodPocztowy: '',
+        kraj: '',
     });
 
     const [locationDetails, setLocationDetails] = useState({
@@ -284,16 +284,16 @@ const Checkout = () => {
                     id: "1",
                     wojewodztwo: selectedAddress === 'existing' ? locations[selectedLocation]?.adres?.wojewodztwo || "" : newAddress?.voivodeship || "", // Voivodeship
                     gmina: selectedAddress === 'existing' ? locations[selectedLocation]?.adres?.gmina || "" : newAddress?.region || "", // Region
-                    nrDomu: selectedAddress === 'existing' ? locations[selectedLocation]?.adres?.nrDomu || "" : newAddress?.buildingNumber || "", // Building number
-                    nrLokalu: selectedAddress === 'existing' ? locations[selectedLocation]?.adres?.nrLokalu || "" : newAddress?.apartmentNumber || "", // Apartment number
+                    nrDomu: selectedAddress === 'existing' ? locations[selectedLocation]?.adres?.nrDomu || "" : newAddress?.nrDomu || "", // Building number
+                    nrLokalu: selectedAddress === 'existing' ? locations[selectedLocation]?.adres?.nrLokalu || "" : newAddress?.nrLokalu || "", // Apartment number
                     poczta: selectedAddress === 'existing' ? locations[selectedLocation]?.adres?.poczta || "" : newAddress?.postOffice || "", // Post office
                     powiat: selectedAddress === 'existing' ? locations[selectedLocation]?.adres?.powiat || "" : newAddress?.district || "", // District
                     regon: selectedAddress === 'existing' ? locations[selectedLocation]?.adres?.Regon || "" : newAddress?.regon || "", // REGON
                     telefon: phone, // Phone
-                    ulica: selectedAddress === 'existing' ? locations[selectedLocation]?.adres?.ulica || "" : newAddress?.street || "", // Street
-                    miejscowosc: selectedAddress === 'existing' ? locations[selectedLocation]?.adres?.miejscowosc || "" : newAddress?.city || "", // City
-                    kodPocztowy: selectedAddress === 'existing' ? locations[selectedLocation]?.adres?.kodPocztowy || "" : newAddress?.zipCode || "", // Zip Code
-                    kraj: selectedAddress === 'existing' ? locations[selectedLocation]?.adres?.kraj || "" : newAddress?.country || "" // Country
+                    ulica: selectedAddress === 'existing' ? locations[selectedLocation]?.adres?.ulica || "" : newAddress?.ulica || "", // Street
+                    miejscowosc: selectedAddress === 'existing' ? locations[selectedLocation]?.adres?.miejscowosc || "" : newAddress?.miejscowosc || "", // City
+                    kodPocztowy: selectedAddress === 'existing' ? locations[selectedLocation]?.adres?.kodPocztowy || "" : newAddress?.kodPocztowy || "", // Zip Code
+                    kraj: selectedAddress === 'existing' ? locations[selectedLocation]?.adres?.kraj || "" : newAddress?.kraj || "" // Country
                 }
             },
             data: new Date().toISOString(), // Current date
@@ -540,8 +540,8 @@ const Checkout = () => {
                                         <TextField
                                             label={t('checkout.companyName')}
                                             fullWidth
-                                            value={newAddress?.nazwa || ""}
-                                            onChange={(e) => handleAddressChange('nazwa', e.target.value)}
+                                            value={locationDetails?.nazwa || ""}
+                                            onChange={(e) => handleLocationChange('nazwa', e.target.value)}
                                         />
                                     </Grid>
 

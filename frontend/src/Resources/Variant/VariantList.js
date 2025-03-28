@@ -18,7 +18,7 @@ import {AdminPagination} from "../../Components/AdminPagination/AdminPagination"
 
 const postFilters = [
   <SearchInput source="variantname" placeholder="Search by name" alwaysOn/>,
-  <SearchInput source="brand.id" placeholder="Search by brand name" alwaysOn/>
+  <SearchInput source="brand.name" placeholder="Search by brand name" alwaysOn/>
 ];
 
 const VariantList = () => (

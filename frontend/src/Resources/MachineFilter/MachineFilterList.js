@@ -1,12 +1,16 @@
 // src/BookList.js
 
 import * as React from 'react';
-import {List, Datagrid, TextField, DateField} from 'react-admin';
+import {List, Datagrid, TextField, DateField, SearchInput} from 'react-admin';
 import customDataProvider from '../../dataProvider';
 import {AdminPagination} from "../../Components/AdminPagination/AdminPagination";
 
+const postFilters = [
+    <SearchInput source="name" placeholder="Search by name" alwaysOn/>,
+];
+
 const MachineFilterList = () => (
-    <List resource="machine_filters"  pagination={<AdminPagination />}>
+    <List resource="machine_filters" filters={postFilters}  pagination={<AdminPagination />}>
         {/*<SortingSelect/>*/}
         <Datagrid>
             <TextField source="id" />

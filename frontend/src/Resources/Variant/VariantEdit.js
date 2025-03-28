@@ -22,7 +22,8 @@ const VariantEdit = (props) => (
             <TextInput source="description" />
             <TextInput source="polishDescription" />
             <TextInput source="germanDescription" />
-            <ReferenceInput reference="brands" source="brand.id">
+            <ReferenceInput reference="brands/no_pagination" source="brand.id" sort={{ field: "name", order: "ASC" }}
+            >
                 <SelectInput
                     label="Brand"
                     source="brand.id"

@@ -1,7 +1,7 @@
 // src/BookList.js
 
 import * as React from 'react';
-import {List, Datagrid, TextField, DateField} from 'react-admin';
+import {List, Datagrid, TextField, DateField, SearchInput} from 'react-admin';
 import customDataProvider from '../../dataProvider';
 import {AdminPagination} from "../../Components/AdminPagination/AdminPagination";
 import SortingSelect from "../../Components/AdminSortingSelect/SortingSelect";
@@ -17,8 +17,12 @@ import SortingSelect from "../../Components/AdminSortingSelect/SortingSelect";
 //   </List>
 // );
 
+const postFilters = [
+    <SearchInput source="name" placeholder="Search by name" alwaysOn />,
+];
+
 const BrandList = () => (
-  <List resource="brands"  pagination={<AdminPagination />}>
+  <List resource="brands" filters={postFilters}  pagination={<AdminPagination />}>
       {/*<SortingSelect/>*/}
     <Datagrid>
       <TextField source="id" />

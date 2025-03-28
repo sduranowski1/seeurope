@@ -22,7 +22,7 @@ const SubcategoryEdit = (props) => (
             <TextInput source="description" />
             <TextInput source="polishDescription" />
             <TextInput source="germanDescription" />
-            <ReferenceInput reference="categories/no_pagination" source="category.id">
+            <ReferenceInput reference="categories/no_pagination" source="category.id" sort={{ field: "name", order: "ASC" }}>
                 <SelectInput
                     label="Category"
                     source="category.id"

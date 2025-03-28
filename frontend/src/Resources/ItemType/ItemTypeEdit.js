@@ -23,12 +23,16 @@ const ItemTypeEdit = (props) => (
             <TextInput source="description" />
             <TextInput source="polishDescription" />
             <TextInput source="germanDescription" />
-            <ReferenceInput reference="subcategories/no_pagination" source="subcategory.id">
+            <ReferenceInput reference="subcategories/no_pagination" source="subcategory.id" sort={{ field: "subCatName", order: "ASC" }}
+            >
                 <SelectInput
                     label="Subcategory"
                     source="subcategory.id"
-                    optionText={(record) => `${record?.category.name} - ${record?.subCatName}`} // Display multiple fields
-                    validate={required()}
+                    optionText={(record) => (
+                        <span>
+                            <span style={{ color: "#aaa" }}>{record?.category?.name} -</span> {record?.subCatName}
+                        </span>
+                    )}                    validate={required()}
                 />
             </ReferenceInput>
             {/* Add Boolean Inputs for each of the boolean fields */}
